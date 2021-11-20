@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.2</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.acgist</groupId>
+	<artifactId>parent</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>parent</name>
+	<description>根项目的配置</description>
+
+	<properties>
+		<acgist.version>1.0.0</acgist.version>
+		<java.version>1.8</java.version>
+		<spring-cloud.version>2020.0.1</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+	</properties>
+
+	<modules>
+		<!-- 通用 -->
+		<module>common</module>
+		<!-- 服务接口 -->
+		<module>api</module>
+		<!-- 内部服务 -->
+		<module>service</module>
+		<!-- 对外服务 -->
+		<module>www</module>
+		<!-- 网关服务 -->
+		<module>gateway</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>common</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>api-mq</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>api-data</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>api-redis</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>api-service-pay</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>api-service-user</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>service-pay</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>service-user</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>www-api</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>www-web</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>www-resources</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

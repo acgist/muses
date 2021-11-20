@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>service-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>service-parent</name>
+	<description>内部服务</description>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<modules>
+		<!-- 内部服务-pay -->
+		<module>service-pay</module>
+		<!-- 内部服务-user -->
+		<module>service-user</module>
+	</modules>
+
+	<dependencies>
+		<!--
+		sentinel：dubbo
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-apache-dubbo-adapter</artifactId>
+		</dependency>
+		-->
+		<!--
+		sentinel：控制面板
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-transport-simple-http</artifactId>
+		</dependency>
+		-->
+		<!-- sentinel -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+		</dependency>
+		<!-- 服务调用 -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-dubbo</artifactId>
+		</dependency>
+		<!-- SpringCloudAlibaba：配置中心、注册中心 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,88 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>www-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>www-parent</name>
+	<description>对外服务</description>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<modules>
+		<!-- 对外服务-接口 -->
+		<module>www-api</module>
+		<!-- 对外服务-网页 -->
+		<module>www-web</module>
+		<!-- 对外服务-静态资源 -->
+		<module>www-resources</module>
+	</modules>
+
+	<dependencies>
+		<!-- web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+		<!--
+		sentinel adapter：dubbo
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-apache-dubbo-adapter</artifactId>
+		</dependency>
+		-->
+		<!--
+		sentinel：控制面板
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-transport-simple-http</artifactId>
+		</dependency>
+		-->
+		<!-- sentinel -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+		</dependency>
+		<!-- 服务调用 -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-dubbo</artifactId>
+		</dependency>
+		<!-- SpringCloudAlibaba：配置中心、注册中心 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
