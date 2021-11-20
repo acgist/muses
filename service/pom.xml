@@ -32,13 +32,6 @@
 			<artifactId>sentinel-apache-dubbo-adapter</artifactId>
 		</dependency>
 		-->
-		<!--
-		sentinel：控制面板
-		<dependency>
-			<groupId>com.alibaba.csp</groupId>
-			<artifactId>sentinel-transport-simple-http</artifactId>
-		</dependency>
-		-->
 		<!-- sentinel -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

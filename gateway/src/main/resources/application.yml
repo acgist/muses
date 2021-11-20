@@ -1,0 +1,42 @@
+server:
+  port: 8888
+# 如果需要监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - prometheus
+spring:
+  cloud:
+    gateway:
+      routes:
+       - id: www-api
+         uri: lb://www-api
+         predicates:
+           - Path=/api/**
+         filters:
+           - StripPrefix=1
+           - name: Retry
+             args:
+               retries: 1
+       - id: www-web
+         uri: lb://www-web
+         predicates:
+           - Path=/**
+         filters:
+           - name: Retry
+             args:
+               retries: 1
+       - id: prometheus
+         uri: http://localhost:9090
+         predicates:
+           - Host=prometheus.acgist.com
+       - id: grafana
+         uri: http://localhost:3000
+         predicates:
+           - Host=grafana.acgist.com
+       - id: nacos
+         uri: http://localhost:8848
+         predicates:
+           - Host=nacos.acgist.com

@@ -45,18 +45,16 @@
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
 		</dependency>
-		-->
-		<!--
-		sentinel：控制面板
+		两个区别未知
 		<dependency>
-			<groupId>com.alibaba.csp</groupId>
-			<artifactId>sentinel-transport-simple-http</artifactId>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
 		</dependency>
 		-->
 		<!-- sentinel -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
 		</dependency>
 		<!-- SpringCloudAlibaba：配置中心、注册中心 -->
 		<dependency>

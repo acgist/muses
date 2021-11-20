@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: service-user
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: localhost:8848
+      config:
+        ext-config:
+          - data-id: redis.properties
+            refresh: true
+            group: DEFAULT_GROUP
