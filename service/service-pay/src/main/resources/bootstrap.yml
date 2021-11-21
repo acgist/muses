@@ -4,7 +4,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   profiles:
-    active: dev, data
+    active: dev, data, redis
   cloud:
     nacos:
       username: nacos
