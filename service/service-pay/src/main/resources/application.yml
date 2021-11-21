@@ -1,7 +1,4 @@
 dubbo:
-# 等于：@DubboComponentScan
-  scan:
-    base-packages: com.acgist.pay
   provider:
     retries: 1
     timeout: 10000
@@ -13,5 +10,3 @@ dubbo:
     check: false
   cloud:
     subscribed-services:
-#  可以不用配置
-#  registry.address: spring-cloud://localhost

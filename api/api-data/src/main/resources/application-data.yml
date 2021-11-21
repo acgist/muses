@@ -1,0 +1,97 @@
+spring:
+  jpa:
+    database: MYSQL
+    show-sql: false
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    hibernate.ddl-auto: none
+    hibernate.jdbc.batch_size: 10
+    hibernate.jdbc.fetch_size: 10
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+  shardingsphere:
+    datasource:
+      names: dsmaster,dsslave,ds0master,ds0slave,ds1master,ds1slave
+      dsmaster:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/dm?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        username: root
+        password:
+        pool-name: HikariCP
+        minimum-idle: 2
+        maximum-pool-size: 10
+      ds0master:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/dm0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        username: root
+        password:
+        pool-name: HikariCP
+        minimum-idle: 2
+        maximum-pool-size: 10
+      ds1master:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/dm1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        username: root
+        password:
+        pool-name: HikariCP
+        minimum-idle: 2
+        maximum-pool-size: 10
+      dsslave:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/ds?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        username: root
+        password:
+        pool-name: HikariCP
+        minimum-idle: 2
+        maximum-pool-size: 10
+      ds0slave:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/ds0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        username: root
+        password:
+        pool-name: HikariCP
+        minimum-idle: 2
+        maximum-pool-size: 10
+      ds1slave:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/ds1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        username: root
+        password:
+        pool-name: HikariCP
+        minimum-idle: 2
+        maximum-pool-size: 10
+    sharding:
+      default-data-source-name: ds
+      tables:
+        tb_order:
+          actual-data-nodes: ds$->{0..1}.tb_order_$->{0..1}
+          database-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: ds$->{id % 2}
+          table-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: tb_order_$->{id % 2}
+          key-generator:
+            type: SNOWFLAKE
+            column: id
+            props:
+              worker.id: 100
+      master-slave-rules:
+        ds:
+          master-data-source-name: dsmaster
+          slave-data-source-names: dsslave
+        ds0:
+          master-data-source-name: ds0master
+          slave-data-source-names: ds0slave
+        ds1:
+          master-data-source-name: ds1master
+          slave-data-source-names: ds1slave
+    props:
+      sql.show: true

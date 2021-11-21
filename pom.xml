@@ -26,6 +26,7 @@
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<jsr311-api.version>1.1.1</jsr311-api.version>
+		<sharding-jdbc.version>4.1.1</sharding-jdbc.version>
 	</properties>
 
 	<modules>
@@ -110,6 +111,11 @@
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>jsr311-api</artifactId>
 				<version>${jsr311-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shardingsphere</groupId>
+				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+				<version>${sharding-jdbc.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
