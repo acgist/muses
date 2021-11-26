@@ -4,15 +4,15 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>www-resources</artifactId>
+	<artifactId>web-resources</artifactId>
 	<packaging>jar</packaging>
 
-	<name>www-resources</name>
+	<name>web-resources</name>
 	<description>对外服务-静态资源</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>www-parent</artifactId>
+		<artifactId>web-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>

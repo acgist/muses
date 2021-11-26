@@ -4,24 +4,23 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>www-web</artifactId>
+	<artifactId>rest-oauth</artifactId>
 	<packaging>jar</packaging>
 
-	<name>www-web</name>
-	<description>对外服务-网页</description>
+	<name>rest-oauth</name>
+	<description>授权服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>www-parent</artifactId>
+		<artifactId>rest-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
-		<!-- freemarker -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-freemarker</artifactId>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-jwt</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -4,20 +4,25 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>www-api</artifactId>
+	<artifactId>web-user</artifactId>
 	<packaging>jar</packaging>
 
-	<name>www-api</name>
-	<description>对外服务-接口</description>
+	<name>web-user</name>
+	<description>对外服务-网页</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>www-parent</artifactId>
+		<artifactId>web-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
+		<!-- freemarker -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

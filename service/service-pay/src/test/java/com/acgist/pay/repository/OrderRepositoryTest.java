@@ -18,7 +18,7 @@ public class OrderRepositoryTest {
 	@Test
 	public void testSave() {
 		OrderEntity entity = new OrderEntity();
-		entity.setId(1001L);
+//		entity.setId(1001L);
 		entity.setName("acgist");
 		this.orderRepository.save(entity);
 	}

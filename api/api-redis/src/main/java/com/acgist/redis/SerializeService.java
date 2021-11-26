@@ -4,7 +4,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.acgist.JSONUtils;
+import com.acgist.common.JSONUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class SerializeService {

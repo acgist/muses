@@ -1,4 +1,4 @@
-package com.acgist;
+package com.acgist.common;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,6 +21,9 @@ public final class JSONUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtils.class);
 
+	private JSONUtils() {
+	}
+	
 	private static final ObjectMapper MAPPER = buildMapper();
 
 	public static final String toJSON(Object object) {

@@ -14,7 +14,7 @@ spring:
       dsmaster:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/dm?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://localhost:3306/dm?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         pool-name: HikariCP
@@ -23,7 +23,7 @@ spring:
       ds0master:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/dm0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://localhost:3306/dm0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         pool-name: HikariCP
@@ -32,7 +32,7 @@ spring:
       ds1master:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/dm1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://localhost:3306/dm1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         pool-name: HikariCP
@@ -41,7 +41,7 @@ spring:
       dsslave:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/ds?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://localhost:3306/ds?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         pool-name: HikariCP
@@ -50,7 +50,7 @@ spring:
       ds0slave:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/ds0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://localhost:3306/ds0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         pool-name: HikariCP
@@ -59,7 +59,7 @@ spring:
       ds1slave:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/ds1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+        jdbc-url: jdbc:mysql://localhost:3306/ds1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password:
         pool-name: HikariCP

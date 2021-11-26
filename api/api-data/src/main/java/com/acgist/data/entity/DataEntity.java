@@ -1,13 +1,22 @@
-package com.acgist.entity;
+package com.acgist.data.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * 数据库实体类
+ * 
+ * @author acgist
+ */
 @EntityListeners(DataEntityListener.class)
 @MappedSuperclass
 public class DataEntity implements Cloneable, Serializable {
@@ -16,6 +25,8 @@ public class DataEntity implements Cloneable, Serializable {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "snowflake")
+	@GenericGenerator(name = "snowflake", strategy = "com.acgist.data.entity.SnowflakeGenerator")
 	private Long id;
 	@Column(name = "create_date")
 	private Date createDate;

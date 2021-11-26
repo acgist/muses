@@ -4,11 +4,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>www-parent</artifactId>
+	<artifactId>web-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>www-parent</name>
-	<description>对外服务</description>
+	<name>web-parent</name>
+	<description>Web服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
@@ -18,12 +18,10 @@
 	</parent>
 
 	<modules>
-		<!-- 对外服务-接口 -->
-		<module>www-api</module>
 		<!-- 对外服务-网页 -->
-		<module>www-web</module>
+		<module>web-user</module>
 		<!-- 对外服务-静态资源 -->
-		<module>www-resources</module>
+		<module>web-resources</module>
 	</modules>
 
 	<dependencies>

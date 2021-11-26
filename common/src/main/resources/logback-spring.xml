@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
+
+	<springProperty scope="context" name="system.name" source="spring.application.name" />
+
+	<property name="system.charset" value="utf-8" />
+	<property name="system.pattern" value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %m%n" />
+
+	<contextName>${system.name}</contextName>
+
+	<!-- ELK -->
+
+	<!-- 文件日志 -->
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/${system.name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>30</maxHistory>
+			<fileNamePattern>logs/${system.name}.log-%d{yyyy-MM-dd}
+			</fileNamePattern>
+		</rollingPolicy>
+		<bufferSize>8192</bufferSize>
+		<immediateFlush>false</immediateFlush>
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 控制台日志 -->
+	<appender name="console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 开发测试 -->
+	<springProfile name="dev,test">
+		<root level="INFO">
+			<appender-ref ref="file" />
+			<appender-ref ref="console" />
+		</root>
+	</springProfile>
+
+	<!-- 生产环境 -->
+	<springProfile name="prod">
+		<root level="INFO">
+			<appender-ref ref="file" />
+		</root>
+	</springProfile>
+
+</configuration>

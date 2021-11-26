@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.acgist.entity.DataEntity;
+import com.acgist.data.entity.DataEntity;
 
 @Entity
 @Table(name = "tb_order")

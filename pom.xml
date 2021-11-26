@@ -37,7 +37,9 @@
 		<!-- 内部服务 -->
 		<module>service</module>
 		<!-- 对外服务 -->
-		<module>www</module>
+		<module>web</module>
+		<!-- 对外服务 -->
+		<module>rest</module>
 		<!-- 网关服务 -->
 		<module>gateway</module>
 	</modules>

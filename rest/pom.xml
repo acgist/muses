@@ -4,11 +4,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>service-parent</artifactId>
+	<artifactId>rest-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>service-parent</name>
-	<description>内部服务</description>
+	<name>rest-parent</name>
+	<description>REST服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
@@ -18,24 +18,35 @@
 	</parent>
 
 	<modules>
-		<!-- 内部服务-pay -->
-		<module>service-pay</module>
-		<!-- 内部服务-user -->
-		<module>service-user</module>
-		<!-- 内部服务-pay -->
-		<module>service-create-table</module>
+		<!-- 对外服务-接口 -->
+		<module>rest-api</module>
+		<!-- 对外服务-网页 -->
+		<module>rest-oauth</module>
 	</modules>
 
 	<dependencies>
+		<!-- web -->
 		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 		<!--
-		sentinel：dubbo
+		sentinel adapter：dubbo
 		<dependency>
 			<groupId>com.alibaba.csp</groupId>
 			<artifactId>sentinel-apache-dubbo-adapter</artifactId>
+		</dependency>
+		-->
+		<!--
+		sentinel：控制面板
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-transport-simple-http</artifactId>
 		</dependency>
 		-->
 		<!-- sentinel -->
@@ -62,7 +73,7 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 	</dependencies>
-
+	
 	<build>
 		<plugins>
 			<plugin>
