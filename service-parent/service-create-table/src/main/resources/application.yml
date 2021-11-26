@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: service-create-table
+  shardingsphere.enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/dm?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: HikariCP
+      auto-commit: true
+      minimum-idle: 2
+      maximum-pool-size: 10
+  jpa:
+    database: MYSQL
+    show-sql: false
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        temp.use_jdbc_metadata_defaults: false

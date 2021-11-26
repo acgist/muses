@@ -30,18 +30,18 @@
 	</properties>
 
 	<modules>
-		<!-- 通用 -->
+		<!-- 通用模块 -->
 		<module>common</module>
-		<!-- 服务接口 -->
-		<module>api</module>
-		<!-- 内部服务 -->
-		<module>service</module>
-		<!-- 对外服务 -->
-		<module>web</module>
-		<!-- 对外服务 -->
-		<module>rest</module>
-		<!-- 网关服务 -->
+		<!-- 网关模块 -->
 		<module>gateway</module>
+		<!-- Web模块 -->
+		<module>web-parent</module>
+		<!-- Rest模块 -->
+		<module>rest-parent</module>
+		<!-- 通用模块 -->
+		<module>common-parent</module>
+		<!-- 服务模块 -->
+		<module>service-parent</module>
 	</modules>
 
 	<dependencies>
@@ -61,27 +61,27 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>api-mq</artifactId>
+				<artifactId>common-mq</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>api-data</artifactId>
+				<artifactId>common-data</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>api-redis</artifactId>
+				<artifactId>common-redis</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>api-service-pay</artifactId>
+				<artifactId>common-api-pay</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>api-service-user</artifactId>
+				<artifactId>common-api-user</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
