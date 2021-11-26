@@ -26,6 +26,11 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>common-api-pay</artifactId>
 		</dependency>
+		<!-- 不用可以删除 -->
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.main.Application;
+import com.acgist.main.PayApplication;
 import com.acgist.pay.entity.OrderEntity;
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = PayApplication.class)
 public class OrderRepositoryTest {
 
 	@Autowired

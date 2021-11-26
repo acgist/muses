@@ -1,10 +1,10 @@
-# alibaba
+# SpringCloudAlibaba
 
-SpringCloudAlibaba
+根据自己情况保留选取模块
 
 ## 配置
 
-默认配置直接放在项目里面，生产环境需要放到配置中心方便管理。
+配置建议放在Nacos配置中心
 
 ## 服务
 
