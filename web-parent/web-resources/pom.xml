@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>web-resources</name>
-	<description>对外服务-静态资源</description>
+	<description>静态资源</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

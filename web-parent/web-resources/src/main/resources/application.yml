@@ -1,0 +1,14 @@
+server:
+  port: 8081
+dubbo:
+  provider:
+    retries: 1
+    timeout: 10000
+  protocols:
+    dubbo:
+      name: dubbo
+      port: -1
+  reference:
+    check: false
+  cloud:
+    subscribed-services:
