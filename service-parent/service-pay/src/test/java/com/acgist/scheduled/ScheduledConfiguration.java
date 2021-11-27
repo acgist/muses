@@ -3,7 +3,7 @@ package com.acgist.scheduled;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.acgist.scheduled.aop.DistributedScheduled;
+import com.acgist.distributed.scheduled.DistributedScheduled;
 
 @Configuration
 public class ScheduledConfiguration {

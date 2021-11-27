@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.scheduled.config.DistributedAutoConfiguration
+com.acgist.distributed.config.DistributedLockAutoConfiguration,\
+com.acgist.distributed.config.DistributedScheduledAutoConfiguration
