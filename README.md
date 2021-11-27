@@ -42,7 +42,15 @@ spring:
             group: DEFAULT_GROUP
 ```
 
-## 服务
+## 关机
+
+* 端点
+* 通过MQ广播
+* `kill -2 pid`
+
+## 模块
+
+其他模块使用
 
 #### sentinel dashboard
 

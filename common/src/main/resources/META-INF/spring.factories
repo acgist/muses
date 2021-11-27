@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.data.config.DataAutoConfiguration
+com.acgist.common.config.CommonAutoConfiguration
