@@ -21,9 +21,11 @@
 		<!-- 消息队列 -->
 		<module>common-mq</module>
 		<!-- 数据库 -->
-		<module>common-data</module>
+		<module>common-web</module>
 		<!-- 数据库 -->
 		<module>common-rest</module>
+		<!-- 数据库 -->
+		<module>common-data</module>
 		<!-- Redis -->
 		<module>common-redis</module>
 		<!-- 内部服务-pay -->

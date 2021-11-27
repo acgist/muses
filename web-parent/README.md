@@ -1,13 +1,13 @@
 ## Web
 
-端口：8080+
+#### 端口
+
+8080+
+
+#### 状态
+
+Web服务使用Redis + Session进行状态记录
 
 #### 权限
 
-Web服务权限需要自己实现
-
-#### 当前用户
-
-```
-SecurityContextHolder.getContext().getAuthentication();
-```
+登陆参考`UserService`，如果需要细化权限管理需要自己实现。

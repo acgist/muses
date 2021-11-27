@@ -18,27 +18,21 @@
 	</parent>
 
 	<modules>
-		<!-- 对外服务-网页 -->
+		<!-- 网页服务 -->
 		<module>web</module>
-		<!-- 对外服务-静态资源 -->
+		<!-- 静态资源 -->
 		<module>web-resources</module>
 	</modules>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>common-web</artifactId>
+		</dependency>
 		<!-- ws rs -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
-		</dependency>
-		<!-- web -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<!-- security -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<!-- SpringCloudAlibaba：服务调用、熔断限流、配置中心、注册中心 -->
 		<dependency>

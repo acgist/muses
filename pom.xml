@@ -68,12 +68,17 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>common-data</artifactId>
+				<artifactId>common-web</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>common-rest</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>common-data</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
