@@ -18,15 +18,19 @@
 	</parent>
 
 	<modules>
-		<!-- 对外服务-接口 -->
+		<!-- API接口 -->
 		<module>rest-api</module>
-		<!-- 对外服务-网页 -->
+		<!-- 开放接口 -->
+		<module>rest-open</module>
+		<!-- 授权接口 -->
 		<module>rest-oauth</module>
-		<!-- 对外服务-网页 -->
-		<module>rest-public</module>
 	</modules>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>common-rest</artifactId>
+		</dependency>
 		<!-- ws rs -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
@@ -59,7 +63,7 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>

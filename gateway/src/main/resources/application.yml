@@ -29,6 +29,14 @@ spring:
            - name: Retry
              args:
                retries: 1
+       - id: rest-open
+         uri: lb://rest-open
+         predicates:
+           - Path=/rest/open/**
+         filters:
+           - name: Retry
+             args:
+               retries: 1
        - id: rest-oauth
          uri: lb://rest-oauth
          predicates:

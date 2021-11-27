@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>service-pay</name>
-	<description>内部服务-pay</description>
+	<description>支付服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
@@ -26,10 +26,9 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>common-api-pay</artifactId>
 		</dependency>
-		<!-- 不用可以删除 -->
 		<dependency>
-			<groupId>org.springframework.retry</groupId>
-			<artifactId>spring-retry</artifactId>
+			<groupId>com.acgist</groupId>
+			<artifactId>common-distributed</artifactId>
 		</dependency>
 	</dependencies>
 

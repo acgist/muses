@@ -102,3 +102,18 @@ spring:
 	<artifactId>micrometer-registry-prometheus</artifactId>
 </dependency>
 ```
+
+#### retry
+
+```
+<dependency>
+	<groupId>org.springframework.retry</groupId>
+	<artifactId>spring-retry</artifactId>
+</dependency>
+
+@EnableRetry
+
+@Retryable(value = NumberFormatException.class, maxAttempts = 10, backoff = @Backoff(delay = 1000, maxDelay = 5000, multiplier = 2))
+public void retry() {
+}
+```

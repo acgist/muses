@@ -18,7 +18,7 @@
 	<packaging>pom</packaging>
 
 	<name>parent</name>
-	<description>根项目的配置</description>
+	<description>顶级配置</description>
 
 	<properties>
 		<acgist.version>1.0.0</acgist.version>
@@ -98,6 +98,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>common-distributed</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>service-pay</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
@@ -113,12 +118,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>rest-oauth</artifactId>
+				<artifactId>rest-open</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>rest-public</artifactId>
+				<artifactId>rest-oauth</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>

@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>service-create-table</name>
-	<description>使用JPA自动建表</description>
+	<description>自动建表</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

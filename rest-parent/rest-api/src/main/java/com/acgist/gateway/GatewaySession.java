@@ -14,14 +14,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.acgist.common.DateUtils;
 import com.acgist.gateway.config.GatewayCode;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.request.GatewayRequest;
 import com.acgist.gateway.service.GatewayService;
 import com.acgist.gateway.service.SignatureService;
-import com.acgist.utils.DateUtils;
 import com.acgist.utils.JSONUtils;
-import com.acgist.utils.ValidatorUtils;
 
 /**
  * <p>请求数据</p>
