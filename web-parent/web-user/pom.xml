@@ -4,10 +4,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>web-user</artifactId>
+	<artifactId>web</artifactId>
 	<packaging>jar</packaging>
 
-	<name>web-user</name>
+	<name>web</name>
 	<description>对外服务-网页</description>
 
 	<parent>
@@ -18,6 +18,20 @@
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>common-redis</artifactId>
+		</dependency>
+		<!-- redis session -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		<!-- WebSocket -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
 		<!-- freemarker -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

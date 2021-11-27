@@ -25,8 +25,9 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
-		<jsr311-api.version>1.1.1</jsr311-api.version>
-		<sharding-jdbc.version>4.1.1</sharding-jdbc.version>
+		<ws.rs.version>1.1.1</ws.rs.version>
+		<oauth2.version>2.2.5.RELEASE</oauth2.version>
+		<shardingjdbc.version>4.1.1</shardingjdbc.version>
 	</properties>
 
 	<modules>
@@ -54,6 +55,7 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- 系统模块 -->
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>common</artifactId>
@@ -67,6 +69,11 @@
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>common-data</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>common-rest</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
@@ -96,29 +103,48 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>www-api</artifactId>
+				<artifactId>rest-api</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>www-web</artifactId>
+				<artifactId>rest-oauth</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>www-resources</artifactId>
+				<artifactId>rest-public</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>web</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>web-resources</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<!-- ws rs -->
 			<dependency>
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>jsr311-api</artifactId>
-				<version>${jsr311-api.version}</version>
+				<version>${ws.rs.version}</version>
 			</dependency>
+			<!-- Oauth2 -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-oauth2</artifactId>
+				<version>${oauth2.version}</version>
+			</dependency>
+			<!-- shardingsphere：分库分表 -->
 			<dependency>
 				<groupId>org.apache.shardingsphere</groupId>
 				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-				<version>${sharding-jdbc.version}</version>
+				<version>${shardingjdbc.version}</version>
 			</dependency>
+			<!-- SpringCloud -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -126,6 +152,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- SpringCloudAlibaba -->
 			<dependency>
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>

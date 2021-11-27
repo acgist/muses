@@ -22,6 +22,8 @@
 		<module>rest-api</module>
 		<!-- 对外服务-网页 -->
 		<module>rest-oauth</module>
+		<!-- 对外服务-网页 -->
+		<module>rest-public</module>
 	</modules>
 
 	<dependencies>

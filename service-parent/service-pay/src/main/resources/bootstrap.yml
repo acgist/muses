@@ -11,8 +11,3 @@ spring:
       password: nacos
       discovery:
         server-addr: localhost:8848
-      config:
-        ext-config:
-          - data-id: redis.properties
-            refresh: true
-            group: DEFAULT_GROUP

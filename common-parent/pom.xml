@@ -22,6 +22,8 @@
 		<module>common-mq</module>
 		<!-- 数据库 -->
 		<module>common-data</module>
+		<!-- 数据库 -->
+		<module>common-rest</module>
 		<!-- Redis -->
 		<module>common-redis</module>
 		<!-- 内部服务-pay -->

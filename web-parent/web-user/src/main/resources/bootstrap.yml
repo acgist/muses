@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: web
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev, redis, freemarker
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: localhost:8848

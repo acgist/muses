@@ -19,7 +19,7 @@
 
 	<modules>
 		<!-- 对外服务-网页 -->
-		<module>web-user</module>
+		<module>web</module>
 		<!-- 对外服务-静态资源 -->
 		<module>web-resources</module>
 	</modules>
@@ -36,10 +36,10 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<!-- security -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<!-- SpringCloudAlibaba：服务调用、熔断限流、配置中心、注册中心 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
@@ -62,7 +62,7 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>

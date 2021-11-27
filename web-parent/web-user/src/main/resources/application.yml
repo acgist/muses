@@ -1,0 +1,18 @@
+server:
+  port: 8080
+dubbo:
+  provider:
+    retries: 1
+    timeout: 10000
+  protocols:
+    dubbo:
+      name: dubbo
+      port: -1
+  reference:
+    check: false
+  cloud:
+    subscribed-services: service-pay, service-user
+system:
+  static:
+    host: //localhost:8081
+  secret: acgist

@@ -4,13 +4,32 @@
 
 ## 配置
 
-配置建议放在Nacos配置中心
+配置建议放在Nacos配置中心通过bootstrap.yml加载：
+
+```
+spring:
+  application:
+    name: acgist
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+# 通过环境加载：application-dev/application-data/application-redis
+    active: dev, data, redis
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: localhost:8848
+# 指定文件加载
+      config:
+        ext-config:
+          - data-id: redis.properties
+            refresh: true
+            group: DEFAULT_GROUP
+```
 
 ## 服务
-
-#### 网关
-
-授权路由
 
 #### sentinel dashboard
 

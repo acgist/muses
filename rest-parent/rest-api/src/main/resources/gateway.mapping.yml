@@ -1,0 +1,14 @@
+gateway:
+  mapping:
+    - record: true
+      gateway: /pay
+      gatewayName: 交易
+      requestClass: com.acgist.gateway.request.pay.PayRequest
+    - record: false
+      gateway: /pay/query
+      gatewayName: 交易查询
+      requestClass: com.acgist.gateway.request.pay.QueryRequest
+    - record: true
+      gateway: /pay/drawback
+      gatewayName: 交易退款
+      requestClass: com.acgist.gateway.request.pay.DrawbackRequest
