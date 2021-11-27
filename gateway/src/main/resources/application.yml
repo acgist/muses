@@ -37,8 +37,8 @@ spring:
            - name: Retry
              args:
                retries: 1
-       - id: web-user
-         uri: lb://web-user
+       - id: web
+         uri: lb://web
          predicates:
            - Path=/**
          filters:

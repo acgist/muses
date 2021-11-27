@@ -18,11 +18,11 @@
 	</parent>
 
 	<modules>
-		<!-- 内部服务-pay -->
+		<!-- 支付服务 -->
 		<module>service-pay</module>
-		<!-- 内部服务-user -->
+		<!-- 用户服务 -->
 		<module>service-user</module>
-		<!-- 内部服务-pay -->
+		<!-- 自动建表 -->
 		<module>service-create-table</module>
 	</modules>
 
