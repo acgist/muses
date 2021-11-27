@@ -27,31 +27,23 @@
 	</modules>
 
 	<dependencies>
+		<!-- ws rs -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
 		</dependency>
-		<!--
-		sentinel：dubbo
-		<dependency>
-			<groupId>com.alibaba.csp</groupId>
-			<artifactId>sentinel-apache-dubbo-adapter</artifactId>
-		</dependency>
-		-->
-		<!-- sentinel -->
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-		</dependency>
-		<!-- 服务调用 -->
+		<!-- SpringCloudAlibaba：服务调用、熔断限流、配置中心、注册中心 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-dubbo</artifactId>
 		</dependency>
-		<!-- SpringCloudAlibaba：配置中心、注册中心 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

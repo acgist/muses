@@ -11,19 +11,44 @@ spring:
   cloud:
     gateway:
       routes:
-       - id: www-api
-         uri: lb://www-api
+       - id: rest-api
+         uri: lb://rest-api
          predicates:
-           - Path=/api/**
+           - Path=/rest/api/**
          filters:
            - StripPrefix=1
            - name: Retry
              args:
                retries: 1
-       - id: www-web
-         uri: lb://www-web
+       - id: rest-api-yusheng
+         uri: lb://rest-api-yusheng
+         predicates:
+           - Path=/rest/yusheng/api/**
+         filters:
+           - StripPrefix=1
+           - name: Retry
+             args:
+               retries: 1
+       - id: rest-oauth
+         uri: lb://rest-oauth
+         predicates:
+           - Path=/oauth/**
+         filters:
+           - name: Retry
+             args:
+               retries: 1
+       - id: web-user
+         uri: lb://web-user
          predicates:
            - Path=/**
+         filters:
+           - name: Retry
+             args:
+               retries: 1
+       - id: web-resources
+         uri: lb://web-resources
+         predicates:
+           - Path=/resources/**
          filters:
            - name: Retry
              args:

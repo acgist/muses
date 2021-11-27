@@ -2,6 +2,7 @@ package com.acgist.data.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -12,6 +13,8 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.acgist.common.JSONUtils;
+
 /**
  * 数据库实体类
  * 
@@ -19,7 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @EntityListeners(DataEntityListener.class)
 @MappedSuperclass
-public class DataEntity implements Cloneable, Serializable {
+public abstract class DataEntity implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,6 +58,29 @@ public class DataEntity implements Cloneable, Serializable {
 
 	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) {
+			return true;
+		}
+		// 子类必须重写
+		if(obj instanceof DataEntity) {
+			final DataEntity entity = (DataEntity) obj;
+			return Objects.equals(this.getId(), entity.getId());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.id);
+	}
+	
+	@Override
+	public String toString() {
+		return JSONUtils.toJSON(this);
 	}
 
 }
