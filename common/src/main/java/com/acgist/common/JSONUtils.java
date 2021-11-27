@@ -80,6 +80,19 @@ public final class JSONUtils {
 		}
 		return null;
 	}
+	
+	public static final <T> T toJava(String json, Class<T> clazz) {
+		if (json == null) {
+			return null;
+		}
+		final ObjectMapper mapper = getMapper();
+		try {
+			return mapper.readValue(json, clazz);
+		} catch (IOException e) {
+			LOGGER.error("toJava：{}", json, e);
+		}
+		return null;
+	}
 
 	public static final ObjectMapper getMapper() {
 		return MAPPER;

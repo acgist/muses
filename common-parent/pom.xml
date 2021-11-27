@@ -32,8 +32,8 @@
 		<module>common-api-pay</module>
 		<!-- 用户服务API -->
 		<module>common-api-user</module>
-		<!-- 分布式 -->
-		<module>common-distributed</module>
+		<!-- 高并发分布式 -->
+		<module>common-concurrent</module>
 	</modules>
 
 	<dependencies>

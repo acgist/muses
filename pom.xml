@@ -98,7 +98,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>common-distributed</artifactId>
+				<artifactId>common-concurrent</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>

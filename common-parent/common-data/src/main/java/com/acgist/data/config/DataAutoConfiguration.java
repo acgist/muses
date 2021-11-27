@@ -1,10 +1,14 @@
 package com.acgist.data.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.data.service.IdService;
+import com.acgist.common.service.IdService;
+import com.acgist.data.entity.SnowflakeGenerator;
 
 /**
  * 自动装配
@@ -14,10 +18,16 @@ import com.acgist.data.service.IdService;
 @Configuration
 public class DataAutoConfiguration {
 
-	@Bean
-	@ConditionalOnMissingBean
-	public IdService idService() {
-		return new IdService();
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataAutoConfiguration.class);
+	
+	@Autowired
+	private IdService idService;
+	
+	@PostConstruct
+	public void init() {
+		LOGGER.info("注入ID生成策略：雪花算法");
+		SnowflakeGenerator.init(this.idService);
 	}
+	
 	
 }

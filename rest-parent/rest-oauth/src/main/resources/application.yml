@@ -13,4 +13,6 @@ dubbo:
   cloud:
     subscribed-services: service-pay, service-user
 system:
+  rest:
+    interceptor: false # 是否开启拦截
   secret: acgist

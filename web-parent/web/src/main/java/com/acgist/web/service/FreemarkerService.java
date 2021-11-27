@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.cloud.commons.lang.StringUtils;
+import com.acgist.common.StringUtils;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;

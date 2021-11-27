@@ -28,7 +28,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>common-distributed</artifactId>
+			<artifactId>common-concurrent</artifactId>
 		</dependency>
 	</dependencies>
 
