@@ -18,12 +18,14 @@
 	</parent>
 
 	<modules>
-		<!-- API接口 -->
+		<!-- API服务 -->
 		<module>rest-api</module>
-		<!-- 开放接口 -->
+		<!-- 开放服务 -->
 		<module>rest-open</module>
-		<!-- 授权接口 -->
+		<!-- 认证服务 -->
 		<module>rest-oauth</module>
+		<!-- 资源服务 -->
+		<module>rest-resources</module>
 	</modules>
 
 	<dependencies>

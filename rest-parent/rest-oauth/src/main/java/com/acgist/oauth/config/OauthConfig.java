@@ -1,11 +1,14 @@
 package com.acgist.oauth.config;
 
+import java.security.KeyPair;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -13,14 +16,19 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
+import com.acgist.oauth.service.RedisAuthorizationCodeServices;
 import com.acgist.oauth.service.UserService;
 
 /**
- * 授权服务
+ * 认证服务
  * 
  * 资源服务：@EnableResourceServer
  * 
@@ -30,76 +38,87 @@ import com.acgist.oauth.service.UserService;
 @EnableAuthorizationServer
 public class OauthConfig extends AuthorizationServerConfigurerAdapter {
 
-	@Value("${system.secret:acgist}")
-	private String secret;
+	@Value("${system.secret.web:acgist}")
+	private String webSecret;
+	@Value("${system.secret.rest:acgist}")
+	private String restSecret;
+	@Value("${system.secret.validity.access:7200}")
+	private int accessValidity;
+	@Value("${system.secret.validity.refresh:25200}")
+	private int refreshValidity;
+
 	@Autowired
-	private RedisConnectionFactory redisConnectionFactory;
-	@Autowired
-	private AuthenticationManager authenticationManager;
+	private KeyPair jwtKeyPair;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private RedisConnectionFactory redisConnectionFactory;
+	@Autowired
+	private RedisAuthorizationCodeServices redisAuthorizationCodeServices;
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
+		// 认证类型：password/implicit/client_credentials/authorization_code
 		configurer.inMemory()
-			// 客户端
-			.withClient("client")
-			// 授权密码
-			.secret(this.passwordEncoder.encode(this.secret))
-			// 授权类型
-			.authorizedGrantTypes("password", "refresh_token", "authorization_code")
-			// 授权有效时间
-			.accessTokenValiditySeconds(3600).scopes("all");
+			// Web客户端
+			.withClient("client-web")
+			// 认证密码
+			.secret(this.passwordEncoder.encode(this.webSecret))
+			// 认证类型：需要验证登陆
+			.authorizedGrantTypes("authorization_code", "refresh_token")
+			// 有效时间
+			.accessTokenValiditySeconds(this.accessValidity).refreshTokenValiditySeconds(this.refreshValidity)
+			// 自动跳转：不用确认
+			.autoApprove(true).redirectUris("/oauth/code").scopes("all").and()
+			// Rest客户端
+			.withClient("client-rest")
+			.secret(this.passwordEncoder.encode(this.restSecret))
+			.authorizedGrantTypes("password", "refresh_token")
+			.accessTokenValiditySeconds(this.accessValidity)
+			.refreshTokenValiditySeconds(this.refreshValidity)
+			.scopes("all");
+	}
+
+	@Override
+	public void configure(AuthorizationServerEndpointsConfigurer configurer) throws Exception {
+		configurer
+			.reuseRefreshTokens(false)
+			.tokenServices(this.tokenServices())
+			.userDetailsService(this.userService)
+			.authenticationManager(this.authenticationManager)
+			.authorizationCodeServices(this.redisAuthorizationCodeServices)
+			.allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
 	}
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer configurer) throws Exception {
-		configurer.allowFormAuthenticationForClients().tokenKeyAccess("permitAll()")
-			.checkTokenAccess("isAuthenticated()");
+		configurer
+			.allowFormAuthenticationForClients()
+			.tokenKeyAccess("permitAll()")
+			.checkTokenAccess("permitAll()");
 	}
 
-	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints
-			// 指定认证管理器
-			.authenticationManager(authenticationManager)
-			// 用户账号密码认证
-			.userDetailsService(this.userService)
-			// refresh_token
-			.reuseRefreshTokens(false)
-			// 指定token存储位置
-			.tokenStore(tokenStore()).tokenServices(defaultTokenServices());
-	}
-
-	/**
-	 * @return RedisTokenStore
-	 */
-	@Bean
-	public TokenStore tokenStore() {
-		return new RedisTokenStore(this.redisConnectionFactory);
-	}
-
-	// 异常翻译
-//	@Bean
-//    public WebResponseExceptionTranslator webResponseExceptionTranslator() {
-//        return new MssWebResponseExceptionTranslator();
-//    }
-
-	@Primary
-	@Bean
-	public DefaultTokenServices defaultTokenServices() {
-		DefaultTokenServices tokenServices = new DefaultTokenServices();
-		tokenServices.setTokenStore(tokenStore());
+	private AuthorizationServerTokenServices tokenServices() {
+		// 签名
+		final JwtAccessTokenConverter jwtTokenConverter = new JwtAccessTokenConverter();
+		jwtTokenConverter.setKeyPair(this.jwtKeyPair);
+		final List<TokenEnhancer> tokenEnhancers = new ArrayList<>();
+		tokenEnhancers.add(jwtTokenConverter);
+		// Token增强：添加更多信息
+		final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		tokenEnhancerChain.setTokenEnhancers(tokenEnhancers);
+		final TokenStore tokenStore = new RedisTokenStore(this.redisConnectionFactory);
+		final DefaultTokenServices tokenServices = new DefaultTokenServices();
 		tokenServices.setSupportRefreshToken(true);
-		// tokenServices.setClientDetailsService(clientDetails());
-		// token有效期自定义设置，默认12小时
-		tokenServices.setAccessTokenValiditySeconds(60 * 60 * 24 * 7);
-		// tokenServices.setAccessTokenValiditySeconds(60 * 60 * 12);
-		// refresh_token默认30天
-		tokenServices.setAccessTokenValiditySeconds(60 * 60 * 24 * 7);
-		// tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 7);
+		tokenServices.setTokenStore(tokenStore);
+		tokenServices.setTokenEnhancer(tokenEnhancerChain);
+		tokenServices.setAccessTokenValiditySeconds(this.accessValidity);
+		tokenServices.setRefreshTokenValiditySeconds(this.refreshValidity);
 		return tokenServices;
 	}
+
 }

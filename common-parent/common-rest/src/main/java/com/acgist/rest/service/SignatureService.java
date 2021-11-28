@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.acgist.rest.Gateway;
+
 @Service
 public class SignatureService {
 
@@ -80,7 +82,7 @@ public class SignatureService {
 			return false;
 		}
 		final String digest = dataToDigest(data);
-		final String signature = (String) data.get(GatewayService.GATEWAY_SIGNATURE);
+		final String signature = (String) data.get(Gateway.GATEWAY_SIGNATURE);
 		try {
 			return verify(digest, signature, this.publicKey);
 		} catch (Exception e) {
@@ -97,7 +99,7 @@ public class SignatureService {
 	public void signature(final Map<String, Object> data) {
 		final String digest = dataToDigest(data);
 		final String signature = signature(digest, this.privateKey);
-		data.put(GatewayService.GATEWAY_SIGNATURE, signature);
+		data.put(Gateway.GATEWAY_SIGNATURE, signature);
 	}
 
 	/**
@@ -111,7 +113,7 @@ public class SignatureService {
 		final StringBuilder builder = new StringBuilder();
 		final TreeMap<String, String> sortData = new TreeMap<>();
 		data.entrySet().stream()
-			.filter(entry -> !GatewayService.GATEWAY_SIGNATURE.equals(entry.getKey()))
+			.filter(entry -> !Gateway.GATEWAY_SIGNATURE.equals(entry.getKey()))
 			.forEach(entry -> sortData.put(entry.getKey(), String.valueOf(entry.getValue())));
 		sortData.entrySet().forEach(entry -> builder.append(entry.getKey()).append("=").append(entry.getValue()).append("&"));
 		if (builder.length() != 0) {

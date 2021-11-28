@@ -15,4 +15,12 @@ dubbo:
 system:
   rest:
     interceptor: false # 是否开启拦截
-  secret: acgist
+  secret:
+    jwt: acgist
+    web: acgist
+    rest: acgist
+  validity:
+    code: 600
+    access: 7200
+    refresh: 25200
+  jwt: jwt.jks

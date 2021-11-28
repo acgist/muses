@@ -27,9 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * 不要使用转发successForwardUrl/failureForwardUrl（错误状态：405）
+	 * 不要使用转发：successForwardUrl/failureForwardUrl（错误状态：405）
 	 * 
-	 * 如果需要细化鉴定权限：.access("@roleService.hasPermission(request, authentication)")
+	 * 如果需要鉴权：.access("@roleService.hasPermission(request, authentication)")
 	 * 
 	 * @author acgist
 	 */

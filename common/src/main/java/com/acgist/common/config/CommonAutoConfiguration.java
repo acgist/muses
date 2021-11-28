@@ -4,7 +4,7 @@ import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +14,38 @@ import com.acgist.common.service.IdService;
 import ch.qos.logback.classic.LoggerContext;
 
 @Configuration
-@ConditionalOnClass(LoggerContext.class)
 public class CommonAutoConfiguration {
 
+	/**
+	 * 序列化类型
+	 * 
+	 * @author acgist
+	 */
+	public enum SerializerType {
+		
+		JDK,
+		JACKSON;
+		
+	}
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonAutoConfiguration.class);
 
+	@Value("${system.serializer.type:jdk}")
+	private String serializerType;
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public IdService idService() {
 		return new IdService();
+	}
+	
+	@Bean
+	public SerializerType serializerType() {
+		if(SerializerType.JACKSON.name().equalsIgnoreCase(this.serializerType)) {
+			return SerializerType.JACKSON;
+		} else {
+			return SerializerType.JDK;
+		}
 	}
 	
 	@PreDestroy
