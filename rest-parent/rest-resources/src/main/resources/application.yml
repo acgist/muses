@@ -19,6 +19,8 @@ system:
 security:
   oauth2:
     resource:
+# Alibaba无效
+      loadBalanced: true
 #     user-info-uri: 需要资源服务实现
       token-info-uri: http://localhost:9090/oauth/check_token
       jwt:
