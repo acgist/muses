@@ -64,7 +64,7 @@ public class OauthTest {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTA4NjIsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.doZvWxNp3BuGCCzeZ8GpY7tTPyCWn0ahrw4bs4kJGlqw092q12v53XajLNC5dfF88XBC1BIOfGnGV5zjLBt8WTo8VTvfAIySESvJxx4ZgvtJ2bH-oQYzcCyaKz5MvuELtizZBjf3YY2GNHbdu8APHgpWyImEJtrmYMFyjRPX4OQ");
+		params.add("token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTIwNjYsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjhjNTM3MWM3LTU1NjQtNGM2ZS04NzE1LTY5N2E0ZDNmMzU1MyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.ZATk6t1fSJhXqL40WY7f9nJPhHNWMUQvJjSXBR4ep5TC4fNR4FSmLZSXYQJWk8Y66Wgut_gD6iAvyVJ2MlOhr-GcTi-NvNstxUOZeZ4zEUE-kVAxluockBPbLlsA2ORMDuPDr05K-e7unrGB_J0uLOoGOgedQCDRKpQ74a41LcY");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth/check_token", requestEntity, String.class);
 		System.out.println(body.getBody());
@@ -90,7 +90,7 @@ public class OauthTest {
 		final RestTemplate restTemplate = new RestTemplate();
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.set("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTIxMjksInVzZXJfbmFtZSI6ImRkIiwiYXV0aG9yaXRpZXMiOlsiZGQiXSwianRpIjoiOGVkMTM1NmEtMDBiMC00ZTNiLWJiODItMzY3Y2VlNjhlN2EwIiwiY2xpZW50X2lkIjoiY2xpZW50LXdlYiIsInNjb3BlIjpbImFsbCJdfQ.MkzF22E7cXXrpsZ3R3wxkRUDoqfHqxNHGpIIBkG7LijEtduK_OcLrr55y_lMdtPmSkKYSPGbX6rc11wYB0ae_iOJTj0QoWt_O-WwWQWrn8R72RcbA-HiV86fYlgjgZxJEyTz2XhkoTpAGt9WlUpWAVuCAIy0IQYMJduLnpTe8Ac");
+		headers.set("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTIwNjYsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjhjNTM3MWM3LTU1NjQtNGM2ZS04NzE1LTY5N2E0ZDNmMzU1MyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.ZATk6t1fSJhXqL40WY7f9nJPhHNWMUQvJjSXBR4ep5TC4fNR4FSmLZSXYQJWk8Y66Wgut_gD6iAvyVJ2MlOhr-GcTi-NvNstxUOZeZ4zEUE-kVAxluockBPbLlsA2ORMDuPDr05K-e7unrGB_J0uLOoGOgedQCDRKpQ74a41LcY");
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9091/user", requestEntity, String.class);

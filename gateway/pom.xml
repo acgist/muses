@@ -23,10 +23,14 @@
 			<artifactId>common</artifactId>
 		</dependency>
 		<!-- Oauth2 -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
-		</dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-oauth2-client</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-oauth2-resource-server</artifactId>
+    </dependency>
 		<!-- 网关 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

@@ -13,7 +13,7 @@ public class SecurityConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(ResourceServerSecurityConfigurer configurer) throws Exception {
 		configurer
-			.resourceId("rest-oauth")
+			.resourceId("rest-resources")
 			// 只能使用令牌
 			.stateless(true);
 	}

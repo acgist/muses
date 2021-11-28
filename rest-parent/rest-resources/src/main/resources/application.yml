@@ -26,5 +26,6 @@ security:
       jwt:
         key-set-uri: http://localhost:9090/oauth/token_key
     client:
+      scope: all
       client-id: client-rest
       client-secret: acgist
