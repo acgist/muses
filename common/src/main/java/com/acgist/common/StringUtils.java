@@ -1,5 +1,6 @@
 package com.acgist.common;
 
+import java.util.Base64;
 import java.util.regex.Pattern;
 
 public final class StringUtils {
@@ -47,6 +48,32 @@ public final class StringUtils {
 
 	public static final boolean equals(String source, String target) {
 		return source == null ? target == null : source.equals(target);
+	}
+	
+	
+	/**
+	 * Base64编码
+	 * 
+	 * @param value 原始数据
+	 * 
+	 * @return 编码数据
+	 */
+	public static final String base64Encode(byte[] value) {
+		return new String(Base64.getEncoder().encode(value));
+	}
+	
+	/**
+	 * Base64解码
+	 * 
+	 * @param value 编码数据
+	 * 
+	 * @return 原始数据
+	 */
+	public static final byte[] base64Decode(String value) {
+		if(value == null) {
+			throw new IllegalArgumentException("数据错误");
+		}
+		return Base64.getDecoder().decode(value.getBytes());
 	}
 
 }
