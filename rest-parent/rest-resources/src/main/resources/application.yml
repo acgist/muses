@@ -1,0 +1,28 @@
+server:
+  port: 9091
+dubbo:
+  provider:
+    retries: 1
+    timeout: 10000
+  protocols:
+    dubbo:
+      name: dubbo
+      port: -1
+  reference:
+    check: false
+  cloud:
+    subscribed-services: service-pay, service-user
+system:
+# 是否开启拦截
+  rest:
+    interceptor: false
+security:
+  oauth2:
+    resource:
+#     user-info-uri: 需要资源服务实现
+      token-info-uri: http://localhost:9090/oauth/check_token
+      jwt:
+        key-set-uri: http://localhost:9090/oauth/token_key
+    client:
+      client-id: client-rest
+      client-secret: acgist

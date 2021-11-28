@@ -13,8 +13,10 @@ dubbo:
   cloud:
     subscribed-services: service-pay, service-user
 system:
+# 是否开启拦截
   rest:
-    interceptor: false # 是否开启拦截
+    interceptor: false
+# Oauth2
   secret:
     jwt: acgist
     web: acgist

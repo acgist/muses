@@ -12,6 +12,14 @@ import org.springframework.web.client.RestTemplate;
 public class OauthTest {
 
 	@Test
+	public void testTokenKey() {
+//		http://localhost:9090/oauth/token_key
+		final RestTemplate restTemplate = new RestTemplate();
+		final ResponseEntity<String> body = restTemplate.getForEntity("http://localhost:9090/oauth/token_key", String.class);
+		System.out.println(body.getBody());
+	}
+	
+	@Test
 	public void getTokenPassword() {
 		// 直接访问
 //		http://localhost:9090/oauth/token?username=root&password=root&grant_type=password&client_id=client-rest&client_secret=acgist
@@ -54,7 +62,7 @@ public class OauthTest {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwNzg5NjYsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6ImJkMmM5MzBlLTQwZjgtNGJhNS04OTNiLWExMGI2OTViNDYzMyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.LIkV6LyQ1oO_phwDWCjBtvi_dl5ezlZ5pW0dM24pDCs8-mEChp_f7Ml7tQgqrFJoIUlzLt_KVmmDzOye034shGignT45re6_E4HvP2HOUdiS-NsWw-awMHaRfcQa66th37OEEYLZlnsSP7uz3CItjCp0NH2cfFHv38c5sPZ80C4");
+		params.add("token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTA4NjIsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.doZvWxNp3BuGCCzeZ8GpY7tTPyCWn0ahrw4bs4kJGlqw092q12v53XajLNC5dfF88XBC1BIOfGnGV5zjLBt8WTo8VTvfAIySESvJxx4ZgvtJ2bH-oQYzcCyaKz5MvuELtizZBjf3YY2GNHbdu8APHgpWyImEJtrmYMFyjRPX4OQ");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth/check_token", requestEntity, String.class);
 		System.out.println(body.getBody());
@@ -77,7 +85,16 @@ public class OauthTest {
 	
 	@Test
 	public void testCheckResource() {
-//		headers.set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwNzUwMzQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiYWRtaW4iXSwianRpIjoiZTQ3NDRhM2UtNjgwOC00MWQzLWEyZjMtMzZkZmFiZjhmYjU2IiwiY2xpZW50X2lkIjoiY2xpZW50LXdlYiIsInNjb3BlIjpbImFsbCJdfQ.j8zrP8MwLw46-MaI8apyhKYl_eO__FPpBtMLfwYG3n0");
+		final RestTemplate restTemplate = new RestTemplate();
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.set("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTA4NjIsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.doZvWxNp3BuGCCzeZ8GpY7tTPyCWn0ahrw4bs4kJGlqw092q12v53XajLNC5dfF88XBC1BIOfGnGV5zjLBt8WTo8VTvfAIySESvJxx4ZgvtJ2bH-oQYzcCyaKz5MvuELtizZBjf3YY2GNHbdu8APHgpWyImEJtrmYMFyjRPX4OQ");
+		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9091/user", requestEntity, String.class);
+		System.out.println(userBody.getBody());
+		final ResponseEntity<String> userNameBody = restTemplate.postForEntity("http://localhost:9091/user/all", requestEntity, String.class);
+		System.out.println(userNameBody.getBody());
 	}
-	
+
 }

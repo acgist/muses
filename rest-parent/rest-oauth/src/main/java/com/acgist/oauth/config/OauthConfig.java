@@ -1,6 +1,5 @@
 package com.acgist.oauth.config;
 
-import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +47,6 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
 	private int refreshValidity;
 
 	@Autowired
-	private KeyPair jwtKeyPair;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -57,6 +54,8 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private RedisConnectionFactory redisConnectionFactory;
+	@Autowired
+	private JwtAccessTokenConverter jwtAccessTokenConverter;
 	@Autowired
 	private RedisAuthorizationCodeServices redisAuthorizationCodeServices;
 
@@ -86,7 +85,6 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer configurer) throws Exception {
 		configurer
-			.reuseRefreshTokens(false)
 			.tokenServices(this.tokenServices())
 			.userDetailsService(this.userService)
 			.authenticationManager(this.authenticationManager)
@@ -97,28 +95,27 @@ public class OauthConfig extends AuthorizationServerConfigurerAdapter {
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer configurer) throws Exception {
 		configurer
-			.allowFormAuthenticationForClients()
 			.tokenKeyAccess("permitAll()")
-			.checkTokenAccess("permitAll()");
+			.checkTokenAccess("permitAll()")
+			.allowFormAuthenticationForClients();
+//			.checkTokenAccess("isAuthenticated()")
 	}
 
 	private AuthorizationServerTokenServices tokenServices() {
-		// 签名
-		final JwtAccessTokenConverter jwtTokenConverter = new JwtAccessTokenConverter();
-		jwtTokenConverter.setKeyPair(this.jwtKeyPair);
 		final List<TokenEnhancer> tokenEnhancers = new ArrayList<>();
-		tokenEnhancers.add(jwtTokenConverter);
+		tokenEnhancers.add(this.jwtAccessTokenConverter);
 		// Token增强：添加更多信息
 		final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
 		tokenEnhancerChain.setTokenEnhancers(tokenEnhancers);
 		final TokenStore tokenStore = new RedisTokenStore(this.redisConnectionFactory);
 		final DefaultTokenServices tokenServices = new DefaultTokenServices();
-		tokenServices.setSupportRefreshToken(true);
 		tokenServices.setTokenStore(tokenStore);
+		tokenServices.setReuseRefreshToken(false);
+		tokenServices.setSupportRefreshToken(true);
 		tokenServices.setTokenEnhancer(tokenEnhancerChain);
 		tokenServices.setAccessTokenValiditySeconds(this.accessValidity);
 		tokenServices.setRefreshTokenValiditySeconds(this.refreshValidity);
 		return tokenServices;
 	}
-
+	
 }

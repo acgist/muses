@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
 import com.acgist.oauth.service.UserService;
@@ -43,9 +44,13 @@ public class SecurityProvideConfig {
 	}
 
 	@Bean
-	public KeyPair jwtKeyPair() {
+	public JwtAccessTokenConverter jwtAccessTokenConverter() {
+		// /oauth/token_key：需要client认证
 		final KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource(this.jwt), this.secret.toCharArray());
-		return keyStoreKeyFactory.getKeyPair("jwt");
+		final KeyPair keyPair = keyStoreKeyFactory.getKeyPair("jwt");
+		final JwtAccessTokenConverter jwtTokenConverter = new JwtAccessTokenConverter();
+		jwtTokenConverter.setKeyPair(keyPair);
+		return jwtTokenConverter;
 	}
 
 }
