@@ -18,9 +18,9 @@
 	</parent>
 
 	<modules>
-		<!-- 支付服务 -->
-		<module>service-pay</module>
-		<!-- 用户服务 -->
+		<!-- 用户服务API -->
+		<module>service-user-api</module>
+		<!-- 用户服务实现 -->
 		<module>service-user</module>
 		<!-- 自动建表 -->
 		<module>service-create-table</module>
@@ -54,14 +54,5 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

@@ -20,15 +20,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>common-data</artifactId>
+			<artifactId>boot-data</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>common-api-pay</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.acgist</groupId>
-			<artifactId>common-api-user</artifactId>
+			<artifactId>service-user-api</artifactId>
 		</dependency>
 	</dependencies>
 

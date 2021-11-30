@@ -73,11 +73,6 @@ spring:
          uri: http://localhost:8848
          predicates:
            - Host=nacos.acgist.com
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:9401/oauth/token_key
 security:
   oauth2:
     resource:

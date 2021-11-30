@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>boot-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>boot-parent</name>
+	<description>服务接口</description>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<modules>
+		<!-- 消息队列 -->
+		<module>boot-mq</module>
+		<!-- Web -->
+		<module>boot-web</module>
+		<!-- Rest -->
+		<module>boot-rest</module>
+		<!-- 数据库 -->
+		<module>boot-data</module>
+		<!-- Redis -->
+		<module>boot-redis</module>
+		<!-- 高并发分布式 -->
+		<module>boot-concurrent</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

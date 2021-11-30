@@ -27,7 +27,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>common-web</artifactId>
+			<artifactId>boot-web</artifactId>
 		</dependency>
 		<!-- ws rs -->
 		<dependency>

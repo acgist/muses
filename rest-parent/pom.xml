@@ -18,12 +18,10 @@
 	</parent>
 
 	<modules>
-		<!-- API服务 -->
-		<module>rest-api</module>
-		<!-- 开放服务 -->
-		<module>rest-open</module>
 		<!-- 认证服务 -->
 		<module>rest-oauth</module>
+		<!-- 网关服务 -->
+		<module>rest-gateway</module>
 		<!-- 资源服务 -->
 		<module>rest-resources</module>
 	</modules>
@@ -31,7 +29,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>common-rest</artifactId>
+			<artifactId>boot-rest</artifactId>
 		</dependency>
 		<!-- ws rs -->
 		<dependency>

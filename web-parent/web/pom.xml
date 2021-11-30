@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>common-redis</artifactId>
+			<artifactId>boot-redis</artifactId>
 		</dependency>
 		<!-- redis session -->
 		<dependency>

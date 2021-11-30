@@ -12,12 +12,13 @@ Web服务和Rest通过网关对外提供服务，Web服务需要自己实现身�
 
 |模块|描述|
 |:-|:-|
-|common|通用模块|
+|boot|通用模块|
+|boot-parent|通用模块|
 |gateway|网关模块|
 |web-parent|Web服务：网页相关|
 |rest-parent|Rest服务：接口相关|
-|common-parent|通用模块|
 |service-parent|内部服务|
+|docs|配置文档|
 
 ## 配置
 
@@ -37,13 +38,15 @@ spring:
       username: nacos
       password: nacos
       discovery:
+# 通过group进行区分：dev、test、release
+        group: dev
         server-addr: localhost:8848
 # 指定文件加载
       config:
         ext-config:
           - data-id: redis.properties
             refresh: true
-            group: DEFAULT_GROUP
+            group: ${spring.cloud.nacos.discovery.group}
 ```
 
 ## 关机
