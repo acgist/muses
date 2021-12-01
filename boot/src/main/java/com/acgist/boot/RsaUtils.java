@@ -1,4 +1,4 @@
-package com.acgist.common;
+package com.acgist.boot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;

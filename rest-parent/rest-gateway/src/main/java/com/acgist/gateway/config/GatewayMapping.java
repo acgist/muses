@@ -1,6 +1,6 @@
 package com.acgist.gateway.config;
 
-import com.acgist.common.JSONUtils;
+import com.acgist.boot.JSONUtils;
 import com.acgist.rest.Gateway;
 
 /**

@@ -8,8 +8,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.acgist.common.MessageCode;
-import com.acgist.common.service.IdService;
+import com.acgist.boot.MessageCode;
+import com.acgist.boot.service.IdService;
 import com.acgist.rest.GatewaySession;
 
 /**

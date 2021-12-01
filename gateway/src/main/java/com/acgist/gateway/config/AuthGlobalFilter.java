@@ -9,7 +9,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.acgist.common.StringUtils;
+import com.acgist.boot.StringUtils;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.shaded.json.parser.ParseException;
 

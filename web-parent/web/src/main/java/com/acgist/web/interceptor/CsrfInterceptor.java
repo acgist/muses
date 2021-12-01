@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.acgist.common.StringUtils;
+import com.acgist.boot.StringUtils;
 
 /**
  * CSRF拦截器

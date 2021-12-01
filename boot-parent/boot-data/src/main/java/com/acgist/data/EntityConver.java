@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.beans.BeanUtils;
 
-import com.acgist.common.JSONUtils;
+import com.acgist.boot.JSONUtils;
 import com.acgist.data.entity.DataEntity;
 
 /**

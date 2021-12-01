@@ -1,4 +1,4 @@
-package com.acgist.common;
+package com.acgist.boot;
 
 import java.util.Base64;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package com.acgist.common;
+package com.acgist.boot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.acgist.common.MessageCode;
-import com.acgist.common.JSONUtils;
-import com.acgist.common.StringUtils;
+import com.acgist.boot.JSONUtils;
+import com.acgist.boot.MessageCode;
+import com.acgist.boot.StringUtils;
 import com.acgist.rest.Gateway;
 import com.acgist.rest.GatewaySession;
 import com.acgist.rest.config.GatewayMapping;

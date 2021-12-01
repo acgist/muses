@@ -1,4 +1,4 @@
-package com.acgist.common;
+package com.acgist.boot;
 
 /**
  * 响应状态编码

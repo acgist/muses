@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.acgist.common.MessageCode;
-import com.acgist.common.MessageCodeException;
+import com.acgist.boot.MessageCode;
+import com.acgist.boot.MessageCodeException;
 import com.acgist.rest.GatewaySession;
 
 /**

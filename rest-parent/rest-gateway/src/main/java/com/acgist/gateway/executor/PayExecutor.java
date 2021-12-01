@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.acgist.common.MessageCode;
+import com.acgist.boot.MessageCode;
 import com.acgist.rest.executor.GatewayExecutor;
 import com.acgist.rest.request.pay.PayRequest;
 

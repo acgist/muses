@@ -1,4 +1,4 @@
-package com.acgist.common;
+package com.acgist.boot;
 
 import java.io.IOException;
 import java.util.List;

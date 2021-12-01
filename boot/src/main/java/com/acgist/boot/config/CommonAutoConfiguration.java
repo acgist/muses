@@ -1,4 +1,4 @@
-package com.acgist.common.config;
+package com.acgist.boot.config;
 
 import javax.annotation.PreDestroy;
 
@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.common.service.IdService;
+import com.acgist.boot.service.IdService;
 
 import ch.qos.logback.classic.LoggerContext;
 

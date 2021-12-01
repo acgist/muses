@@ -14,9 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.acgist.common.DateUtils;
-import com.acgist.common.MessageCode;
-import com.acgist.common.JSONUtils;
+import com.acgist.boot.DateUtils;
+import com.acgist.boot.JSONUtils;
+import com.acgist.boot.MessageCode;
 import com.acgist.rest.config.GatewayMapping;
 import com.acgist.rest.service.SignatureService;
 

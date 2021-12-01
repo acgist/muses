@@ -5,8 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.acgist.common.JSONUtils;
-import com.acgist.common.Message;
+import com.acgist.boot.JSONUtils;
+import com.acgist.boot.Message;
 
 /**
  * 抽象网关

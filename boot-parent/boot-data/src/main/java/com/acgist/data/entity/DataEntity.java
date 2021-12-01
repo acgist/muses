@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.acgist.common.JSONUtils;
+import com.acgist.boot.JSONUtils;
 
 /**
  * 数据库实体类

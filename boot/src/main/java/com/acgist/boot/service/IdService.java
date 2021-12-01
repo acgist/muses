@@ -1,4 +1,4 @@
-package com.acgist.common.service;
+package com.acgist.boot.service;
 
 import java.time.LocalDateTime;
 import java.util.Random;

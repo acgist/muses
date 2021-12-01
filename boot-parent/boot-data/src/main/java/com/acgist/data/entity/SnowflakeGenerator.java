@@ -6,7 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-import com.acgist.common.service.IdService;
+import com.acgist.boot.service.IdService;
 
 /**
  * 雪花ID

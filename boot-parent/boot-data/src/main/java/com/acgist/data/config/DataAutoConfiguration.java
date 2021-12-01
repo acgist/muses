@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.common.service.IdService;
+import com.acgist.boot.service.IdService;
 import com.acgist.data.entity.SnowflakeGenerator;
 
 /**
