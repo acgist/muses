@@ -27,14 +27,16 @@
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<ws.rs.version>1.1.1</ws.rs.version>
-		<oauth2.version>2.2.5.RELEASE</oauth2.version>
+		<xml.bind.version>2.3.0</xml.bind.version>
+		<oauth2.version>5.6.0</oauth2.version>
+		<oauth2.authorization.version>0.2.0</oauth2.authorization.version>
 		<activation.version>1.1.1</activation.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
 		<jaxb-runtime.version>2.3.1</jaxb-runtime.version>
 	</properties>
 
 	<modules>
-		<!-- 通用模块 -->
+		<!-- 启动模块 -->
 		<module>boot</module>
 		<!-- 网关模块 -->
 		<module>gateway</module>
@@ -129,11 +131,21 @@
 				<artifactId>web-resources</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
-			<!-- Oauth2 -->
+			<!-- OAuth2 -->
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-oauth2</artifactId>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-oauth2-client</artifactId>
 				<version>${oauth2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-oauth2-resource-server</artifactId>
+				<version>${oauth2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-oauth2-authorization-server</artifactId>
+				<version>${oauth2.authorization.version}</version>
 			</dependency>
 			<!-- shardingsphere：分库分表 -->
 			<dependency>
@@ -141,26 +153,26 @@
 				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
 				<version>${shardingjdbc.version}</version>
 			</dependency>
+			<!-- JavaEE -->
 			<dependency>
-				<groupId>javax.activation</groupId>
-				<artifactId>activation</artifactId>
-				<version>${activation.version}</version>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${xml.bind.version}</version>
 			</dependency>
-			<!-- ws rs -->
 			<dependency>
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>jsr311-api</artifactId>
 				<version>${ws.rs.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>javax.activation</groupId>
+				<artifactId>activation</artifactId>
+				<version>${activation.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.glassfish.jaxb</groupId>
 				<artifactId>jaxb-runtime</artifactId>
 				<version>${jaxb-runtime.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>2.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.activation</groupId>
