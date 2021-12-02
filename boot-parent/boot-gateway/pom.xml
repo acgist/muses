@@ -4,23 +4,23 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>rest-resources</artifactId>
+	<artifactId>boot-gateway</artifactId>
 	<packaging>jar</packaging>
 
-	<name>rest-resources</name>
-	<description>资源服务</description>
+	<name>boot-gateway</name>
+	<description>消息队列</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>rest-parent</artifactId>
+		<artifactId>boot-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-rest</artifactId>
 		</dependency>
 	</dependencies>
 

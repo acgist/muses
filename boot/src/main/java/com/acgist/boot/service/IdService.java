@@ -17,12 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 public class IdService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IdService.class);
-	
+
 	/**
 	 * 最大序号
 	 */
 	private static final int MAX_INDEX = 9999;
-	
+
 	/**
 	 * 系统ID：01~99
 	 */
@@ -32,22 +32,22 @@ public class IdService {
 	 * 当前序号
 	 */
 	private int index;
-	
+
 	@PostConstruct
 	public void init() {
 		final Random random = new Random();
 		this.index = random.nextInt(MAX_INDEX);
 		LOGGER.info("雪花ID：{}-{}", this.sn, this.index);
 	}
-	
+
 	/**
 	 * 生成十八位的ID：YYMMddHHmmss + sn + xxxx
 	 * 
 	 * @return ID
 	 */
 	public Long id() {
-		synchronized(this) {
-			if(++this.index > MAX_INDEX) {
+		synchronized (this) {
+			if (++this.index > MAX_INDEX) {
 				this.index = 0;
 			}
 		}
@@ -62,5 +62,5 @@ public class IdService {
 			10000L * this.sn +
 			this.index;
 	}
-	
+
 }

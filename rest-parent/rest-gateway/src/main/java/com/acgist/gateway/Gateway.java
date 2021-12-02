@@ -13,7 +13,7 @@ import com.acgist.boot.Message;
  * 
  * @author acgist
  */
-public abstract class Gateway extends Message implements Serializable {
+public abstract class Gateway implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

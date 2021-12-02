@@ -18,12 +18,12 @@
 	</parent>
 
 	<modules>
+		<!-- 资源服务 -->
+		<module>rest</module>
 		<!-- 认证服务 -->
 		<module>rest-oauth</module>
 		<!-- 网关服务 -->
 		<module>rest-gateway</module>
-		<!-- 资源服务 -->
-		<module>rest-resources</module>
 	</modules>
 
 	<dependencies>
@@ -64,13 +64,78 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile>dev</profile>
+			</properties>
+			<!-- 默认资源：src/main/resources -->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/dev.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<profile>test</profile>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/test</directory>
+					</resource>
+				</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/test.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<profile>release</profile>
+			</properties>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/profiles/release</directory>
+					</resource>
+				</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/release.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

@@ -4,24 +4,20 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>rest-gateway</artifactId>
+	<artifactId>service-gateway</artifactId>
 	<packaging>jar</packaging>
 
-	<name>rest-gateway</name>
-	<description>对外服务-接口</description>
+	<name>service-gateway</name>
+	<description>用户服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>rest-parent</artifactId>
+		<artifactId>service-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<dependencies>
-			<dependency>
-			<groupId>com.acgist</groupId>
-			<artifactId>boot-gateway</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

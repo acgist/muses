@@ -22,6 +22,8 @@
 		<module>service-user-api</module>
 		<!-- 用户服务实现 -->
 		<module>service-user</module>
+		<!-- 网关服务 -->
+		<module>service-gateway</module>
 		<!-- 自动建表 -->
 		<module>service-create-table</module>
 	</modules>

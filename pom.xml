@@ -24,15 +24,18 @@
 		<acgist.version>1.0.0</acgist.version>
 		<encoding>UTF-8</encoding>
 		<java.version>11</java.version>
-		<spring-cloud.version>2020.0.1</spring-cloud.version>
-		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 		<ws.rs.version>1.1.1</ws.rs.version>
-		<xml.bind.version>2.3.0</xml.bind.version>
 		<oauth2.version>5.6.0</oauth2.version>
-		<oauth2.authorization.version>0.2.0</oauth2.authorization.version>
+		<xml.bind.version>2.3.0</xml.bind.version>
+		<swagger2.version>3.0.0</swagger2.version>
 		<activation.version>1.1.1</activation.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
-		<jaxb-runtime.version>2.3.1</jaxb-runtime.version>
+		<glassfish.jaxb.version>2.3.1</glassfish.jaxb.version>
+		<activation.api.version>1.2.0</activation.api.version>
+		<annotation.api.version>1.3.2</annotation.api.version>
+		<oauth2.authorization.version>0.2.0</oauth2.authorization.version>
+		<spring-cloud.version>2020.0.1</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 	</properties>
 
 	<modules>
@@ -93,6 +96,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>boot-gateway</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>boot-concurrent</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
@@ -108,17 +116,22 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>service-gateway</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>rest</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>rest-oauth</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-gateway</artifactId>
-				<version>${acgist.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.acgist</groupId>
-				<artifactId>rest-resources</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
@@ -147,7 +160,7 @@
 				<artifactId>spring-security-oauth2-authorization-server</artifactId>
 				<version>${oauth2.authorization.version}</version>
 			</dependency>
-			<!-- shardingsphere：分库分表 -->
+			<!-- shardingsphere -->
 			<dependency>
 				<groupId>org.apache.shardingsphere</groupId>
 				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
@@ -155,14 +168,14 @@
 			</dependency>
 			<!-- JavaEE -->
 			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>${xml.bind.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>jsr311-api</artifactId>
 				<version>${ws.rs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${xml.bind.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.activation</groupId>
@@ -172,28 +185,28 @@
 			<dependency>
 				<groupId>org.glassfish.jaxb</groupId>
 				<artifactId>jaxb-runtime</artifactId>
-				<version>${jaxb-runtime.version}</version>
+				<version>${glassfish.jaxb.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.activation</groupId>
 				<artifactId>javax.activation-api</artifactId>
-				<version>1.2.0</version>
+				<version>${activation.api.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>
-				<version>1.3.2</version>
+				<version>${annotation.api.version}</version>
 			</dependency>
 			<!-- 接口文档 -->
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
-				<version>3.0.0</version>
+				<version>${swagger2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger-ui</artifactId>
-				<version>3.0.0</version>
+				<version>${swagger2.version}</version>
 			</dependency>
 			<!-- SpringCloud -->
 			<dependency>
@@ -213,6 +226,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -220,7 +234,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
 		</plugins>
-
+		
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -264,80 +278,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profile>dev</profile>
-			</properties>
-			<!-- 默认资源：src/main/resources -->
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/dev.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<profile>test</profile>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/test</directory>
-					</resource>
-				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/test.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>release</id>
-			<properties>
-				<profile>release</profile>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/release</directory>
-					</resource>
-				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/release.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 
 </project>

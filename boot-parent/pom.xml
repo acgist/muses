@@ -28,6 +28,8 @@
 		<module>boot-data</module>
 		<!-- Redis -->
 		<module>boot-redis</module>
+		<!-- Gateway -->
+		<module>boot-gateway</module>
 		<!-- 高并发分布式 -->
 		<module>boot-concurrent</module>
 	</modules>

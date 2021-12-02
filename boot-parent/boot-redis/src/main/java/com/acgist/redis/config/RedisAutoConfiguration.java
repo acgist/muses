@@ -22,7 +22,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.acgist.boot.JSONUtils;
-import com.acgist.boot.config.CommonAutoConfiguration.SerializerType;
+import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
 
 @Configuration
 @EnableCaching
