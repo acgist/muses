@@ -1,6 +1,5 @@
 package com.acgist.gateway.request;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -10,7 +9,7 @@ import javax.validation.constraints.NotNull;
 public class SetNameRequest extends GatewayRequest {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * 用户名称
 	 */

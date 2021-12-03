@@ -10,6 +10,7 @@ import javax.validation.ValidatorFactory;
 import org.hibernate.validator.HibernateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,13 +44,6 @@ public class GatewayMappingAutoConfiguration {
 	@Bean
 	public GatewayMappingService gatewayMappingService() {
 		return new GatewayMappingService(this.mapping);
-	}
-	
-    @Bean
-	public Validator validator() {
-		ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true)
-			.buildValidatorFactory();
-		return validatorFactory.getValidator();
 	}
 	
 }

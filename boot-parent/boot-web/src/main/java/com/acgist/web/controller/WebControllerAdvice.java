@@ -20,6 +20,7 @@ public class WebControllerAdvice {
 	@ExceptionHandler(Exception.class)
 	public String exception(Exception e, HttpServletResponse response) {
 		LOGGER.error("系统异常", e);
+		// TODO:json web
 		return "/error";
 	}
 

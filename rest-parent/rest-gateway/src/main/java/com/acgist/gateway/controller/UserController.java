@@ -18,6 +18,7 @@ import com.acgist.gateway.request.SetNameRequest;
  * 
  * @author acgist
  */
+@Validated
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -29,7 +30,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/name")
-	public Message<String> name(@GatewayBody @Valid SetNameRequest request) {
+	public Message<String> name(@Valid @GatewayBody SetNameRequest request) {
 		System.out.println(request);
 		return Message.success(request.getName());
 	}

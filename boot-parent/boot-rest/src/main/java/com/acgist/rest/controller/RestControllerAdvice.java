@@ -1,11 +1,11 @@
 package com.acgist.rest.controller;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.acgist.boot.Message;
 import com.acgist.boot.MessageCode;
@@ -16,19 +16,21 @@ import com.acgist.boot.MessageCodeException;
  * 
  * @author acgist
  */
-@RestControllerAdvice
-public class GatewayControllerAdvice {
+@org.springframework.web.bind.annotation.RestControllerAdvice
+public class RestControllerAdvice {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayControllerAdvice.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RestControllerAdvice.class);
 
 	@ExceptionHandler(Exception.class)
 	public Message<String> exception(Exception e, HttpServletResponse response) {
 		LOGGER.error("系统异常", e);
 		if (e instanceof MessageCodeException) {
 			final MessageCodeException exception = (MessageCodeException) e;
-			return Message.fail(exception.getCode(), exception.getMessage(), null);
+			return Message.fail(exception.getCode(), exception.getMessage(), e.getMessage());
+		} else if (e instanceof ValidationException) {
+			return Message.fail(MessageCode.CODE_1002, e.getMessage());
 		} else {
-			return Message.fail(MessageCode.CODE_9999, null);
+			return Message.fail(MessageCode.CODE_9999, e.getMessage());
 		}
 	}
 
