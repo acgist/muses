@@ -1,7 +1,7 @@
-package com.acgist.user.vo;
+package com.acgist.user.pojo.vo;
 
 import com.acgist.data.EntityConver;
-import com.acgist.user.entity.UserEntity;
+import com.acgist.user.pojo.entity.UserEntity;
 
 public class UserVo extends EntityConver<UserEntity> {
 

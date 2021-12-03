@@ -1,7 +1,7 @@
-package com.acgist.user.dto;
+package com.acgist.user.pojo.dto;
 
 import com.acgist.data.EntityConver;
-import com.acgist.user.entity.UserEntity;
+import com.acgist.user.pojo.entity.UserEntity;
 
 public class UserDto extends EntityConver<UserEntity> {
 

@@ -1,51 +1,47 @@
 package com.acgist.boot;
 
 import java.util.Base64;
-import java.util.regex.Pattern;
 
+/**
+ * 字符串工具
+ * 
+ * @author acgist
+ */
 public final class StringUtils {
 
 	private StringUtils() {
 	}
 
 	/**
-	 * 数值正则表达式（正负整数）
+	 * 判断字符串是否为空
+	 * 
+	 * @param value 字符串
+	 * 
+	 * @return 是否为空
 	 */
-	private static final String NUMERIC_REGEX = "\\-?[0-9]+";
-	/**
-	 * 数值正则表达式（正负小数、正负整数）
-	 */
-	private static final String DECIMAL_REGEX = "\\-?[0-9]+(\\.[0-9]+)?";
-
 	public static final boolean isEmpty(String value) {
 		return value == null || value.isEmpty();
 	}
 
+	/**
+	 * 判断字符串是否非空
+	 * 
+	 * @param value 字符串
+	 * 
+	 * @return 是否非空
+	 */
 	public static final boolean isNotEmpty(String value) {
 		return !isEmpty(value);
 	}
 
-	public static final boolean isNumeric(String value) {
-		return StringUtils.regex(value, NUMERIC_REGEX, true);
-	}
-
-	public static final boolean isDecimal(String value) {
-		return StringUtils.regex(value, DECIMAL_REGEX, true);
-	}
-
-	public static final boolean regex(String value, String regex, boolean ignoreCase) {
-		if (value == null || regex == null) {
-			return false;
-		}
-		Pattern pattern;
-		if (ignoreCase) {
-			pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-		} else {
-			pattern = Pattern.compile(regex);
-		}
-		return pattern.matcher(value).matches();
-	}
-
+	/**
+	 * 判断字符串是否相等
+	 * 
+	 * @param source 原始字符串
+	 * @param target 目标字符串
+	 * 
+	 * @return 是否相等
+	 */
 	public static final boolean equals(String source, String target) {
 		return source == null ? target == null : source.equals(target);
 	}

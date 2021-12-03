@@ -83,11 +83,10 @@ public class RsaUtils {
 		final KeyPair keyPair = generator.generateKeyPair();
 		final RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		final RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-//		return Map.of(
-//			PUBLIC_KEY, StringUtils.base64Encode(publicKey.getEncoded()),
-//			PRIVATE_KEY, StringUtils.base64Encode(privateKey.getEncoded())
-//		);
-		return null;
+		return Map.of(
+			PUBLIC_KEY, StringUtils.base64Encode(publicKey.getEncoded()),
+			PRIVATE_KEY, StringUtils.base64Encode(privateKey.getEncoded())
+		);
 	}
 	
 	/**

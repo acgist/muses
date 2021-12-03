@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot</name>
-	<description>通用</description>
+	<description>项目启动</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

@@ -1,13 +1,17 @@
 package com.acgist.gateway.config;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.acgist.gateway.request.GatewayBodyArgumentResolver;
 import com.acgist.rest.Gateway;
 import com.acgist.rest.interceptor.PackageInterceptor;
 import com.acgist.rest.interceptor.ProcessInterceptor;
@@ -42,4 +46,10 @@ public class RestInterceptorAutoConfiguration implements WebMvcConfigurer {
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(new GatewayBodyArgumentResolver());
+		WebMvcConfigurer.super.addArgumentResolvers(resolvers);
+	}
+	
 }

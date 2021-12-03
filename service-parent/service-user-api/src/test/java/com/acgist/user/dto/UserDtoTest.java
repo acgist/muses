@@ -2,7 +2,8 @@ package com.acgist.user.dto;
 
 import org.junit.jupiter.api.Test;
 
-import com.acgist.user.entity.UserEntity;
+import com.acgist.user.pojo.dto.UserDto;
+import com.acgist.user.pojo.entity.UserEntity;
 
 public class UserDtoTest {
 

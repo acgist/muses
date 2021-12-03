@@ -1,4 +1,4 @@
-package com.acgist.pay.repository;
+package com.acgist.user.repository;
 
 import javax.transaction.Transactional;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.acgist.pay.entity.OrderEntity;
+import com.acgist.user.pojo.entity.OrderEntity;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {

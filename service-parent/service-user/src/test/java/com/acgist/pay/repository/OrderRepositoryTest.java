@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.main.PayApplication;
-import com.acgist.pay.entity.OrderEntity;
+import com.acgist.user.pojo.entity.OrderEntity;
+import com.acgist.user.repository.OrderRepository;
 
 @SpringBootTest(classes = PayApplication.class)
 public class OrderRepositoryTest {

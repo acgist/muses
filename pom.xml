@@ -39,17 +39,11 @@
 	</properties>
 
 	<modules>
-		<!-- 启动模块 -->
 		<module>boot</module>
-		<!-- 网关模块 -->
 		<module>gateway</module>
-		<!-- Web模块 -->
 		<module>web-parent</module>
-		<!-- Rest模块 -->
 		<module>rest-parent</module>
-		<!-- 通用模块 -->
 		<module>boot-parent</module>
-		<!-- 服务模块 -->
 		<module>service-parent</module>
 	</modules>
 
@@ -63,7 +57,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- 系统模块 -->
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot</artifactId>

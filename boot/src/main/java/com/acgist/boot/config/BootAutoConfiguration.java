@@ -30,8 +30,7 @@ public class BootAutoConfiguration {
 	 */
 	public enum SerializerType {
 
-		JDK,
-		JACKSON;
+		JDK, JACKSON;
 
 	}
 
