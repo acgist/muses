@@ -20,6 +20,10 @@ public class Message<T> {
 	 */
 	private T body;
 
+	public static final <T> Message<T> success() {
+		return success(null);
+	}
+	
 	/**
 	 * 成功消息
 	 * 
@@ -36,19 +40,43 @@ public class Message<T> {
 		return message;
 	}
 
+	public static final <T> Message<T> fail(MessageCode code) {
+		return fail(code, null);
+	}
+	
 	/**
 	 * 错误消息
 	 * 
 	 * @param <T> 消息类型
 	 * @param code 错误编码
+	 * @param body 消息内容
 	 * 
 	 * @return 错误消息
 	 */
-	public static final <T> Message<T> fail(MessageCode code) {
+	public static final <T> Message<T> fail(MessageCode code, T body) {
 		final Message<T> message = new Message<>();
 		message.code = code.getCode();
 		message.message = code.getMessage();
+		message.body = body;
 		return message;
+	}
+	
+	/**
+	 * 错误消息
+	 * 
+	 * @param <T> 消息类型
+	 * @param code 错误编码
+	 * @param message 响应描述
+	 * @param body 消息内容
+	 * 
+	 * @return 错误消息
+	 */
+	public static final <T> Message<T> fail(MessageCode code, String message, T body) {
+		final Message<T> failMessage = new Message<>();
+		failMessage.code = code.getCode();
+		failMessage.message = message;
+		failMessage.body = body;
+		return failMessage;
 	}
 	
 	public String getCode() {
@@ -73,6 +101,11 @@ public class Message<T> {
 
 	public void setBody(T body) {
 		this.body = body;
+	}
+	
+	@Override
+	public String toString() {
+		return JSONUtils.toJSON(this);
 	}
 
 }

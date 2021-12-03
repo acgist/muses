@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.cloud.nacos.registry.NacosServiceRegistry;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.naming.listener.Event;
-import com.alibaba.nacos.client.config.impl.ServerlistChangeEvent;
 import com.alibaba.nacos.client.naming.event.InstancesChangeEvent;
 import com.alibaba.nacos.common.notify.NotifyCenter;
 import com.alibaba.nacos.common.notify.listener.Subscriber;

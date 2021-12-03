@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-gateway</name>
-	<description>消息队列</description>
+	<description>接口网关</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
@@ -21,6 +21,14 @@
 		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>service-gateway-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
+import com.acgist.boot.JSONUtils;
 import com.acgist.boot.service.IdService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.qos.logback.classic.LoggerContext;
 
@@ -55,6 +58,12 @@ public class BootAutoConfiguration {
 		} else {
 			return SerializerType.JDK;
 		}
+	}
+	
+	@Bean
+	@Primary
+	public ObjectMapper objectMapper() {
+		return JSONUtils.getMapper();
 	}
 
 	@PreDestroy

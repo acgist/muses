@@ -26,13 +26,22 @@ public abstract class DataEntity implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * ID
+	 */
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "snowflake")
 	@GenericGenerator(name = "snowflake", strategy = "com.acgist.data.entity.SnowflakeGenerator")
 	private Long id;
+	/**
+	 * 创建时间
+	 */
 	@Column(name = "create_date")
 	private Date createDate;
+	/**
+	 * 修改时间
+	 */
 	@Column(name = "modify_date")
 	private Date modifyDate;
 

@@ -17,6 +17,11 @@ public class SnowflakeGenerator implements IdentifierGenerator {
 
 	private static IdService ID_SERVICE;
 
+	/**
+	 * 配置IdService
+	 * 
+	 * @param idService IdService
+	 */
 	public static void init(IdService idService) {
 		SnowflakeGenerator.ID_SERVICE = idService;
 	}

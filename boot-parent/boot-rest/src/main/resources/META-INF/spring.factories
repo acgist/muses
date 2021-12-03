@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.rest.config.RestAutoConfiguration,\
-com.acgist.rest.config.RestInterceptorAutoConfiguration

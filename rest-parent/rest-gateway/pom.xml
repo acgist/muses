@@ -18,7 +18,7 @@
 	</parent>
 
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-gateway</artifactId>
 		</dependency>

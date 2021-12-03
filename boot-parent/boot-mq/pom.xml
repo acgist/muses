@@ -32,7 +32,6 @@
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- RocketMQ -->
 	</dependencies>
 
 </project>

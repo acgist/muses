@@ -1,6 +1,7 @@
 package com.acgist.boot;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -159,11 +160,11 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		mapper
+		return mapper
+			.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
 			.setSerializationInclusion(Include.NON_NULL);
-		return mapper;
 	}
 	
 	/**
@@ -177,12 +178,12 @@ public final class JSONUtils {
 			.builder()
 			.allowIfBaseType(Object.class)
 			.build();
-		mapper
+		return mapper
+			.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);
-		return mapper;
 	}
 
 }

@@ -11,18 +11,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.acgist.data.entity.DataEntity;
 
 @Entity
 @Table(name = "t_role")
-public class RoleEntity extends BaseEntity {
+public class RoleEntity extends DataEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String PROPERTY_PERMISSIONS = "permissions";
+	public static final String PROPERTY_NAME = "name";
+	public static final String PROPERTY_MEMO = "memo";
+	public static final String PROPERTY_PATHS = "paths";
 	
 	/**
 	 * 名称
@@ -40,16 +40,16 @@ public class RoleEntity extends BaseEntity {
 	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
 	@JoinTable(
 	name = "ts_role_path",
-	joinColumns = @JoinColumn(
+		joinColumns = @JoinColumn(
 			name = "role_id",
 			referencedColumnName = "id",
 			foreignKey = @ForeignKey(name = "key_role_path_role_id")
-			),
-	inverseJoinColumns = @JoinColumn(
+		),
+		inverseJoinColumns = @JoinColumn(
 			name = "path_id",
 			referencedColumnName = "id",
 			foreignKey = @ForeignKey(name = "key_role_path_path_id")
-			)
+		)
 	)
 	private List<PathEntity> paths;
 
@@ -69,12 +69,12 @@ public class RoleEntity extends BaseEntity {
 		this.memo = memo;
 	}
 
-	public List<PermissionEntity> getPermissions() {
-		return permissions;
+	public List<PathEntity> getPaths() {
+		return paths;
 	}
 
-	public void setPermissions(List<PermissionEntity> permissions) {
-		this.permissions = permissions;
+	public void setPaths(List<PathEntity> paths) {
+		this.paths = paths;
 	}
 	
 }

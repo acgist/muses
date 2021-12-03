@@ -18,6 +18,10 @@
 	</parent>
 
 	<dependencies>
+			<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-data</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -29,5 +29,4 @@ public class DataAutoConfiguration {
 		SnowflakeGenerator.init(this.idService);
 	}
 	
-	
 }

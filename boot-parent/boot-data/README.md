@@ -128,7 +128,9 @@ spring:
         temp.use_jdbc_metadata_defaults: false
 ```
 
+## 其他数据
 
+```
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-neo4j</artifactId>
@@ -137,5 +139,5 @@ spring:
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 </dependency>
-
+```
 

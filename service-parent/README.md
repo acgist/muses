@@ -2,6 +2,10 @@
 
 对内使用Dubbo提供服务，不要使用任何Web模块。
 
+#### API
+
+引用boot-data使用`<optional>true</optional>`
+
 #### 服务使用
 
 引用相应模块API即可导入服务
