@@ -8,9 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -163,7 +161,6 @@ public final class JSONUtils {
 		return mapper
 			.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-			.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
 	
@@ -181,7 +178,6 @@ public final class JSONUtils {
 		return mapper
 			.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-			.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);
 	}

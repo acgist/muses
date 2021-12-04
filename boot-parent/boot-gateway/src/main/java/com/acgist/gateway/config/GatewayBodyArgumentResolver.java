@@ -1,4 +1,4 @@
-package com.acgist.gateway.request;
+package com.acgist.gateway.config;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -9,7 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.acgist.gateway.GatewaySession;
 
 /**
- * 获取网关请求数据
+ * 获取请求数据
  * 
  * @author acgist
  */

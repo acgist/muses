@@ -11,7 +11,7 @@ dubbo:
   reference:
     check: false
   cloud:
-    subscribed-services: service-pay, service-user
+    subscribed-services: service-user
 system:
   secret: acgist
   public.key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8N09VZ/ARi+dBbxQq84ynf162QF5P71B/0DY54Lo1XSQXzcbCa6nrySbsLsJJ8FmVtBUWmomxQs0Gf37QTjN8cMVp1ziTXMr4zOapV3WYlG4XSf9kxnIgOD1OyjcjPaglBucJNf90Gyswnqc+3RF4X7Andb21SPpO+bHlsF/+tQIDAQAB
@@ -19,10 +19,10 @@ system:
 gateway:
   mapping:
     - record: false
-      gateway: GET:/user/name
-      name: 查询用户名称
-      clazz: com.acgist.gateway.request.GetNameRequest
+      gateway: GET:/user/memo
+      name: 查询用户备注
+      clazz: com.acgist.gateway.request.GetMemoRequest
     - record: true
-      gateway: POST:/user/name
-      name: 修改用户名称
-      clazz: com.acgist.gateway.request.SetNameRequest
+      gateway: POST:/user/memo
+      name: 修改用户备注
+      clazz: com.acgist.gateway.request.SetMemoRequest

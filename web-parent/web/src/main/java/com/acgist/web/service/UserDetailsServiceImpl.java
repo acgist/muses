@@ -1,13 +1,14 @@
-package com.acgist.oauth.service;
+package com.acgist.web.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.acgist.user.service.IUserService;
 
 /**
  * 查询用户
@@ -15,15 +16,15 @@ import org.springframework.stereotype.Service;
  * @author acgist
  */
 @Service
-public class UserService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
+	@DubboReference
+	private IUserService userService;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO：自行实现查询数据逻辑
-		return new User(username, this.passwordEncoder.encode(username), AuthorityUtils.createAuthorityList(username));
+		final com.acgist.boot.pojo.bean.User user = this.userService.findByName(username);
+		return new User(user.getName(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getPaths().toArray(String[]::new)));
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.acgist.data.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.acgist.boot.JSONUtils;
+import com.acgist.boot.PojoCopy;
 
 /**
  * 数据库实体类
@@ -22,7 +21,7 @@ import com.acgist.boot.JSONUtils;
  */
 @EntityListeners(DataEntityListener.class)
 @MappedSuperclass
-public abstract class DataEntity implements Cloneable, Serializable {
+public abstract class DataEntity extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,9 +86,4 @@ public abstract class DataEntity implements Cloneable, Serializable {
 		return Objects.hashCode(this.id);
 	}
 	
-	@Override
-	public String toString() {
-		return JSONUtils.toJSON(this);
-	}
-
 }

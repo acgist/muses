@@ -1,12 +1,8 @@
 server:
   port: 8888
-# 如果需要监控
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-          - prometheus
+dubbo:
+  cloud:
+    subscribed-services: service-user
 spring:
   cloud:
     gateway:
@@ -73,16 +69,8 @@ spring:
          uri: http://localhost:8848
          predicates:
            - Host=nacos.acgist.com
-security:
-  oauth2:
-    resource:
-# Alibaba无效
-      loadBalanced: true
-#     user-info-uri: 需要资源服务实现
-      token-info-uri: http://localhost:9090/oauth/check_token
-      jwt:
-        key-uri: http://localhost:9090/oauth/token_key
-    client:
-      scope: all
-      client-id: client-rest
-      client-secret: acgist
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9090/oauth/token_key

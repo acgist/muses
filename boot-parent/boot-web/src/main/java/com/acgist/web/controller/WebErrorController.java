@@ -49,12 +49,12 @@ public class WebErrorController implements ErrorController {
 		} else {
 			model.put("message", message);
 		}
-		return this.getErrorPath();
+		return ERROR_PATH;
 	}
 
 	@Override
 	public String getErrorPath() {
 		return ERROR_PATH;
 	}
-
+	
 }

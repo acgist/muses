@@ -11,7 +11,7 @@ dubbo:
   reference:
     check: false
   cloud:
-    subscribed-services: service-pay, service-user
+    subscribed-services: service-user
 system:
   static:
     host: //localhost:8081

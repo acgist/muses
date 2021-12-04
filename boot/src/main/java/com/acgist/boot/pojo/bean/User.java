@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import com.acgist.boot.CollectionUtils;
+import com.acgist.boot.JSONUtils;
 
 /**
  * 用户
@@ -14,10 +15,12 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String HEADER_NAME = "current-user";
+	
 	/**
 	 * ID
 	 */
-	private String id;
+	private Long id;
 	/**
 	 * 名称
 	 */
@@ -71,11 +74,11 @@ public class User implements Serializable {
 		return this.paths.stream().anyMatch(pathValue -> pathValue.equals(value));
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -109,6 +112,11 @@ public class User implements Serializable {
 
 	public void setPaths(Set<String> paths) {
 		this.paths = paths;
+	}
+	
+	@Override
+	public String toString() {
+		return JSONUtils.toJSON(this);
 	}
 
 }

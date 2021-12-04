@@ -1,6 +1,7 @@
 package com.acgist.gateway.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -14,22 +15,26 @@ public class UserControllerTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerTest.class);
 	
 	@Test
-	public void testGetName() throws IOException {
+	public void testGetMemo() throws IOException {
 		final String response = HTTPUtils.get(
-			"http://localhost:8080/user/name",
-			"{\"reqTime\":\"12312312312312\"}"
-//			"{\"name\":\"acgist\",\"reqTime\":\"12312312312312\"}"
+			"http://localhost:8080/user/memo",
+			"{\"reqTime\":\"12312312312312\"}",
+//			"{\"name\":\"acgist\",\"reqTime\":\"12312312312312\"}",
+			Map.of("current-user", "acgist"),
+			10000
 		);
 		LOGGER.info("响应：{}", response);
 	}
 	
 	@Test
-	public void testPostName() throws IOException {
+	public void testSetMemo() throws IOException {
 		final String response = HTTPUtils.post(
-			"http://localhost:8080/user/name",
-//			"{\"reqTime\":\"12312312312312\"}"
-			"{\"name\":\"acgist\",\"reqTime\":\"12312312312312\"}"
-			);
+			"http://localhost:8080/user/memo",
+//			"{\"reqTime\":\"12312312312312\"}",
+			"{\"memo\":\"acgist\",\"reqTime\":\"12312312312312\"}",
+			Map.of("current-user", "acgist"),
+			10000
+		);
 		LOGGER.info("响应：{}", response);
 	}
 	

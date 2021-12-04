@@ -22,6 +22,10 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-redis</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>service-user-api</artifactId>
+		</dependency>
 		<!-- redis session -->
 		<dependency>
 			<groupId>org.springframework.session</groupId>

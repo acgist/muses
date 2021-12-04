@@ -5,7 +5,7 @@ package com.acgist.gateway.request;
  * 
  * @author acgist
  */
-public class GetNameRequest extends GatewayRequest {
+public class GetMemoRequest extends GatewayRequest {
 
 	private static final long serialVersionUID = 1L;
 	

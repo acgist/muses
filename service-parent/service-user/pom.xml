@@ -18,9 +18,13 @@
 	</parent>
 
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>

@@ -1,14 +1,13 @@
 package com.acgist.gateway.pojo.dto;
 
-import com.acgist.boot.EntityConver;
-import com.acgist.gateway.pojo.entity.GatewayEntity;
+import com.acgist.boot.PojoCopy;
 
 /**
  * 网关DTO
  * 
  * @author acgist
  */
-public class GatewayDto extends EntityConver<GatewayEntity> {
+public class GatewayDto extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,16 +37,6 @@ public class GatewayDto extends EntityConver<GatewayEntity> {
 
 	public void setResponse(String response) {
 		this.response = response;
-	}
-
-	@Override
-	public GatewayEntity toEntity() {
-		return null;
-	}
-
-	@Override
-	public EntityConver<GatewayEntity> ofEntity(GatewayEntity entity) {
-		return null;
 	}
 
 }

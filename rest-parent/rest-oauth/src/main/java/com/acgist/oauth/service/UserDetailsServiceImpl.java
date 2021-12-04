@@ -1,4 +1,4 @@
-package com.acgist.web.service;
+package com.acgist.oauth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
  * @author acgist
  */
 @Service
-public class UserService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO：自行实现查询数据逻辑

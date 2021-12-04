@@ -1,30 +1,22 @@
-//package com.acgist.gateway.config;
-//
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-//import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-//import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-//
-//@Configuration
-//@EnableResourceServer
-//public class SecurityConfig extends ResourceServerConfigurerAdapter {
-//
-//	@Override
-//	public void configure(ResourceServerSecurityConfigurer configurer) throws Exception {
-//		configurer
-//			.resourceId("rest-resources")
-//			// 只能使用令牌
-//			.stateless(true);
-//	}
-//
-//	@Override
-//	public void configure(HttpSecurity security) throws Exception {
-//		security
-//			.csrf().disable()
-//			.authorizeRequests()
-//			.antMatchers("/oauth/**").permitAll()
-//			.anyRequest().authenticated();
-//	}
-//
-//}
+package com.acgist.gateway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
+
+@Configuration
+@EnableWebFluxSecurity
+public class SecurityConfig {
+
+	@Bean
+	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+		http.authorizeExchange(
+			exchanges -> exchanges.pathMatchers("/rest/**").authenticated().anyExchange().permitAll())
+		.csrf().disable()
+			.oauth2ResourceServer()
+			.jwt();
+		return http.build();
+	}
+}

@@ -14,9 +14,8 @@ public class UserDtoTest {
 		entity.setName("acgist");
 		System.out.println(entity);
 		UserDto dto = new UserDto();
-		dto.ofEntity(entity);
+		dto.copy(entity);
 		System.out.println(dto);
-		System.out.println(dto.toEntity());
 	}
 	
 }

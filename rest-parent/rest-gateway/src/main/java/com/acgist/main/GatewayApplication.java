@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan("com.acgist.gateway")
-@DubboComponentScan("com.acgist.gateway")
+@ComponentScan({"com.acgist.user", "com.acgist.gateway"})
+@DubboComponentScan({"com.acgist.user", "com.acgist.gateway"})
 @EnableDiscoveryClient
 @SpringBootApplication
 public class GatewayApplication {

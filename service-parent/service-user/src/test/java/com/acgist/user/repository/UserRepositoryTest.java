@@ -1,4 +1,4 @@
-package com.acgist.pay.repository;
+package com.acgist.user.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.acgist.main.UserApplication;
 import com.acgist.user.pojo.entity.UserEntity;
-import com.acgist.user.repository.UserRepository;
 
 @SpringBootTest(classes = UserApplication.class)
 public class UserRepositoryTest {

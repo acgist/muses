@@ -22,6 +22,10 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-gateway</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>service-user-api</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
