@@ -21,6 +21,7 @@ public class SecurityConfig {
 		protected void configure(HttpSecurity security) throws Exception {
 			security
 				.csrf().disable()
+				.sessionManagement().disable()
 				.headers().frameOptions().sameOrigin()
 				.httpStrictTransportSecurity().disable()
 				.and()

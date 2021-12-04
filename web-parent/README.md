@@ -6,7 +6,7 @@
 
 #### 状态
 
-Web服务使用Redis + Session进行状态记录
+Web服务使用Redis + Session记录登陆状态
 
 #### 认证授权
 

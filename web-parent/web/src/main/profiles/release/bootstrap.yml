@@ -1,10 +1,10 @@
 spring:
   application:
-    name: web-resources
+    name: web
   main:
     allow-bean-definition-overriding: true
   profiles:
-    active: dev
+    active: release
   cloud:
     nacos:
       username: nacos
@@ -15,4 +15,4 @@ spring:
       config:
         namespace: ${spring.profiles.active}
         file-extension: yml
-        refreshable-dataids: dubbo.yml
+        refreshable-dataids: redis.yml, dubbo.yml, freemarker.yml

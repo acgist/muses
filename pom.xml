@@ -26,12 +26,8 @@
 		<java.version>11</java.version>
 		<ws.rs.version>1.1.1</ws.rs.version>
 		<oauth2.version>5.6.0</oauth2.version>
-		<xml.bind.version>2.3.0</xml.bind.version>
-		<swagger2.version>3.0.0</swagger2.version>
-		<activation.version>1.1.1</activation.version>
+		<xml.bind.version>2.3.1</xml.bind.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
-		<glassfish.jaxb.version>2.3.1</glassfish.jaxb.version>
-		<activation.api.version>1.2.0</activation.api.version>
 		<annotation.api.version>1.3.2</annotation.api.version>
 		<oauth2.authorization.version>0.2.0</oauth2.authorization.version>
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
@@ -164,47 +160,23 @@
 				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
 				<version>${shardingjdbc.version}</version>
 			</dependency>
-			<!-- JavaEE -->
+			<!-- Rest注解 -->
 			<dependency>
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>jsr311-api</artifactId>
 				<version>${ws.rs.version}</version>
 			</dependency>
+			<!-- XML注解 -->
 			<dependency>
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
 				<version>${xml.bind.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>javax.activation</groupId>
-				<artifactId>activation</artifactId>
-				<version>${activation.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jaxb</groupId>
-				<artifactId>jaxb-runtime</artifactId>
-				<version>${glassfish.jaxb.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.activation</groupId>
-				<artifactId>javax.activation-api</artifactId>
-				<version>${activation.api.version}</version>
-			</dependency>
+			<!-- JavaEE注解 -->
 			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>
 				<version>${annotation.api.version}</version>
-			</dependency>
-			<!-- 接口文档 -->
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>${swagger2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger-ui</artifactId>
-				<version>${swagger2.version}</version>
 			</dependency>
 			<!-- SpringCloud -->
 			<dependency>

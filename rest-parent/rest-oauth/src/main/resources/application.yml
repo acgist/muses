@@ -26,15 +26,3 @@ system:
     access: 7200
     refresh: 25200
   jwt: jwt.jks
-spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:9090
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*" # 暴露所有端口
-    enabled-by-default: true # 启用所有端口

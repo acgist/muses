@@ -20,3 +20,6 @@ spring-security-oauth2-authorization-server
 spring-boot-starter-oauth2-client
 spring-boot-starter-oauth2-resource-server
 ```
+
+#### OIDC
+

@@ -24,10 +24,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,7 +39,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -53,6 +52,7 @@ import com.nimbusds.jose.proc.SecurityContext;
  * @since 0.0.1
  */
 @Configuration(proxyBeanMethods = false)
+@Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
 
 	@Bean
@@ -60,7 +60,8 @@ public class AuthorizationServerConfig {
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 		http
-			.httpBasic();
+//			.httpBasic();
+			.formLogin();
 //			.formLogin(Customizer.withDefaults())
 			return http.build();
 	}
@@ -76,20 +77,10 @@ public class AuthorizationServerConfig {
 		RegisteredClient loginClient = RegisteredClient.withId(UUID.randomUUID().toString())
 		.clientId("web-client")
 		.clientSecret(this.passwordEncoder().encode("123456"))
-		.clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-		.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+		.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 		.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 		.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 		.redirectUri("http://www.acgist.com")
-		.scope("all")
-		.build();
-RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-		.clientId("rest-client")
-		.clientSecret(this.passwordEncoder().encode("123456"))
-		.clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-		.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
-		.authorizationGrantType(AuthorizationGrantType.PASSWORD)
-		.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 		.scope("all")
 		.build();
 
@@ -97,7 +88,7 @@ RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().to
 //		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
 //		registeredClientRepository.save(registeredClient);
 
-		return new InMemoryRegisteredClientRepository(loginClient, registeredClient);
+		return new InMemoryRegisteredClientRepository(loginClient);
 	}
 	// @formatter:on
 
@@ -137,10 +128,10 @@ RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().to
 		return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
 	}
 	
-	@Bean
-	public ProviderSettings providerSettings() {
-		return ProviderSettings.builder().issuer("http://localhost:9000").build();
-	}
+//	@Bean
+//	public ProviderSettings providerSettings() {
+//		return ProviderSettings.builder().issuer("http://localhost:9000").build();
+//	}
 
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)

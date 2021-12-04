@@ -22,10 +22,6 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>boot</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
-		</dependency>
 		<!-- Oauth2 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

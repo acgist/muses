@@ -17,6 +17,8 @@ package com.acgist.oauth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -43,9 +45,13 @@ public class DefaultSecurityConfig {
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests().antMatchers("/oauth2/**").permitAll().anyRequest().authenticated()
+			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
+//			.anyRequest().permitAll()
+			.anyRequest().authenticated()
 			.and()
-			.httpBasic();
+			.userDetailsService(this.users())
+			.formLogin();
+//			.httpBasic();
 //			.formLogin(withDefaults());
 		return http.build();
 	}

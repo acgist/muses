@@ -21,7 +21,7 @@ import com.acgist.rest.interceptor.UserInteceptor;
  * @author acgist
  */
 @Configuration
-@ConditionalOnProperty(value = "system.gateway.interceptor", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(value = "system.rest.interceptor", matchIfMissing = true, havingValue = "true")
 @ConditionalOnMissingClass("com.acgist.gateway.config.GatewayInterceptorAutoConfiguration")
 public class RestInterceptorAutoConfiguration implements WebMvcConfigurer {
 

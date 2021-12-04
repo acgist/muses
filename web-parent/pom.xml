@@ -18,9 +18,7 @@
 	</parent>
 
 	<modules>
-		<!-- 网页服务 -->
 		<module>web</module>
-		<!-- 静态资源 -->
 		<module>web-resources</module>
 	</modules>
 
@@ -28,11 +26,6 @@
 		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-web</artifactId>
-		</dependency>
-		<!-- ws rs -->
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>jsr311-api</artifactId>
 		</dependency>
 		<!-- SpringCloudAlibaba：服务调用、熔断限流、配置中心、注册中心 -->
 		<dependency>
@@ -56,79 +49,5 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profile>dev</profile>
-			</properties>
-			<!-- 默认资源：src/main/resources -->
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/dev.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<profile>test</profile>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/test</directory>
-					</resource>
-				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/test.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>release</id>
-			<properties>
-				<profile>release</profile>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/release</directory>
-					</resource>
-				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/release.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>
