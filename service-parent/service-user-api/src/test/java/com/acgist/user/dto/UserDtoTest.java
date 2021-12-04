@@ -1,21 +1,25 @@
 package com.acgist.user.dto;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;
 
 public class UserDtoTest {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDtoTest.class);
+	
 	@Test
 	public void toEntity() {
 		UserEntity entity = new UserEntity();
 		entity.setId(1L);
 		entity.setName("acgist");
-		System.out.println(entity);
+		LOGGER.info("{}", entity);
 		UserDto dto = new UserDto();
 		dto.copy(entity);
-		System.out.println(dto);
+		LOGGER.info("{}", dto);
 	}
 	
 }

@@ -1,6 +1,8 @@
 package com.acgist.main;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,11 +13,13 @@ import org.springframework.web.client.RestTemplate;
 
 public class OauthTest {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(OauthTest.class);
+	
 	@Test
 	public void testTokenKey() {
 		final RestTemplate restTemplate = new RestTemplate();
-		final ResponseEntity<String> body = restTemplate.getForEntity("http://localhost:9090/oauth2/jwks", String.class);
-		System.out.println(body.getBody());
+		final ResponseEntity<String> body = restTemplate.getForEntity("http://localhost:8080/oauth2/jwks", String.class);
+		LOGGER.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -37,7 +41,7 @@ public class OauthTest {
 		params.add("scope", "all");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth2/authorize", requestEntity, String.class);
-		System.out.println(body.getBody());
+		LOGGER.info("{}", body.getBody());
 //		{"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTA4NjIsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.doZvWxNp3BuGCCzeZ8GpY7tTPyCWn0ahrw4bs4kJGlqw092q12v53XajLNC5dfF88XBC1BIOfGnGV5zjLBt8WTo8VTvfAIySESvJxx4ZgvtJ2bH-oQYzcCyaKz5MvuELtizZBjf3YY2GNHbdu8APHgpWyImEJtrmYMFyjRPX4OQ","token_type":"bearer","refresh_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJyb290Iiwic2NvcGUiOlsiYWxsIl0sImF0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImV4cCI6MTYzODEwODg2MiwiYXV0aG9yaXRpZXMiOlsicm9vdCJdLCJqdGkiOiJiYTVjNWQ5MS04ZjZkLTRhZWItYjg4OC1hNzFlMzlkZmVkY2YiLCJjbGllbnRfaWQiOiJjbGllbnQtcmVzdCJ9.Gk7dqt_5vFdgQkN0GGDi7_kqGHme7ymJujcynPV8jq-vSS_feWXVBBDwUmru-vsfXNdMoMFHIUEF3B5Fi8yKfFNpEgDu0imIVjI7J8XyUMGJAWm91cvGKdTXZcVSY7YrrMokaQHtKJYU7CVA282Ov-kVKQ6hTkk1TsZrVHO8rck","expires_in":6066,"scope":"all","jti":"354f02eb-d26e-4cfe-9fe9-b2eb27f28b67"}
 	}
 	
@@ -59,7 +63,7 @@ public class OauthTest {
 		params.add("scope", "all");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth2/token", requestEntity, String.class);
-		System.out.println(body.getBody());
+		LOGGER.info("{}", body.getBody());
 //		{"access_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzgwOTA4NjIsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.doZvWxNp3BuGCCzeZ8GpY7tTPyCWn0ahrw4bs4kJGlqw092q12v53XajLNC5dfF88XBC1BIOfGnGV5zjLBt8WTo8VTvfAIySESvJxx4ZgvtJ2bH-oQYzcCyaKz5MvuELtizZBjf3YY2GNHbdu8APHgpWyImEJtrmYMFyjRPX4OQ","token_type":"bearer","refresh_token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJyb290Iiwic2NvcGUiOlsiYWxsIl0sImF0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImV4cCI6MTYzODEwODg2MiwiYXV0aG9yaXRpZXMiOlsicm9vdCJdLCJqdGkiOiJiYTVjNWQ5MS04ZjZkLTRhZWItYjg4OC1hNzFlMzlkZmVkY2YiLCJjbGllbnRfaWQiOiJjbGllbnQtcmVzdCJ9.Gk7dqt_5vFdgQkN0GGDi7_kqGHme7ymJujcynPV8jq-vSS_feWXVBBDwUmru-vsfXNdMoMFHIUEF3B5Fi8yKfFNpEgDu0imIVjI7J8XyUMGJAWm91cvGKdTXZcVSY7YrrMokaQHtKJYU7CVA282Ov-kVKQ6hTkk1TsZrVHO8rck","expires_in":6066,"scope":"all","jti":"354f02eb-d26e-4cfe-9fe9-b2eb27f28b67"}
 	}
 		
@@ -79,7 +83,7 @@ public class OauthTest {
 		params.add("password", "123456");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth2/token", requestEntity, String.class);
-		System.out.println(body.getBody());
+		LOGGER.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -91,7 +95,7 @@ public class OauthTest {
 		params.add("token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg1OTY0NDIsInVzZXJfbmFtZSI6InJvb3QiLCJhdXRob3JpdGllcyI6WyJyb290Il0sImp0aSI6IjFmMmMzNzQ1LTljMDItNDFhMi1iMzRiLTYzY2JhMzEzMWRlMyIsImNsaWVudF9pZCI6ImNsaWVudC1yZXN0Iiwic2NvcGUiOlsiYWxsIl19.D001xWqJlf0ykBXa88e_oQP6DyrDg2GzWcbcBYg9gBLtFeLGoZU-Hu3QE8qFG5syxjmffglWChEzvnifVIiZWk_BZhgV607rmnr8KGq6t4rbt6y-ft_SgKC8_w7bGnazcqaIx7BxBnqJJXN9dswjHqBM_zni2ea7uaehZEgOg_w");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth/check_token", requestEntity, String.class);
-		System.out.println(body.getBody());
+		LOGGER.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -106,7 +110,7 @@ public class OauthTest {
 		params.add("client_secret", "123456");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth2/introspect", requestEntity, String.class);
-		System.out.println(body.getBody());
+		LOGGER.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -121,7 +125,7 @@ public class OauthTest {
 		params.add("refresh_token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJyb290Iiwic2NvcGUiOlsiYWxsIl0sImF0aSI6IjM1NGYwMmViLWQyNmUtNGNmZS05ZmU5LWIyZWIyN2YyOGI2NyIsImV4cCI6MTYzODEwODg2MiwiYXV0aG9yaXRpZXMiOlsicm9vdCJdLCJqdGkiOiJiYTVjNWQ5MS04ZjZkLTRhZWItYjg4OC1hNzFlMzlkZmVkY2YiLCJjbGllbnRfaWQiOiJjbGllbnQtcmVzdCJ9.Gk7dqt_5vFdgQkN0GGDi7_kqGHme7ymJujcynPV8jq-vSS_feWXVBBDwUmru-vsfXNdMoMFHIUEF3B5Fi8yKfFNpEgDu0imIVjI7J8XyUMGJAWm91cvGKdTXZcVSY7YrrMokaQHtKJYU7CVA282Ov-kVKQ6hTkk1TsZrVHO8rck");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth/token", requestEntity, String.class);
-		System.out.println(body.getBody());
+		LOGGER.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -133,9 +137,9 @@ public class OauthTest {
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9091/user", requestEntity, String.class);
-		System.out.println(userBody.getBody());
+		LOGGER.info("{}", userBody.getBody());
 		final ResponseEntity<String> userNameBody = restTemplate.postForEntity("http://localhost:9091/user/all", requestEntity, String.class);
-		System.out.println(userNameBody.getBody());
+		LOGGER.info("{}", userNameBody.getBody());
 	}
 	
 }

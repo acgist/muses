@@ -40,11 +40,22 @@ public class UserControllerTest {
 	
 	@Test
 	public void testCost() {
+//		final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+//		context.stop();
 		CostUtils.costed(10000, () -> {
-			HTTPUtils.post(
-				"http://localhost:8080/user/name",
-				"{\"name\":\"acgist\",\"reqTime\":\"12312312312312\"}"
+			HTTPUtils.get(
+				"http://localhost:8080/user/memo",
+				"{\"reqTime\":\"12312312312312\"}",
+//				"{\"name\":\"acgist\",\"reqTime\":\"12312312312312\"}",
+				Map.of("current-user", "acgist"),
+				10000
 			);
+//			HTTPUtils.post(
+//				"http://localhost:8080/user/memo",
+//				"{\"memo\":\"acgist\",\"reqTime\":\"12312312312312\"}",
+//				Map.of("current-user", "acgist"),
+//				10000
+//			);
 		});
 	}
 	

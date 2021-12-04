@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,6 +19,8 @@ import com.acgist.distributed.lock.RedisLock;
 @SpringBootTest
 public class RedisTest {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(RedisTest.class);
+	
 	@Autowired
 	private RedisLock redisLock;
 
@@ -53,18 +57,18 @@ public class RedisTest {
 	public void testThread() {
 		try {
 			if (this.redisLock.tryLock("acgist", 100000, 1000)) {
-				System.out.println("加锁成功" + Thread.currentThread().getId());
+				LOGGER.info("加锁成功：{}", Thread.currentThread().getId());
 				try {
 					if (this.redisLock.tryLock("acgist", 100000, 1000)) {
-						System.out.println("加锁重入成功" + Thread.currentThread().getId());
+						LOGGER.info("加锁重入成功：{}", Thread.currentThread().getId());
 					} else {
-						System.err.println("加锁重入失败");
+						LOGGER.info("加锁重入失败");
 					}
 				} finally {
 					this.redisLock.unlock("acgist");
 				}
 			} else {
-				System.err.println("加锁失败");
+				LOGGER.info("加锁失败");
 			}
 		} finally {
 			this.redisLock.unlock("acgist");
@@ -84,7 +88,7 @@ public class RedisTest {
 			});
 		}
 		latch.await();
-		System.out.println(System.currentTimeMillis() - start);
+		LOGGER.info("{}", System.currentTimeMillis() - start);
 	}
 
 }

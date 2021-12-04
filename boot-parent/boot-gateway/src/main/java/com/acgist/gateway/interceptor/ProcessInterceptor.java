@@ -29,7 +29,6 @@ public class ProcessInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		System.out.println(request.getMethod());
 		final GatewaySession session = GatewaySession.getInstance(this.context);
 		final Long queryId = this.idService.id();
 		if (session.buildProcess(queryId)) {
