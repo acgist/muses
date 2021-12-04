@@ -90,9 +90,7 @@ public class RsaService {
 	 */
 	public String signature(Map<String, Object> map) {
 		final String content = this.join(map);
-		final String signature = RsaUtils.signature(content, this.privateKey);
-		map.put(SIGNATURE, signature);
-		return signature;
+		return RsaUtils.signature(content, this.privateKey);
 	}
 	
 	/**

@@ -8,46 +8,44 @@ import javax.persistence.Table;
 import com.acgist.data.entity.DataEntity;
 
 @Entity
-@Table(name = "t_path", indexes = {
-	@Index(name = "index_path_parent", columnList = "parent")
-})
+@Table(name = "t_path", indexes = { @Index(name = "index_path_parent", columnList = "parent") })
 public class PathEntity extends DataEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	public static final String PROPERTY_NAME = "name";
-	public static final String PROPERTY_PATTERN = "pattern";
+	public static final String PROPERTY_PATH = "path";
 	public static final String PROPERTY_MEMO = "memo";
 	public static final String PROPERTY_PARENT = "parent";
 	public static final String PROPERTY_SORT = "sort";
-	
+
 	/**
 	 * 名称
 	 */
-	@Column(length = 20, nullable = false)
+	@Column(length = 32, nullable = false)
 	private String name;
 	/**
 	 * 匹配规则
 	 * 
-	 * GET:/user
-	 * POST:/user
-	 * POST:/user/.*
+	 * GET:/user/name
+	 * POST:/user/name
 	 */
-	@Column(length = 50, nullable = false)
-	private String pattern;
+	@Column(length = 128, nullable = false)
+	private String path;
 	/**
 	 * 描述
 	 */
-	@Column(length = 100)
+	@Column(length = 64)
 	private String memo;
 	/**
 	 * 上级
 	 */
-	@Column(length = 32)
-	private String parent;
+	@Column
+	private Long parent;
 	/**
 	 * 排序
 	 */
+	@Column
 	private Short sort;
 
 	public String getName() {
@@ -58,12 +56,12 @@ public class PathEntity extends DataEntity {
 		this.name = name;
 	}
 
-	public String getPattern() {
-		return pattern;
+	public String getPath() {
+		return path;
 	}
 
-	public void setPattern(String pattern) {
-		this.pattern = pattern;
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public String getMemo() {
@@ -74,11 +72,11 @@ public class PathEntity extends DataEntity {
 		this.memo = memo;
 	}
 
-	public String getParent() {
+	public Long getParent() {
 		return parent;
 	}
 
-	public void setParent(String parent) {
+	public void setParent(Long parent) {
 		this.parent = parent;
 	}
 

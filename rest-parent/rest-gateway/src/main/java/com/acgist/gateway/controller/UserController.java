@@ -24,7 +24,7 @@ import com.acgist.gateway.request.SetNameRequest;
 public class UserController {
 
 	@GetMapping("/name")
-	public Message<Void> name(@GatewayBody @Valid GetNameRequest request) {
+	public Message<Void> name(@Valid @GatewayBody GetNameRequest request) {
 		System.out.println(request);
 		return Message.success();
 	}

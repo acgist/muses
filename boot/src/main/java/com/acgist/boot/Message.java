@@ -1,12 +1,16 @@
 package com.acgist.boot;
 
+import java.io.Serializable;
+
 /**
  * 响应消息
  * 
  * @author acgist
  */
-public class Message<T> {
+public class Message<T> implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * 响应编码
 	 */
@@ -19,6 +23,10 @@ public class Message<T> {
 	 * 消息内容
 	 */
 	private T body;
+	/**
+	 * 数据签名
+	 */
+	private String signature;
 
 	public static final <T> Message<T> success() {
 		return success(null);
@@ -42,6 +50,26 @@ public class Message<T> {
 
 	public static final <T> Message<T> fail(MessageCode code) {
 		return fail(code, null);
+	}
+	
+	/**
+	 * 错误消息
+	 * 
+	 * @param <T> 消息类型
+	 * @param code 错误编码
+	 * @param message 错误描述
+	 * 
+	 * @return 错误消息
+	 */
+	public static final <T> Message<T> fail(MessageCode code, String message) {
+		final Message<T> failMessage = new Message<>();
+		failMessage.code = code.getCode();
+		if(StringUtils.isEmpty(message)) {
+			failMessage.message = code.getMessage();
+		} else {
+			failMessage.message = message;
+		}
+		return failMessage;
 	}
 	
 	/**
@@ -103,6 +131,14 @@ public class Message<T> {
 		this.body = body;
 	}
 	
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
 	@Override
 	public String toString() {
 		return JSONUtils.toJSON(this);

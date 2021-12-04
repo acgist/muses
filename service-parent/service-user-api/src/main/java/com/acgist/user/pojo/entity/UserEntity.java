@@ -31,7 +31,7 @@ public class UserEntity extends DataEntity {
 	/**
 	 * 账号
 	 */
-	@Column(length = 20, nullable = false)
+	@Column(length = 16, nullable = false)
 	private String name;
 	/**
 	 * 密码
@@ -41,7 +41,7 @@ public class UserEntity extends DataEntity {
 	/**
 	 * 描述
 	 */
-	@Column(length = 100)
+	@Column(length = 64)
 	private String memo;
 	/**
 	 * 角色

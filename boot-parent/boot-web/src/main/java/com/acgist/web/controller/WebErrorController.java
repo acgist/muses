@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,7 +29,6 @@ public class WebErrorController implements ErrorController {
 
 	public static final String ERROR_PATH = "/error";
 
-	@Primary
 	@ResponseBody
 	@RequestMapping(value = ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> index(String message, HttpServletRequest request, HttpServletResponse response) {
@@ -44,7 +42,6 @@ public class WebErrorController implements ErrorController {
 		return map;
 	}
 
-	@Primary
 	@RequestMapping(value = ERROR_PATH, produces = MediaType.TEXT_HTML_VALUE)
 	public String index(String message, ModelMap model, HttpServletRequest request, HttpServletResponse response) {
 		if (StringUtils.isEmpty(message)) {

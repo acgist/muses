@@ -124,3 +124,12 @@ spring:
 public void retry() {
 }
 ```
+
+#### 系统配置
+
+```
+# 序列化类型：Redis
+system.serializer.type=jdk|jackson
+# 是否启用拦截器
+system.gateway.interceptor=true|false
+```

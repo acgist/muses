@@ -11,22 +11,17 @@ import com.acgist.boot.Message;
 import com.acgist.boot.MessageCode;
 import com.acgist.boot.MessageCodeException;
 
-/**
- * 系统异常
- * 
- * @author acgist
- */
 @org.springframework.web.bind.annotation.RestControllerAdvice
 public class RestControllerAdvice {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RestControllerAdvice.class);
 
 	@ExceptionHandler(Exception.class)
-	public Message<String> exception(Exception e, HttpServletResponse response) {
+	public Message<Void> exception(Exception e, HttpServletResponse response) {
 		LOGGER.error("系统异常", e);
 		if (e instanceof MessageCodeException) {
 			final MessageCodeException exception = (MessageCodeException) e;
-			return Message.fail(exception.getCode(), exception.getMessage(), e.getMessage());
+			return Message.fail(exception.getCode(), exception.getMessage());
 		} else if (e instanceof ValidationException) {
 			return Message.fail(MessageCode.CODE_1002, e.getMessage());
 		} else {

@@ -147,6 +147,8 @@ public class GatewaySession implements Serializable {
 	public GatewaySession buildFail(MessageCode code, String message) {
 		this.buildResponse();
 		this.gatewayResponse = Message.fail(code, message, this.responseData);
+		final String signature = this.rsaService.signature(this.responseData);
+		this.gatewayResponse.setSignature(signature);
 		return this;
 	}
 
@@ -172,6 +174,8 @@ public class GatewaySession implements Serializable {
 		}
 		this.buildResponse();
 		this.gatewayResponse = Message.success(this.responseData);
+		final String signature = this.rsaService.signature(this.responseData);
+		this.gatewayResponse.setSignature(signature);
 		return this;
 	}
 	
@@ -240,7 +244,6 @@ public class GatewaySession implements Serializable {
 			this.responseData.put(Gateway.PROPERTY_RESERVED, this.gatewayRequest.getReserved());
 		}
 		this.responseData.put(Gateway.PROPERTY_RESP_TIME, DateUtils.buildTime());
-		this.rsaService.signature(this.responseData);
 	}
 	
 	/**

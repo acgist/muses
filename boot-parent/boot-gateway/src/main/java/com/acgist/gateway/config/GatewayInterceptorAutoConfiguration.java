@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,12 +39,14 @@ public class GatewayInterceptorAutoConfiguration implements WebMvcConfigurer {
 	private PackageInterceptor packageInterceptor;
 
 	@Bean
+	@ConditionalOnMissingBean
 	public ProcessInterceptor processInterceptor() {
 		this.processInterceptor = new ProcessInterceptor();
 		return this.processInterceptor;
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public PackageInterceptor packageInterceptor() {
 		this.packageInterceptor = new PackageInterceptor();
 		return this.packageInterceptor;
