@@ -23,7 +23,7 @@ public class SecurityConfig {
 				.csrf().disable()
 				.sessionManagement().disable()
 				.headers().frameOptions().sameOrigin()
-				.httpStrictTransportSecurity().disable()
+//				.httpStrictTransportSecurity().disable()
 				.and()
 				.authorizeRequests().anyRequest().permitAll();
 		}

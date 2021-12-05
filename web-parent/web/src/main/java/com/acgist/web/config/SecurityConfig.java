@@ -35,12 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity security) throws Exception {
 		security
-			// CSRF
 			.csrf().disable()
-			// 框架
 			.headers().frameOptions().sameOrigin()
-			// HTTPS
-			.httpStrictTransportSecurity().disable()
+//			.httpStrictTransportSecurity().disable()
 			.and()
 			// 单条规则
 //			.antMatcher("/user/**").authorizeRequests().anyRequest().authenticated()
@@ -48,13 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests().antMatchers("/user/**").authenticated()
 			.anyRequest().permitAll()
 			.and()
-			// 失败页面
 			.exceptionHandling().accessDeniedPage("/login")
 			.and()
-			// 登出配置
 			.logout().logoutUrl("/logout").logoutSuccessUrl("/")
 			.and()
-			// 登陆配置
 			.formLogin().usernameParameter("username").passwordParameter("password").loginPage("/login")
 			.loginProcessingUrl("/login").defaultSuccessUrl("/user").failureUrl("/login");
 	}

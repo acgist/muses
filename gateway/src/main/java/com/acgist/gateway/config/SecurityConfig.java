@@ -11,12 +11,17 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-		http.authorizeExchange(
-			exchanges -> exchanges.pathMatchers("/rest/**").authenticated().anyExchange().permitAll())
+	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity security) {
+		security.authorizeExchange(
+			exchanges -> exchanges
+			// Rest需要认证授权
+			.pathMatchers("/rest/**").authenticated()
+			// Web服务直接放行
+			.anyExchange().permitAll()
+		)
 		.csrf().disable()
-			.oauth2ResourceServer()
-			.jwt();
-		return http.build();
+		.cors().disable()
+		.oauth2ResourceServer().jwt();
+		return security.build();
 	}
 }
