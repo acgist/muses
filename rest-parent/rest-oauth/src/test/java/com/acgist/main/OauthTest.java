@@ -50,12 +50,12 @@ public class OauthTest {
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web-client:123456".getBytes()));
 //		headers.set("Authorization", "Basic user:123456");
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "sIPTj7ieBLqHsaJ98H8MHyyBK7dNczKUOojcXIdfW4kbv6yceWDF_c8yFHgaK9g8hH1oSuQXspgSA28FxKeabJb_vGvAbU3D26DXniWYr_Xf8GyLsaMLG22WND0zjA3j");
+		params.add("code", "TF3UgO9bUV3FjmF_5fUCNMbxyko5mj9DhByptrbwoq81L0RNU1F1ly_n2rxwMZJ206NuruUvzMU_ITKsKeb7zV1-bECyvoaKSVpRVa8UGTB1FmKVG6_QcAJnYf4S8phQ");
 		params.add("grant_type", "authorization_code");
 //		params.add("client_id", "web-client");
 		params.add("redirect_uri", "http://www.acgist.com");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth2/token", requestEntity, String.class);
+		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/token", requestEntity, String.class);
 		LOGGER.info("{}", body.getBody());
 	}
 	
@@ -98,6 +98,20 @@ public class OauthTest {
 		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9091/user", requestEntity, String.class);
 		LOGGER.info("{}", userBody.getBody());
 		final ResponseEntity<String> userNameBody = restTemplate.postForEntity("http://localhost:9091/user/all", requestEntity, String.class);
+		LOGGER.info("{}", userNameBody.getBody());
+	}
+	
+	@Test
+	public void testRest() {
+		final RestTemplate restTemplate = new RestTemplate();
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.set("Authorization", "Bearer eyJraWQiOiJlZTNiZTkwNS03ZWEzLTQ0ZWYtYWI5OS05ZDJmN2RiNGM1NzkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiYXVkIjoid2ViLWNsaWVudCIsIm5iZiI6MTYzODY3MzQ0MSwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTYzODY3Mzc0MSwiaWF0IjoxNjM4NjczNDQxfQ.Dk1HJUVmmW30AnZCo08Bc-zFx8mnpb8T05xGE9jujJbDmpXTTSgrFGROFoZHacWXPVaMsuKCS8kluStmvtqJGKtjUlqdA30aUlqsTLKzCuhqWQUjCd8p8XuFRAXAKxA-mlm0C49t0cCw3gFFuzJN_eoEY8ETGKtOOTced1n1flLVGsw-YLVOJyXz8u4oW73g8ifjh47iKbhkbi5SCS6BMjTUZPxbqgWG6VXuw-CA-S_-6rfMidxDUNsKI1v1RG0IntZMrhRUyw042U15hWDQFZ0NuenJxaPYCrlYdfmnehTddeLUkJEwme0MKSWzrrxqiBRb-5QNZGmV9b4VBcB-Bg");
+		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:8888/rest/user", requestEntity, String.class);
+		LOGGER.info("{}", userBody.getBody());
+		final ResponseEntity<String> userNameBody = restTemplate.postForEntity("http://localhost:8888/rest/user/all", requestEntity, String.class);
 		LOGGER.info("{}", userNameBody.getBody());
 	}
 	
