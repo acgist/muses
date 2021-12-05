@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>service-user-api</name>
-	<description>内部服务-user</description>
+	<description>用户服务接口</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

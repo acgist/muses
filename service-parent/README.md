@@ -4,7 +4,11 @@
 
 #### API
 
-引用boot-data使用`<optional>true</optional>`
+引用`boot-data`使用`<optional>true</optional>`
+
+服务调用应该使用Dto进行数据传递不要使用Entity进行数据传递
+
+> 如果需要使用Entity需要引入`boot-data`
 
 #### 服务使用
 

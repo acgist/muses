@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>rest</name>
-	<description>资源服务</description>
+	<description>后台服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

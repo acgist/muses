@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-web</name>
-	<description>消息队列</description>
+	<description>Web服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

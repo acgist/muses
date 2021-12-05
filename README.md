@@ -12,7 +12,7 @@ Web服务和Rest通过网关对外提供服务，Web服务需要自己实现身�
 
 |模块|描述|
 |:-|:-|
-|boot|通用模块|
+|boot|启动模块|
 |boot-parent|通用模块|
 |gateway|网关模块|
 |web-parent|Web服务：网页相关|

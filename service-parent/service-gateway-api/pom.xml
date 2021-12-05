@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>service-gateway-api</name>
-	<description>用户服务</description>
+	<description>网关接口服务接口</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

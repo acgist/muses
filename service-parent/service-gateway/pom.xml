@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>service-gateway</name>
-	<description>用户服务</description>
+	<description>网关接口服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
@@ -18,9 +18,13 @@
 	</parent>
 
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>service-gateway-api</artifactId>
 		</dependency>
 	</dependencies>
 

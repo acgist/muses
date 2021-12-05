@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>rest-oauth</name>
-	<description>认证服务</description>
+	<description>认证授权服务</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>

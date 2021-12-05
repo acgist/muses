@@ -18,11 +18,8 @@
 	</parent>
 
 	<modules>
-		<!-- 资源服务 -->
 		<module>rest</module>
-		<!-- 认证服务 -->
 		<module>rest-oauth</module>
-		<!-- 网关服务 -->
 		<module>rest-gateway</module>
 	</modules>
 
@@ -30,11 +27,6 @@
 		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-rest</artifactId>
-		</dependency>
-		<!-- web -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<!-- SpringCloudAlibaba：服务调用、熔断限流、配置中心、注册中心 -->
 		<dependency>

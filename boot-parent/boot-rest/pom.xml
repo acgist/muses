@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-rest</name>
-	<description>消息队列</description>
+	<description>Rest接口：后台服务接口</description>
 
 	<parent>
 		<groupId>com.acgist</groupId>
