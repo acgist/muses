@@ -34,7 +34,8 @@ public class ProcessInterceptor implements HandlerInterceptor {
 		if (session.buildProcess(queryId)) {
 			return true;
 		}
-		session.buildFail(MessageCode.CODE_1001).response(response);
+		session.buildFail(MessageCode.CODE_1001);
+		session.response(response);
 		return false;
 	}
 

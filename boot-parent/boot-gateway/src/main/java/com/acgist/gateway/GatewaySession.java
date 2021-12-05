@@ -130,9 +130,9 @@ public class GatewaySession implements Serializable {
 	 * 
 	 * @param code 状态码
 	 * 
-	 * @return this
+	 * @return 响应
 	 */
-	public GatewaySession buildFail(MessageCode code) {
+	public Message<Map<String, Object>> buildFail(MessageCode code) {
 		return this.buildFail(code, code.getMessage());
 	}
 	
@@ -142,22 +142,22 @@ public class GatewaySession implements Serializable {
 	 * @param code 状态编码
 	 * @param message 状态描述
 	 * 
-	 * @return this;
+	 * @return 响应
 	 */
-	public GatewaySession buildFail(MessageCode code, String message) {
+	public Message<Map<String, Object>> buildFail(MessageCode code, String message) {
 		this.buildResponse();
 		this.gatewayResponse = Message.fail(code, message, this.responseData);
 		final String signature = this.rsaService.signature(this.responseData);
 		this.gatewayResponse.setSignature(signature);
-		return this;
+		return this.gatewayResponse;
 	}
 
 	/**
 	 * 创建成功响应
 	 * 
-	 * @return this
+	 * @return 响应
 	 */
-	public GatewaySession buildSuccess() {
+	public Message<Map<String, Object>> buildSuccess() {
 		return this.buildSuccess(null);
 	}
 	
@@ -166,9 +166,9 @@ public class GatewaySession implements Serializable {
 	 * 
 	 * @param response 响应数据
 	 * 
-	 * @return this
+	 * @return 响应
 	 */
-	public GatewaySession buildSuccess(Map<String, Object> response) {
+	public Message<Map<String, Object>> buildSuccess(Map<String, Object> response) {
 		if(MapUtils.isNotEmpty(response)) {
 			this.responseData.putAll(response);
 		}
@@ -176,7 +176,7 @@ public class GatewaySession implements Serializable {
 		this.gatewayResponse = Message.success(this.responseData);
 		final String signature = this.rsaService.signature(this.responseData);
 		this.gatewayResponse.setSignature(signature);
-		return this;
+		return this.gatewayResponse;
 	}
 	
 	/**

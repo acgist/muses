@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -36,26 +37,30 @@ public class PackageInterceptor implements HandlerInterceptor {
 		final GatewaySession session = GatewaySession.getInstance();
 		final String json = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
 		if(StringUtils.isEmpty(json)) {
-			session.buildFail(MessageCode.CODE_1002).response(response);
+			session.buildFail(MessageCode.CODE_1002);
+			session.response(response);
 			return false;
 		}
 //		final String requestJSON = this.rsaService.decrypt(json);
 		final String requestJSON = json;
 		final Map<String, Object> requestData = JSONUtils.toMap(requestJSON);
 		if(requestData == null) {
-			session.buildFail(MessageCode.CODE_1002).response(response);
+			session.buildFail(MessageCode.CODE_1002);
+			session.response(response);
 			return false;
 		}
 		session.setRequestJSON(requestJSON);
 		final GatewayMapping gatewayMapping = this.gatewayMappingService.gatewayMapping(request.getMethod(), request.getRequestURI());
 		if(gatewayMapping == null) {
-			session.buildFail(MessageCode.CODE_1000).response(response);
+			session.buildFail(MessageCode.CODE_1000);
+			session.response(response);
 			return false;
 		}
 		session.setGatewayMapping(gatewayMapping);
 		final GatewayRequest gatewayRequest = JSONUtils.toJava(json, gatewayMapping.getClazz());
 		if(gatewayRequest == null) {
-			session.buildFail(MessageCode.CODE_1002).response(response);
+			session.buildFail(MessageCode.CODE_1002);
+			session.response(response);
 			return false;
 		}
 		session.setGatewayRequest(gatewayRequest);

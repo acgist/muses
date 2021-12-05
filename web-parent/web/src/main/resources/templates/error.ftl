@@ -15,7 +15,7 @@
 		</header>
 		<main>
 			<#if message??>
-			<p>错误描述：${message}</p>
+			<p>错误描述：${message.code} - ${message.message}</p>
 			</#if>
 			<p>系统时间：${.now?string("yyyy-MM-dd HH:mm:ss")}</p>
 		</main>

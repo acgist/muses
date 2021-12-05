@@ -1,9 +1,5 @@
 package com.acgist.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -15,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.acgist.boot.Message;
+import com.acgist.boot.MessageCode;
 import com.acgist.boot.StringUtils;
 
 /**
@@ -31,23 +29,24 @@ public class WebErrorController implements ErrorController {
 
 	@ResponseBody
 	@RequestMapping(value = ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> index(String message, HttpServletRequest request, HttpServletResponse response) {
-		LOGGER.warn("系统错误：{}-{}", message, response.getStatus());
-		final Map<String, Object> map = new HashMap<>();
+	public Message<String> index(String code, String message, HttpServletResponse response) {
+		final MessageCode messageCode = MessageCode.of(code, response.getStatus());
+		LOGGER.warn("系统错误：{}-{}", messageCode, message);
 		if (StringUtils.isEmpty(message)) {
-			map.put("message", response.getStatus());
+			return Message.fail(messageCode);
 		} else {
-			map.put("message", message);
+			return Message.fail(messageCode, message);
 		}
-		return map;
 	}
 
 	@RequestMapping(value = ERROR_PATH, produces = MediaType.TEXT_HTML_VALUE)
-	public String index(String message, ModelMap model, HttpServletRequest request, HttpServletResponse response) {
+	public String index(String code, String message, ModelMap model, HttpServletResponse response) {
+		final MessageCode messageCode = MessageCode.of(code, response.getStatus());
+		LOGGER.warn("系统错误：{}-{}", messageCode, message);
 		if (StringUtils.isEmpty(message)) {
-			model.put("message", response.getStatus());
+			model.put("message", Message.fail(messageCode));
 		} else {
-			model.put("message", message);
+			model.put("message", Message.fail(messageCode, message));
 		}
 		return ERROR_PATH;
 	}

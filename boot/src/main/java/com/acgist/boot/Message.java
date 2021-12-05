@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author acgist
  */
 public class Message<T> implements Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	/**

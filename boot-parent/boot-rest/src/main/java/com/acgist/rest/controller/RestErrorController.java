@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acgist.boot.Message;
 import com.acgist.boot.MessageCode;
+import com.acgist.boot.StringUtils;
 
 @RestController
 public class RestErrorController implements ErrorController {
@@ -20,8 +21,13 @@ public class RestErrorController implements ErrorController {
 
 	@RequestMapping(value = ERROR_PATH)
 	public Message<Void> index(String code, String message, HttpServletResponse response) {
-		LOGGER.warn("系统错误：{}-{}", message, response.getStatus());
-		return Message.fail(MessageCode.of(code), message);
+		final MessageCode messageCode = MessageCode.of(code, response.getStatus());
+		LOGGER.warn("系统错误：{}-{}", messageCode, message);
+		if (StringUtils.isEmpty(message)) {
+			return Message.fail(messageCode);
+		} else {
+			return Message.fail(messageCode, message);
+		}
 	}
 
 	@Override

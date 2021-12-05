@@ -15,3 +15,4 @@ spring:
       config:
         namespace: ${spring.profiles.active}
         file-extension: yml
+        refreshable-dataids: dubbo.yml

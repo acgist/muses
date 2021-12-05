@@ -18,6 +18,7 @@ public enum MessageCode {
 	CODE_1002("1002", "数据格式错误"),
 	CODE_1003("1003", "验签失败"),
 	CODE_1004("1004", "没有登陆"),
+	CODE_3404("3404", "资源失效"),
 	CODE_9999("9999", "未知错误");
 	
 	/**
@@ -40,6 +41,29 @@ public enum MessageCode {
 			if(value.code.equals(code)) {
 				return value;
 			}
+		}
+		return CODE_9999;
+	}
+	
+	public static final MessageCode of(int code) {
+		final String httpCode = "3" + code;
+		final MessageCode[] codes = MessageCode.values();
+		for (MessageCode value : codes) {
+			if(value.code.equals(httpCode)) {
+				return value;
+			}
+		}
+		return CODE_9999;
+	}
+	
+	public static final MessageCode of(String code, int status) {
+		MessageCode messageCode = of(code);
+		if(messageCode != null && messageCode != CODE_9999) {
+			return messageCode;
+		}
+		messageCode = of(status);
+		if(messageCode != null && messageCode != CODE_9999) {
+			return messageCode;
 		}
 		return CODE_9999;
 	}
