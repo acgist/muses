@@ -49,8 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.logout().logoutUrl("/logout").logoutSuccessUrl("/")
 			.and()
+			// 防止SessionFixation攻击
+//			.sessionManagement().sessionFixation()
 			.formLogin().usernameParameter("username").passwordParameter("password").loginPage("/login")
 			.loginProcessingUrl("/login").defaultSuccessUrl("/user").failureUrl("/login");
+//			.and()
+//			.exceptionHandling()
+//			.accessDeniedHandler(null)
+//			.authenticationEntryPoint(null);
 	}
 
 	@Override

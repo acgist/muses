@@ -34,6 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 
+//	网关统一处理
 //	@Override
 //	public void addCorsMappings(CorsRegistry registry) {
 //		registry

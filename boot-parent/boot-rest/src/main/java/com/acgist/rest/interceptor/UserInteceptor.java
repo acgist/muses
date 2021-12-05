@@ -22,6 +22,7 @@ public class UserInteceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		final String name = request.getHeader(User.HEADER_NAME);
 		if(StringUtils.isEmpty(name)) {
+			// TODO：响应码：401
 			throw new MessageCodeException(MessageCode.CODE_1004);
 		}
 		final User user = this.userService.findByName(name);
