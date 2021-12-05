@@ -68,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.example.demo.DemoApplication</mainClass>
+							<mainClass>com.example.demo.GatewayApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -89,7 +89,6 @@
 			<properties>
 				<profile>dev</profile>
 			</properties>
-			<!-- 默认资源：src/main/resources -->
 			<build>
 				<plugins>
 					<plugin>

@@ -4,10 +4,15 @@ spring:
   main:
     allow-bean-definition-overriding: true
   profiles:
-    active: dev, data, redis
+    active: dev
   cloud:
     nacos:
       username: nacos
       password: nacos
       discovery:
+        namespace: ${spring.profiles.active}
         server-addr: localhost:8848
+      config:
+        namespace: ${spring.profiles.active}
+        file-extension: yml
+        refreshable-dataids: data.yml, redis.yml, dubbo.yml

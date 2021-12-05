@@ -95,6 +95,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>service-build</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>service-user-api</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>

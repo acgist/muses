@@ -18,11 +18,11 @@
 	</parent>
 
 	<modules>
+		<module>service-build</module>
 		<module>service-user-api</module>
 		<module>service-user</module>
 		<module>service-gateway-api</module>
 		<module>service-gateway</module>
-		<module>service-create-table</module>
 	</modules>
 
 	<dependencies>

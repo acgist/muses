@@ -9,4 +9,9 @@ spring:
       username: nacos
       password: nacos
       discovery:
+        namespace: ${spring.profiles.active}
         server-addr: localhost:8848
+      config:
+        namespace: ${spring.profiles.active}
+        file-extension: yml
+        refreshable-dataids: dubbo.yml

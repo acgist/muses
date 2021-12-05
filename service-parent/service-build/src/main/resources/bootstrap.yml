@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: service-build
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: ${spring.profiles.active}
+        server-addr: localhost:8848
+      config:
+        namespace: ${spring.profiles.active}
+        file-extension: yml

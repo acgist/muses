@@ -31,23 +31,21 @@ spring:
   main:
     allow-bean-definition-overriding: true
   profiles:
-# 通过环境加载：application-dev/application-data/application-redis
-    active: dev, data, redis
+    active: dev
   cloud:
     nacos:
       username: nacos
       password: nacos
       discovery:
-# 通过group进行区分：dev、test、release
-        group: dev
+        namespace: ${spring.profiles.active}
         server-addr: localhost:8848
-# 指定文件加载
       config:
-        ext-config:
-          - data-id: redis.properties
-            refresh: true
-            group: ${spring.cloud.nacos.discovery.group}
+        namespace: ${spring.profiles.active}
+        file-extension: yml
+        refreshable-dataids: redis.yml, dubbo.yml
 ```
+
+> Nacos配置备份`./docs/nacos_config.zip`
 
 ## 关机
 

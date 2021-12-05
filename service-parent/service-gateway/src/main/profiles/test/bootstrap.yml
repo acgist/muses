@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: service-gateway
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: test
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: ${spring.profiles.active}
+        server-addr: localhost:8848
+      config:
+        namespace: ${spring.profiles.active}
+        file-extension: yml
+        refreshable-dataids: mq.yml, dubbo.yml
