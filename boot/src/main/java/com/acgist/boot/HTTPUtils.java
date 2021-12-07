@@ -101,6 +101,8 @@ public final class HTTPUtils {
 		MANAGER.setDefaultMaxPerRoute(4);
 		MANAGER.setDefaultSocketConfig(socketConfig);
 //		MANAGER.setDefaultConnectionConfig(connectionConfig);
+//		MANAGER.closeIdleConnections(1, TimeUnit.MINUTES);
+//		MANAGER.closeExpiredConnections();
 		CLIENT = HttpClients.custom()
 //		    .setProxy(null)
 //		    .setRetryHandler(null)
