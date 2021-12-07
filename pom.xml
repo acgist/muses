@@ -13,12 +13,12 @@
 	</parent>
 
 	<groupId>com.acgist</groupId>
-	<artifactId>parent</artifactId>
+	<artifactId>muses</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
-	<name>parent</name>
-	<description>顶级配置</description>
+	<name>muses</name>
+	<description>缪斯女神</description>
 
 	<properties>
 		<acgist.version>1.0.0</acgist.version>
