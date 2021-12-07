@@ -135,6 +135,8 @@ system.gateway.interceptor=true|false
 
 #### pom.xml
 
+* java
+* javax
 * 本身依赖
 * 外部依赖
 * Boot依赖
