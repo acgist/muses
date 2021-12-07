@@ -14,6 +14,4 @@
 
 Rest服务统一使用`rest-oauth`认证授权
 
-#### TODO
-
-是否去掉Dubbo和sentinel
+> 不要dubbo和sentinel

@@ -3,7 +3,6 @@ package com.acgist.boot;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -12,12 +11,11 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -29,7 +27,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
@@ -66,10 +63,6 @@ public final class HTTPUtils {
 	 * 不能关闭Client：不同域名使用不同TCP连接
 	 */
 	private static final CloseableHttpClient CLIENT;
-	/**
-	 * 复用连接管理
-	 */
-	private static final PoolingHttpClientConnectionManager MANAGER;
 	
 	static {
 	    final List<Header> headers = new ArrayList<>();
@@ -96,20 +89,21 @@ public final class HTTPUtils {
 //		    .setCharset(StandardCharsets.UTF_8)
 //		    .build();
 		// 如果设置连接管理后面配置无效
-		MANAGER = new PoolingHttpClientConnectionManager(registry);
-		MANAGER.setMaxTotal(256);
-		MANAGER.setDefaultMaxPerRoute(4);
-		MANAGER.setDefaultSocketConfig(socketConfig);
-//		MANAGER.setDefaultConnectionConfig(connectionConfig);
-//		MANAGER.closeIdleConnections(1, TimeUnit.MINUTES);
-//		MANAGER.closeExpiredConnections();
+		final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
+		connectionManager.setMaxTotal(256);
+		connectionManager.setDefaultMaxPerRoute(8);
+		connectionManager.setDefaultSocketConfig(socketConfig);
+//		connectionManager.setDefaultConnectionConfig(connectionConfig);
+		// 清理连接：不会定时
+//		connectionManager.closeIdleConnections(30, TimeUnit.SECONDS);
+//		connectionManager.closeExpiredConnections();
 		CLIENT = HttpClients.custom()
 //		    .setProxy(null)
 //		    .setRetryHandler(null)
 		    .setDefaultHeaders(headers)
 //		    .setRedirectStrategy(DefaultRedirectStrategy.INSTANCE)
 //		    .setKeepAliveStrategy(null)
-		    .setConnectionManager(MANAGER)
+		    .setConnectionManager(connectionManager)
 //		    .setConnectionManagerShared(true)
 //		    .setConnectionReuseStrategy(null)
 //		    .setDefaultConnectionConfig(null)
@@ -117,7 +111,8 @@ public final class HTTPUtils {
 //		    .setDefaultCookieSpecRegistry(null)
 //		    .setDefaultSocketConfig(socketConfig)
 		    .setDefaultRequestConfig(requestConfig)
-//		    .evictIdleConnections(1, TimeUnit.MINUTES)
+		    // 定时清理
+		    .evictIdleConnections(30, TimeUnit.SECONDS)
 //		    .evictExpiredConnections()
 //		    .setConnectionTimeToLive(1, TimeUnit.MINUTES)
 //		    .setMaxConnTotal(256)
@@ -321,14 +316,11 @@ public final class HTTPUtils {
 	public static final void shutdown() {
 		if(CLIENT != null) {
 			try {
-			    // 这里已经关闭MANAGER
+			    // 自动清理连接管理：manager
 				CLIENT.close();
 			} catch (IOException e) {
 				LOGGER.error("关闭连接异常", e);
 			}
-		}
-		if(MANAGER != null) {
-			MANAGER.shutdown();
 		}
 	}
 	
