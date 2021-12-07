@@ -45,7 +45,7 @@ spring:
         refreshable-dataids: redis.yml, dubbo.yml
 ```
 
-> Nacos配置备份`[./docs/nacos_config.zip](./docs/nacos_config.zip)`
+> Nacos配置备份[./docs/nacos_config.zip](./docs/nacos_config.zip)
 
 ## 关机
 
