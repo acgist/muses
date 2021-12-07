@@ -131,3 +131,11 @@ system.serializer.type=jdk|jackson
 # 是否启用拦截器
 system.gateway.interceptor=true|false
 ```
+
+
+#### pom.xml
+
+* 本身依赖
+* 外部依赖
+* Boot依赖
+* Cloud依赖

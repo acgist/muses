@@ -27,7 +27,6 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-web</artifactId>
 		</dependency>
-		<!-- SpringCloudAlibaba：服务调用、熔断限流、配置中心、注册中心 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-dubbo</artifactId>
