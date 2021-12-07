@@ -73,11 +73,6 @@ public final class HTTPUtils {
 			.register("https", createSSLConnSocketFactory())
 //			.register("https", SSLConnectionSocketFactory.getSocketFactory())
 			.build();
-		final RequestConfig requestConfig = RequestConfig.custom()
-		    .setSocketTimeout(DEFAULT_TIMEOUT)
-		    .setConnectTimeout(DEFAULT_TIMEOUT)
-		    .setConnectionRequestTimeout(DEFAULT_TIMEOUT)
-		    .build();
 		final SocketConfig socketConfig = SocketConfig.custom()
 //          .setSoLinger(1)
 		    .setSoTimeout(DEFAULT_TIMEOUT)
@@ -97,6 +92,11 @@ public final class HTTPUtils {
 		// 清理连接：不会定时
 //		connectionManager.closeIdleConnections(30, TimeUnit.SECONDS);
 //		connectionManager.closeExpiredConnections();
+		final RequestConfig requestConfig = RequestConfig.custom()
+			.setSocketTimeout(DEFAULT_TIMEOUT)
+			.setConnectTimeout(DEFAULT_TIMEOUT)
+			.setConnectionRequestTimeout(DEFAULT_TIMEOUT)
+			.build();
 		CLIENT = HttpClients.custom()
 //		    .setProxy(null)
 //		    .setRetryHandler(null)
@@ -104,6 +104,7 @@ public final class HTTPUtils {
 //		    .setRedirectStrategy(DefaultRedirectStrategy.INSTANCE)
 //		    .setKeepAliveStrategy(null)
 		    .setConnectionManager(connectionManager)
+		    // 需要自己清理连接
 //		    .setConnectionManagerShared(true)
 //		    .setConnectionReuseStrategy(null)
 //		    .setDefaultConnectionConfig(null)
