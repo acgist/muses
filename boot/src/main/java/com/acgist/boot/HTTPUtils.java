@@ -3,18 +3,22 @@ package com.acgist.boot;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.SSLContext;
 
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -25,17 +29,19 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
@@ -56,27 +62,69 @@ public final class HTTPUtils {
 	 */
 	private static final int DEFAULT_TIMEOUT = 5 * 1000;
 	/**
-	 * 浏览器参数
+	 * 复用连接
+	 * 不能关闭Client：不同域名使用不同TCP连接
 	 */
-	private static final Map<String, String> BROWSER_HEADERS = new HashMap<>();
-	/**
-	 * 复用TCP连接
-	 * 不能关闭Client：工具自动管理，不同的域名会使用不同的TCP连接。
-	 */
-	private static final CloseableHttpClient REUSE_CLIENT;
+	private static final CloseableHttpClient CLIENT;
 	/**
 	 * 复用连接管理
 	 */
 	private static final PoolingHttpClientConnectionManager MANAGER;
 	
 	static {
-		BROWSER_HEADERS.put("User-Agent", "ACGIST/1.0.0 +(https://www.acgist.com)");
-		BROWSER_HEADERS.put("Content-Type", "application/json");
+	    final List<Header> headers = new ArrayList<>();
+	    headers.add(new BasicHeader("User-Agent", "ACGIST/1.0.0 +(https://www.acgist.com)"));
+	    headers.add(new BasicHeader("Content-Type", "application/json"));
 		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
 			.register("http", PlainConnectionSocketFactory.getSocketFactory())
-			.register("https", createSSLConnSocketFactory()).build();
+			.register("https", createSSLConnSocketFactory())
+//			.register("https", SSLConnectionSocketFactory.getSocketFactory())
+			.build();
+		final RequestConfig requestConfig = RequestConfig.custom()
+		    .setSocketTimeout(DEFAULT_TIMEOUT)
+		    .setConnectTimeout(DEFAULT_TIMEOUT)
+		    .setConnectionRequestTimeout(DEFAULT_TIMEOUT)
+		    .build();
+		final SocketConfig socketConfig = SocketConfig.custom()
+//          .setSoLinger(1)
+		    .setSoTimeout(DEFAULT_TIMEOUT)
+		    .setTcpNoDelay(true)
+		    .setSoKeepAlive(true)
+		    .setSoReuseAddress(true)
+		    .build();
+//		final ConnectionConfig connectionConfig = ConnectionConfig.custom()
+//		    .setCharset(StandardCharsets.UTF_8)
+//		    .build();
+		// 如果设置连接管理后面配置无效
 		MANAGER = new PoolingHttpClientConnectionManager(registry);
-		REUSE_CLIENT = HttpClients.custom().setRedirectStrategy(DefaultRedirectStrategy.INSTANCE).setConnectionManager(MANAGER).build();
+		MANAGER.setMaxTotal(256);
+		MANAGER.setDefaultMaxPerRoute(4);
+		MANAGER.setDefaultSocketConfig(socketConfig);
+//		MANAGER.setDefaultConnectionConfig(connectionConfig);
+		CLIENT = HttpClients.custom()
+//		    .setProxy(null)
+//		    .setRetryHandler(null)
+		    .setDefaultHeaders(headers)
+//		    .setRedirectStrategy(DefaultRedirectStrategy.INSTANCE)
+//		    .setKeepAliveStrategy(null)
+		    .setConnectionManager(MANAGER)
+//		    .setConnectionManagerShared(true)
+//		    .setConnectionReuseStrategy(null)
+//		    .setDefaultConnectionConfig(null)
+//		    .setDefaultCookieStore(null)
+//		    .setDefaultCookieSpecRegistry(null)
+//		    .setDefaultSocketConfig(socketConfig)
+		    .setDefaultRequestConfig(requestConfig)
+//		    .evictIdleConnections(1, TimeUnit.MINUTES)
+//		    .evictExpiredConnections()
+//		    .setConnectionTimeToLive(1, TimeUnit.MINUTES)
+//		    .setMaxConnTotal(256)
+//		    .setMaxConnPerRoute(4)
+//		    .disableAuthCaching()
+//		    .disableCookieManagement()
+		    // 默认重试三次
+		    .disableAutomaticRetries()
+		    .build();
 	}
 	
 	public static final String get(String url) {
@@ -93,8 +141,8 @@ public final class HTTPUtils {
 
 	public static final String get(String url, String body, Map<String, String> headers, int timeout) {
 		final HttpGet get = new HttpGet(url);
-		get.setConfig(requestConfig(timeout));
 		addHeaders(get, headers);
+		requestConfig(get, timeout);
 		if(StringUtils.isNotEmpty(body)) {
 			get.setEntity(new StringEntity(body, SystemConfig.DEFAULT_CHARSET));
 		}
@@ -111,8 +159,7 @@ public final class HTTPUtils {
 		}
 
 		HttpGet(final String uri) {
-			super();
-			setURI(URI.create(uri));
+			this.setURI(URI.create(uri));
 		}
 		
 	}
@@ -127,12 +174,12 @@ public final class HTTPUtils {
 	
 	public static final String post(String url, Map<String, Object> body, Map<String, String> headers, int timeout) {
 		final HttpPost post = new HttpPost(url);
-		post.setConfig(requestConfig(timeout));
 		addHeaders(post, headers);
-		post.setHeader("Content-Type", URLEncodedUtils.CONTENT_TYPE + ";charset=" + SystemConfig.DEFAULT_CHARSET);
+		requestConfig(post, timeout);
+		post.setHeader("Content-Type", URLEncodedUtils.CONTENT_TYPE);
 		if(MapUtils.isNotEmpty(body)) {
 			try {
-				post.setEntity(new UrlEncodedFormEntity(generateParams(body), SystemConfig.DEFAULT_CHARSET));
+				post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), SystemConfig.DEFAULT_CHARSET));
 			} catch (UnsupportedEncodingException e) {
 				LOGGER.error("设置请求参数异常", e);
 			}
@@ -150,23 +197,30 @@ public final class HTTPUtils {
 	
 	public static final String post(String url, String body, Map<String, String> headers, int timeout) {
 		final HttpPost post = new HttpPost(url);
-		post.setConfig(requestConfig(timeout));
 		addHeaders(post, headers);
+		requestConfig(post, timeout);
 		if(StringUtils.isNotEmpty(body)) {
 			post.setEntity(new StringEntity(body, SystemConfig.DEFAULT_CHARSET));
 		}
 		return execute(post);
 	}
 	
-	private static final RequestConfig requestConfig(int timeout) {
-		return RequestConfig.custom().setConnectTimeout(timeout).setConnectionRequestTimeout(timeout).setSocketTimeout(timeout).build();
+	private static final void addHeaders(HttpRequestBase request, Map<String, String> headers) {
+	    if(MapUtils.isNotEmpty(headers)) {
+	        headers.forEach(request::addHeader);
+	    }
 	}
 	
-	private static final void addHeaders(HttpRequestBase base, Map<String, String> headers) {
-		BROWSER_HEADERS.forEach(base::addHeader);
-		if(MapUtils.isNotEmpty(headers)) {
-			headers.forEach(base::addHeader);
-		}
+	private static final void requestConfig(HttpRequestBase request, int timeout) {
+	    if(timeout <= 0 || timeout == DEFAULT_TIMEOUT) {
+	        return;
+	    }
+	    final RequestConfig requestConfig = RequestConfig.custom()
+            .setSocketTimeout(timeout)
+            .setConnectTimeout(timeout)
+            .setConnectionRequestTimeout(timeout)
+            .build();
+	    request.setConfig(requestConfig);
 	}
 
 	/**
@@ -176,7 +230,7 @@ public final class HTTPUtils {
 	 * 
 	 * @return 参数集合
 	 */
-	private static final List<NameValuePair> generateParams(Map<String, Object> body) {
+	private static final List<NameValuePair> buildFormParams(Map<String, Object> body) {
 		if(MapUtils.isNotEmpty(body)) {
 			return body.entrySet().stream()
 				.map(entity -> new BasicNameValuePair(entity.getKey(), String.valueOf(entity.getValue())))
@@ -195,10 +249,10 @@ public final class HTTPUtils {
 	private static final String execute(HttpUriRequest request) {
 		CloseableHttpResponse response = null;
 		try {
-			response = REUSE_CLIENT.execute(request);
+			response = CLIENT.execute(request);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if(statusCode != HttpStatus.SC_OK) {
-				LOGGER.error("HTTP返回错误状态：{}", statusCode);
+				LOGGER.warn("HTTP返回错误状态：{}-{}-{}", statusCode, request, response);
 			}
 			return EntityUtils.toString(response.getEntity(), SystemConfig.DEFAULT_CHARSET);
 		} catch(Exception e) {
@@ -251,9 +305,9 @@ public final class HTTPUtils {
 	private static final void close(CloseableHttpResponse response) {
 		if(response != null) {
 			try {
+			    // 归还连接
 				response.close();
 			} catch (IOException e) {
-				response = null;
 				LOGGER.error("关闭响应异常", e);
 			}
 		}
@@ -263,9 +317,10 @@ public final class HTTPUtils {
 	 * <p>工具关闭</p>
 	 */
 	public static final void shutdown() {
-		if(REUSE_CLIENT != null) {
+		if(CLIENT != null) {
 			try {
-				REUSE_CLIENT.close();
+			    // 这里已经关闭MANAGER
+				CLIENT.close();
 			} catch (IOException e) {
 				LOGGER.error("关闭连接异常", e);
 			}
@@ -273,19 +328,6 @@ public final class HTTPUtils {
 		if(MANAGER != null) {
 			MANAGER.shutdown();
 		}
-	}
-	
-}
-
-/**
- * <p>请求异常</p>
- */
-class RequestException extends RuntimeException {
-
-	private static final long serialVersionUID = 1L;
-	
-	public RequestException(String content) {
-		super(content);
 	}
 	
 }
