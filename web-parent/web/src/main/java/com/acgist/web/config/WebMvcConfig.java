@@ -2,7 +2,7 @@ package com.acgist.web.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,12 +15,17 @@ import com.acgist.web.interceptor.CsrfInterceptor;
  * @author acgist
  */
 @Configuration
-public class InterceptorConfig implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(InterceptorConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebMvcConfig.class);
 
-	@Autowired
 	private CsrfInterceptor csrfInterceptor;
+
+	@Bean
+	public CsrfInterceptor csrfInterceptor() {
+		this.csrfInterceptor = new CsrfInterceptor();
+		return this.csrfInterceptor;
+	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -28,5 +33,17 @@ public class InterceptorConfig implements WebMvcConfigurer {
 		registry.addInterceptor(this.csrfInterceptor).addPathPatterns("/**");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
+
+//	@Override
+//	public void addCorsMappings(CorsRegistry registry) {
+//		registry
+//			.addMapping("/**")
+//			.allowedOrigins("*")
+//			.allowedMethods("*")
+//			.allowedHeaders("*")
+//			.allowCredentials(true)
+//			.maxAge(3600);
+//		WebMvcConfigurer.super.addCorsMappings(registry);
+//	}
 
 }

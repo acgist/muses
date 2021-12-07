@@ -21,6 +21,8 @@ import reactor.core.publisher.Mono;
  * 设置授权登陆信息
  * 
  * @author acgist
+ * 
+ * TODO：只拦截/rest：不使用golbalfilter gatewayfilter
  */
 @Component
 public class OauthGlobalFilter implements GlobalFilter, Ordered {

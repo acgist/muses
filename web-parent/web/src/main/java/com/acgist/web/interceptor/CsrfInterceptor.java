@@ -20,7 +20,6 @@ import com.acgist.boot.StringUtils;
  * 
  * POST请求验证是否含有Token防止CSRF攻击
  */
-@Component
 public class CsrfInterceptor implements HandlerInterceptor {
 
 	private static final String SESSION_CSRF_TOKEN = "token";

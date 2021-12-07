@@ -4,7 +4,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   profiles:
-    active: test
+    active: dev
   cloud:
     nacos:
       username: nacos
@@ -15,4 +15,4 @@ spring:
       config:
         namespace: ${spring.profiles.active}
         file-extension: yml
-        refreshable-dataids: redis.yml, dubbo.yml, freemarker.yml
+        refreshable-dataids: redis.yml, dubbo.yml, server.yml, freemarker.yml

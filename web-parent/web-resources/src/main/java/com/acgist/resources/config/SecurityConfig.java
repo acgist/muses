@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 /**
  * 安全
@@ -21,11 +22,13 @@ public class SecurityConfig {
 		protected void configure(HttpSecurity security) throws Exception {
 			security
 				.csrf().disable()
-				.sessionManagement().disable()
 				.headers().frameOptions().sameOrigin()
-//				.httpStrictTransportSecurity().disable()
 				.and()
-				.authorizeRequests().anyRequest().permitAll();
+				.authorizeRequests().anyRequest().permitAll()
+				.and()
+//				.sessionManagement().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//				.httpStrictTransportSecurity().disable()
 		}
 	}
 	

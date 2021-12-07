@@ -24,6 +24,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		final com.acgist.boot.pojo.bean.User user = this.userService.findByName(username);
+		if(user == null) {
+			throw new UsernameNotFoundException("用户无效");
+		}
 		return new User(user.getName(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getPaths().toArray(String[]::new)));
 	}
 

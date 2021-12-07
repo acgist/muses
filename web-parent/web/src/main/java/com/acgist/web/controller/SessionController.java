@@ -16,7 +16,7 @@ public class SessionController {
 	}
 
 	@GetMapping("/session/value")
-	public String sessionValue(String value, HttpServletRequest request) {
+	public String sessionValue(HttpServletRequest request) {
 		return (String) request.getSession().getAttribute("session");
 	}
 
