@@ -7,9 +7,11 @@ spring:
     show-sql: false
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL57Dialect
-    hibernate.ddl-auto: none
-    hibernate.jdbc.batch_size: 10
-    hibernate.jdbc.fetch_size: 10
+    hibernate:
+      ddl-auto: none
+      jdbc:
+        batch_size: 10
+        fetch_size: 10
     properties.hibernate.temp.use_jdbc_metadata_defaults: false
   shardingsphere:
     datasource:
@@ -122,10 +124,11 @@ spring:
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL57Dialect
     hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        temp.use_jdbc_metadata_defaults: false
+      ddl-auto: none
+      jdbc:
+        batch_size: 10
+        fetch_size: 10
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
 ```
 
 ## 其他数据

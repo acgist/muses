@@ -20,6 +20,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
+			<artifactId>boot-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
 			<artifactId>service-user-api</artifactId>
 		</dependency>
 		<dependency>
