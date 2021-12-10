@@ -13,13 +13,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.StatusEntity;
 
 @Entity
 @Table(name = "t_user", indexes = {
 	@Index(name = "index_user_name", columnList = "name", unique = true)
 })
-public class UserEntity extends DataEntity {
+public class UserEntity extends StatusEntity {
 
 	private static final long serialVersionUID = 1L;
 

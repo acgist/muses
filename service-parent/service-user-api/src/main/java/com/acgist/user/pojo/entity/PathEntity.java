@@ -1,15 +1,23 @@
 package com.acgist.user.pojo.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.OrderEntity;
 
 @Entity
-@Table(name = "t_path", indexes = { @Index(name = "index_path_parent", columnList = "parent") })
-public class PathEntity extends DataEntity {
+@Table(name = "t_path", indexes = {
+	@Index(name = "index_path_parent", columnList = "parent") 
+})
+public class PathEntity extends OrderEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,7 +25,6 @@ public class PathEntity extends DataEntity {
 	public static final String PROPERTY_PATH = "path";
 	public static final String PROPERTY_MEMO = "memo";
 	public static final String PROPERTY_PARENT = "parent";
-	public static final String PROPERTY_SORT = "sort";
 
 	/**
 	 * 名称
@@ -27,8 +34,7 @@ public class PathEntity extends DataEntity {
 	/**
 	 * 匹配规则
 	 * 
-	 * GET:/user/name
-	 * POST:/user/name
+	 * GET:/user/name POST:/user/name
 	 */
 	@Column(length = 128, nullable = false)
 	private String path;
@@ -40,13 +46,15 @@ public class PathEntity extends DataEntity {
 	/**
 	 * 上级
 	 */
-	@Column
-	private Long parent;
+	@ManyToOne
+	@JoinColumn(name = "parent", nullable = true)
+	private PathEntity parent;
 	/**
-	 * 排序
+	 * 子集
 	 */
-	@Column
-	private Short sort;
+	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+	@JoinColumn(name = "parent")
+	private List<PathEntity> children;
 
 	public String getName() {
 		return name;
@@ -72,20 +80,20 @@ public class PathEntity extends DataEntity {
 		this.memo = memo;
 	}
 
-	public Long getParent() {
+	public PathEntity getParent() {
 		return parent;
 	}
 
-	public void setParent(Long parent) {
+	public void setParent(PathEntity parent) {
 		this.parent = parent;
 	}
 
-	public Short getSort() {
-		return sort;
+	public List<PathEntity> getChildren() {
+		return children;
 	}
 
-	public void setSort(Short sort) {
-		this.sort = sort;
+	public void setChildren(List<PathEntity> children) {
+		this.children = children;
 	}
 
 }

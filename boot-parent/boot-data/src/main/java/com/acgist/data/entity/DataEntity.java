@@ -11,11 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.acgist.boot.PojoCopy;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 数据库实体类
+ * 
+ * 通用属性提取：@Embedded/@Embeddable
  * 
  * @author acgist
  */
@@ -37,11 +41,15 @@ public abstract class DataEntity extends PojoCopy {
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "modify_date")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date modifyDate;
 
 	public Long getId() {
