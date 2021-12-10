@@ -46,11 +46,6 @@ public class UserEntity extends DataEntity {
 	@Column
 	private Boolean enable;
 	/**
-	 * 是否删除
-	 */
-	@Column
-	private Boolean delete;
-	/**
 	 * 描述
 	 */
 	@Column(length = 64)
@@ -96,14 +91,6 @@ public class UserEntity extends DataEntity {
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
-	}
-
-	public Boolean getDelete() {
-		return delete;
-	}
-
-	public void setDelete(Boolean delete) {
-		this.delete = delete;
 	}
 
 	public String getMemo() {

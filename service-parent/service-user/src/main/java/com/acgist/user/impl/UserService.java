@@ -24,6 +24,7 @@ public class UserService implements IUserService {
 	
 	@Override
 	@Cacheable(cacheNames = "user")
+	@Transactional(readOnly = true)
 	public User findByName(String name) {
 		final UserEntity entity = this.userRepository.findByName(name);
 		if(entity == null) {

@@ -20,19 +20,21 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
+			<artifactId>boot-data</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.shardingsphere</groupId>
+					<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
 			<artifactId>service-user-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>service-gateway-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 	</dependencies>
 

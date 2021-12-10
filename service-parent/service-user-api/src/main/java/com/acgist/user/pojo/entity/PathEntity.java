@@ -6,7 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Index;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,9 +16,7 @@ import javax.persistence.Table;
 import com.acgist.data.entity.DataEntity;
 
 @Entity
-@Table(name = "t_path", indexes = {
-	@Index(name = "index_path_parent_id", columnList = "parent_id") 
-})
+@Table(name = "t_path")
 public class PathEntity extends DataEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +53,7 @@ public class PathEntity extends DataEntity {
 	 * 上级
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="parent_id")
+	@JoinColumn(name="parent_id", foreignKey = @ForeignKey(name = "key_path_parent_id"))
 	private PathEntity parent;
 	/**
 	 * 子集
