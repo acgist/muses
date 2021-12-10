@@ -24,7 +24,7 @@
 		<acgist.version>1.0.0</acgist.version>
 		<encoding>UTF-8</encoding>
 		<java.version>11</java.version>
-		<ws.rs.version>1.1.1</ws.rs.version>
+		<ws.rs.version>2.1.1</ws.rs.version>
 		<oauth2.version>5.6.0</oauth2.version>
 		<xml.bind.version>2.3.1</xml.bind.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
@@ -86,6 +86,11 @@
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-gateway</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>boot-sentinel</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
@@ -159,25 +164,23 @@
 				<artifactId>spring-security-oauth2-authorization-server</artifactId>
 				<version>${oauth2.authorization.version}</version>
 			</dependency>
-			<!-- shardingsphere -->
+			<!-- shardingjdbc -->
 			<dependency>
 				<groupId>org.apache.shardingsphere</groupId>
 				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
 				<version>${shardingjdbc.version}</version>
 			</dependency>
-			<!-- Rest注解 -->
-			<dependency>
-				<groupId>javax.ws.rs</groupId>
-				<artifactId>jsr311-api</artifactId>
-				<version>${ws.rs.version}</version>
-			</dependency>
-			<!-- XML注解 -->
+			<!-- JavaEE -->
 			<dependency>
 				<groupId>javax.xml.bind</groupId>
 				<artifactId>jaxb-api</artifactId>
 				<version>${xml.bind.version}</version>
 			</dependency>
-			<!-- JavaEE注解 -->
+			<dependency>
+			    <groupId>javax.ws.rs</groupId>
+			    <artifactId>javax.ws.rs-api</artifactId>
+			    <version>${ws.rs.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>

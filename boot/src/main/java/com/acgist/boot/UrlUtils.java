@@ -7,6 +7,8 @@ import java.net.URLEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.acgist.boot.config.MusesConfig;
+
 /**
  * <p>URL工具</p>
  * 
@@ -32,7 +34,7 @@ public final class UrlUtils {
 		}
 		try {
 			return URLEncoder
-				.encode(content, SystemConfig.DEFAULT_CHARSET)
+				.encode(content, MusesConfig.CHARSET)
 				// 空格编码变成加号：加号解码变成空格
 				.replace("+", "%20");
 		} catch (UnsupportedEncodingException e) {
@@ -53,7 +55,7 @@ public final class UrlUtils {
 			return content;
 		}
 		try {
-			return URLDecoder.decode(content, SystemConfig.DEFAULT_CHARSET);
+			return URLDecoder.decode(content, MusesConfig.CHARSET);
 		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("URL解码异常：{}", content, e);
 		}

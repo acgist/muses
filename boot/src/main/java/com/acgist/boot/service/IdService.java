@@ -7,12 +7,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
-import com.alibaba.cloud.nacos.NacosConfigManager;
-import com.alibaba.nacos.api.NacosFactory;
-import com.alibaba.nacos.api.config.ConfigService;
 
 /**
  * ID生成
@@ -37,15 +32,11 @@ public class IdService {
 	 * 当前序号
 	 */
 	private int index;
-	@Autowired
-	private NacosConfigManager nacosConfigManager;
 
 	@PostConstruct
 	public void init() {
 		final Random random = new Random();
 		this.index = random.nextInt(MAX_INDEX);
-		final ConfigService configService = this.nacosConfigManager.getConfigService();
-		configService.
 		LOGGER.info("雪花ID：{}-{}", this.sn, this.index);
 	}
 

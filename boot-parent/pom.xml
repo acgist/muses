@@ -24,6 +24,7 @@
 		<module>boot-data</module>
 		<module>boot-redis</module>
 		<module>boot-gateway</module>
+		<module>boot-sentinel</module>
 		<module>boot-concurrent</module>
 	</modules>
 

@@ -45,6 +45,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.acgist.boot.config.MusesConfig;
+
 /**
  * HTTP工具 
  * 
@@ -54,10 +56,6 @@ public final class HTTPUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HTTPUtils.class);
 	
-	/**
-	 * 超时时间
-	 */
-	private static final int DEFAULT_TIMEOUT = 5 * 1000;
 	/**
 	 * 复用连接
 	 * 不能关闭Client：不同域名使用不同TCP连接
@@ -75,7 +73,7 @@ public final class HTTPUtils {
 			.build();
 		final SocketConfig socketConfig = SocketConfig.custom()
 //          .setSoLinger(1)
-		    .setSoTimeout(DEFAULT_TIMEOUT)
+		    .setSoTimeout(MusesConfig.TIMEOUT)
 		    .setTcpNoDelay(true)
 		    .setSoKeepAlive(true)
 		    .setSoReuseAddress(true)
@@ -93,9 +91,9 @@ public final class HTTPUtils {
 //		connectionManager.closeIdleConnections(30, TimeUnit.SECONDS);
 //		connectionManager.closeExpiredConnections();
 		final RequestConfig requestConfig = RequestConfig.custom()
-			.setSocketTimeout(DEFAULT_TIMEOUT)
-			.setConnectTimeout(DEFAULT_TIMEOUT)
-			.setConnectionRequestTimeout(DEFAULT_TIMEOUT)
+			.setSocketTimeout(MusesConfig.TIMEOUT)
+			.setConnectTimeout(MusesConfig.TIMEOUT)
+			.setConnectionRequestTimeout(MusesConfig.TIMEOUT)
 			.build();
 		CLIENT = HttpClients.custom()
 //		    .setProxy(null)
@@ -126,7 +124,7 @@ public final class HTTPUtils {
 	}
 	
 	public static final String get(String url) {
-		return get(url, null, null, DEFAULT_TIMEOUT);
+		return get(url, null, null, MusesConfig.TIMEOUT);
 	}
 
 	public static final String get(String url, int timeout) {
@@ -134,7 +132,7 @@ public final class HTTPUtils {
 	}
 
 	public static final String get(String url, String body) {
-		return get(url, body, null, DEFAULT_TIMEOUT);
+		return get(url, body, null, MusesConfig.TIMEOUT);
 	}
 
 	public static final String get(String url, String body, Map<String, String> headers, int timeout) {
@@ -142,7 +140,7 @@ public final class HTTPUtils {
 		addHeaders(get, headers);
 		requestConfig(get, timeout);
 		if(StringUtils.isNotEmpty(body)) {
-			get.setEntity(new StringEntity(body, SystemConfig.DEFAULT_CHARSET));
+			get.setEntity(new StringEntity(body, MusesConfig.CHARSET));
 		}
 		return execute(get);
 	}
@@ -163,7 +161,7 @@ public final class HTTPUtils {
 	}
 	
 	public static final String post(String url, Map<String, Object> body) {
-		return post(url, body, null, DEFAULT_TIMEOUT);
+		return post(url, body, null, MusesConfig.TIMEOUT);
 	}
 	
 	public static final String post(String url, Map<String, Object> body, int timeout) {
@@ -177,7 +175,7 @@ public final class HTTPUtils {
 		post.setHeader("Content-Type", URLEncodedUtils.CONTENT_TYPE);
 		if(MapUtils.isNotEmpty(body)) {
 			try {
-				post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), SystemConfig.DEFAULT_CHARSET));
+				post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), MusesConfig.CHARSET));
 			} catch (UnsupportedEncodingException e) {
 				LOGGER.error("设置请求参数异常", e);
 			}
@@ -186,7 +184,7 @@ public final class HTTPUtils {
 	}
 	
 	public static final String post(String url, String body) {
-		return post(url, body, null, DEFAULT_TIMEOUT);
+		return post(url, body, null, MusesConfig.TIMEOUT);
 	}
 	
 	public static final String post(String url, String body, int timeout) {
@@ -198,7 +196,7 @@ public final class HTTPUtils {
 		addHeaders(post, headers);
 		requestConfig(post, timeout);
 		if(StringUtils.isNotEmpty(body)) {
-			post.setEntity(new StringEntity(body, SystemConfig.DEFAULT_CHARSET));
+			post.setEntity(new StringEntity(body, MusesConfig.CHARSET));
 		}
 		return execute(post);
 	}
@@ -210,7 +208,7 @@ public final class HTTPUtils {
 	}
 	
 	private static final void requestConfig(HttpRequestBase request, int timeout) {
-	    if(timeout <= 0 || timeout == DEFAULT_TIMEOUT) {
+	    if(timeout <= 0 || timeout == MusesConfig.TIMEOUT) {
 	        return;
 	    }
 	    final RequestConfig requestConfig = RequestConfig.custom()
@@ -252,7 +250,7 @@ public final class HTTPUtils {
 			if(statusCode != HttpStatus.SC_OK) {
 				LOGGER.warn("HTTP返回错误状态：{}-{}-{}", statusCode, request, response);
 			}
-			return EntityUtils.toString(response.getEntity(), SystemConfig.DEFAULT_CHARSET);
+			return EntityUtils.toString(response.getEntity(), MusesConfig.CHARSET);
 		} catch(Exception e) {
 			LOGGER.error("发送请求异常", e);
 		} finally {

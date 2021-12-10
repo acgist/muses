@@ -126,6 +126,8 @@ public void retry() {
 #### 系统配置
 
 ```
+# 系统序列号
+system.sn=01
 # 序列化类型：Redis
 system.serializer.type=jdk|jackson
 # 是否启用拦截器

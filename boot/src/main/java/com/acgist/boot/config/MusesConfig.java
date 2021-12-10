@@ -1,7 +1,5 @@
 package com.acgist.boot.config;
 
-import org.yaml.snakeyaml.Yaml;
-
 /**
  * 系统配置
  * 
@@ -18,14 +16,4 @@ public class MusesConfig {
 	 */
 	public static final String CHARSET = "UTF-8";
 
-	final Yaml yaml = new Yaml();
-
-	public void deserialize(String content) {
-		this.yaml.load(content);
-	}
-	
-	public String serialize() {
-		return this.yaml.dump
-	}
-	
 }

@@ -2,11 +2,6 @@ package com.acgist.gateway.service;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acgist.gateway.config.GatewayMapping;
 
 /**
@@ -16,19 +11,12 @@ import com.acgist.gateway.config.GatewayMapping;
  */
 public class GatewayMappingService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayMappingService.class);
-	
 	private final List<GatewayMapping> mapping;
 	
 	public GatewayMappingService(List<GatewayMapping> mapping) {
 		this.mapping = mapping;
 	}
 
-	@PostConstruct
-	public void init() {
-		this.mapping.forEach(mapping -> LOGGER.info("网关映射：{}", mapping));
-	}
-	
 	/**
 	 * 通过网关地址获取网关映射
 	 * 
