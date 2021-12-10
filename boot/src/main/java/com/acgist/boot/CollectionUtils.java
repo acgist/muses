@@ -11,7 +11,7 @@ public final class CollectionUtils {
 
 	private CollectionUtils() {
 	}
-	
+
 	/**
 	 * 判断集合是否为空
 	 * 
@@ -22,7 +22,7 @@ public final class CollectionUtils {
 	public static final boolean isEmpty(Collection<?> collection) {
 		return collection == null || collection.isEmpty();
 	}
-	
+
 	/**
 	 * 判断集合是否非空
 	 * 
@@ -33,5 +33,5 @@ public final class CollectionUtils {
 	public static final boolean isNotEmpty(Collection<?> collection) {
 		return !isEmpty(collection);
 	}
-	
+
 }

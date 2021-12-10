@@ -145,6 +145,11 @@ public final class HTTPUtils {
 		return execute(get);
 	}
 	
+	/**
+	 * 实现带有请求体的GET请求
+	 * 
+	 * @author acgist
+	 */
 	private static final class HttpGet extends HttpEntityEnclosingRequestBase {
 
 		public final static String METHOD_NAME = "GET";
@@ -219,15 +224,8 @@ public final class HTTPUtils {
 	    request.setConfig(requestConfig);
 	}
 
-	/**
-	 * <p>生成参数集合</p>
-	 * 
-	 * @param body 数据
-	 * 
-	 * @return 参数集合
-	 */
 	private static final List<NameValuePair> buildFormParams(Map<String, Object> body) {
-		if(MapUtils.isNotEmpty(body)) {
+		if (MapUtils.isNotEmpty(body)) {
 			return body.entrySet().stream()
 				.map(entity -> new BasicNameValuePair(entity.getKey(), String.valueOf(entity.getValue())))
 				.collect(Collectors.toList());
@@ -235,32 +233,49 @@ public final class HTTPUtils {
 		return List.of();
 	}
 	
-	/**
-	 * <p>执行请求</p>
-	 * 
-	 * @param request 请求
-	 * 
-	 * @return 返回内容
-	 */
 	private static final String execute(HttpUriRequest request) {
 		CloseableHttpResponse response = null;
 		try {
 			response = CLIENT.execute(request);
 			final int statusCode = response.getStatusLine().getStatusCode();
-			if(statusCode != HttpStatus.SC_OK) {
+			if (statusCode != HttpStatus.SC_OK) {
 				LOGGER.warn("HTTP返回错误状态：{}-{}-{}", statusCode, request, response);
 			}
 			return EntityUtils.toString(response.getEntity(), MusesConfig.CHARSET);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			LOGGER.error("发送请求异常", e);
 		} finally {
 			close(response);
 		}
 		return null;
 	}
+
+	private static final void close(CloseableHttpResponse response) {
+		if (response != null) {
+			try {
+				// 归还连接
+				response.close();
+			} catch (IOException e) {
+				LOGGER.error("关闭响应异常", e);
+			}
+		}
+	}
+	
+	public static final void shutdown() {
+		if (CLIENT != null) {
+			try {
+				// 自动清理连接管理：manager
+				CLIENT.close();
+			} catch (IOException e) {
+				LOGGER.error("关闭连接异常", e);
+			}
+		}
+	}
 	
 	/**
-	 * <p>SSL工厂</p>
+	 * 创建SSL工厂
+	 * 
+	 * @return SSL工厂
 	 */
 	private static final SSLConnectionSocketFactory createSSLConnSocketFactory() {
 		SSLContext sslContext = null;
@@ -291,36 +306,6 @@ public final class HTTPUtils {
 //			}
 //		});
 		return sslFactory;
-	}
-
-	/**
-	 * <p>关闭资源</p>
-	 * 
-	 * @param response 请求响应
-	 */
-	private static final void close(CloseableHttpResponse response) {
-		if(response != null) {
-			try {
-			    // 归还连接
-				response.close();
-			} catch (IOException e) {
-				LOGGER.error("关闭响应异常", e);
-			}
-		}
-	}
-	
-	/**
-	 * <p>工具关闭</p>
-	 */
-	public static final void shutdown() {
-		if(CLIENT != null) {
-			try {
-			    // 自动清理连接管理：manager
-				CLIENT.close();
-			} catch (IOException e) {
-				LOGGER.error("关闭连接异常", e);
-			}
-		}
 	}
 	
 }

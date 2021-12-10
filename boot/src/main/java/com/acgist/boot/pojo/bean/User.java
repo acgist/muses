@@ -15,8 +15,11 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 网关透传用户账号头部名称
+	 */
 	public static final String HEADER_NAME = "current-user";
-	
+
 	/**
 	 * ID
 	 */
@@ -59,7 +62,7 @@ public class User implements Serializable {
 	 * 判断是否含有权限
 	 * 
 	 * @param method 请求方法
-	 * @param path 请求路径
+	 * @param path   请求路径
 	 * 
 	 * @return 是否含有权限
 	 */
@@ -113,7 +116,7 @@ public class User implements Serializable {
 	public void setPaths(Set<String> paths) {
 		this.paths = paths;
 	}
-	
+
 	@Override
 	public String toString() {
 		return JSONUtils.toJSON(this);

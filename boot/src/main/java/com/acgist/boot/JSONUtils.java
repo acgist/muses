@@ -27,7 +27,7 @@ public final class JSONUtils {
 
 	private JSONUtils() {
 	}
-	
+
 	/**
 	 * Mapper（线程安全）
 	 */
@@ -52,11 +52,11 @@ public final class JSONUtils {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * JSON转Java
 	 * 
-	 * @param <T> Java类型
+	 * @param <T>  Java类型
 	 * @param json JSON
 	 * 
 	 * @return Java
@@ -78,8 +78,8 @@ public final class JSONUtils {
 	/**
 	 * JSON转Java
 	 * 
-	 * @param <T> Java类型
-	 * @param json JSON
+	 * @param <T>   Java类型
+	 * @param json  JSON
 	 * @param clazz Java类型
 	 * 
 	 * @return Java
@@ -96,12 +96,12 @@ public final class JSONUtils {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * JSON转Map
 	 * 
-	 * @param <K> K类型
-	 * @param <V> V类型
+	 * @param <K>  K类型
+	 * @param <V>  V类型
 	 * @param json JSON
 	 * 
 	 * @return Map
@@ -123,7 +123,7 @@ public final class JSONUtils {
 	/**
 	 * JSON转List
 	 * 
-	 * @param <T> 元素类型
+	 * @param <T>  元素类型
 	 * @param json JSON
 	 * 
 	 * @return List
@@ -158,12 +158,11 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper
-			.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+		return mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
-	
+
 	/**
 	 * 创建序列化Mapper
 	 * 
@@ -171,12 +170,9 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildSerializeMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator
-			.builder()
-			.allowIfBaseType(Object.class)
+		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class)
 			.build();
-		return mapper
-			.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+		return mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);

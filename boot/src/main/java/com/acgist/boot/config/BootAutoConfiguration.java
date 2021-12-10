@@ -45,7 +45,7 @@ public class BootAutoConfiguration {
 	public ObjectMapper objectMapper() {
 		return JSONUtils.getMapper();
 	}
-	
+
 	@Bean
 	@ConditionalOnMissingBean
 	public SerializerType serializerType() {
