@@ -37,9 +37,9 @@ public class RoleEntity extends DataEntity {
 	/**
 	 * 权限
 	 */
-	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	@JoinTable(
-	name = "ts_role_path",
+	name = "t_role_path",
 		joinColumns = @JoinColumn(
 			name = "role_id",
 			referencedColumnName = "id",
