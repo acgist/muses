@@ -19,6 +19,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Duration;
 import java.util.UUID;
 
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -39,6 +40,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -54,7 +56,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration(proxyBeanMethods = false)
 @Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
-
+	
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -81,6 +83,12 @@ public class AuthorizationServerConfig {
 		.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 		.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 		.redirectUri("http://www.acgist.com")
+		.tokenSettings(
+			TokenSettings.builder()
+			.accessTokenTimeToLive(Duration.ofHours(3))
+			.refreshTokenTimeToLive(Duration.ofDays(7))
+			.build()
+		)
 		.scope("all")
 		.build();
 
