@@ -18,7 +18,6 @@
 	</parent>
 
 	<modules>
-		<module>service-build</module>
 		<module>service-user-api</module>
 		<module>service-user</module>
 		<module>service-gateway-api</module>

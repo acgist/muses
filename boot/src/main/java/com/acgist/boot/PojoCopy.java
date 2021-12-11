@@ -14,7 +14,6 @@ public abstract class PojoCopy implements Cloneable, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	/**
 	 * 属性拷贝
 	 * 
 	 * @param object 输拷贝对象

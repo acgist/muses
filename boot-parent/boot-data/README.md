@@ -1,10 +1,21 @@
 ## 分库分表
 
+#### Maven
+
+```
+<dependency>
+	<groupId>org.apache.shardingsphere</groupId>
+	<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+</dependency>
+```
+
+#### 配置
+
 ```
 spring:
   jpa:
     database: MYSQL
-    show-sql: false
+    show-sql: true
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL57Dialect
     hibernate:
@@ -120,7 +131,7 @@ spring:
       maximum-pool-size: 10
   jpa:
     database: MYSQL
-    show-sql: false
+    show-sql: true
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQL57Dialect
     hibernate:
