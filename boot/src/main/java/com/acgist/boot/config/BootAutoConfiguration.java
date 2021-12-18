@@ -15,6 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.qos.logback.classic.LoggerContext;
 
+/**
+ * Boot自动配置
+ * 
+ * @author acgist
+ */
 @Configuration
 public class BootAutoConfiguration {
 
@@ -31,6 +36,11 @@ public class BootAutoConfiguration {
 
 	}
 
+	/**
+	 * 默认使用JDK序列化
+	 * 
+	 * Jackson不支持没有默认函数的对象：JWT Token授权信息
+	 */
 	@Value("${system.serializer.type:jdk}")
 	private String serializerType;
 
