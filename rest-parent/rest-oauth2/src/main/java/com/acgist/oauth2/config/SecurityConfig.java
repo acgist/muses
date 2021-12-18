@@ -1,3 +1,4 @@
+package com.acgist.oauth2.config;
 //package com.acgist.oauth.config;
 //
 //import org.springframework.beans.factory.annotation.Autowired;

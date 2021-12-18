@@ -15,9 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import com.acgist.boot.HTTPUtils;
 import com.acgist.boot.StringUtils;
 
-public class OauthTest {
+public class Oauth2Test {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(OauthTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Oauth2Test.class);
 	
 	public static final String OAUTH2_URL = "http://localhost:9999";
 	public static final String GATEWAY_URL = "http://localhost:8888";

@@ -12,7 +12,7 @@
 
 #### 认证授权
 
-Rest服务统一使用`rest-oauth`认证授权
+Rest服务统一使用`rest-oauth2`认证授权
 
 > 不要dubbo和sentinel
 

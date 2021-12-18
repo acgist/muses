@@ -1,4 +1,4 @@
-package com.acgist.oauth.service;
+package com.acgist.oauth2.service;
 
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.security.core.authority.AuthorityUtils;

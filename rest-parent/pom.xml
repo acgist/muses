@@ -19,7 +19,7 @@
 
 	<modules>
 		<module>rest</module>
-		<module>rest-oauth</module>
+		<module>rest-oauth2</module>
 		<module>rest-gateway</module>
 	</modules>
 

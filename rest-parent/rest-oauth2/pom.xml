@@ -50,7 +50,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.acgist.main.OauthApplication</mainClass>
+							<mainClass>com.acgist.main.Oauth2Application</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

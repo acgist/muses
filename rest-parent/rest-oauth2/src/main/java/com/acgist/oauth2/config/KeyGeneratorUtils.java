@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.acgist.oauth.config;
+package com.acgist.oauth2.config;
 
 import java.math.BigInteger;
 import java.security.KeyPair;

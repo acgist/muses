@@ -124,7 +124,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>rest-oauth</artifactId>
+				<artifactId>rest-oauth2</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
