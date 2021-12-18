@@ -40,7 +40,7 @@ public final class DateUtils {
 	 */
 	public static final String buildTime(LocalDateTime time) {
 		if (time == null) {
-			return null;
+			return buildTime();
 		}
 		return time.format(FORMAT);
 	}

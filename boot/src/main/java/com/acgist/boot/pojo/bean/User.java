@@ -73,8 +73,8 @@ public class User implements Serializable {
 		if (CollectionUtils.isEmpty(this.paths)) {
 			return false;
 		}
-		final String value = method.toUpperCase() + ":" + path;
-		return this.paths.stream().anyMatch(pathValue -> pathValue.equals(value));
+		final String value = method + ":" + path;
+		return this.paths.stream().anyMatch(pathValue -> pathValue.equalsIgnoreCase(value));
 	}
 
 	public Long getId() {

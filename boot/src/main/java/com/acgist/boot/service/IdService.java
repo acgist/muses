@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 /**
  * ID生成
  * 
+ * TODO：没有配置sn根据当前系统应用信息自动生成
+ * 
  * @author acgist
  */
 public class IdService {
@@ -24,7 +26,7 @@ public class IdService {
 	private static final int MAX_INDEX = 9999;
 
 	/**
-	 * 系统ID：01~99
+	 * 系统SN：01~99
 	 */
 	@Value("${system.sn:99}")
 	private int sn;
