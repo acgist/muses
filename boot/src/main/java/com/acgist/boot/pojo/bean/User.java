@@ -40,14 +40,14 @@ public class User implements Serializable {
 	 * 地址
 	 */
 	private Set<String> paths;
-	
+
 	/**
 	 * 获取网关透传用户
 	 * 
 	 * @return 网关透传用户
 	 */
 	public User currentUser() {
-		User user = new User();
+		final User user = new User();
 		user.setId(this.id);
 		user.setName(this.name);
 		user.setPassword(this.password);
