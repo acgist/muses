@@ -1,12 +1,16 @@
 # SpringCloudAlibaba
 
-## 认证授权
+## 认证鉴权
 
-Web服务和Rest通过网关对外提供服务，Web服务需要自己实现身份认证，Rest服务统一网关进行身份认证，权限鉴定需要都要自己实现。
+Web服务已经实现用户登陆需要自己实现鉴权
+REST服务配合Oauth2服务通过网关实现认证鉴权
 
-#### UserService
+## TODO
 
-需要自己实现用户查询服务逻辑
+Oauth2使用redis保存token
+Oauth2使用配置中心添加配置
+Oauth2使用jks而不是自动生成证书
+网关鉴权能否去掉服务调用：使用token保存权限？但是数据太大性能？
 
 ## 模块
 
