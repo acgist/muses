@@ -33,6 +33,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * @author Joe Grandja
  * @since 0.1.0
@@ -41,6 +43,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class DefaultSecurityConfig {
 
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	// @formatter:off
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -49,25 +54,12 @@ public class DefaultSecurityConfig {
 //			.anyRequest().permitAll()
 			.anyRequest().authenticated()
 			.and()
-			.userDetailsService(this.users())
+			.userDetailsService(this.userDetailsService)
 			.formLogin();
 //			.httpBasic();
 //			.formLogin(withDefaults());
 		return http.build();
 	}
 	// @formatter:on
-
-	// @formatter:off
-	@Bean
-	UserDetailsService users() {
-		UserDetails user = User.builder()
-				.username("user")
-				.password(new BCryptPasswordEncoder().encode("123456"))
-				.roles("USER")
-				.build();
-		return new InMemoryUserDetailsManager(user);
-	}
-	// @formatter:on
-	
 
 }

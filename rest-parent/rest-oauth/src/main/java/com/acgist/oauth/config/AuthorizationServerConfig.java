@@ -53,7 +53,7 @@ import com.nimbusds.jose.proc.SecurityContext;
  * @author Joe Grandja
  * @since 0.0.1
  */
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
 	
@@ -121,12 +121,10 @@ public class AuthorizationServerConfig {
 	public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		// @formatter:off
 		RSAKey rsaKey = new RSAKey.Builder(publicKey)
 				.privateKey(privateKey)
 				.keyID(UUID.randomUUID().toString())
 				.build();
-		// @formatter:on
 		JWKSet jwkSet = new JWKSet(rsaKey);
 		return new ImmutableJWKSet<>(jwkSet);
 	}
@@ -156,18 +154,4 @@ public class AuthorizationServerConfig {
 		return keyPair;
 	}
 	
-//	@Bean
-//	public EmbeddedDatabase embeddedDatabase() {
-//		// @formatter:off
-//		return new EmbeddedDatabaseBuilder()
-//				.generateUniqueName(true)
-//				.setType(EmbeddedDatabaseType.H2)
-//				.setScriptEncoding("UTF-8")
-//				.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql")
-//				.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql")
-//				.addScript("org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql")
-//				.build();
-//		// @formatter:on
-//	}
-
 }

@@ -23,7 +23,7 @@ import com.acgist.rest.interceptor.UserInteceptor;
  * @author acgist
  */
 @Configuration
-@ConditionalOnProperty(value = "system.gateway.interceptor", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(value = "system.rest.interceptor", matchIfMissing = true, havingValue = "true")
 public class GatewayInterceptorAutoConfiguration implements WebMvcConfigurer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayInterceptorAutoConfiguration.class);

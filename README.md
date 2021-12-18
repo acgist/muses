@@ -131,7 +131,9 @@ system.sn=01
 # 序列化类型：Redis
 system.serializer.type=jdk|jackson
 # 是否启用拦截器
-system.gateway.interceptor=true|false
+system.rest.interceptor=true|false
+# 慢请求统计时间
+system.gateway.slow.request.duration=1000
 ```
 
 

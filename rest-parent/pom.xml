@@ -28,10 +28,6 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-rest</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-dubbo</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

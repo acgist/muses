@@ -15,3 +15,7 @@
 Rest服务统一使用`rest-oauth`认证授权
 
 > 不要dubbo和sentinel
+
+#### 注意
+
+不能配置`issuer-uri`
