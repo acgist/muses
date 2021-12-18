@@ -23,10 +23,6 @@
 			<artifactId>boot-sentinel</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.acgist</groupId>
-			<artifactId>service-user-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>

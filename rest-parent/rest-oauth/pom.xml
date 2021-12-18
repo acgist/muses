@@ -23,6 +23,10 @@
 			<artifactId>boot-redis</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>service-user-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-core</artifactId>
 			<version>5.5.3</version>

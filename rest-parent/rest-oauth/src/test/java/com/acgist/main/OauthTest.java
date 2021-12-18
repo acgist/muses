@@ -53,7 +53,7 @@ public class OauthTest {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web-client:123456".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "1LcTSB-TUuY__YB9qMTYP4_VFhzTOY-utFQWHayOSqV5QR7ZeVOB8Ezfxhv_m740lUPK6wZbeHOEInoeXufLXWtZfn7q4RhEHy9PP3h4ZiUhUOT1lPDc0QwFT6VVDarL");
+		params.add("code", "l0iJeplhPcSb6fuG28am2SYUuXYIKgYw46uSJVuMN7GVQLUdnNREdgaamrP_tbglQ208EOmEoNUAxJAswEXdCY_6ditp_WK2wSsoqblOTUndAOIaB9gqETdQXJNV9Y1I");
 		params.add("grant_type", "authorization_code");
 		params.add("redirect_uri", "http://www.acgist.com");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
@@ -82,7 +82,7 @@ public class OauthTest {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web-client:123456".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJraWQiOiJhZjRiYmQ3Yi0wMDA5LTQ3MmEtOWFkZC00MjkyNGNhYTMyNzciLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViLWNsaWVudCIsIm5iZiI6MTYzOTgxMjMzOSwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTYzOTgyMzEzOSwiaWF0IjoxNjM5ODEyMzM5fQ.i66KU86qAyZcEj6qKlpjerS0pIakFLMTvZeIEGvOjjH5SXgZH7HOeCQQeWsLErhgewotdlMz9DyeRrVMQBDRWvdhsKEurbX8-_JmlbrxSwPYcgsFGe9vFBVaKOrD999qhNz-j9_gSkGK2ovGncZfkZS1lKStzEXsjwaBYyd4SxnN0JN92bo8egg4aDoNfnVlTEL46fbZfiOG4Tnqa09ZDmETfxlT81UJ5Hx5vxTRC394F84gp3ei0ZP9t3sHyFTOvQ1JkpBgKkC2lCbvz0dqHxKkxFf-iXmpNveSKfHneW6ockemGlb4fA1KvI5x-_b50Ooai3reIoZ0tvqBufOHMg");
+		params.add("token", "eyJraWQiOiI3NDQ0ZjU4Ny1hMTIzLTQwNjktYmM1Ni0xZGIwNGNiZTE1MGYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViLWNsaWVudCIsIm5iZiI6MTYzOTgxOTkyMywic2NvcGUiOlsiYWxsIl0sImV4cCI6MTYzOTgzMDcyMywiaWF0IjoxNjM5ODE5OTIzfQ.AXVR5oO5z0HpYORJBOiMUt8ykp2MawjfwUF3flUlePP0NNPVVn-g4CAre1Pc1W7wmLC-uqMnfctj9J96PW_3pZ67IiaDz7t_z78E9gg_Nc4Dn-gG2hLEtY2djwPmLyCSfnBKyRw8PRLw5V-tLihWNxWcmXrw8-LY0cd9xpI4UFc6w0eTBD5-OyqXdWbEzsaxDjaUtwLYHgubcjv7z3hvr0sgnFlPbWT4w0ZjQT_WCdkGKT3bJP6Zz6QQrNOTrhTAiVT766pMJoTNAETFLWSaETFFqngnBX6ELccyHekRaWc48xhx6o6p299ayjSN9OlHGpEA-8Fq2Synm4b1YfaUfQ");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/introspect", requestEntity, String.class);
 		LOGGER.info("{}", body.getBody());
@@ -95,7 +95,7 @@ public class OauthTest {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		// 没有通过网关需要注入用户信息
 //		headers.set(User.HEADER_NAME, "root");
-		headers.set("Authorization", "Bearer eyJraWQiOiJhZjRiYmQ3Yi0wMDA5LTQ3MmEtOWFkZC00MjkyNGNhYTMyNzciLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViLWNsaWVudCIsIm5iZiI6MTYzOTgxMjMzOSwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTYzOTgyMzEzOSwiaWF0IjoxNjM5ODEyMzM5fQ.i66KU86qAyZcEj6qKlpjerS0pIakFLMTvZeIEGvOjjH5SXgZH7HOeCQQeWsLErhgewotdlMz9DyeRrVMQBDRWvdhsKEurbX8-_JmlbrxSwPYcgsFGe9vFBVaKOrD999qhNz-j9_gSkGK2ovGncZfkZS1lKStzEXsjwaBYyd4SxnN0JN92bo8egg4aDoNfnVlTEL46fbZfiOG4Tnqa09ZDmETfxlT81UJ5Hx5vxTRC394F84gp3ei0ZP9t3sHyFTOvQ1JkpBgKkC2lCbvz0dqHxKkxFf-iXmpNveSKfHneW6ockemGlb4fA1KvI5x-_b50Ooai3reIoZ0tvqBufOHMg");
+		headers.set("Authorization", "Bearer eyJraWQiOiI3NDQ0ZjU4Ny1hMTIzLTQwNjktYmM1Ni0xZGIwNGNiZTE1MGYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViLWNsaWVudCIsIm5iZiI6MTYzOTgxOTkyMywic2NvcGUiOlsiYWxsIl0sImV4cCI6MTYzOTgzMDcyMywiaWF0IjoxNjM5ODE5OTIzfQ.AXVR5oO5z0HpYORJBOiMUt8ykp2MawjfwUF3flUlePP0NNPVVn-g4CAre1Pc1W7wmLC-uqMnfctj9J96PW_3pZ67IiaDz7t_z78E9gg_Nc4Dn-gG2hLEtY2djwPmLyCSfnBKyRw8PRLw5V-tLihWNxWcmXrw8-LY0cd9xpI4UFc6w0eTBD5-OyqXdWbEzsaxDjaUtwLYHgubcjv7z3hvr0sgnFlPbWT4w0ZjQT_WCdkGKT3bJP6Zz6QQrNOTrhTAiVT766pMJoTNAETFLWSaETFFqngnBX6ELccyHekRaWc48xhx6o6p299ayjSN9OlHGpEA-8Fq2Synm4b1YfaUfQ");
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 //		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9090/user", requestEntity, String.class);

@@ -10,7 +10,6 @@ REST服务配合Oauth2服务通过网关实现认证鉴权
 Oauth2使用redis保存token
 Oauth2使用配置中心添加配置
 Oauth2使用jks而不是自动生成证书
-网关鉴权能否去掉服务调用：使用token保存权限？但是数据太大性能？
 
 ## 模块
 

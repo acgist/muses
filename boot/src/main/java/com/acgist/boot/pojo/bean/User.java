@@ -18,7 +18,7 @@ public class User implements Serializable {
 	/**
 	 * 网关透传用户账号头部名称
 	 */
-	public static final String HEADER_NAME = "current-user";
+	public static final String HEADER_CURRENT_USER = "current-user";
 
 	/**
 	 * ID
@@ -40,6 +40,19 @@ public class User implements Serializable {
 	 * 地址
 	 */
 	private Set<String> paths;
+	
+	/**
+	 * 获取网关透传用户
+	 * 
+	 * @return 网关透传用户
+	 */
+	public User currentUser() {
+		User user = new User();
+		user.setId(this.id);
+		user.setName(this.name);
+		user.setPassword(this.password);
+		return user;
+	}
 
 	/**
 	 * 判断是否含有角色
