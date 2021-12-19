@@ -19,3 +19,14 @@ Rest服务统一使用`rest-oauth2`认证授权
 #### 注意
 
 不能配置`issuer-uri`
+
+## 模块
+
+#### gateway sentinel adapter
+
+```
+<dependency>
+	<groupId>com.alibaba.cloud</groupId>
+	<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+</dependency>
+```
