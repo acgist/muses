@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 18/12/2021 16:10:42
+ Date: 19/12/2021 14:44:41
 */
 
 SET NAMES utf8mb4;
@@ -156,8 +156,8 @@ CREATE TABLE `t_user`  (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', b'1', '超级用户', 'root', '$2a$10$nacPyEjguETOXodaYn7BGuxG4VIvuohk6RB.goC.rF3rp58HNCDIO');
-INSERT INTO `t_user` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', b'1', '碧螺萧萧', 'acgist', '$2a$10$nacPyEjguETOXodaYn7BGuxG4VIvuohk6RB.goC.rF3rp58HNCDIO');
+INSERT INTO `t_user` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', b'1', '超级用户', 'root', '$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou');
+INSERT INTO `t_user` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', b'1', '碧螺萧萧', 'acgist', '$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou');
 
 -- ----------------------------
 -- Table structure for t_user_role
