@@ -1,25 +1,11 @@
 ## 认证服务
 
-#### jwt.jks
+#### jwk.jks
 
 ```
-keytool -genkey -alias jwt -keyalg RSA -keysize 1024 -keystore jwt.jks -validity 3650 -keypass acgist -storepass acgist
+keytool -genkeypair -alias jwk -keyalg RSA -keysize 2048 -keystore jwk.jks -validity 3650 -storetype jks -keypass acgist -storepass acgist
 ```
 
-#### 代码优化
+#### 注意事项
 
->
-已经废弃
-~~spring-security-oauth2~~
-~~spring-cloud-starter-oauth2~~
-
-```
-spring-security-oauth2-client
-spring-security-oauth2-resource-server
-spring-security-oauth2-authorization-server
-spring-boot-starter-oauth2-client
-spring-boot-starter-oauth2-resource-server
-```
-
-#### OIDC
-
+公钥和客户端ID不能随机生成，否者重启之后Redis数据就会无效。

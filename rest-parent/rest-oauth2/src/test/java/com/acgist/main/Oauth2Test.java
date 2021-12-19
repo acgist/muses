@@ -53,7 +53,7 @@ public class Oauth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "VTJaqJh79HwdYj_tqv6DfV77POh91km3sHeMgtSgUxMzzDs1tvGxWMuACRW-MxOQl6CPb7vFT_4wSHUlJXoRj_8T4oXPfWC9mP1AHfsyxH5WhKZKeKZkL4LvRKgtKMir");
+		params.add("code", "wZZdhoTHnaWov9vtwsKrOqQa18CXVMs8aMVtg4IcTjE5tw8qJxHiLNzjUdMpTi94pSwlC2oAwGS465dmK01xqjXhc5FxTitbnYQVesUmASxNirTPxit-BDEENgdiwBz5");
 		params.add("grant_type", "authorization_code");
 		params.add("redirect_uri", "https://www.acgist.com");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
@@ -69,9 +69,9 @@ public class Oauth2Test {
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		params.add("grant_type", "refresh_token");
-		params.add("refresh_token", "eyJraWQiOiJmZGI1ZjQ4YS0wMjJiLTQ3ZWEtOTgzNy00NWI3MTE3MWYyMjEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjM5ODg3MjI0LCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjM5ODk0NDI0LCJpYXQiOjE2Mzk4ODcyMjR9.SzcvBlEnLaSCwU8JL8G8kYXEoqWMAGbE7h59IwpxE4ipo3hsuQOrhEkw-pDBNcwsMfdhI72CsISftfEfipZchwEnYh75wmFGIl-mOfbdK_0Fqi-U2BzFDWTe6SD-fDnNTCuBG3pGt49tD5N_ptdtQGmONQY8JmoYmcedvA8cbTw-RqGgqXLKodQfBVNigYvDMl5IyrsAwFjhv1l3P2JJrpUEQ4u6BD-ctGs_mdMOGjTRbAPqOO9qYpflEBVFM0zOZa-gfSm3bkERn-R8jf1bz6sSd0vJjPjrbsTK7tYn_YoDDBDg0z-fbdIEjeQlSsdGOhEp0iJnsyzb3IT0ec8SUQ");
+		params.add("refresh_token", "YCtFi2UIR2-B8wKBMbICPJBNLYzTGO1xxmUNdPQblD-38mphlE56dryfdIQ96L1Pz2h7tz64K_tCGTAY5rubBaiZUp8NrYWaTQx7d4LtwocvxWoJV8gbXyj3Ti2tvozQ");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9090/oauth2/token", requestEntity, String.class);
+		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/token", requestEntity, String.class);
 		LOGGER.info("{}", body.getBody());
 	}
 	
@@ -82,7 +82,7 @@ public class Oauth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJraWQiOiJmZGI1ZjQ4YS0wMjJiLTQ3ZWEtOTgzNy00NWI3MTE3MWYyMjEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjM5ODg3MjI0LCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjM5ODk0NDI0LCJpYXQiOjE2Mzk4ODcyMjR9.SzcvBlEnLaSCwU8JL8G8kYXEoqWMAGbE7h59IwpxE4ipo3hsuQOrhEkw-pDBNcwsMfdhI72CsISftfEfipZchwEnYh75wmFGIl-mOfbdK_0Fqi-U2BzFDWTe6SD-fDnNTCuBG3pGt49tD5N_ptdtQGmONQY8JmoYmcedvA8cbTw-RqGgqXLKodQfBVNigYvDMl5IyrsAwFjhv1l3P2JJrpUEQ4u6BD-ctGs_mdMOGjTRbAPqOO9qYpflEBVFM0zOZa-gfSm3bkERn-R8jf1bz6sSd0vJjPjrbsTK7tYn_YoDDBDg0z-fbdIEjeQlSsdGOhEp0iJnsyzb3IT0ec8SUQ");
+		params.add("token", "eyJraWQiOiItMTIwMzIwOTE1OCIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjM5ODk1MjE3LCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjM5OTAyNDE3LCJpYXQiOjE2Mzk4OTUyMTd9.mtCAVPxVh0MAkOHDlHzAYA0uDd33BwMkksQcgbK8uiDwrkr_n1wxRs8F33SUO_2JZnXgWIG_K1iaDV0BdvUBFdOn6GJxqpURu6fS2hss2cYgFkUSpm4POvESIJq71nGrjEBBIGMMl5CInd2MIQhbVwOgDIvL1u3trnnDZDL0iIX2hGTBn8eAMTd5v2q1HkaJ5K_l1lkcb-N2KYE3S3hVdW_OEcHMzeq9SfStnBD-RP0MDWnKH5y0hi6I2UkBrQF2-EQkzVbW0RdGEGELx1QgWP-BamR-1I20i9z2ZIdtzaU_3fLETcE9y-v-fyzJmpaNmh4LEDa7T9tdsAB2hS_mYA");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/introspect", requestEntity, String.class);
 		LOGGER.info("{}", body.getBody());
@@ -94,8 +94,8 @@ public class Oauth2Test {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		// 没有通过网关需要注入用户信息
-//		headers.set(User.HEADER_NAME, "root");
-		headers.set("Authorization", "Bearer eyJraWQiOiJmNDdhNzVmYy02MjQ0LTRlNzgtOGIzOC1iZWZhODZjZGFkNDkiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViLWNsaWVudCIsIm5iZiI6MTYzOTg3NzUwMiwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTYzOTg4ODMwMiwiaWF0IjoxNjM5ODc3NTAyfQ.CTAszAMyeGRRIsapBLMs1Btvn3rdUMJmVlKSnu4gLyAaDJ7PaTKGR3Gd5gYfMzmJ9pMYb4kgpTPzcjx8IEJeShXsDu_zhC0RbDoF6csz7dk_GhpFtGgBEeKVBZA-ki7IewWW4BcKocodCZavvHsvlcNG9yzIS4YbAUzSyAoht799DgtlCxclxEPNnNiZ5ipYmzhUIQUd7IgnV9dfhFW59-CwLLauI16Nvzh5moA-tNgxyjEdBSrMluxo_-uVsZzMLrJPXIFDNsrHfxZkFTeauLRnTJbj14iCd8m9gD5-VxuzmKAHFeWqpqFDnKcsd-KbC8Haz1Dfjtcl-K2WjaZf9w");
+//		headers.set(User.HEADER_CURRENT_USER, "{\"id\":1,\"name\":\"root\"}");
+		headers.set("Authorization", "Bearer eyJraWQiOiItMTIwMzIwOTE1OCIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjM5ODk1MjE3LCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjM5OTAyNDE3LCJpYXQiOjE2Mzk4OTUyMTd9.mtCAVPxVh0MAkOHDlHzAYA0uDd33BwMkksQcgbK8uiDwrkr_n1wxRs8F33SUO_2JZnXgWIG_K1iaDV0BdvUBFdOn6GJxqpURu6fS2hss2cYgFkUSpm4POvESIJq71nGrjEBBIGMMl5CInd2MIQhbVwOgDIvL1u3trnnDZDL0iIX2hGTBn8eAMTd5v2q1HkaJ5K_l1lkcb-N2KYE3S3hVdW_OEcHMzeq9SfStnBD-RP0MDWnKH5y0hi6I2UkBrQF2-EQkzVbW0RdGEGELx1QgWP-BamR-1I20i9z2ZIdtzaU_3fLETcE9y-v-fyzJmpaNmh4LEDa7T9tdsAB2hS_mYA");
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 //		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9090/user", requestEntity, String.class);

@@ -14,8 +14,8 @@ import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,10 +62,10 @@ public class AuthorizationServerConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationServerConfig.class);
 	
-	@Value("${system.jwt.path:}")
-	private String jwtPath;
-	@Value("${system.jwt.secret:}")
-	private String jwtSecret;
+	@Value("${system.jwk.path:}")
+	private String jwkPath;
+	@Value("${system.jwk.secret:}")
+	private String jwkSecret;
 	
 	@Autowired
 	private Oauth2Config oauth2Config;
@@ -79,6 +79,7 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(security);
+		security.formLogin();
 		return security.build();
 	}
 	
@@ -94,7 +95,8 @@ public class AuthorizationServerConfig {
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-		final RegisteredClient clientWeb = RegisteredClient.withId(UUID.randomUUID().toString())
+		// 注意ID不能随机生成否者重启之后Redis不能正确加载
+		final RegisteredClient clientWeb = RegisteredClient.withId(Oauth2Config.CLIENT_WEB)
 			.clientId(Oauth2Config.CLIENT_WEB)
 			.clientSecret(passwordEncoder.encode(this.oauth2Config.getWeb()))
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
@@ -109,7 +111,7 @@ public class AuthorizationServerConfig {
 			)
 			.scope("all")
 			.build();
-		final RegisteredClient clientRest = RegisteredClient.withId(UUID.randomUUID().toString())
+		final RegisteredClient clientRest = RegisteredClient.withId(Oauth2Config.CLIENT_REST)
 			.clientId(Oauth2Config.CLIENT_REST)
 			.clientSecret(passwordEncoder.encode(this.oauth2Config.getRest()))
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
@@ -130,19 +132,19 @@ public class AuthorizationServerConfig {
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public KeyPair keyPair() {
-		try (final InputStream input = this.getClass().getResourceAsStream(this.jwtPath)) {
+		try (final InputStream input = this.getClass().getResourceAsStream(this.jwkPath)) {
 			final KeyStore keyStore = KeyStore.getInstance("JKS");
-			keyStore.load(input, this.jwtSecret.toCharArray());
+			keyStore.load(input, this.jwkSecret.toCharArray());
 			final Enumeration<String> aliases = keyStore.aliases();
 			String aliase = null;
 			while(aliases.hasMoreElements()) {
 				aliase = aliases.nextElement();
 				final PublicKey publicKey = keyStore.getCertificate(aliase).getPublicKey();
-				final PrivateKey privateKey = (PrivateKey) keyStore.getKey(aliase, this.jwtSecret.toCharArray());
+				final PrivateKey privateKey = (PrivateKey) keyStore.getKey(aliase, this.jwkSecret.toCharArray());
 				return new KeyPair(publicKey, privateKey);
 			}
 		} catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableKeyException e) {
-			LOGGER.error("加载JWT密钥异常：{}", this.jwtPath, e);
+			LOGGER.error("加载JWT密钥异常：{}", this.jwkPath, e);
 		}
 		try {
 			final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -161,10 +163,9 @@ public class AuthorizationServerConfig {
 		final RSAKey rsaKey = new RSAKey
 			.Builder(publicKey)
 			.privateKey(privateKey)
-			.keyID(UUID.randomUUID().toString())
+			.keyID(String.valueOf(Arrays.hashCode(keyPair.getPublic().getEncoded())))
 			.build();
 		final JWKSet jwkSet = new JWKSet(rsaKey);
-//		return new ImmutableJWKSet<>(jwkSet);
 		return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
 	}
 

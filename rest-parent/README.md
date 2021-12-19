@@ -10,6 +10,7 @@
 
 #### 注意事项
 
-rest：前端接口
-rest-gateway：外部接口
-主要区别：gateway存在网关记录推送服务
+* rest：前端接口
+* rest-gateway：外部接口
+
+> 主要区别：gateway存在网关记录推送服务
