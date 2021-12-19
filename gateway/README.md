@@ -18,4 +18,5 @@ Rest服务统一使用`rest-oauth2`认证授权
 
 #### 注意
 
-不能配置`issuer-uri`
+* 不能配置`issuer-uri`
+* Web登陆成功访问Rest服务时会导致Session失效
