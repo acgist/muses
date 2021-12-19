@@ -1,44 +1,37 @@
 package com.acgist.oauth2.config;
-//package com.acgist.oauth.config;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//
-//import com.acgist.oauth.service.UserService;
-//
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//	@Autowired
-//	private UserService userService;
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
-////	@Autowired
-////	private AuthenticationManager authenticationManager;
-//
-//	@Override
-//	protected void configure(HttpSecurity security) throws Exception {
-//		security
-//			.csrf().disable()
-//			.authorizeRequests()
-////			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
-//			.anyRequest().authenticated()
-//			.and()
-//			// 指定页面：.formLogin()
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
+
+/**
+ * Oauth2安全认证
+ * 
+ * @author acgist
+ */
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Bean
+	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
+//			.anyRequest().permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.userDetailsService(this.userDetailsService)
+			.formLogin();
 //			.httpBasic();
-//	}
-//
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-//		builder
-//			.userDetailsService(this.userService)
-//			.passwordEncoder(this.passwordEncoder);
-//	}
-//
-//}
+//			.formLogin(withDefaults());
+		return http.build();
+	}
+
+}

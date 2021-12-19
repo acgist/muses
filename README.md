@@ -148,7 +148,6 @@ system.rest.interceptor=true|false
 system.gateway.slow.request.duration=1000
 ```
 
-
 #### pom.xml
 
 * java

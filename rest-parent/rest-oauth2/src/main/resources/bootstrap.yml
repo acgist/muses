@@ -1,6 +1,6 @@
 spring:
   application:
-    name: rest-oauth
+    name: rest-oauth2
   main:
     allow-bean-definition-overriding: true
   profiles:

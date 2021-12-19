@@ -19,8 +19,6 @@ import com.nimbusds.jose.JWSObject;
 /**
  * 鉴权
  * 
- * 直接使用全局Filter
- * 
  * @author acgist
  */
 @Component
@@ -33,7 +31,11 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 	 */
 	private static final String BEARER = "Bearer";
 	private static final int BEARER_INDEX = BEARER.length();
-
+	/**
+	 * 授权信息
+	 */
+	private static final String AUTHORIZATION = "Authorization";
+	
 	@DubboReference
 	private IUserService userService;
 
@@ -72,7 +74,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 			final ServerHttpRequest oldRequest = exchange.getRequest();
 			final RequestPath path = oldRequest.getPath();
 			final String method = oldRequest.getMethodValue();
-			final String token = oldRequest.getHeaders().getFirst("Authorization");
+			final String token = oldRequest.getHeaders().getFirst(AUTHORIZATION);
 			JWSObject jws = null;
 			try {
 				jws = JWSObject.parse(token.substring(BEARER_INDEX).trim());
@@ -92,8 +94,13 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 				return exchange.getResponse().setComplete();
 			}
 			// 设置请求用户信息
-			final ServerHttpRequest request = oldRequest.mutate().header(User.HEADER_CURRENT_USER, user.currentUser().toString()).build();
-			exchange = exchange.mutate().request(request).build();
+			final ServerHttpRequest request = oldRequest.mutate()
+				.headers(headers -> headers.remove(AUTHORIZATION))
+				.header(User.HEADER_CURRENT_USER, user.currentUser().toString())
+				.build();
+			exchange = exchange.mutate()
+				.request(request)
+				.build();
 			return chain.filter(exchange);
 		};
 	}

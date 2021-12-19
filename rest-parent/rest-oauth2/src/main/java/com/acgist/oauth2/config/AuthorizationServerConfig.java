@@ -1,28 +1,28 @@
-/*
- * Copyright 2020-2021 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.acgist.oauth2.config;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.Enumeration;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -43,115 +43,136 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.acgist.oauth2.service.RedisOAuth2AuthorizationConsentService;
+import com.acgist.oauth2.service.RedisOAuth2AuthorizationService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 /**
- * @author Joe Grandja
- * @since 0.0.1
+ * Oauth2授权配置
+ * 
+ * @author acgist
  */
 @Configuration
+@EnableConfigurationProperties(Oauth2Config.class)
 @Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
-	
-	@Bean
-	@Order(Ordered.HIGHEST_PRECEDENCE)
-	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		http
-//			.httpBasic();
-			.formLogin();
-//			.formLogin(Customizer.withDefaults())
-			return http.build();
-	}
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationServerConfig.class);
+	
+	@Value("${system.jwt.path:}")
+	private String jwtPath;
+	@Value("${system.jwt.secret:}")
+	private String jwtSecret;
+	
+	@Autowired
+	private Oauth2Config oauth2Config;
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-	// @formatter:off
+
 	@Bean
-	public RegisteredClientRepository registeredClientRepository() {
-		RegisteredClient loginClient = RegisteredClient.withId(UUID.randomUUID().toString())
-		.clientId("web-client")
-		.clientSecret(this.passwordEncoder().encode("123456"))
-		.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-		.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-		.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-		.redirectUri("http://www.acgist.com")
-		.tokenSettings(
-			TokenSettings.builder()
-			.accessTokenTimeToLive(Duration.ofHours(3))
-			.refreshTokenTimeToLive(Duration.ofDays(7))
-			.build()
-		)
-		.scope("all")
-		.build();
-
-		// Save registered client in db as if in-memory
-//		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-//		registeredClientRepository.save(registeredClient);
-
-		return new InMemoryRegisteredClientRepository(loginClient);
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {
+		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(security);
+		return security.build();
 	}
-	// @formatter:on
-
-//	@Bean
-//	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
-//		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-//	}
-//
-//	@Bean
-//	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
-//		return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
-//	}
+	
+	@Bean
+	public RedisOAuth2AuthorizationService redisOAuth2AuthorizationService() {
+		return new RedisOAuth2AuthorizationService();
+	}
+	
+	@Bean
+	public RedisOAuth2AuthorizationConsentService redisOAuth2AuthorizationConsentService() {
+		return new RedisOAuth2AuthorizationConsentService();
+	}
 
 	@Bean
-	public JWKSource<SecurityContext> jwkSource() {
-		RSAKey rsaKey = Jwks.generateRsa();
-		JWKSet jwkSet = new JWKSet(rsaKey);
-		return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
+		final RegisteredClient clientWeb = RegisteredClient.withId(UUID.randomUUID().toString())
+			.clientId(Oauth2Config.CLIENT_WEB)
+			.clientSecret(passwordEncoder.encode(this.oauth2Config.getWeb()))
+			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+			.redirectUri(this.oauth2Config.getRedirectUri())
+			.tokenSettings(
+				TokenSettings.builder()
+					.accessTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getAccess()))
+					.refreshTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getRefresh()))
+					.build()
+			)
+			.scope("all")
+			.build();
+		final RegisteredClient clientRest = RegisteredClient.withId(UUID.randomUUID().toString())
+			.clientId(Oauth2Config.CLIENT_REST)
+			.clientSecret(passwordEncoder.encode(this.oauth2Config.getRest()))
+			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+			.redirectUri(this.oauth2Config.getRedirectUri())
+			.tokenSettings(
+				TokenSettings.builder()
+					.accessTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getAccess()))
+					.refreshTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getRefresh()))
+					.build()
+			)
+			.scope("all")
+			.build();
+		return new InMemoryRegisteredClientRepository(clientWeb, clientRest);
+	}
+	
+	@Bean
+	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+	public KeyPair keyPair() {
+		try (final InputStream input = this.getClass().getResourceAsStream(this.jwtPath)) {
+			final KeyStore keyStore = KeyStore.getInstance("JKS");
+			keyStore.load(input, this.jwtSecret.toCharArray());
+			final Enumeration<String> aliases = keyStore.aliases();
+			String aliase = null;
+			while(aliases.hasMoreElements()) {
+				aliase = aliases.nextElement();
+				final PublicKey publicKey = keyStore.getCertificate(aliase).getPublicKey();
+				final PrivateKey privateKey = (PrivateKey) keyStore.getKey(aliase, this.jwtSecret.toCharArray());
+				return new KeyPair(publicKey, privateKey);
+			}
+		} catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableKeyException e) {
+			LOGGER.error("加载JWT密钥异常：{}", this.jwtPath, e);
+		}
+		try {
+			final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+			keyPairGenerator.initialize(2048);
+			return keyPairGenerator.generateKeyPair();
+		} catch (NoSuchAlgorithmException e) {
+			LOGGER.error("随机生成JWT密钥异常", e);
+		}
+		return null;
 	}
 
 	@Bean
 	public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
-		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		RSAKey rsaKey = new RSAKey.Builder(publicKey)
-				.privateKey(privateKey)
-				.keyID(UUID.randomUUID().toString())
-				.build();
-		JWKSet jwkSet = new JWKSet(rsaKey);
-		return new ImmutableJWKSet<>(jwkSet);
+		final RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+		final RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+		final RSAKey rsaKey = new RSAKey
+			.Builder(publicKey)
+			.privateKey(privateKey)
+			.keyID(UUID.randomUUID().toString())
+			.build();
+		final JWKSet jwkSet = new JWKSet(rsaKey);
+//		return new ImmutableJWKSet<>(jwkSet);
+		return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
 	}
 
 	@Bean
 	public JwtDecoder jwtDecoder(KeyPair keyPair) {
-		return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
+		return NimbusJwtDecoder
+			.withPublicKey((RSAPublicKey) keyPair.getPublic())
+			.build();
 	}
-	
-//	@Bean
-//	public ProviderSettings providerSettings() {
-//		return ProviderSettings.builder().issuer("http://localhost:9000").build();
-//	}
 
-	@Bean
-	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-	KeyPair generateRsaKey() {
-		KeyPair keyPair;
-		try {
-			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-			keyPairGenerator.initialize(2048);
-			keyPair = keyPairGenerator.generateKeyPair();
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException(ex);
-		}
-		return keyPair;
-	}
-	
 }
