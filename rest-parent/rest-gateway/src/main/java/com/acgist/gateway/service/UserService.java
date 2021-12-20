@@ -10,7 +10,6 @@ import com.acgist.boot.pojo.bean.User;
 import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.request.SetMemoRequest;
 import com.acgist.user.pojo.dto.UserDto;
-import com.acgist.user.pojo.entity.UserEntity;
 import com.acgist.user.service.IUserService;
 
 @Service
@@ -18,6 +17,8 @@ public class UserService {
 
 	@DubboReference
 	private IUserService userService;
+	
+	private static final String PROPERTY_MEMO = "memo";
 	
 	/**
 	 * 获取用户备注
@@ -28,7 +29,7 @@ public class UserService {
 	 */
 	public Message<Map<String, Object>> getMemo(User user) {
 		return GatewaySession.getInstance()
-			.putResponse(UserEntity.PROPERTY_MEMO, this.userService.findMemo(user.getName()))
+			.putResponse(PROPERTY_MEMO, this.userService.findMemo(user.getName()))
 			.buildSuccess();
 	}
 	
@@ -46,7 +47,7 @@ public class UserService {
 		userDto.setMemo(request.getMemo());
 		this.userService.updateMemo(userDto);
 		return GatewaySession.getInstance()
-			.putResponse(UserEntity.PROPERTY_MEMO, this.userService.findMemo(userDto.getMemo()))
+			.putResponse(PROPERTY_MEMO, this.userService.findMemo(userDto.getMemo()))
 			.buildSuccess();
 	}
 	

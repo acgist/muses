@@ -29,6 +29,10 @@ public abstract class DataEntity extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String PROPERTY_ID = "id";
+	public static final String PROPERTY_CREATE_DATE = "createDate";
+	public static final String PROPERTY_MODIFY_DATE = "modifyDate";
+	
 	/**
 	 * ID
 	 */
