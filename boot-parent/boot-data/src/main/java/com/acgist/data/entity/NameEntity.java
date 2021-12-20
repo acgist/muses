@@ -24,7 +24,7 @@ public abstract class NameEntity extends DataEntity {
 	/**
 	 * 描述
 	 */
-	@Column(length = 64)
+	@Column(length = 128)
 	private String memo;
 
 	public String getName() {

@@ -15,23 +15,17 @@ public abstract class StateEntity extends NameEntity {
 
 	public static final String PROPERTY_SORTED = "sorted";
 	public static final String PROPERTY_ENABLE = "enable";
-	public static final String PROPERTY_DELETED = "deleted";
 	
 	/**
 	 * 排序
 	 */
-	@Column
+	@Column(columnDefinition = "int default 0")
 	private Integer sorted;
 	/**
 	 * 是否可用
 	 */
-	@Column
+	@Column(columnDefinition = "bit default true")
 	private Boolean enable;
-	/**
-	 * 是否删除
-	 */
-	@Column
-	private Boolean deleted;
 
 	public Integer getSorted() {
 		return sorted;
@@ -47,14 +41,6 @@ public abstract class StateEntity extends NameEntity {
 
 	public void setEnable(Boolean enable) {
 		this.enable = enable;
-	}
-
-	public Boolean getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
 	}
 
 }
