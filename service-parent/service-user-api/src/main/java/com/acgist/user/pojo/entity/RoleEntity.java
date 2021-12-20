@@ -3,7 +3,6 @@ package com.acgist.user.pojo.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -12,28 +11,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.StateEntity;
 
 @Entity
 @Table(name = "t_role")
-public class RoleEntity extends DataEntity {
+public class RoleEntity extends StateEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final String PROPERTY_NAME = "name";
-	public static final String PROPERTY_MEMO = "memo";
 	public static final String PROPERTY_PATHS = "paths";
 	
-	/**
-	 * 名称
-	 */
-	@Column(length = 16, nullable = false)
-	private String name;
-	/**
-	 * 描述
-	 */
-	@Column(length = 64)
-	private String memo;
 	/**
 	 * 权限
 	 */
@@ -52,22 +39,6 @@ public class RoleEntity extends DataEntity {
 		)
 	)
 	private List<PathEntity> paths;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
 
 	public List<PathEntity> getPaths() {
 		return paths;

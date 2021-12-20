@@ -103,12 +103,7 @@ public class AuthorizationServerConfig {
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 			.redirectUri(this.oauth2Config.getRedirectUri())
-			.tokenSettings(
-				TokenSettings.builder()
-					.accessTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getAccess()))
-					.refreshTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getRefresh()))
-					.build()
-			)
+			.tokenSettings(this.tokenSettings())
 			.scope("all")
 			.build();
 		final RegisteredClient clientRest = RegisteredClient.withId(Oauth2Config.CLIENT_REST)
@@ -118,12 +113,7 @@ public class AuthorizationServerConfig {
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 			.redirectUri(this.oauth2Config.getRedirectUri())
-			.tokenSettings(
-				TokenSettings.builder()
-					.accessTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getAccess()))
-					.refreshTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getRefresh()))
-					.build()
-			)
+			.tokenSettings(this.tokenSettings())
 			.scope("all")
 			.build();
 		return new InMemoryRegisteredClientRepository(clientWeb, clientRest);
@@ -173,6 +163,13 @@ public class AuthorizationServerConfig {
 	public JwtDecoder jwtDecoder(KeyPair keyPair) {
 		return NimbusJwtDecoder
 			.withPublicKey((RSAPublicKey) keyPair.getPublic())
+			.build();
+	}
+	
+	private TokenSettings tokenSettings() {
+		return TokenSettings.builder()
+			.accessTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getAccess()))
+			.refreshTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getRefresh()))
 			.build();
 	}
 
