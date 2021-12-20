@@ -17,22 +17,12 @@ public interface DistributedLock {
 	/**
 	 * 锁值
 	 */
-	public static final ThreadLocal<String> VALUE_LOCAL = new ThreadLocal<String>() {
-		@Override
-		protected String initialValue() {
-			return UUID.randomUUID().toString();
-		}
-	};
+	public static final ThreadLocal<String> VALUE_LOCAL = ThreadLocal.withInitial(() -> UUID.randomUUID().toString());
 
 	/**
 	 * 重入
 	 */
-	public static final ThreadLocal<Integer> REENTRY_LOCAL = new ThreadLocal<Integer>() {
-		@Override
-		protected Integer initialValue() {
-			return 0;
-		}
-	};
+	public static final ThreadLocal<Integer> REENTRY_LOCAL = ThreadLocal.withInitial(() -> 0);
 
 	/**
 	 * 加锁

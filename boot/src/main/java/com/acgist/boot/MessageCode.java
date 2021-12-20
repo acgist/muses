@@ -63,11 +63,11 @@ public enum MessageCode {
 	
 	public static final MessageCode of(String code, int status) {
 		MessageCode messageCode = of(code);
-		if(messageCode != null && messageCode != CODE_9999) {
+		if(messageCode != CODE_9999) {
 			return messageCode;
 		}
 		messageCode = of(status);
-		if(messageCode != null && messageCode != CODE_9999) {
+		if(messageCode != CODE_9999) {
 			return messageCode;
 		}
 		return CODE_9999;

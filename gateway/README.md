@@ -20,3 +20,14 @@ Rest服务统一使用`rest-oauth2`认证授权
 
 * 不能配置`issuer-uri`
 * Web登陆成功访问Rest服务时会导致Session失效
+
+## 模块
+
+#### gateway sentinel adapter
+
+```
+<dependency>
+	<groupId>com.alibaba.cloud</groupId>
+	<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+</dependency>
+```

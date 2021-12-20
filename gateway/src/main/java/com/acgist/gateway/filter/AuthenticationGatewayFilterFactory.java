@@ -88,7 +88,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 			}
 			final String sub = (String) jws.getPayload().toJSONObject().get("sub");
 			final User user = this.userService.findByName(sub);
-			if (!user.hasPath(method, path.toString())) {
+			if (user == null || !user.hasPath(method, path.toString())) {
 				// TODO：401描述
 				exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 				return exchange.getResponse().setComplete();

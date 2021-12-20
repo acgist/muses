@@ -4,10 +4,10 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>rest-oauth</artifactId>
+	<artifactId>rest-oauth2</artifactId>
 	<packaging>jar</packaging>
 
-	<name>rest-oauth</name>
+	<name>rest-oauth2</name>
 	<description>认证授权服务</description>
 
 	<parent>
