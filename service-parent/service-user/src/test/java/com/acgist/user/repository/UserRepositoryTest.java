@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.acgist.data.query.FilterQuery;
 import com.acgist.main.UserApplication;
 import com.acgist.user.pojo.entity.UserEntity;
 
@@ -87,7 +88,14 @@ public class UserRepositoryTest {
 	
 	@Test
 	public void testFindCondition() {
-		
+		List<UserEntity> list = this.userRepository.findAll(FilterQuery.<UserEntity>builder().eq("id", 1).build());
+		assertEquals(1, list.size());
+		list = this.userRepository.findAll(FilterQuery.<UserEntity>builder().like("name", "%t%").build());
+		assertEquals(2, list.size());
+//		Optional<UserEntity> optional = this.userRepository.findOne(FilterQuery.<UserEntity>builder().like("name", "%t%").build());
+//		assertTrue(optional.isPresent());
+		Page<UserEntity> page = this.userRepository.findAll(FilterQuery.<UserEntity>builder().like("name", "%t%").build(), PageRequest.of(0, 1));
+		assertEquals(1, page.getContent().size());
 	}
 	
 }
