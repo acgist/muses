@@ -42,6 +42,14 @@ public class UserRepositoryTest {
 	}
 	
 	@Test
+	public void testFindDtoByName() {
+	}
+	
+	@Test
+	public void testFindDtoList() {
+	}
+	
+	@Test
 	public void testFindPage() {
 		final Pageable pageable = PageRequest.of(0, 1);
 		Page<UserEntity> page = this.userRepository.findAll(pageable);
