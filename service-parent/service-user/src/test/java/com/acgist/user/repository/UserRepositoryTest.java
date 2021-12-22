@@ -1,6 +1,7 @@
 package com.acgist.user.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +13,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
@@ -24,11 +27,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.acgist.data.query.FilterQuery;
 import com.acgist.main.UserApplication;
+import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;
 
 @SpringBootTest(classes = UserApplication.class)
 public class UserRepositoryTest {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryTest.class);
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -42,11 +48,17 @@ public class UserRepositoryTest {
 	}
 	
 	@Test
-	public void testFindDtoByName() {
+	public void testQueryByName() {
+		final UserDto dto = this.userRepository.queryByName("root");
+		LOGGER.info("{}", dto);
+		assertNotNull(dto);
 	}
 	
 	@Test
-	public void testFindDtoList() {
+	public void getQueryList() {
+		final List<UserDto> list = this.userRepository.queryList();
+		LOGGER.info("{}", list);
+		assertNotNull(list);
 	}
 	
 	@Test
