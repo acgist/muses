@@ -69,7 +69,6 @@ public class FilterQuery<T extends DataEntity> {
         }
 
         // TODO：JDK17
-        @SuppressWarnings({ "rawtypes", "unchecked" })
         public <T> Predicate predicate(Root<T> root, CriteriaBuilder builder) {
             switch (this.type) {
             case EQ:
@@ -247,15 +246,17 @@ public class FilterQuery<T extends DataEntity> {
     public Specification<T> build() {
         return new Specification<T>() {
             private static final long serialVersionUID = 1L;
-
             @Override
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
                 final Predicate[] filters = FilterQuery.this.filter.stream()
                     .filter(filter -> FilterQuery.this.nullable || filter.value != null)
-                    .map(filter -> filter.predicate(root, builder)).collect(Collectors.toList())
+                    .map(filter -> filter.predicate(root, builder))
+                    .collect(Collectors.toList())
                     .toArray(Predicate[]::new);
-                final Order[] orders = FilterQuery.this.sorted.stream().map(sorted -> sorted.order(root, builder))
-                    .collect(Collectors.toList()).toArray(Order[]::new);
+                final Order[] orders = FilterQuery.this.sorted.stream()
+                    .map(sorted -> sorted.order(root, builder))
+                    .collect(Collectors.toList())
+                    .toArray(Order[]::new);
                 return query.where(filters).orderBy(orders).getRestriction();
             }
         };
