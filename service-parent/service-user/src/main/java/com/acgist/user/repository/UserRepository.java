@@ -14,8 +14,9 @@ import com.acgist.user.pojo.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
     
     @TemplateQuery(
-    	select = "select name, memo from t_user",
-    	where = "name = :name",
+    	select = "select name, memo, (select count(*) from t_user) size from t_user",
+    	where = "$(name != null) name = :name",
+    	sorted = "order by id desc",
     	attach = "limit 1",
     	nativeQuery = true
     )

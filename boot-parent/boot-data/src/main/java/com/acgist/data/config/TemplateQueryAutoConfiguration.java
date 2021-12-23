@@ -1,6 +1,5 @@
 package com.acgist.data.config;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -120,7 +119,7 @@ public class TemplateQueryAutoConfiguration {
                 paramterMap.putAll((Map<String, Object>) object);
             } else if(object instanceof String || object instanceof Number || object instanceof Date) {
                 paramterMap.put(argsNames[index], args[index]);
-            } else {
+            } else if(object != null) {
                 BeanMap.create(object).forEach((key, value) -> paramterMap.put((String) key, value));
             }
         }

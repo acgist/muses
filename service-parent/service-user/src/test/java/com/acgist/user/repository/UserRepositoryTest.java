@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.acgist.boot.CostUtils;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.main.UserApplication;
 import com.acgist.user.pojo.dto.UserDto;
@@ -49,7 +50,13 @@ public class UserRepositoryTest {
 	
 	@Test
 	public void testQueryByName() {
-		final UserDto dto = this.userRepository.queryByName("root");
+		CostUtils.costed(1000, () -> {
+			this.userRepository.queryByName("root");
+		});
+		UserDto dto = this.userRepository.queryByName("root");
+		LOGGER.info("{}", dto);
+		assertNotNull(dto);
+		dto = this.userRepository.queryByName(null);
 		LOGGER.info("{}", dto);
 		assertNotNull(dto);
 	}

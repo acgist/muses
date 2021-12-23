@@ -1,5 +1,7 @@
 package com.acgist.user.pojo.dto;
 
+import java.math.BigInteger;
+
 import com.acgist.boot.PojoCopy;
 
 public class UserDto extends PojoCopy {
@@ -8,7 +10,8 @@ public class UserDto extends PojoCopy {
 
 	private String name;
 	private String memo;
-	
+	private BigInteger size;
+
 	public String getName() {
 		return name;
 	}
@@ -23,6 +26,14 @@ public class UserDto extends PojoCopy {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public BigInteger getSize() {
+		return size;
+	}
+
+	public void setSize(BigInteger size) {
+		this.size = size;
 	}
 
 }
