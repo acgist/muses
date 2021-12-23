@@ -23,6 +23,14 @@ public @interface TemplateQuery {
     /**
      * {@value}
      */
+    public static final String LEFT = "(";
+    /**
+     * {@value}
+     */
+	public static final String RIGHT = ")";
+    /**
+     * {@value}
+     */
     public static final String LINE = "\n";
     /**
      * {@value}
@@ -76,5 +84,12 @@ public @interface TemplateQuery {
      * @return 本地语句
      */
     boolean nativeQuery() default true;
+    
+    /**
+     * 返回类型
+     * 
+     * @return 返回类型
+     */
+    Class<?> clazz() default Object.class;
 
 }

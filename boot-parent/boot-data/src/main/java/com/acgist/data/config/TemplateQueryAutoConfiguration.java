@@ -1,5 +1,6 @@
 package com.acgist.data.config;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,10 @@ public class TemplateQueryAutoConfiguration {
     /**
      * 环绕执行
      * 
+     * List(paramter...)
+     * Result(paramter...)
+     * Page(paramter..., Pageable)
+     * 
      * @param proceedingJoinPoint 切点
      * 
      * @return 返回
@@ -77,12 +82,13 @@ public class TemplateQueryAutoConfiguration {
         final String[] argsNames = signature.getParameterNames();
         final Class<?>[] argsTypes = signature.getParameterTypes();
         final Class<?> returnType = signature.getReturnType();
-        final Class<?> resultType = argsTypes[argsLength - 1];
         final boolean listable = List.class.isAssignableFrom(returnType);
         final boolean pageable = Pageable.class.isAssignableFrom(returnType);
-        final int parameterLength = pageable ? argsLength - 2 : argsLength - 1;
+        final boolean simple = !(listable || pageable);
+        final Class<?> resultType = simple ? returnType : templateQuery.clazz();
+        final int parameterLength = pageable ? argsLength - 1 : argsLength;
         final Map<String, Object> paramterMap = this.buildParamterMap(args, argsNames, argsTypes, parameterLength);
-        final String whereString = this.buildWhere(templateQuery);
+        final String whereString = this.buildWhere(paramterMap, templateQuery);
         final String queryString = this.buildQuery(templateQuery, whereString);
         final Query query = this.createQuery(templateQuery, queryString);
         this.buildParamter(query, paramterMap);
@@ -106,19 +112,19 @@ public class TemplateQueryAutoConfiguration {
     
     private Map<String, Object> buildParamterMap(Object[] args, String[] argsNames, Class<?>[] argsTypes, int parameterLength) {
         Object object;
-        final Map<String, Object> map = new HashMap<>();
+        final Map<String, Object> paramterMap = new HashMap<>();
         for (int index = 0; index < parameterLength; index++) {
             object = args[index];
             // TODO：JDK17
             if(object instanceof Map) {
-                map.putAll((Map<String, Object>) object);
+                paramterMap.putAll((Map<String, Object>) object);
             } else if(object instanceof String || object instanceof Number || object instanceof Date) {
-                map.put(argsNames[index], args[index]);
+                paramterMap.put(argsNames[index], args[index]);
             } else {
-                BeanMap.create(object).forEach((key, value) -> map.put((String) key, value));
+                BeanMap.create(object).forEach((key, value) -> paramterMap.put((String) key, value));
             }
         }
-        return map;
+        return paramterMap;
     }
     
     private void buildParamter(Query query, Map<String, Object> paramterMap) {
@@ -139,8 +145,10 @@ public class TemplateQueryAutoConfiguration {
     private String buildQuery(TemplateQuery templateQuery, String where) {
         final StringBuilder builder = new StringBuilder();
         builder.append(templateQuery.select()).append(TemplateQuery.SPACE);
-        builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
-        builder.append(where).append(TemplateQuery.SPACE);
+        if(StringUtils.isNotEmpty(where)) {
+        	builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
+        	builder.append(where).append(TemplateQuery.SPACE);
+        }
         builder.append(templateQuery.sorted()).append(TemplateQuery.SPACE);
         builder.append(templateQuery.attach());
         return builder.toString();
@@ -149,13 +157,15 @@ public class TemplateQueryAutoConfiguration {
     private String buildCountQuery(TemplateQuery templateQuery, String where) {
         final StringBuilder builder = new StringBuilder();
         builder.append(templateQuery.count()).append(TemplateQuery.SPACE);
-        builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
-        builder.append(where).append(TemplateQuery.SPACE);
+        if(StringUtils.isNotEmpty(where)) {
+        	builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
+        	builder.append(where).append(TemplateQuery.SPACE);
+        }
         builder.append(templateQuery.attach());
         return builder.toString();
     }
 
-    private String buildWhere(TemplateQuery templateQuery) {
+    private String buildWhere(Map<String, Object> paramterMap, TemplateQuery templateQuery) {
         final String where = templateQuery.where();
         if (StringUtils.isEmpty(where)) {
             return where;
@@ -163,15 +173,25 @@ public class TemplateQueryAutoConfiguration {
         final String[] lines = where.split(TemplateQuery.LINE);
         return Stream.of(lines)
             .map(line -> line.strip())
-            .map(this::buildIf)
+            .map(line -> this.buildIf(paramterMap, line))
+            .filter(line -> line != null)
             .collect(Collectors.joining(TemplateQuery.SPACE));
     }
 
-    private String buildIf(String line) {
-        if (line.indexOf(TemplateQuery.IF) == 0) {
-            return line;
+    private String buildIf(Map<String, Object> paramterMap, String line) {
+        if(line.indexOf('$') == 0) {
+            final int left = line.indexOf(TemplateQuery.LEFT);
+            final int right = line.indexOf(TemplateQuery.RIGHT);
+            // TODO：where判断有没条件
+            String query = line.substring(right + 1).trim();
+            String conditionQuery = line.substring(left + 1, right);
+            if(this.condition(paramterMap, conditionQuery)) {
+            	return query;
+            } else {
+            	return null;
+            }
         } else {
-            return line;
+        	return line;
         }
     }
 
@@ -193,15 +213,15 @@ public class TemplateQueryAutoConfiguration {
         
     }
     
-    private boolean condition(Map<String, Object> map, String query) {
+    private boolean condition(Map<String, Object> map, String conditionQuery) {
         Condition[] values = Condition.values();
         for (Condition condition : values) {
-            int index = query.indexOf(condition.symbol);
+            int index = conditionQuery.indexOf(condition.symbol);
             if(index < 0) {
                 continue;
             }
-            String left = query.substring(0, index).trim();
-            String right = query.substring(index + condition.symbol.length() + 1).trim();
+            String left = conditionQuery.substring(0, index).trim();
+            String right = conditionQuery.substring(index + condition.symbol.length() + 1).trim();
             final Object value = map.get(left);
             int result;
             switch (condition) {
@@ -236,35 +256,6 @@ public class TemplateQueryAutoConfiguration {
             result = String.valueOf(source).compareTo(target);
         }
         return result;
-    }
-    
-    @Test
-    public void testReadParamter() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("age", 11);
-        map.put("name", "1234");
-        map.put("address", null);
-        final String sql = "$(name != null) user.name = :name\n"
-            + "$(age > 12) user.age > :age\n"
-            + "$(age >= 12) user.age > :age\n"
-            + "$(age < 12) user.age > :age\n"
-            + "$(age <= 12) user.age > :age\n"
-            + "$(address == null) user.address > :address\n"
-            + "user.id = :id";
-        String line;
-        StringTokenizer tokenizer = new StringTokenizer(sql, "\n");
-        while (tokenizer.hasMoreTokens()) {
-            line = tokenizer.nextToken();
-            if(line.trim().indexOf('$') == 0) {
-                int left = line.indexOf('(');
-                int right = line.indexOf(')');
-                // TODO：where判断有没条件
-                String query = line.substring(right + 1).trim();
-                String condition = line.substring(left + 1, right);
-            } else {
-                continue;
-            }
-        }
     }
 
 }
