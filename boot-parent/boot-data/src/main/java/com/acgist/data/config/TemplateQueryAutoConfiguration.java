@@ -175,4 +175,96 @@ public class TemplateQueryAutoConfiguration {
         }
     }
 
+	    // 注意顺序
+    public enum Condition {
+        
+        EQ("=="),
+        NE("!="),
+        LE("<="),
+        LT("<"),
+        GE(">="),
+        GT(">");
+        
+        private final String symbol;
+        
+        private Condition(String symbol) {
+            this.symbol = symbol;
+        }
+        
+    }
+    
+    private boolean condition(Map<String, Object> map, String query) {
+        Condition[] values = Condition.values();
+        for (Condition condition : values) {
+            int index = query.indexOf(condition.symbol);
+            if(index < 0) {
+                continue;
+            }
+            String left = query.substring(0, index).trim();
+            String right = query.substring(index + condition.symbol.length() + 1).trim();
+            final Object value = map.get(left);
+            int result;
+            switch (condition) {
+            case EQ:
+                return String.valueOf(value).equals(right);
+            case NE:
+                return !String.valueOf(value).equals(right);
+            case LE:
+                result = this.compare(value, right, condition);
+                return result == -1 || result == 0;
+            case LT:
+                result = this.compare(value, right, condition);
+                return result == -1;
+            case GE:
+                result = this.compare(value, right, condition);
+                return result == 1 || result == 0;
+            case GT:
+                result = this.compare(value, right, condition);
+                return result == 1;
+            default:
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    private int compare(Object source, String target, Condition condition) {
+        int result = 0;
+        if(source instanceof Number) {
+            result = Long.valueOf(source.toString()).compareTo(Long.valueOf(target));
+        } else {
+            result = String.valueOf(source).compareTo(target);
+        }
+        return result;
+    }
+    
+    @Test
+    public void testReadParamter() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("age", 11);
+        map.put("name", "1234");
+        map.put("address", null);
+        final String sql = "$(name != null) user.name = :name\n"
+            + "$(age > 12) user.age > :age\n"
+            + "$(age >= 12) user.age > :age\n"
+            + "$(age < 12) user.age > :age\n"
+            + "$(age <= 12) user.age > :age\n"
+            + "$(address == null) user.address > :address\n"
+            + "user.id = :id";
+        String line;
+        StringTokenizer tokenizer = new StringTokenizer(sql, "\n");
+        while (tokenizer.hasMoreTokens()) {
+            line = tokenizer.nextToken();
+            if(line.trim().indexOf('$') == 0) {
+                int left = line.indexOf('(');
+                int right = line.indexOf(')');
+                // TODO：where判断有没条件
+                String query = line.substring(right + 1).trim();
+                String condition = line.substring(left + 1, right);
+            } else {
+                continue;
+            }
+        }
+    }
+
 }
