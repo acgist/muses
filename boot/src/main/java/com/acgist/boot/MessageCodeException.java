@@ -1,14 +1,16 @@
 package com.acgist.boot;
 
+import com.acgist.boot.pojo.bean.MessageCode;
+
 /**
- * 错误编码异常
+ * 状态编码异常
  * 
  * @author acgist
  */
 public class MessageCodeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final MessageCode code;
 
 	public MessageCodeException(MessageCode code) {
@@ -32,9 +34,9 @@ public class MessageCodeException extends RuntimeException {
 	public MessageCode getCode() {
 		return this.code;
 	}
-	
+
 	public String getMessage() {
-		if(StringUtils.isEmpty(super.getMessage())) {
+		if (StringUtils.isEmpty(super.getMessage())) {
 			return this.code.getMessage();
 		} else {
 			return super.getMessage();

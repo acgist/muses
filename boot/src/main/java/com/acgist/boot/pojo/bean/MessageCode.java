@@ -1,7 +1,7 @@
-package com.acgist.boot;
+package com.acgist.boot.pojo.bean;
 
 /**
- * 响应状态编码
+ * 状态编码
  * 
  * 1xxx=请求错误
  * 2xxx=服务错误
@@ -25,7 +25,7 @@ public enum MessageCode {
 	CODE_3500("3500", "系统异常"),
 	CODE_3503("3503", "服务异常"),
 	CODE_9999("9999", "未知错误");
-	
+
 	/**
 	 * 状态编码
 	 */
@@ -40,39 +40,61 @@ public enum MessageCode {
 		this.message = message;
 	}
 
+	/**
+	 * 通过code获取状态编码
+	 * 
+	 * @param code code
+	 * 
+	 * @return 状态编码
+	 */
 	public static final MessageCode of(String code) {
 		final MessageCode[] codes = MessageCode.values();
 		for (MessageCode value : codes) {
-			if(value.code.equals(code)) {
+			if (value.code.equals(code)) {
 				return value;
 			}
 		}
 		return CODE_9999;
 	}
-	
-	public static final MessageCode of(int code) {
-		final String httpCode = "3" + code;
+
+	/**
+	 * 通过HTTP Status获取状态编码
+	 * 
+	 * @param status HTTP Sttus
+	 * 
+	 * @return 状态编码
+	 */
+	public static final MessageCode of(int status) {
+		final String code = "3" + status;
 		final MessageCode[] codes = MessageCode.values();
 		for (MessageCode value : codes) {
-			if(value.code.equals(httpCode)) {
+			if (value.code.equals(code)) {
 				return value;
 			}
 		}
 		return CODE_9999;
 	}
-	
+
+	/**
+	 * 通过code、HTTP Status获取状态编码
+	 * 
+	 * @param code code
+	 * @param status HTTP Status
+	 * 
+	 * @return 状态编码
+	 */
 	public static final MessageCode of(String code, int status) {
 		MessageCode messageCode = of(code);
-		if(messageCode != CODE_9999) {
+		if (messageCode != CODE_9999) {
 			return messageCode;
 		}
 		messageCode = of(status);
-		if(messageCode != CODE_9999) {
+		if (messageCode != CODE_9999) {
 			return messageCode;
 		}
 		return CODE_9999;
 	}
-	
+
 	public String getCode() {
 		return code;
 	}

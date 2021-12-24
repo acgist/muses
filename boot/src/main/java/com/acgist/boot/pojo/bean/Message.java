@@ -1,6 +1,8 @@
-package com.acgist.boot;
+package com.acgist.boot.pojo.bean;
 
 import java.io.Serializable;
+
+import com.acgist.boot.JSONUtils;
 
 /**
  * 响应消息
@@ -28,6 +30,13 @@ public class Message<T> implements Serializable {
 	 */
 	private String signature;
 
+	/**
+	 * 成功消息
+	 * 
+	 * @param <T> 消息类型
+	 * 
+	 * @return 成功消息
+	 */
 	public static final <T> Message<T> success() {
 		return success(null);
 	}
@@ -48,6 +57,14 @@ public class Message<T> implements Serializable {
 		return message;
 	}
 
+	/**
+	 * 错误消息
+	 * 
+	 * @param <T> 消息类型
+	 * @param code 错误编码
+	 * 
+	 * @return 错误消息
+	 */
 	public static final <T> Message<T> fail(MessageCode code) {
 		return fail(code, null);
 	}
@@ -64,11 +81,7 @@ public class Message<T> implements Serializable {
 	public static final <T> Message<T> fail(MessageCode code, String message) {
 		final Message<T> failMessage = new Message<>();
 		failMessage.code = code.getCode();
-		if (StringUtils.isEmpty(message)) {
-			failMessage.message = code.getMessage();
-		} else {
-			failMessage.message = message;
-		}
+		failMessage.message = code.getMessage();
 		return failMessage;
 	}
 
@@ -94,7 +107,7 @@ public class Message<T> implements Serializable {
 	 * 
 	 * @param <T> 消息类型
 	 * @param code 错误编码
-	 * @param message 响应描述
+	 * @param message 错误描述
 	 * @param body 消息内容
 	 * 
 	 * @return 错误消息

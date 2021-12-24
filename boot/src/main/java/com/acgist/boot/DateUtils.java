@@ -10,13 +10,13 @@ import java.time.format.DateTimeFormatter;
  */
 public final class DateUtils {
 
+	private DateUtils() {
+	}
+
 	/**
 	 * 时间戳格式：yyyyMMddHHmmss
 	 */
 	private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-
-	private DateUtils() {
-	}
 
 	/**
 	 * 生成时间戳

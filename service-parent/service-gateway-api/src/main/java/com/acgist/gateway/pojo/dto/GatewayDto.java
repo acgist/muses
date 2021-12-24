@@ -1,6 +1,6 @@
 package com.acgist.gateway.pojo.dto;
 
-import com.acgist.boot.PojoCopy;
+import com.acgist.boot.pojo.bean.PojoCopy;
 
 /**
  * 网关DTO

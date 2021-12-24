@@ -98,6 +98,9 @@ public class UserRepositoryTest {
 		CostUtils.costed(10000, () -> {
 			this.userRepository.query("root");
 		});
+		CostUtils.costed(10000, () -> {
+			this.userRepository.queryJpql("root");
+		});
 	}
 	
 	@Test

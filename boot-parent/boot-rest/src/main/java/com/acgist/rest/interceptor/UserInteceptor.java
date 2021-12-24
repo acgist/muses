@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.acgist.boot.JSONUtils;
-import com.acgist.boot.MessageCode;
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
+import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.boot.pojo.bean.User;
 import com.acgist.rest.UserContext;
 

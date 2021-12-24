@@ -13,7 +13,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.acgist.boot.PojoCopy;
+import com.acgist.boot.pojo.bean.PojoCopy;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**

@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.acgist.boot.Message;
-import com.acgist.boot.MessageCode;
 import com.acgist.boot.MessageCodeException;
+import com.acgist.boot.pojo.bean.Message;
+import com.acgist.boot.pojo.bean.MessageCode;
 
 @org.springframework.web.bind.annotation.RestControllerAdvice
 public class RestControllerAdvice {

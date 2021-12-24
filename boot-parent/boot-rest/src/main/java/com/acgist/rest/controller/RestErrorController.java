@@ -8,9 +8,9 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acgist.boot.Message;
-import com.acgist.boot.MessageCode;
 import com.acgist.boot.StringUtils;
+import com.acgist.boot.pojo.bean.Message;
+import com.acgist.boot.pojo.bean.MessageCode;
 
 @RestController
 public class RestErrorController implements ErrorController {

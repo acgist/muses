@@ -25,11 +25,11 @@ public final class MapUtils {
 	}
 
 	/**
-	 * 判断Map是否非空
+	 * 判断Map是否不为空
 	 * 
 	 * @param map Map
 	 * 
-	 * @return 是否非空
+	 * @return 是否不为空
 	 */
 	public static final boolean isNotEmpty(Map<?, ?> map) {
 		return !isEmpty(map);
@@ -46,7 +46,8 @@ public final class MapUtils {
 		if (MapUtils.isEmpty(map)) {
 			return null;
 		}
-		return map.entrySet().stream().map(entry -> String.join("=", entry.getKey(), UrlUtils.encode(entry.getValue())))
+		return map.entrySet().stream()
+			.map(entry -> String.join("=", entry.getKey(), UrlUtils.encode(entry.getValue())))
 			.collect(Collectors.joining("&"));
 	}
 

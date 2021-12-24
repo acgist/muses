@@ -2,7 +2,7 @@ package com.acgist.user.pojo.dto;
 
 import java.math.BigInteger;
 
-import com.acgist.boot.PojoCopy;
+import com.acgist.boot.pojo.bean.PojoCopy;
 
 public class UserDto extends PojoCopy {
 

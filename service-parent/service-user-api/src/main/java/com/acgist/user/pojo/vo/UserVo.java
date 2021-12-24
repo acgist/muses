@@ -1,6 +1,6 @@
 package com.acgist.user.pojo.vo;
 
-import com.acgist.boot.PojoCopy;
+import com.acgist.boot.pojo.bean.PojoCopy;
 
 public class UserVo extends PojoCopy {
 

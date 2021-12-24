@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 19/12/2021 14:44:41
+ Date: 24/12/2021 20:15:41
 */
 
 SET NAMES utf8mb4;
@@ -82,10 +82,11 @@ CREATE TABLE `t_path`  (
   `id` bigint(20) NOT NULL,
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
-  `memo` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `memo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `enable` bit(1) NULL DEFAULT b'1',
+  `sorted` int(11) NULL DEFAULT 0,
   `path` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sort` smallint(6) NULL DEFAULT NULL,
   `parent_id` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `key_path_parent_id`(`parent_id`) USING BTREE,
@@ -95,9 +96,9 @@ CREATE TABLE `t_path`  (
 -- ----------------------------
 -- Records of t_path
 -- ----------------------------
-INSERT INTO `t_path` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户备注', '查询用户备注', 1, 0, 'GET:/user/memo', NULL);
-INSERT INTO `t_path` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '修改用户备注', '修改用户备注', 1, 0, 'POST:/user/memo', NULL);
-INSERT INTO `t_path` VALUES (3, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户信息', '查询用户信息', 1, 0, 'POST:/user', NULL);
+INSERT INTO `t_path` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户备注', '查询用户备注', b'1', 0, 'GET:/user/memo', NULL);
+INSERT INTO `t_path` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '修改用户备注', '修改用户备注', b'1', 0, 'POST:/user/memo', NULL);
+INSERT INTO `t_path` VALUES (3, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户信息', '查询用户信息', b'1', 0, 'POST:/user', NULL);
 
 -- ----------------------------
 -- Table structure for t_role
@@ -107,15 +108,17 @@ CREATE TABLE `t_role`  (
   `id` bigint(20) NOT NULL,
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
-  `memo` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `memo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `enable` bit(1) NULL DEFAULT b'1',
+  `sorted` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_role
 -- ----------------------------
-INSERT INTO `t_role` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '超级用户', '超级用户');
+INSERT INTO `t_role` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '超级用户', '超级用户', b'1', 0);
 
 -- ----------------------------
 -- Table structure for t_role_path
@@ -145,9 +148,10 @@ CREATE TABLE `t_user`  (
   `id` bigint(20) NOT NULL,
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
-  `enable` bit(1) NULL DEFAULT NULL,
-  `memo` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `memo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `enable` bit(1) NULL DEFAULT b'1',
+  `sorted` int(11) NULL DEFAULT 0,
   `password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_user_name`(`name`) USING BTREE
@@ -156,8 +160,8 @@ CREATE TABLE `t_user`  (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', b'1', '超级用户', 'root', '$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou');
-INSERT INTO `t_user` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', b'1', '碧螺萧萧', 'acgist', '$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou');
+INSERT INTO `t_user` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '超级用户', 'root', b'1', 0, '$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou');
+INSERT INTO `t_user` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '碧螺萧萧', 'acgist', b'1', 0, '$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou');
 
 -- ----------------------------
 -- Table structure for t_user_role

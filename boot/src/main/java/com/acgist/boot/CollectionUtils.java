@@ -24,11 +24,11 @@ public final class CollectionUtils {
 	}
 
 	/**
-	 * 判断集合是否非空
+	 * 判断集合是否不为空
 	 * 
 	 * @param collection 集合
 	 * 
-	 * @return 是否非空
+	 * @return 是否不为空
 	 */
 	public static final boolean isNotEmpty(Collection<?> collection) {
 		return !isEmpty(collection);

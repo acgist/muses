@@ -48,20 +48,21 @@ import org.slf4j.LoggerFactory;
 import com.acgist.boot.config.MusesConfig;
 
 /**
- * HTTP工具 
+ * HTTP工具
  * 
  * @author acgist
  */
 public final class HTTPUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HTTPUtils.class);
-	
+
 	/**
 	 * 复用连接
+	 * 
 	 * 不能关闭Client：不同域名使用不同TCP连接
 	 */
 	private static final CloseableHttpClient CLIENT;
-	
+
 	static {
 		final List<Header> headers = new ArrayList<>();
 		headers.add(new BasicHeader("User-Agent", "ACGIST/1.0.0 +(https://www.acgist.com)"));
@@ -122,29 +123,62 @@ public final class HTTPUtils {
 			.disableAutomaticRetries()
 			.build();
 	}
-	
+
+	/**
+	 * 发送GET请求
+	 * 
+	 * @param url 请求地址
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String get(String url) {
 		return get(url, null, null, MusesConfig.TIMEOUT);
 	}
 
+	/**
+	 * 发送GET请求
+	 * 
+	 * @param url 请求地址
+	 * @param timeout 超时时间
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String get(String url, int timeout) {
 		return get(url, null, null, timeout);
 	}
 
+	/**
+	 * 发送GET请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String get(String url, String body) {
 		return get(url, body, null, MusesConfig.TIMEOUT);
 	}
 
+	/**
+	 * 发送GET请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * @param headers 请求头部
+	 * @param timeout 超时时间
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String get(String url, String body, Map<String, String> headers, int timeout) {
 		final HttpGet get = new HttpGet(url);
 		addHeaders(get, headers);
 		requestConfig(get, timeout);
-		if(StringUtils.isNotEmpty(body)) {
+		if (StringUtils.isNotEmpty(body)) {
 			get.setEntity(new StringEntity(body, MusesConfig.CHARSET));
 		}
 		return execute(get);
 	}
-	
+
 	/**
 	 * 实现带有请求体的GET请求
 	 * 
@@ -162,58 +196,124 @@ public final class HTTPUtils {
 		HttpGet(final String uri) {
 			this.setURI(URI.create(uri));
 		}
-		
+
 	}
-	
+
+	/**
+	 * 发送POST请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求信息
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String post(String url, Map<String, Object> body) {
 		return post(url, body, null, MusesConfig.TIMEOUT);
 	}
-	
+
+	/**
+	 * 发送POST请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * @param timeout 超时时间
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String post(String url, Map<String, Object> body, int timeout) {
 		return post(url, body, null, timeout);
 	}
-	
+
+	/**
+	 * 发送POST请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * @param headers 请求头部
+	 * @param timeout 超时时间
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String post(String url, Map<String, Object> body, Map<String, String> headers, int timeout) {
 		final HttpPost post = new HttpPost(url);
 		addHeaders(post, headers);
 		requestConfig(post, timeout);
 		post.setHeader("Content-Type", URLEncodedUtils.CONTENT_TYPE);
-		if(MapUtils.isNotEmpty(body)) {
+		if (MapUtils.isNotEmpty(body)) {
 			try {
 				post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), MusesConfig.CHARSET));
 			} catch (UnsupportedEncodingException e) {
-				LOGGER.error("设置请求参数异常", e);
+				LOGGER.error("设置请求参数异常：{}", body, e);
 			}
 		}
 		return execute(post);
 	}
-	
+
+	/**
+	 * 发送POST请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String post(String url, String body) {
 		return post(url, body, null, MusesConfig.TIMEOUT);
 	}
-	
+
+	/**
+	 * 发送POST请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * @param timeout 超时时间
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String post(String url, String body, int timeout) {
 		return post(url, body, null, timeout);
 	}
-	
+
+	/**
+	 * 发送POST请求
+	 * 
+	 * @param url 请求地址
+	 * @param body 请求内容
+	 * @param headers 请求头部
+	 * @param timeout 超时时间
+	 * 
+	 * @return 响应信息
+	 */
 	public static final String post(String url, String body, Map<String, String> headers, int timeout) {
 		final HttpPost post = new HttpPost(url);
 		addHeaders(post, headers);
 		requestConfig(post, timeout);
-		if(StringUtils.isNotEmpty(body)) {
+		if (StringUtils.isNotEmpty(body)) {
 			post.setEntity(new StringEntity(body, MusesConfig.CHARSET));
 		}
 		return execute(post);
 	}
-	
+
+	/**
+	 * 设置请求头部
+	 * 
+	 * @param request 请求
+	 * @param headers 头部
+	 */
 	private static final void addHeaders(HttpRequestBase request, Map<String, String> headers) {
-		if(MapUtils.isNotEmpty(headers)) {
+		if (MapUtils.isNotEmpty(headers)) {
 			headers.forEach(request::addHeader);
 		}
 	}
-	
+
+	/**
+	 * 设置请求信息
+	 * 
+	 * @param request 请求
+	 * @param timeout 超时时间
+	 */
 	private static final void requestConfig(HttpRequestBase request, int timeout) {
-		if(timeout <= 0 || timeout == MusesConfig.TIMEOUT) {
+		if (timeout <= 0 || timeout == MusesConfig.TIMEOUT) {
 			return;
 		}
 		final RequestConfig requestConfig = RequestConfig.custom()
@@ -224,6 +324,13 @@ public final class HTTPUtils {
 		request.setConfig(requestConfig);
 	}
 
+	/**
+	 * 创建表单内容
+	 * 
+	 * @param body 请求内容
+	 * 
+	 * @return 表单内容
+	 */
 	private static final List<NameValuePair> buildFormParams(Map<String, Object> body) {
 		if (MapUtils.isNotEmpty(body)) {
 			return body.entrySet().stream()
@@ -232,7 +339,14 @@ public final class HTTPUtils {
 		}
 		return List.of();
 	}
-	
+
+	/**
+	 * 执行请求
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 响应信息
+	 */
 	private static final String execute(HttpUriRequest request) {
 		CloseableHttpResponse response = null;
 		try {
@@ -250,6 +364,11 @@ public final class HTTPUtils {
 		return null;
 	}
 
+	/**
+	 * 关闭响应
+	 * 
+	 * @param response 响应
+	 */
 	private static final void close(CloseableHttpResponse response) {
 		if (response != null) {
 			try {
@@ -260,18 +379,22 @@ public final class HTTPUtils {
 			}
 		}
 	}
-	
+
+	/**
+	 * 关闭工具
+	 * 
+	 * 不用调用：连接自动管理
+	 */
 	public static final void shutdown() {
 		if (CLIENT != null) {
 			try {
-				// 自动清理连接管理：manager
 				CLIENT.close();
 			} catch (IOException e) {
 				LOGGER.error("关闭连接异常", e);
 			}
 		}
 	}
-	
+
 	/**
 	 * 创建SSL工厂
 	 * 
@@ -307,5 +430,5 @@ public final class HTTPUtils {
 //		});
 		return sslFactory;
 	}
-	
+
 }
