@@ -24,9 +24,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.acgist.boot.CostUtils;
-import com.acgist.data.query.FilterQuery;
 import com.acgist.main.UserApplication;
 import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;
@@ -49,14 +49,38 @@ public class UserRepositoryTest {
 	}
 	
 	@Test
+	@Transactional
+	public void testInsert() {
+	    final UserEntity entity = new UserEntity();
+	    entity.setId(3L);
+	    entity.setName("insert");
+	    entity.setPassword(new BCryptPasswordEncoder().encode("123456"));
+	    this.userRepository.insert(entity);
+	}
+
+	@Test
+	public void testFallback() {
+	    final UserDto userDto = this.userRepository.fallback();
+	    assertNotNull(userDto);
+	    LOGGER.info("{}", userDto);
+	}
+	
+	@Test
+    public void testCosted() {
+        CostUtils.costed(10000, () -> {
+            this.userRepository.findByName("root");
+        });
+        CostUtils.costed(10000, () -> {
+            this.userRepository.query("root");
+        });
+    }
+	
+	@Test
 	public void testQueryByName() {
-		CostUtils.costed(1000, () -> {
-			this.userRepository.queryByName("root");
-		});
-		UserDto dto = this.userRepository.queryByName("root");
+		UserDto dto = this.userRepository.query("root");
 		LOGGER.info("{}", dto);
 		assertNotNull(dto);
-		dto = this.userRepository.queryByName(null);
+		dto = this.userRepository.query((String) null);
 		LOGGER.info("{}", dto);
 		assertNotNull(dto);
 	}
@@ -81,8 +105,7 @@ public class UserRepositoryTest {
 		assertEquals(1, page.getTotalPages());
 		assertEquals(1L, page.getTotalElements());
 		assertEquals(1, page.getContent().size());
-		final ExampleMatcher matcher = ExampleMatcher.matching()
-			.withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains());
+		final ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains());
 		userEntity.setId(null);
 		userEntity.setName("t");
 		page = this.userRepository.findAll(Example.of(userEntity, matcher), pageable);
@@ -111,22 +134,6 @@ public class UserRepositoryTest {
 			}
 		});
 		assertEquals(0, list.size());
-	}
-	
-	@Test
-	public void testFindCondition() {
-		List<UserEntity> list = this.userRepository.findAll(FilterQuery.<UserEntity>builder().eq("id", 1).build());
-		assertEquals(1, list.size());
-		list = this.userRepository.findAll(FilterQuery.<UserEntity>builder().like("name", "%t%").desc("id").build());
-		assertEquals(2, list.size());
-//		Optional<UserEntity> optional = this.userRepository.findOne(FilterQuery.<UserEntity>builder().like("name", "%t%").build());
-//		assertTrue(optional.isPresent());
-		Page<UserEntity> page = this.userRepository.findAll(FilterQuery.<UserEntity>builder().like("name", "%t%").desc("id").build(), PageRequest.of(0, 1));
-		assertEquals(1, page.getContent().size());
-		LOGGER.info("{}", page.getContent());
-		this.userRepository.findAll(FilterQuery.<UserEntity>builder().like("name", "%t%").asc("id").build(), PageRequest.of(0, 1));
-		assertEquals(1, page.getContent().size());
-		LOGGER.info("{}", page.getContent());
 	}
 	
 }
