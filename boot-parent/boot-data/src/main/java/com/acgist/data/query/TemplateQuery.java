@@ -18,6 +18,9 @@ import java.lang.annotation.Target;
  * $(name == acgist)
  * $(name == root || name == acgist)
  * 
+ * 默认使用SQL
+ * 如果使用JPQL列名需要指定名称：SELECT user.name as name, user.memo as memo FROM UserEntity user
+ * 
  * @author yusheng
  */
 @Target(ElementType.METHOD)

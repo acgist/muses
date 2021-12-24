@@ -52,6 +52,12 @@ public class UserRepositoryTest {
 	}
 	
 	@Test
+	public void findByName() {
+		final UserEntity userEntity = this.userRepository.findByName("root");
+		assertNotNull(userEntity);
+	}
+	
+	@Test
 //	@Rollback(false)
 	@Transactional
 	public void testInsert() {
@@ -143,6 +149,13 @@ public class UserRepositoryTest {
 		page = this.userRepository.queryList(userQuery, PageRequest.of(0, 1));
 		LOGGER.info("{}", page);
 		LOGGER.info("{}", page.getContent());
+	}
+	
+	@Test
+	public void testQueryJpql() {
+		final UserDto dto = this.userRepository.queryJpql("root");
+		assertNotNull(dto);
+		LOGGER.info("{}", dto);
 	}
 	
 	@Test
