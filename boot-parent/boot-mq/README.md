@@ -2,8 +2,8 @@
 
 ```
 <dependency>
-    <groupId>org.apache.rocketmq</groupId>
-    <artifactId>rocketmq-spring-boot-starter</artifactId>
+	<groupId>org.apache.rocketmq</groupId>
+	<artifactId>rocketmq-spring-boot-starter</artifactId>
 </dependency>
 <dependency>
 	<groupId>org.springframework.cloud</groupId>

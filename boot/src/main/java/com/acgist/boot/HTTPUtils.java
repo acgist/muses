@@ -63,24 +63,24 @@ public final class HTTPUtils {
 	private static final CloseableHttpClient CLIENT;
 	
 	static {
-	    final List<Header> headers = new ArrayList<>();
-	    headers.add(new BasicHeader("User-Agent", "ACGIST/1.0.0 +(https://www.acgist.com)"));
-	    headers.add(new BasicHeader("Content-Type", "application/json"));
+		final List<Header> headers = new ArrayList<>();
+		headers.add(new BasicHeader("User-Agent", "ACGIST/1.0.0 +(https://www.acgist.com)"));
+		headers.add(new BasicHeader("Content-Type", "application/json"));
 		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
 			.register("http", PlainConnectionSocketFactory.getSocketFactory())
 			.register("https", createSSLConnSocketFactory())
 //			.register("https", SSLConnectionSocketFactory.getSocketFactory())
 			.build();
 		final SocketConfig socketConfig = SocketConfig.custom()
-//          .setSoLinger(1)
-		    .setSoTimeout(MusesConfig.TIMEOUT)
-		    .setTcpNoDelay(true)
-		    .setSoKeepAlive(true)
-		    .setSoReuseAddress(true)
-		    .build();
+//		  .setSoLinger(1)
+			.setSoTimeout(MusesConfig.TIMEOUT)
+			.setTcpNoDelay(true)
+			.setSoKeepAlive(true)
+			.setSoReuseAddress(true)
+			.build();
 //		final ConnectionConfig connectionConfig = ConnectionConfig.custom()
-//		    .setCharset(StandardCharsets.UTF_8)
-//		    .build();
+//			.setCharset(StandardCharsets.UTF_8)
+//			.build();
 		// 如果设置连接管理后面配置无效
 		final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
 		connectionManager.setMaxTotal(256);
@@ -96,31 +96,31 @@ public final class HTTPUtils {
 			.setConnectionRequestTimeout(MusesConfig.TIMEOUT)
 			.build();
 		CLIENT = HttpClients.custom()
-//		    .setProxy(null)
-//		    .setRetryHandler(null)
-		    .setDefaultHeaders(headers)
-//		    .setRedirectStrategy(DefaultRedirectStrategy.INSTANCE)
-//		    .setKeepAliveStrategy(null)
-		    .setConnectionManager(connectionManager)
-		    // 需要自己清理连接
-//		    .setConnectionManagerShared(true)
-//		    .setConnectionReuseStrategy(null)
-//		    .setDefaultConnectionConfig(null)
-//		    .setDefaultCookieStore(null)
-//		    .setDefaultCookieSpecRegistry(null)
-//		    .setDefaultSocketConfig(socketConfig)
-		    .setDefaultRequestConfig(requestConfig)
-		    // 定时清理
-		    .evictIdleConnections(30, TimeUnit.SECONDS)
-//		    .evictExpiredConnections()
-//		    .setConnectionTimeToLive(1, TimeUnit.MINUTES)
-//		    .setMaxConnTotal(256)
-//		    .setMaxConnPerRoute(4)
-//		    .disableAuthCaching()
-//		    .disableCookieManagement()
-		    // 默认重试三次
-		    .disableAutomaticRetries()
-		    .build();
+//			.setProxy(null)
+//			.setRetryHandler(null)
+			.setDefaultHeaders(headers)
+//			.setRedirectStrategy(DefaultRedirectStrategy.INSTANCE)
+//			.setKeepAliveStrategy(null)
+			.setConnectionManager(connectionManager)
+			// 需要自己清理连接
+//			.setConnectionManagerShared(true)
+//			.setConnectionReuseStrategy(null)
+//			.setDefaultConnectionConfig(null)
+//			.setDefaultCookieStore(null)
+//			.setDefaultCookieSpecRegistry(null)
+//			.setDefaultSocketConfig(socketConfig)
+			.setDefaultRequestConfig(requestConfig)
+			// 定时清理
+			.evictIdleConnections(30, TimeUnit.SECONDS)
+//			.evictExpiredConnections()
+//			.setConnectionTimeToLive(1, TimeUnit.MINUTES)
+//			.setMaxConnTotal(256)
+//			.setMaxConnPerRoute(4)
+//			.disableAuthCaching()
+//			.disableCookieManagement()
+			// 默认重试三次
+			.disableAutomaticRetries()
+			.build();
 	}
 	
 	public static final String get(String url) {
@@ -207,21 +207,21 @@ public final class HTTPUtils {
 	}
 	
 	private static final void addHeaders(HttpRequestBase request, Map<String, String> headers) {
-	    if(MapUtils.isNotEmpty(headers)) {
-	        headers.forEach(request::addHeader);
-	    }
+		if(MapUtils.isNotEmpty(headers)) {
+			headers.forEach(request::addHeader);
+		}
 	}
 	
 	private static final void requestConfig(HttpRequestBase request, int timeout) {
-	    if(timeout <= 0 || timeout == MusesConfig.TIMEOUT) {
-	        return;
-	    }
-	    final RequestConfig requestConfig = RequestConfig.custom()
-            .setSocketTimeout(timeout)
-            .setConnectTimeout(timeout)
-            .setConnectionRequestTimeout(timeout)
-            .build();
-	    request.setConfig(requestConfig);
+		if(timeout <= 0 || timeout == MusesConfig.TIMEOUT) {
+			return;
+		}
+		final RequestConfig requestConfig = RequestConfig.custom()
+			.setSocketTimeout(timeout)
+			.setConnectTimeout(timeout)
+			.setConnectionRequestTimeout(timeout)
+			.build();
+		request.setConfig(requestConfig);
 	}
 
 	private static final List<NameValuePair> buildFormParams(Map<String, Object> body) {

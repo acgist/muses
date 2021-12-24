@@ -9,6 +9,15 @@ import java.lang.annotation.Target;
 /**
  * 模板查询
  * 
+ * List(paramter...)
+ * Result(paramter...)
+ * Page(paramter..., Pageable)
+ * 
+ * $(boolean)
+ * $(name != null)
+ * $(name == acgist)
+ * $(name == root || name == acgist)
+ * 
  * @author yusheng
  */
 @Target(ElementType.METHOD)
@@ -23,10 +32,13 @@ public @interface TemplateQuery {
     public static final String COLON = ":";
     public static final String COMMA = ",";
     public static final String SPACE = " ";
+    public static final String OR_TOKEN = "\\|\\|";
+    public static final String AND_TOKEN = "\\&\\&";
     public static final String OR = "or";
     public static final String AND = "and";
     public static final String WHERE = "where";
     public static final String SELECT = "select";
+    public static final String ORDER_BY = "order by";
     
     /**
      * 条件判断
@@ -58,7 +70,7 @@ public @interface TemplateQuery {
     }
 
     /**
-     * @return 查询语句
+     * @return 执行语句：插入、删除、更新、查询
      */
     String query();
 
@@ -73,19 +85,17 @@ public @interface TemplateQuery {
     String where() default "";
 
     /**
-     * @return 排序语句
-     * 
-     * @see #attach()
+     * @return 排序语句：order by
      */
     String sorted() default "";
 
     /**
-     * @return 附加语句：limit、group、having
+     * @return 附加语句：limit、group、having、order by
      */
     String attach() default "";
 
     /**
-     * @return 没有结果是否执行默认方法
+     * @return 没有结果是否执行默认方法（单个对象有效）
      */
     boolean fallback() default false;
     
@@ -95,7 +105,7 @@ public @interface TemplateQuery {
     boolean nativeQuery() default true;
 
     /**
-     * @return 返回类型
+     * @return 返回类型（集合分页有效）
      */
     Class<?> clazz() default Object.class;
 

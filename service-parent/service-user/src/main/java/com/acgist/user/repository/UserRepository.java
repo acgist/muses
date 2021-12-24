@@ -1,11 +1,11 @@
 package com.acgist.user.repository;
 
-import java.awt.print.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,13 @@ import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;
 import com.acgist.user.pojo.query.UserQuery;
 
+/**
+ * 用户查询
+ * 
+ * TODO：JDK17多行
+ * 
+ * @author acgist
+ */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
 
@@ -28,7 +35,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     }
     
     @TemplateQuery(
-        query = "update t_user name = :name, modify_date = now() where id = :id",
+        query = "update t_user set name = :name, modify_date = now() where id = :id",
         nativeQuery = true
     )
     default void update(UserEntity userEntity) {
@@ -54,7 +61,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     
     @TemplateQuery(
         query = "select name, memo, (select count(*) from t_user) size from t_user",
-        where = "$(name != null) and name = :name",
+        where = "$(name != null && name == root) and name = :name",
         sorted = "order by id desc",
         attach = "limit 1",
         nativeQuery = true
@@ -66,8 +73,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     @TemplateQuery(
         query = "select name, memo, (select count(*) from t_user) size from t_user",
         where = "$(name != null) and name = :name\n"
-            + "$(beginDate != null) and create_date > :beginDate"
-            + "$(endDate != null) and create_date < :endDate",
+            + "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
+            + "$(beginDate == null && endDate != null) and create_date < :endDate\n"
+            + "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
         sorted = "order by id desc",
         attach = "limit 1",
         nativeQuery = true
@@ -79,8 +87,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     @TemplateQuery(
         query = "select name, memo, (select count(*) from t_user) size from t_user",
         where = "$(name != null) and name = :name\n"
-            + "$(beginDate != null) and create_date > :beginDate"
-            + "$(endDate != null) and create_date < :endDate",
+            + "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
+            + "$(beginDate == null && endDate != null) and create_date < :endDate\n"
+            + "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
         sorted = "order by id desc",
         attach = "limit 1",
         nativeQuery = true
@@ -92,8 +101,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     @TemplateQuery(
         query = "select name, memo, (select count(*) from t_user) size from t_user",
         where = "$(name != null) and name = :name\n"
-            + "$(beginDate != null) and create_date > :beginDate"
-            + "$(endDate != null) and create_date < :endDate",
+            + "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
+            + "$(beginDate == null && endDate != null) and create_date < :endDate\n"
+            + "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
         sorted = "order by id desc",
         attach = "limit 1",
         nativeQuery = true
@@ -113,6 +123,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     
     @TemplateQuery(
         query = "select name, memo from t_user",
+        count = "select count(*) from t_user",
         clazz = UserDto.class,
         nativeQuery = true
     )
@@ -122,9 +133,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
     
     @TemplateQuery(
         query = "select name, memo from t_user",
+        count = "select count(*) from t_user",
         where = "$(name != null) and name = :name\n"
-            + "$(beginDate != null) and create_date > :beginDate"
-            + "$(endDate != null) and create_date < :endDate",
+        	+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
+        	+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
+        	+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
         clazz = UserDto.class,
         nativeQuery = true
     )

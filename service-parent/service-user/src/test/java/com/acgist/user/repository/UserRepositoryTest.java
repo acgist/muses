@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,6 +32,7 @@ import com.acgist.boot.CostUtils;
 import com.acgist.main.UserApplication;
 import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;
+import com.acgist.user.pojo.query.UserQuery;
 
 @SpringBootTest(classes = UserApplication.class)
 public class UserRepositoryTest {
@@ -49,6 +52,7 @@ public class UserRepositoryTest {
 	}
 	
 	@Test
+//	@Rollback(false)
 	@Transactional
 	public void testInsert() {
 	    final UserEntity entity = new UserEntity();
@@ -56,6 +60,21 @@ public class UserRepositoryTest {
 	    entity.setName("insert");
 	    entity.setPassword(new BCryptPasswordEncoder().encode("123456"));
 	    this.userRepository.insert(entity);
+	}
+	
+	@Test
+	@Transactional
+	public void testUpdate() {
+		final UserEntity entity = new UserEntity();
+		entity.setId(1L);
+		entity.setName("root");
+		this.userRepository.update(entity);
+	}
+	
+	@Test
+	@Transactional
+	public void testDelete() {
+		this.userRepository.delete(3L);
 	}
 
 	@Test
@@ -76,20 +95,54 @@ public class UserRepositoryTest {
     }
 	
 	@Test
-	public void testQueryByName() {
+	public void testQuery() {
 		UserDto dto = this.userRepository.query("root");
 		LOGGER.info("{}", dto);
 		assertNotNull(dto);
+		assertEquals("root", dto.getName());
 		dto = this.userRepository.query((String) null);
 		LOGGER.info("{}", dto);
 		assertNotNull(dto);
+		assertEquals("acgist", dto.getName());
+		final UserQuery userQuery = new UserQuery();
+		this.userRepository.query(userQuery);
+		userQuery.setName("root");
+		this.userRepository.query(userQuery);
+		userQuery.setBeginDate(new Date());
+		this.userRepository.query(userQuery);
+		userQuery.setBeginDate(null);
+		userQuery.setEndDate(new Date());
+		this.userRepository.query(userQuery);
+		userQuery.setBeginDate(new Date());
+		userQuery.setEndDate(new Date());
+		this.userRepository.query(userQuery);
+		this.userRepository.query(null, null, null);
+		this.userRepository.query("root", null, null);
+		this.userRepository.query(null, null, new Date());
+		this.userRepository.query(null, new Date(), null);
+		this.userRepository.query(null, new Date(), new Date());
+		final Map<String, Object> map = new HashMap<>();
+		this.userRepository.query(map);
+		map.put("name", "acgist");
+		this.userRepository.query(map);
 	}
 	
 	@Test
 	public void getQueryList() {
-		final List<UserDto> list = this.userRepository.queryList();
+		List<UserDto> list = this.userRepository.queryList();
 		LOGGER.info("{}", list);
 		assertNotNull(list);
+		Page<UserDto> page = this.userRepository.queryList(PageRequest.of(0, 1));
+		LOGGER.info("{}", page);
+		LOGGER.info("{}", page.getContent());
+		assertNotNull(page);
+		final UserQuery userQuery = new UserQuery();
+		userQuery.setBeginDate(new Date());
+		userQuery.setName("root");
+		userQuery.setEndDate(new Date());
+		page = this.userRepository.queryList(userQuery, PageRequest.of(0, 1));
+		LOGGER.info("{}", page);
+		LOGGER.info("{}", page.getContent());
 	}
 	
 	@Test
