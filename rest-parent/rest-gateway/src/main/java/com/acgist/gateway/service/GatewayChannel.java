@@ -6,6 +6,6 @@ import org.springframework.messaging.MessageChannel;
 public interface GatewayChannel {
 
 	@Output("gateway-output")
-    MessageChannel channel();
+	MessageChannel channel();
 	
 }

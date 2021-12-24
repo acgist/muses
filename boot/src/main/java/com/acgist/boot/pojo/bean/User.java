@@ -75,7 +75,7 @@ public class User implements Serializable {
 	 * 判断是否含有权限
 	 * 
 	 * @param method 请求方法
-	 * @param path   请求路径
+	 * @param path 请求路径
 	 * 
 	 * @return 是否含有权限
 	 */

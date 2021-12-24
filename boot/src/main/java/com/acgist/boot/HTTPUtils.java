@@ -72,7 +72,7 @@ public final class HTTPUtils {
 //			.register("https", SSLConnectionSocketFactory.getSocketFactory())
 			.build();
 		final SocketConfig socketConfig = SocketConfig.custom()
-//		  .setSoLinger(1)
+//			.setSoLinger(1)
 			.setSoTimeout(MusesConfig.TIMEOUT)
 			.setTcpNoDelay(true)
 			.setSoKeepAlive(true)

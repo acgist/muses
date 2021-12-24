@@ -55,11 +55,11 @@ public class UserRepositoryTest {
 //	@Rollback(false)
 	@Transactional
 	public void testInsert() {
-	    final UserEntity entity = new UserEntity();
-	    entity.setId(3L);
-	    entity.setName("insert");
-	    entity.setPassword(new BCryptPasswordEncoder().encode("123456"));
-	    this.userRepository.insert(entity);
+		final UserEntity entity = new UserEntity();
+		entity.setId(3L);
+		entity.setName("insert");
+		entity.setPassword(new BCryptPasswordEncoder().encode("123456"));
+		this.userRepository.insert(entity);
 	}
 	
 	@Test
@@ -79,20 +79,20 @@ public class UserRepositoryTest {
 
 	@Test
 	public void testFallback() {
-	    final UserDto userDto = this.userRepository.fallback();
-	    assertNotNull(userDto);
-	    LOGGER.info("{}", userDto);
+		final UserDto userDto = this.userRepository.fallback();
+		assertNotNull(userDto);
+		LOGGER.info("{}", userDto);
 	}
 	
 	@Test
-    public void testCosted() {
-        CostUtils.costed(10000, () -> {
-            this.userRepository.findByName("root");
-        });
-        CostUtils.costed(10000, () -> {
-            this.userRepository.query("root");
-        });
-    }
+	public void testCosted() {
+		CostUtils.costed(10000, () -> {
+			this.userRepository.findByName("root");
+		});
+		CostUtils.costed(10000, () -> {
+			this.userRepository.query("root");
+		});
+	}
 	
 	@Test
 	public void testQuery() {

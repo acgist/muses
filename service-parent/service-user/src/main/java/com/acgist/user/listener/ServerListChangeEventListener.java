@@ -18,37 +18,37 @@ import com.alibaba.nacos.common.notify.listener.Subscriber;
 @Component
 public class ServerListChangeEventListener extends Subscriber<InstancesChangeEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServerListChangeEventListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(ServerListChangeEventListener.class);
 
-    private ApplicationEventPublisher applicationEventPublisher;
+	private ApplicationEventPublisher applicationEventPublisher;
 
-    @Autowired
-    private NacosServiceRegistry nacosServiceRegistry;
+	@Autowired
+	private NacosServiceRegistry nacosServiceRegistry;
 
-    @PostConstruct
-    private void post(){
-        NotifyCenter.registerSubscriber(this);
-    }
+	@PostConstruct
+	private void post(){
+		NotifyCenter.registerSubscriber(this);
+	}
 
 
-    /**
-     * Event callback.
-     *
-     * @param event {@link Event}
-     */
-    @Override
-    public void onEvent(InstancesChangeEvent event) {
-        logger.info("接收到 ServerListChangeEvent 订阅事件：{}", JSON.toJSONString(event));
-    }
+	/**
+	 * Event callback.
+	 *
+	 * @param event {@link Event}
+	 */
+	@Override
+	public void onEvent(InstancesChangeEvent event) {
+		logger.info("接收到 ServerListChangeEvent 订阅事件：{}", JSON.toJSONString(event));
+	}
 
-    /**
-     * Type of this subscriber's subscription.
-     *
-     * @return Class which extends {@link Event}
-     */
-    @Override
-    public Class<? extends com.alibaba.nacos.common.notify.Event> subscribeType() {
-        return InstancesChangeEvent.class;
-    }
+	/**
+	 * Type of this subscriber's subscription.
+	 *
+	 * @return Class which extends {@link Event}
+	 */
+	@Override
+	public Class<? extends com.alibaba.nacos.common.notify.Event> subscribeType() {
+		return InstancesChangeEvent.class;
+	}
 
 }

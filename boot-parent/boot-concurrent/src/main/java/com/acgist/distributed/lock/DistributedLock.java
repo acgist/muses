@@ -39,9 +39,9 @@ public interface DistributedLock {
 	/**
 	 * 加锁
 	 * 
-	 * @param key      锁名
+	 * @param key 锁名
 	 * @param duration 尝试时长（单位：毫秒）
-	 * @param ttl      加锁时长（单位：秒）
+	 * @param ttl 加锁时长（单位：秒）
 	 * 
 	 * @return 是否成功
 	 */
@@ -115,9 +115,9 @@ public interface DistributedLock {
 	/**
 	 * 添加锁
 	 * 
-	 * @param key   锁名
+	 * @param key 锁名
 	 * @param value 锁值
-	 * @param ttl   加锁时长（单位：秒）
+	 * @param ttl 加锁时长（单位：秒）
 	 * 
 	 * @return 是否成功
 	 */
@@ -126,9 +126,9 @@ public interface DistributedLock {
 	/**
 	 * 重试锁
 	 * 
-	 * @param key   锁名
+	 * @param key 锁名
 	 * @param value 锁值
-	 * @param ttl   加锁时长（单位：秒）
+	 * @param ttl 加锁时长（单位：秒）
 	 */
 	default void reset(String key, String value, int ttl) {
 	}
@@ -152,7 +152,7 @@ public interface DistributedLock {
 	/**
 	 * 阻塞
 	 * 
-	 * @param key      锁名
+	 * @param key 锁名
 	 * @param duration 阻塞时长（单位：毫秒）
 	 * 
 	 * @return 剩余阻塞时长

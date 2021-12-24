@@ -18,7 +18,7 @@ public class CostUtils {
 	/**
 	 * 执行消耗
 	 * 
-	 * @param count  执行次数
+	 * @param count 执行次数
 	 * @param coster 消耗函数
 	 */
 	public static final void costed(int count, Coster coster) {

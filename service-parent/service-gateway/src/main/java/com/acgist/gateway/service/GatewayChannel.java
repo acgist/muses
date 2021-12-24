@@ -5,7 +5,7 @@ import org.springframework.messaging.MessageChannel;
 
 public interface GatewayChannel {
 
-    @Input("gateway-input")
-    MessageChannel channel();
+	@Input("gateway-input")
+	MessageChannel channel();
 	
 }

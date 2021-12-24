@@ -37,20 +37,20 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
 		final Optional<OAuth2RefreshToken> refreshToken = Optional.ofNullable(authorization.getToken(OAuth2RefreshToken.class))
 			.map(OAuth2Authorization.Token::getToken);
 		if(accessToken.isEmpty() && refreshToken.isEmpty()) {
-		    if(code.isPresent()) {
-		        this.redisTemplate.opsForValue().set(buildTokenKey(OAuth2ParameterNames.CODE, code.get()), authorization, this.oauth2Config.getCode(), TimeUnit.SECONDS);
-		    }
+			if(code.isPresent()) {
+				this.redisTemplate.opsForValue().set(buildTokenKey(OAuth2ParameterNames.CODE, code.get()), authorization, this.oauth2Config.getCode(), TimeUnit.SECONDS);
+			}
 			this.redisTemplate.opsForValue().set(buildKey(authorization), authorization, this.oauth2Config.getCode(), TimeUnit.SECONDS);
 		} else {
-		    if(code.isPresent()) {
-		        this.redisTemplate.delete(buildTokenKey(OAuth2ParameterNames.CODE, code.get()));
-		    }
-		    // TODO：旧的AccessToken没有删除
+			if(code.isPresent()) {
+				this.redisTemplate.delete(buildTokenKey(OAuth2ParameterNames.CODE, code.get()));
+			}
+			// TODO：旧的AccessToken没有删除
 			if(accessToken.isPresent()) {
-			    this.redisTemplate.opsForValue().set(buildTokenKey(OAuth2ParameterNames.ACCESS_TOKEN, accessToken.get()), authorization, this.oauth2Config.getAccess(), TimeUnit.SECONDS);
+				this.redisTemplate.opsForValue().set(buildTokenKey(OAuth2ParameterNames.ACCESS_TOKEN, accessToken.get()), authorization, this.oauth2Config.getAccess(), TimeUnit.SECONDS);
 			}
 			if(refreshToken.isPresent()) {
-			    this.redisTemplate.opsForValue().set(buildTokenKey(OAuth2ParameterNames.REFRESH_TOKEN, refreshToken.get()), authorization, this.oauth2Config.getRefresh(), TimeUnit.SECONDS);
+				this.redisTemplate.opsForValue().set(buildTokenKey(OAuth2ParameterNames.REFRESH_TOKEN, refreshToken.get()), authorization, this.oauth2Config.getRefresh(), TimeUnit.SECONDS);
 			}
 			this.redisTemplate.opsForValue().set(buildKey(authorization), authorization, this.oauth2Config.getRefresh(), TimeUnit.SECONDS);
 		}

@@ -35,7 +35,7 @@ public class Message<T> implements Serializable {
 	/**
 	 * 成功消息
 	 * 
-	 * @param <T>  消息类型
+	 * @param <T> 消息类型
 	 * @param body 消息内容
 	 * 
 	 * @return 成功消息
@@ -55,8 +55,8 @@ public class Message<T> implements Serializable {
 	/**
 	 * 错误消息
 	 * 
-	 * @param <T>     消息类型
-	 * @param code    错误编码
+	 * @param <T> 消息类型
+	 * @param code 错误编码
 	 * @param message 错误描述
 	 * 
 	 * @return 错误消息
@@ -75,7 +75,7 @@ public class Message<T> implements Serializable {
 	/**
 	 * 错误消息
 	 * 
-	 * @param <T>  消息类型
+	 * @param <T> 消息类型
 	 * @param code 错误编码
 	 * @param body 消息内容
 	 * 
@@ -92,10 +92,10 @@ public class Message<T> implements Serializable {
 	/**
 	 * 错误消息
 	 * 
-	 * @param <T>     消息类型
-	 * @param code    错误编码
+	 * @param <T> 消息类型
+	 * @param code 错误编码
 	 * @param message 响应描述
-	 * @param body    消息内容
+	 * @param body 消息内容
 	 * 
 	 * @return 错误消息
 	 */

@@ -56,7 +56,7 @@ public final class JSONUtils {
 	/**
 	 * JSON转Java
 	 * 
-	 * @param <T>  Java类型
+	 * @param <T> Java类型
 	 * @param json JSON
 	 * 
 	 * @return Java
@@ -78,8 +78,8 @@ public final class JSONUtils {
 	/**
 	 * JSON转Java
 	 * 
-	 * @param <T>   Java类型
-	 * @param json  JSON
+	 * @param <T> Java类型
+	 * @param json JSON
 	 * @param clazz Java类型
 	 * 
 	 * @return Java
@@ -100,8 +100,8 @@ public final class JSONUtils {
 	/**
 	 * JSON转Map
 	 * 
-	 * @param <K>  K类型
-	 * @param <V>  V类型
+	 * @param <K> K类型
+	 * @param <V> V类型
 	 * @param json JSON
 	 * 
 	 * @return Map
@@ -123,7 +123,7 @@ public final class JSONUtils {
 	/**
 	 * JSON转List
 	 * 
-	 * @param <T>  元素类型
+	 * @param <T> 元素类型
 	 * @param json JSON
 	 * 
 	 * @return List
