@@ -160,23 +160,29 @@ public class TemplateQueryAutoConfiguration {
 		}
 		final String sorted = templateQuery.sorted().strip();
 		if(StringUtils.isNotEmpty(sorted)) {
-			builder.append(sorted).append(TemplateQuery.SPACE);
+			builder.append(sorted);
 		}
 		if(pageableParamter != null) {
 			final Stream<Order> stream = pageableParamter.getSort().get();
 			final String orderString = stream
 				.map(order -> order.getProperty() + TemplateQuery.SPACE + order.getDirection())
-				.collect(Collectors.joining(TemplateQuery.COMMA));
-			if(StringUtils.isNotEmpty(orderString)) {
+				.collect(Collectors.joining(TemplateQuery.COMMA + TemplateQuery.SPACE));
+			if(StringUtils.isEmpty(orderString)) {
+				builder.append(TemplateQuery.SPACE);
+			} else {
 				if(StringUtils.isEmpty(sorted)) {
-					builder.append(TemplateQuery.ORDER_BY).append(TemplateQuery.COMMA);
+					builder.append(TemplateQuery.ORDER_BY).append(TemplateQuery.SPACE);
+				} else {
+					builder.append(TemplateQuery.COMMA).append(TemplateQuery.SPACE);
 				}
-				builder.append(orderString).append(TemplateQuery.COMMA);
+				builder.append(orderString).append(TemplateQuery.SPACE);
 			}
+		} else {
+			builder.append(TemplateQuery.SPACE);
 		}
 		final String attach = templateQuery.attach().strip();
 		if(StringUtils.isNotEmpty(attach)) {
-			builder.append(attach).append(TemplateQuery.COMMA);
+			builder.append(attach).append(TemplateQuery.SPACE);
 		}
 		return builder.toString();
 	}
@@ -199,7 +205,7 @@ public class TemplateQueryAutoConfiguration {
 		// 统计不要排序语句
 		final String attach = templateQuery.attach().strip();
 		if(StringUtils.isNotEmpty(attach)) {
-			builder.append(attach).append(TemplateQuery.COMMA);
+			builder.append(attach).append(TemplateQuery.SPACE);
 		}
 		return builder.toString();
 	}
@@ -223,20 +229,20 @@ public class TemplateQueryAutoConfiguration {
 		while(tokenizer.hasMoreTokens()) {
 			token = tokenizer.nextToken();
 			final int commaIndex = token.indexOf(TemplateQuery.COMMA);
-			if(commaIndex > 0) {
-				final String key = token.substring(0, commaIndex);
-				map.put(key, paramterMap.get(key));
-				continue;
-			}
 			final int rightIndex = token.indexOf(TemplateQuery.RIGHT);
-			if(rightIndex > 0) {
-				final String key = token.substring(0, rightIndex);
-				map.put(key, paramterMap.get(key));
-				continue;
-			}
 			final int spaceIndex = token.indexOf(TemplateQuery.SPACE);
+			int minIndex = Integer.MAX_VALUE;
+			if(commaIndex > 0) {
+				minIndex = Math.min(minIndex, commaIndex);
+			}
+			if(rightIndex > 0) {
+				minIndex = Math.min(minIndex, rightIndex);
+			}
 			if(spaceIndex > 0) {
-				final String key = token.substring(0, spaceIndex);
+				minIndex = Math.min(minIndex, spaceIndex);
+			}
+			if(minIndex > 0 && minIndex != Integer.MAX_VALUE) {
+				final String key = token.substring(0, minIndex);
 				map.put(key, paramterMap.get(key));
 				continue;
 			}

@@ -131,6 +131,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
 			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
 			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
 			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
+		sorted = "order by create_date desc",
 		resultType = UserDto.class
 	)
 	default Page<UserDto> queryList(UserQuery userQuery, Pageable pageable) {

@@ -24,6 +24,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,7 +151,8 @@ public class UserRepositoryTest {
 		userQuery.setBeginDate(new Date());
 		userQuery.setName("root");
 		userQuery.setEndDate(new Date());
-		page = this.userRepository.queryList(userQuery, PageRequest.of(0, 1));
+		final Pageable pageable = PageRequest.of(0, 1, Sort.by(Order.asc("id"), Order.desc("modify_date")));
+		page = this.userRepository.queryList(userQuery, pageable);
 		LOGGER.info("{}", page);
 		LOGGER.info("{}", page.getContent());
 	}
