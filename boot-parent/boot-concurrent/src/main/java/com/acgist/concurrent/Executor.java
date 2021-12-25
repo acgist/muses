@@ -10,6 +10,11 @@ package com.acgist.concurrent;
  */
 public abstract class Executor<I, O> {
 
+	/**
+	 * 回滚类型
+	 * 
+	 * @author acgist
+	 */
 	public enum RollbackType {
 		
 		// 回滚所有
@@ -34,6 +39,10 @@ public abstract class Executor<I, O> {
 	 */
 	protected boolean success;
 	/**
+	 * 是否回滚
+	 */
+	protected boolean rollback;
+	/**
 	 * 下一个执行器
 	 */
 	protected Executor<O, ?> executor;
@@ -45,107 +54,126 @@ public abstract class Executor<I, O> {
 	protected Executor(RollbackType rollbackType) {
 		this.rollbackType = rollbackType;
 	}
-
+	
 	/**
 	 * 判断是否执行成功
 	 * 
 	 * @return 是否成功
 	 */
 	public boolean success() {
-		if(this.success) {
+		if(this.success && this.executor != null) {
 			return this.executor.success();
 		}
-		return false;
+		return this.success;
 	}
-
+	
 	/**
 	 * 执行任务
+	 * 
+	 * @return 输出信息
 	 */
-	public void execute() {
-		this.execute(this.input);
+	public O execute() {
+		return this.execute(this.input);
 	}
 	
 	/**
 	 * 执行任务
 	 * 
 	 * @param input 输入信息
+	 * 
+	 * @return 输出信息
 	 */
-	public void execute(I input) {
+	protected O execute(I input) {
 		if(this.input != input) {
 			this.input = input;
 		}
-		this.doExecute();
-		if(this.executor != null) {
+		this.output = this.doExecute();
+		if(this.success && this.executor != null) {
 			this.executor.execute(this.output);
 		}
+		return this.output;
 	}
 	
 	/**
 	 * 执行任务
 	 */
-	public abstract void doExecute();
+	protected abstract O doExecute();
 	
 	/**
 	 * 回滚任务
+	 * 
+	 * @return 是否回滚成功
 	 */
-	public void rollback() {
+	public boolean rollback() {
 		switch (this.rollbackType) {
 		case ALL:
-			this.rollbackAll();
-			break;
+			return this.rollbackAll();
 		case SUCCESS:
-			this.rollbackSuccess();
-			break;
+			return this.rollbackSuccess();
 		case LAST_SUCCESS:
-			this.rollbackLastSuccess();
-			break;
+			return this.rollbackLastSuccess();
+		default:
+			return false;
 		}
 	}
 	
 	/**
 	 * 回滚所有任务
+	 * 
+	 * @return 是否回滚成功
 	 */
-	public void rollbackAll() {
+	protected boolean rollbackAll() {
+		boolean success = true;
 		if(this.executor != null) {
-			this.executor.rollback();
+			success = this.executor.rollback() && success;
 		}
-		this.doRollback();
+		success = this.doRollback() && success;
+		return success;
 	}
 
 	/**
 	 * 回滚成功任务
+	 * 
+	 * @return 是否回滚成功
 	 */
-	public void rollbackSuccess() {
+	protected boolean rollbackSuccess() {
+		boolean success = true;
 		if(this.executor != null) {
-			this.executor.rollback();
+			success = this.executor.rollback() && success;
 		}
 		if(this.success) {
-			this.doRollback();
+			success = this.doRollback() && success;
 		}
+		return success;
 	}
 	
 	/**
 	 * 回滚最后成功任务
+	 * 
+	 * @return 是否回滚成功
 	 */
-	public void rollbackLastSuccess() {
-		if(this.executor != null) {
-			this.executor.rollback();
-		}
+	protected boolean rollbackLastSuccess() {
 		if(this.executor != null) {
 			if(this.success && !this.executor.success()) {
-				this.doRollback();
+				return this.doRollback();
+			} else {
+				return this.executor.rollback();
 			}
 		} else {
 			if(this.success) {
-				this.doRollback();
+				return this.doRollback();
+			} else {
+				return true;
 			}
 		}
 	}
 
 	/**
 	 * 执行回滚
+	 * 
+	 * @return 是否回滚成功
 	 */
-	public abstract void doRollback();
+	protected abstract boolean doRollback();
 	
 	public I getInput() {
 		return input;
