@@ -10,6 +10,9 @@ public class UserDto extends PojoCopy {
 
 	private String name;
 	private String memo;
+	/**
+	 * 默认返回类型可以直接使用Number类型接收
+	 */
 	private BigInteger size;
 
 	public String getName() {

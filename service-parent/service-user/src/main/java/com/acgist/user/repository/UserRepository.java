@@ -96,19 +96,20 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
 	@TemplateQuery(
 		query = "select name, memo, (select count(*) from t_user) size from t_user",
 		where = "$(name != null) and name = :name\n"
+			+ "$(bool) and name = :name\n"
 			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
 			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
 			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
 		sorted = "order by id desc",
 		attach = "limit 1"
 	)
-	default UserDto query(String name, Date beginDate, Date endDate) {
+	default UserDto query(String name, boolean bool, Date beginDate, Date endDate) {
 		return null;
 	}
 	
 	@TemplateQuery(
 		query = "select name, memo from t_user",
-		clazz = UserDto.class
+		resultType = UserDto.class
 	)
 	default List<UserDto> queryList() {
 		return null;
@@ -117,7 +118,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
 	@TemplateQuery(
 		query = "select name, memo from t_user",
 		count = "select count(*) from t_user",
-		clazz = UserDto.class
+		resultType = UserDto.class
 	)
 	default Page<UserDto> queryList(Pageable pageable) {
 		return null;
@@ -130,7 +131,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpec
 			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
 			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
 			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
-		clazz = UserDto.class
+		resultType = UserDto.class
 	)
 	default Page<UserDto> queryList(UserQuery userQuery, Pageable pageable) {
 		return null;

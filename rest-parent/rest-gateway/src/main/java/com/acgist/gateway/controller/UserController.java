@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acgist.boot.Message;
+import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.User;
 import com.acgist.gateway.config.GatewayBody;
 import com.acgist.gateway.request.GetMemoRequest;

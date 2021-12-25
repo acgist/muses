@@ -19,14 +19,14 @@ import com.acgist.data.entity.SnowflakeGenerator;
 public class DataAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataAutoConfiguration.class);
-	
+
 	@Autowired
 	private IdService idService;
-	
+
 	@PostConstruct
 	public void init() {
 		LOGGER.info("注入ID生成策略：雪花算法");
 		SnowflakeGenerator.init(this.idService);
 	}
-	
+
 }

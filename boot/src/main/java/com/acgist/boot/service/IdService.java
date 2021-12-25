@@ -7,7 +7,9 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.acgist.boot.config.MusesConfig;
 
 /**
  * ID生成
@@ -26,17 +28,20 @@ public class IdService {
 	private static final int MAX_INDEX = 9999;
 
 	/**
-	 * 系统SN：01~99
+	 * 当前机器序号
 	 */
-	@Value("${system.sn:99}")
 	private int sn;
 	/**
 	 * 当前序号
 	 */
 	private int index;
-
+	
+	@Autowired
+	private MusesConfig musesConfig;
+	
 	@PostConstruct
 	public void init() {
+		this.sn = this.musesConfig.getSn();
 		final Random random = new Random();
 		this.index = random.nextInt(MAX_INDEX);
 		LOGGER.info("雪花ID：{}-{}", this.sn, this.index);

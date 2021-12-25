@@ -1,7 +1,6 @@
 package com.acgist.data.config;
 
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-import org.springframework.cglib.beans.BeanMap;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,7 +31,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Order;
 
 import com.acgist.boot.CollectionUtils;
+import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
+import com.acgist.data.TemplateQueryUtils;
 import com.acgist.data.query.TemplateQuery;
 import com.acgist.data.query.TemplateQuery.Condition;
 
@@ -72,30 +72,29 @@ public class TemplateQueryAutoConfiguration {
 	@Around("query()")
 	public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		// 基本信息
-		final MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-		final TemplateQuery templateQuery = signature.getMethod().getAnnotation(TemplateQuery.class);
+		final MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+		final TemplateQuery templateQuery = methodSignature.getMethod().getAnnotation(TemplateQuery.class);
 		final Object[] args = proceedingJoinPoint.getArgs();
-		final String[] argsNames = signature.getParameterNames();
-		final Class<?> returnType = signature.getReturnType();
-		final Class<?>[] argsTypes = signature.getParameterTypes();
+		final String[] argsNames = methodSignature.getParameterNames();
+		final Class<?> returnType = methodSignature.getReturnType();
 		final boolean fallback = templateQuery.fallback();
 		final boolean voidable = Void.TYPE.equals(returnType);
 		final boolean listable = List.class.isAssignableFrom(returnType);
 		final boolean pageable = Page.class.isAssignableFrom(returnType);
 		final boolean selectQuery = this.selectQuery(templateQuery);
-		final Class<?> resultType = (!voidable && !listable && !pageable) ? returnType : templateQuery.clazz();
+		final Class<?> resultType = (!voidable && !listable && !pageable) ? returnType : templateQuery.resultType();
 		final int argsLength = args.length;
 		final int parameterLength = pageable ? argsLength - 1 : argsLength;
 		final Pageable pageableParamter = pageable ? (Pageable) args[parameterLength] : null;
 		// 设置参数
-		final Map<String, Object> paramterMap = this.buildParamterMap(args, argsNames, argsTypes, parameterLength);
+		final Map<String, Object> paramterMap = TemplateQueryUtils.buildParamterMap(args, argsNames, parameterLength);
 		final String whereString = this.buildWhere(paramterMap, templateQuery);
 		final String queryString = this.buildQuery(templateQuery, whereString, pageableParamter);
-		final Map<String, Object> queryParamterMap = this.filterParamterMap(paramterMap, queryString);
+		final Map<String, Object> queryParamterMap = this.filterParamterMap(queryString, paramterMap);
 		final Query query = this.createQuery(templateQuery, queryString);
 		this.buildParamter(query, pageableParamter, queryParamterMap);
 		this.buildResultType(query, voidable, resultType);
-		// 结果返回
+		// 执行查询
 		final Object result = this.execute(selectQuery, voidable, listable, pageable, query, templateQuery, whereString, pageableParamter, paramterMap);
 		if(result == null && fallback) {
 			return proceedingJoinPoint.proceed(args);
@@ -111,35 +110,7 @@ public class TemplateQueryAutoConfiguration {
 	 * @return 是否查询语句
 	 */
 	private boolean selectQuery(TemplateQuery templateQuery) {
-		final String query = templateQuery.query().strip().toLowerCase();
-		return query.startsWith(TemplateQuery.SELECT);
-	}
-	
-	/**
-	 * 创建参数
-	 * 
-	 * @param args 参数
-	 * @param argsNames 参数名称
-	 * @param argsTypes 参数类型
-	 * @param parameterLength 参数长度
-	 * 
-	 * @return 参数
-	 */
-	private Map<String, Object> buildParamterMap(Object[] args, String[] argsNames, Class<?>[] argsTypes, int parameterLength) {
-		Object object;
-		// TODO：JDK17
-		final Map<String, Object> paramterMap = new HashMap<>();
-		for (int index = 0; index < parameterLength; index++) {
-			object = args[index];
-			if (object instanceof Map) {
-				paramterMap.putAll((Map<String, Object>) object);
-			} else if (object instanceof String || object instanceof Number || object instanceof Date) {
-				paramterMap.put(argsNames[index], args[index]);
-			} else if (object != null) {
-				BeanMap.create(object).forEach((key, value) -> paramterMap.put((String) key, value));
-			}
-		}
-		return paramterMap;
+		return StringUtils.startsWidthIgnoreCase(templateQuery.query().strip(), TemplateQuery.QUERY_SELECT);
 	}
 	
 	/**
@@ -151,20 +122,21 @@ public class TemplateQueryAutoConfiguration {
 	 * @return Where语句
 	 */
 	private String buildWhere(Map<String, Object> paramterMap, TemplateQuery templateQuery) {
-		final String where = templateQuery.where();
+		final String where = templateQuery.where().strip();
 		if (StringUtils.isEmpty(where)) {
 			return where;
 		}
 		final String[] lines = where.split(TemplateQuery.LINE);
 		final String whereQuery = Stream.of(lines)
 			.map(line -> line.strip())
+			.filter(line -> StringUtils.isNotEmpty(line))
 			.map(line -> this.buildWhereCondition(paramterMap, line))
-			.filter(line -> line != null)
+			.filter(line -> StringUtils.isNotEmpty(line))
 			.collect(Collectors.joining(TemplateQuery.SPACE));
-		if(whereQuery.startsWith(TemplateQuery.OR)) {
-			return whereQuery.substring(TemplateQuery.OR.length());
-		} else if(whereQuery.startsWith(TemplateQuery.AND)) {
-			return whereQuery.substring(TemplateQuery.AND.length());
+		if(StringUtils.startsWidthIgnoreCase(whereQuery, TemplateQuery.QUERY_OR)) {
+			return whereQuery.substring(TemplateQuery.QUERY_OR.length());
+		} else if(StringUtils.startsWidthIgnoreCase(whereQuery, TemplateQuery.QUERY_AND)) {
+			return whereQuery.substring(TemplateQuery.QUERY_AND.length());
 		} else {
 			return whereQuery;
 		}
@@ -174,34 +146,38 @@ public class TemplateQueryAutoConfiguration {
 	 * 创建查询语句
 	 * 
 	 * @param templateQuery 模板语句
-	 * @param where 条件语句
+	 * @param whereString 条件语句
 	 * @param pageableParamter 分页信息
 	 * 
 	 * @return 查询语句
 	 */
-	private String buildQuery(TemplateQuery templateQuery, String where, Pageable pageableParamter) {
+	private String buildQuery(TemplateQuery templateQuery, String whereString, Pageable pageableParamter) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append(templateQuery.query()).append(TemplateQuery.SPACE);
-		if (StringUtils.isNotEmpty(where)) {
+		builder.append(templateQuery.query().strip()).append(TemplateQuery.SPACE);
+		if (StringUtils.isNotEmpty(whereString)) {
 			builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
-			builder.append(where).append(TemplateQuery.SPACE);
+			builder.append(whereString).append(TemplateQuery.SPACE);
 		}
-		final String sorted = templateQuery.sorted();
-		builder.append(sorted).append(TemplateQuery.SPACE);
+		final String sorted = templateQuery.sorted().strip();
+		if(StringUtils.isNotEmpty(sorted)) {
+			builder.append(sorted).append(TemplateQuery.SPACE);
+		}
 		if(pageableParamter != null) {
 			final Stream<Order> stream = pageableParamter.getSort().get();
 			final String orderString = stream
 				.map(order -> order.getProperty() + TemplateQuery.SPACE + order.getDirection())
 				.collect(Collectors.joining(TemplateQuery.COMMA));
 			if(StringUtils.isNotEmpty(orderString)) {
-				if(StringUtils.isNotEmpty(sorted)) {
-					builder.append(TemplateQuery.COMMA).append(orderString);
-				} else {
-					builder.append(TemplateQuery.ORDER_BY).append(TemplateQuery.COMMA).append(orderString);
+				if(StringUtils.isEmpty(sorted)) {
+					builder.append(TemplateQuery.ORDER_BY).append(TemplateQuery.COMMA);
 				}
+				builder.append(orderString).append(TemplateQuery.COMMA);
 			}
 		}
-		builder.append(templateQuery.attach());
+		final String attach = templateQuery.attach().strip();
+		if(StringUtils.isNotEmpty(attach)) {
+			builder.append(attach).append(TemplateQuery.COMMA);
+		}
 		return builder.toString();
 	}
 	
@@ -209,35 +185,41 @@ public class TemplateQueryAutoConfiguration {
 	 * 创建统计语句
 	 * 
 	 * @param templateQuery 模板语句
-	 * @param where 条件语句
+	 * @param whereString 条件语句
 	 * 
 	 * @return 统计语句
 	 */
-	private String buildCountQuery(TemplateQuery templateQuery, String where) {
+	private String buildCountQuery(TemplateQuery templateQuery, String whereString) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append(templateQuery.count()).append(TemplateQuery.SPACE);
-		if (StringUtils.isNotEmpty(where)) {
+		builder.append(templateQuery.count().strip()).append(TemplateQuery.SPACE);
+		if (StringUtils.isNotEmpty(whereString)) {
 			builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
-			builder.append(where).append(TemplateQuery.SPACE);
+			builder.append(whereString).append(TemplateQuery.SPACE);
 		}
 		// 统计不要排序语句
-		builder.append(templateQuery.attach());
+		final String attach = templateQuery.attach().strip();
+		if(StringUtils.isNotEmpty(attach)) {
+			builder.append(attach).append(TemplateQuery.COMMA);
+		}
 		return builder.toString();
 	}
 	
 	/**
 	 * 过滤查询参数
 	 * 
+	 * @param queryString 查询语句
 	 * @param paramterMap 参数类型
-	 * @param query 查询语句
 	 * 
 	 * @return 查询参数
 	 */
-	private Map<String, Object> filterParamterMap(Map<String, Object> paramterMap, String query) {
-		final StringTokenizer tokenizer = new StringTokenizer(query);
-		tokenizer.nextToken(TemplateQuery.COLON);
+	private Map<String, Object> filterParamterMap(String queryString, Map<String, Object> paramterMap) {
 		String token;
 		final Map<String, Object> map = new HashMap<>();
+		final StringTokenizer tokenizer = new StringTokenizer(queryString, TemplateQuery.COLON);
+		// 丢弃首个
+		if(tokenizer.hasMoreTokens()) {
+			tokenizer.nextToken();
+		}
 		while(tokenizer.hasMoreTokens()) {
 			token = tokenizer.nextToken();
 			final int commaIndex = token.indexOf(TemplateQuery.COMMA);
@@ -258,8 +240,7 @@ public class TemplateQueryAutoConfiguration {
 				map.put(key, paramterMap.get(key));
 				continue;
 			}
-			final String key = token;
-			map.put(key, paramterMap.get(key));
+			map.put(token, paramterMap.get(token));
 		}
 		return map;
 	}
@@ -283,6 +264,12 @@ public class TemplateQueryAutoConfiguration {
 		return query;
 	}
 
+	/**
+	 * 设置参数
+	 * 
+	 * @param query 语句
+	 * @param paramterMap 参数
+	 */
 	private void buildParamter(Query query, Map<String, Object> paramterMap) {
 		this.buildParamter(query, null, paramterMap);
 	}
@@ -328,14 +315,14 @@ public class TemplateQueryAutoConfiguration {
 			final int left = line.indexOf(TemplateQuery.LEFT);
 			final int right = line.indexOf(TemplateQuery.RIGHT);
 			if(left < 0 || right < 0) {
-				throw new IllegalArgumentException("提交错误：" + line);
+				throw MessageCodeException.of("条件异常：", line);
 			}
 			final String query = line.substring(right + 1).strip();
 			final String conditionQuery = line.substring(left + 1, right);
-			final String[] or = conditionQuery.split(TemplateQuery.OR_TOKEN);
-			if(or.length > 1) {
+			final String[] orConditionQueries = conditionQuery.split(TemplateQuery.CONDITION_OR);
+			if(orConditionQueries.length > 1) {
 				boolean success = false;
-				for (String orConditionQuery : or) {
+				for (String orConditionQuery : orConditionQueries) {
 					success = this.condition(paramterMap, orConditionQuery.strip());
 					if (success) {
 						break;
@@ -347,10 +334,10 @@ public class TemplateQueryAutoConfiguration {
 					return null;
 				}
 			}
-			final String[] and = conditionQuery.split(TemplateQuery.AND_TOKEN);
-			if(and.length > 1) {
+			final String[] andConditionQueries = conditionQuery.split(TemplateQuery.CONDITION_AND);
+			if(andConditionQueries.length > 1) {
 				boolean success = true;
-				for (String andConditionQuery : and) {
+				for (String andConditionQuery : andConditionQueries) {
 					success = this.condition(paramterMap, andConditionQuery.strip());
 					if (!success) {
 						break;
@@ -418,7 +405,7 @@ public class TemplateQueryAutoConfiguration {
 				return false;
 			}
 		}
-		return false;
+		return Boolean.TRUE.equals(paramterMap.get(conditionQuery));
 	}
 
 	/**
@@ -458,7 +445,7 @@ public class TemplateQueryAutoConfiguration {
 				if(StringUtils.isEmpty(countQueryString.strip())) {
 					throw new IllegalArgumentException("没有统计查询语句");
 				}
-				final Map<String, Object> countParamterMap = this.filterParamterMap(paramterMap, countQueryString);
+				final Map<String, Object> countParamterMap = this.filterParamterMap(countQueryString, paramterMap);
 				final Query countQuery = this.createQuery(templateQuery, countQueryString);
 				this.buildParamter(countQuery, countParamterMap);
 				final BigInteger count = (BigInteger) countQuery.getSingleResult();

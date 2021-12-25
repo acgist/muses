@@ -125,11 +125,11 @@ public class UserRepositoryTest {
 		userQuery.setBeginDate(new Date());
 		userQuery.setEndDate(new Date());
 		this.userRepository.query(userQuery);
-		this.userRepository.query(null, null, null);
-		this.userRepository.query("root", null, null);
-		this.userRepository.query(null, null, new Date());
-		this.userRepository.query(null, new Date(), null);
-		this.userRepository.query(null, new Date(), new Date());
+		this.userRepository.query(null, true, null, null);
+		this.userRepository.query("root", true, null, null);
+		this.userRepository.query(null, false, null, new Date());
+		this.userRepository.query(null, true, new Date(), null);
+		this.userRepository.query(null, false, new Date(), new Date());
 		final Map<String, Object> map = new HashMap<>();
 		this.userRepository.query(map);
 		map.put("name", "acgist");

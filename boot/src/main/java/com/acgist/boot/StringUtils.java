@@ -70,5 +70,20 @@ public final class StringUtils {
 		}
 		return Base64.getDecoder().decode(value.getBytes());
 	}
+	
+	/**
+	 * 判断开头文本是否匹配
+	 * 
+	 * @param source 原始文本
+	 * @param target 目标文本
+	 * 
+	 * @return 是否匹配
+	 */
+	public static final boolean startsWidthIgnoreCase(String source, String target) {
+		if(source.length() < target.length()) {
+			return false;
+		}
+		return source.toLowerCase().startsWith(target.toLowerCase());
+	}
 
 }

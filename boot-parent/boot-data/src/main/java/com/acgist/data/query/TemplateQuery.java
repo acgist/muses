@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 /**
  * 模板查询
  * 
+ * 专注查询
+ * 
  * List(paramter...)
  * Result(paramter...)
  * Page(paramter..., Pageable)
@@ -21,13 +23,14 @@ import java.lang.annotation.Target;
  * 默认使用SQL
  * 如果使用JPQL列名需要指定名称：SELECT user.name as name, user.memo as memo FROM UserEntity user
  * 
- * @author yusheng
+ * @author acgist
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface TemplateQuery {
 
+	// 特殊符号
 	public static final String IF = "$";
 	public static final String LEFT = "(";
 	public static final String RIGHT = ")";
@@ -35,13 +38,16 @@ public @interface TemplateQuery {
 	public static final String COLON = ":";
 	public static final String COMMA = ",";
 	public static final String SPACE = " ";
-	public static final String OR_TOKEN = "\\|\\|";
-	public static final String AND_TOKEN = "\\&\\&";
-	public static final String OR = "or";
-	public static final String AND = "and";
+	// 条件判断
+	public static final String CONDITION_OR = "\\|\\|";
+	public static final String CONDITION_AND = "\\&\\&";
+	// 语句拼接
 	public static final String WHERE = "where";
-	public static final String SELECT = "select";
 	public static final String ORDER_BY = "order by";
+	// 语句查找
+	public static final String QUERY_OR = "or ";
+	public static final String QUERY_AND = "and ";
+	public static final String QUERY_SELECT = "select ";
 	
 	/**
 	 * 条件判断
@@ -98,7 +104,7 @@ public @interface TemplateQuery {
 	String attach() default "";
 
 	/**
-	 * @return 没有结果是否执行默认方法（单个对象有效）
+	 * @return 没有结果是否执行默认方法
 	 */
 	boolean fallback() default false;
 	
@@ -110,6 +116,6 @@ public @interface TemplateQuery {
 	/**
 	 * @return 返回类型（集合分页有效）
 	 */
-	Class<?> clazz() default Object.class;
+	Class<?> resultType() default Object.class;
 
 }
