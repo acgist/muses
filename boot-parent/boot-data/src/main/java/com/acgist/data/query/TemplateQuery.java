@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
  * Result(paramter...)
  * Page(paramter..., Pageable)
  * 
+ * 注意：参数 操作 目标
+ * 
  * $(boolean)
  * $(name != null)
  * $(name == acgist)
@@ -38,6 +40,7 @@ public @interface TemplateQuery {
 	public static final String COLON = ":";
 	public static final String COMMA = ",";
 	public static final String SPACE = " ";
+	public static final String COMMA_SPACE = TemplateQuery.COMMA + TemplateQuery.SPACE;
 	// 条件判断
 	public static final String CONDITION_OR = "\\|\\|";
 	public static final String CONDITION_AND = "\\&\\&";
@@ -46,8 +49,11 @@ public @interface TemplateQuery {
 	public static final String ORDER_BY = "order by";
 	// 语句查找
 	public static final String QUERY_OR = "or ";
+	public static final int QUERY_OR_LENGHT = QUERY_OR.length();
 	public static final String QUERY_AND = "and ";
+	public static final int QUERY_AND_LENGHT = QUERY_AND.length();
 	public static final String QUERY_SELECT = "select ";
+	public static final int QUERY_WHERE_LENGHT = QUERY_SELECT.length();
 	
 	/**
 	 * 条件判断
