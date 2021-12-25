@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.acgist.boot.MessageCode;
+import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.boot.service.IdService;
 import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.pojo.dto.GatewayDto;

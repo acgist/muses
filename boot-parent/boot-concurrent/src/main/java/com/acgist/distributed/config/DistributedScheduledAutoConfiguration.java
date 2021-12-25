@@ -16,7 +16,7 @@ import com.acgist.distributed.lock.DistributedLock;
 import com.acgist.distributed.scheduled.DistributedScheduled;
 
 /**
- * 分布式定时任务逻辑
+ * 分布式定时任务
  * 
  * @author acgist
  */

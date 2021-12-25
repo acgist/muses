@@ -22,8 +22,15 @@ import org.slf4j.LoggerFactory;
  */
 public class Executors {
 
-	private static final AtomicInteger INDEX = new AtomicInteger();
 	private static final Logger LOGGER = LoggerFactory.getLogger(Executors.class);
+	
+	/**
+	 * 线程计数器
+	 */
+	private static final AtomicInteger INDEX = new AtomicInteger();
+	/**
+	 * 线程池
+	 */
 	private static final ExecutorService EXECUTOR = new ThreadPoolExecutor(
 		10,
 		20,
@@ -38,6 +45,13 @@ public class Executors {
 		}
 	);
 	
+	/**
+	 * 执行任务
+	 * 
+	 * @param executor 任务执行器
+	 * 
+	 * @return supplier
+	 */
 	private static final Supplier<Boolean> execute(Executor<?, ?> executor) {
 		return () -> {
 			executor.execute();
@@ -45,6 +59,13 @@ public class Executors {
 		};
 	}
 	
+	/**
+	 * 回滚任务
+	 * 
+	 * @param executor 任务执行器
+	 * 
+	 * @return supplier
+	 */
 	private static final Supplier<Boolean> rollback(Executor<?, ?> executor) {
 		return () -> {
 			return executor.rollback();
@@ -85,9 +106,9 @@ public class Executors {
 	 * @param executors 任务执行器
 	 */
 	private static final void rollback(Executor<?, ?> ... executors) {
-		final List<Supplier<Boolean>> stream = Stream.of(executors).map(Executors::rollback).collect(Collectors.toList());
+		final List<Executor<?, ?>> list = Stream.of(executors).collect(Collectors.toList());
 		final CompletableFuture<Void> future = CompletableFuture.allOf(
-			stream.stream().map(executor -> CompletableFuture.supplyAsync(executor, EXECUTOR))
+			list.stream().map(executor -> CompletableFuture.supplyAsync(Executors.rollback(executor), EXECUTOR))
 				.collect(Collectors.toList())
 				.toArray(CompletableFuture[]::new)
 		);

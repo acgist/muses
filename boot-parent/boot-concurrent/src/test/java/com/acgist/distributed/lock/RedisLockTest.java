@@ -1,4 +1,4 @@
-package com.acgist.scheduled.lock;
+package com.acgist.distributed.lock;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.distributed.lock.RedisLock;
+import com.acgist.ConcurrentApplication;
 
-@SpringBootTest
-public class RedisTest {
+@SpringBootTest(classes = ConcurrentApplication.class)
+public class RedisLockTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RedisTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RedisLockTest.class);
 	
 	@Autowired
 	private RedisLock redisLock;

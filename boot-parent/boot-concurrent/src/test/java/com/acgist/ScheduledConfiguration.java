@@ -1,4 +1,4 @@
-package com.acgist.scheduled;
+package com.acgist;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

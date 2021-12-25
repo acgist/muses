@@ -6,14 +6,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.acgist.boot.JSONUtils;
-import com.acgist.boot.MessageCode;
 import com.acgist.boot.StringUtils;
+import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.request.GatewayRequest;
