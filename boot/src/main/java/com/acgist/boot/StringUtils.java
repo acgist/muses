@@ -45,8 +45,7 @@ public final class StringUtils {
 	public static final boolean equals(String source, String target) {
 		return source == null ? target == null : source.equals(target);
 	}
-	
-	
+
 	/**
 	 * Base64编码
 	 * 
@@ -57,7 +56,7 @@ public final class StringUtils {
 	public static final String base64Encode(byte[] value) {
 		return new String(Base64.getEncoder().encode(value));
 	}
-	
+
 	/**
 	 * Base64解码
 	 * 
@@ -66,8 +65,8 @@ public final class StringUtils {
 	 * @return 原始数据
 	 */
 	public static final byte[] base64Decode(String value) {
-		if(value == null) {
-			throw new IllegalArgumentException("数据错误");
+		if (value == null) {
+			throw MessageCodeException.of("格式错误：", value);
 		}
 		return Base64.getDecoder().decode(value.getBytes());
 	}

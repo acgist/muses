@@ -1,5 +1,8 @@
 package com.acgist.boot.config;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 /**
  * 系统配置
  * 
@@ -14,6 +17,10 @@ public class MusesConfig {
 	/**
 	 * 默认编码
 	 */
-	public static final String CHARSET = "UTF-8";
+	public static final Charset CHARSET = StandardCharsets.UTF_8;
+	/**
+	 * 默认编码
+	 */
+	public static final String CHARSET_VALUE = CHARSET.name();
 
 }

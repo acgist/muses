@@ -2,27 +2,37 @@ package com.acgist.boot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.security.SignatureException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Enumeration;
 import java.util.Map;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * RSA工具
@@ -31,12 +41,12 @@ import javax.crypto.Cipher;
  * 
  * @author acgist
  */
-public class RsaUtils {
-	
+public final class RsaUtils {
+
 	/**
 	 * 密钥长度
 	 */
-	private static final int KEY_LENGTH = 1024;
+	private static final int KEY_LENGTH = 2048;
 	/**
 	 * RSA最大加密明文大小
 	 */
@@ -69,16 +79,19 @@ public class RsaUtils {
 	 * 私钥
 	 */
 	public static final String PRIVATE_KEY = "privateKey";
-	
+
 	/**
 	 * 生成公钥私钥
 	 * 
 	 * @return 公钥私钥
-	 * 
-	 * @throws NoSuchAlgorithmException 未知算法
 	 */
-	public static final Map<String, String> buildKey() throws NoSuchAlgorithmException {
-		final KeyPairGenerator generator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
+	public static final Map<String, String> buildKey() {
+		KeyPairGenerator generator = null;
+		try {
+			generator = KeyPairGenerator.getInstance(RSA_ALGORITHM);
+		} catch (NoSuchAlgorithmException e) {
+			throw MessageCodeException.of(e, "未知算法");
+		}
 		generator.initialize(KEY_LENGTH);
 		final KeyPair keyPair = generator.generateKeyPair();
 		final RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
@@ -88,7 +101,7 @@ public class RsaUtils {
 			PRIVATE_KEY, StringUtils.base64Encode(privateKey.getEncoded())
 		);
 	}
-	
+
 	/**
 	 * 加载Base64编码公钥
 	 * 
@@ -97,16 +110,16 @@ public class RsaUtils {
 	 * @return 公钥
 	 */
 	public static final PublicKey loadPublicKey(String content) {
+		final byte[] bytes = StringUtils.base64Decode(content);
+		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(bytes);
 		try {
-			final byte[] bytes = StringUtils.base64Decode(content);
-			final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(bytes);
 			final KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			return keyFactory.generatePublic(keySpec);
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			throw MessageCodeException.of(e, "加载公钥失败");
 		}
 	}
-	
+
 	/**
 	 * 加载公钥文件
 	 * 
@@ -119,11 +132,11 @@ public class RsaUtils {
 			final CertificateFactory certificateFactory = CertificateFactory.getInstance(CER_TYPE);
 			final Certificate certificate = certificateFactory.generateCertificate(input);
 			return certificate.getPublicKey();
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (IOException | CertificateException e) {
+			throw MessageCodeException.of(e, "加载公钥失败");
 		}
 	}
-	
+
 	/**
 	 * 加载Base64编码私钥
 	 * 
@@ -137,11 +150,11 @@ public class RsaUtils {
 			final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
 			final KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			return keyFactory.generatePrivate(keySpec);
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+			throw MessageCodeException.of(e, "加载公钥失败");
 		}
 	}
-	
+
 	/**
 	 * 加载密钥文件
 	 * 
@@ -156,15 +169,15 @@ public class RsaUtils {
 			final KeyStore keyStore = KeyStore.getInstance(PFX_TYPE);
 			keyStore.load(input, password.toCharArray());
 			final Enumeration<String> aliases = keyStore.aliases();
-			while(aliases.hasMoreElements()) {
+			while (aliases.hasMoreElements()) {
 				aliase = aliases.nextElement();
 			}
 			return (PrivateKey) keyStore.getKey(aliase, password.toCharArray());
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (IOException | NoSuchAlgorithmException | CertificateException | KeyStoreException | UnrecoverableKeyException e) {
+			throw MessageCodeException.of(e, "加载私钥失败");
 		}
 	}
-	
+
 	/**
 	 * 公钥加密
 	 * 
@@ -176,7 +189,7 @@ public class RsaUtils {
 	public static final String encrypt(PublicKey publicKey, String data) {
 		return StringUtils.base64Encode(encrypt(publicKey, data.getBytes()));
 	}
-	
+
 	/**
 	 * 公钥加密
 	 * 
@@ -186,7 +199,7 @@ public class RsaUtils {
 	 * @return Base64编码加密数据
 	 */
 	private static final byte[] encrypt(PublicKey publicKey, byte[] data) {
-		if(publicKey == null || data == null) {
+		if (publicKey == null || data == null) {
 			return null;
 		}
 		try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -194,8 +207,8 @@ public class RsaUtils {
 			final int length = data.length;
 			final Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-			while(index < length) {
-				if(length - index > MAX_ENCRYPT_BLOCK) {
+			while (index < length) {
+				if (length - index > MAX_ENCRYPT_BLOCK) {
 					out.write(cipher.update(data, index, MAX_ENCRYPT_BLOCK));
 				} else {
 					out.write(cipher.doFinal(data, index, length - index));
@@ -203,11 +216,11 @@ public class RsaUtils {
 				index += MAX_ENCRYPT_BLOCK;
 			}
 			return out.toByteArray();
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException e) {
+			throw MessageCodeException.of(e, "公钥加密失败");
 		}
 	}
-	
+
 	/**
 	 * 私钥解密
 	 * 
@@ -219,7 +232,7 @@ public class RsaUtils {
 	public static final String decrypt(PrivateKey privateKey, String data) {
 		return new String(decrypt(privateKey, StringUtils.base64Decode(data)));
 	}
-	
+
 	/**
 	 * 私钥解密
 	 * 
@@ -232,13 +245,13 @@ public class RsaUtils {
 		if (privateKey == null || data == null) {
 			return null;
 		}
-		try(final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+		try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			int index = 0;
 			final int length = data.length;
 			final Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
-			while(index < length) {
-				if(length - index > MAX_DECRYPT_BLOCK) {
+			while (index < length) {
+				if (length - index > MAX_DECRYPT_BLOCK) {
 					out.write(cipher.update(data, index, MAX_DECRYPT_BLOCK));
 				} else {
 					out.write(cipher.doFinal(data, index, length - index));
@@ -246,11 +259,11 @@ public class RsaUtils {
 				index += MAX_DECRYPT_BLOCK;
 			}
 			return out.toByteArray();
-		} catch (Exception e) {
-			throw new IllegalArgumentException(e);
+		} catch (IOException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
+			throw MessageCodeException.of(e, "私钥解密失败");
 		}
 	}
-	
+
 	/**
 	 * 签名
 	 * 
@@ -265,7 +278,7 @@ public class RsaUtils {
 		}
 		return StringUtils.base64Encode(signature(data.getBytes(), privateKey));
 	}
-	
+
 	/**
 	 * 签名
 	 * 
@@ -280,11 +293,11 @@ public class RsaUtils {
 			signatureTool.initSign(privateKey);
 			signatureTool.update(data);
 			return signatureTool.sign();
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+			throw MessageCodeException.of(e, "签名失败");
 		}
 	}
-	
+
 	/**
 	 * 验签
 	 * 
@@ -300,14 +313,15 @@ public class RsaUtils {
 		}
 		return verify(data.getBytes(), StringUtils.base64Decode(signature), publicKey);
 	}
-	
+
 	/**
 	 * 验签
 	 * 
 	 * @param data 验签数据
 	 * @param signature 签名
 	 * @param publicKey 公钥
-	 * @return true：通过验证；false：验证失败
+	 * 
+	 * @return 是否成功
 	 */
 	private static final boolean verify(byte[] data, byte[] signature, PublicKey publicKey) {
 		try {
@@ -315,13 +329,13 @@ public class RsaUtils {
 			signatureTool.initVerify(publicKey);
 			signatureTool.update(data);
 			return signatureTool.verify(signature);
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+			throw MessageCodeException.of(e, "验签失败");
 		}
 	}
-	
+
 	/**
-	 * <p>读取公钥文件序列号</p>
+	 * 读取公钥文件序列号
 	 * 
 	 * @param path 证书路径
 	 * 
@@ -332,11 +346,11 @@ public class RsaUtils {
 			final CertificateFactory certificateFactory = CertificateFactory.getInstance(CER_TYPE);
 			final X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(input);
 			return certificate.getSerialNumber();
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (IOException | CertificateException e) {
+			throw MessageCodeException.of(e, "对齐公钥序列号失败");
 		}
 	}
-	
+
 	/**
 	 * 公钥转字符串
 	 * 
@@ -347,7 +361,7 @@ public class RsaUtils {
 	public static final String toString(PublicKey publicKey) {
 		return StringUtils.base64Encode(publicKey.getEncoded());
 	}
-	
+
 	/**
 	 * 私钥转字符串
 	 * 
@@ -358,5 +372,5 @@ public class RsaUtils {
 	public static final String toString(PrivateKey privateKey) {
 		return StringUtils.base64Encode(privateKey.getEncoded());
 	}
-	
+
 }

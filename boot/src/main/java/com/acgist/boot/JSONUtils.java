@@ -5,9 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,8 +19,6 @@ import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
  * @author acgist
  */
 public final class JSONUtils {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtils.class);
 
 	private JSONUtils() {
 	}
@@ -48,9 +43,8 @@ public final class JSONUtils {
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
-			LOGGER.error("toJSON异常：{}", object, e);
+			throw MessageCodeException.of(e, "JSON格式失败：", object);
 		}
-		return null;
 	}
 
 	/**
@@ -70,9 +64,8 @@ public final class JSONUtils {
 			return mapper.readValue(json, new TypeReference<T>() {
 			});
 		} catch (IOException e) {
-			LOGGER.error("toJava异常：{}", json, e);
+			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
-		return null;
 	}
 
 	/**
@@ -92,9 +85,8 @@ public final class JSONUtils {
 		try {
 			return mapper.readValue(json, clazz);
 		} catch (IOException e) {
-			LOGGER.error("toJava异常：{}", json, e);
+			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
-		return null;
 	}
 
 	/**
@@ -115,9 +107,8 @@ public final class JSONUtils {
 			return mapper.readValue(json, new TypeReference<Map<K, V>>() {
 			});
 		} catch (IOException e) {
-			LOGGER.error("toMap异常：{}", json, e);
+			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
-		return Map.of();
 	}
 
 	/**
@@ -137,9 +128,8 @@ public final class JSONUtils {
 			return mapper.readValue(json, new TypeReference<List<T>>() {
 			});
 		} catch (IOException e) {
-			LOGGER.error("toList异常：{}", json, e);
+			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
-		return List.of();
 	}
 
 	/**

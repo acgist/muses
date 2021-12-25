@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false" scanPeriod="60 seconds"
-	debug="false">
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
 
-	<springProperty scope="context" name="system.name"
-		source="spring.application.name" />
+	<springProperty scope="context" name="system.name" source="spring.application.name" />
 
 	<property name="system.charset" value="utf-8" />
-	<property name="system.pattern"
-		value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %m%n" />
+	<property name="system.pattern" value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %m%n" />
 
 	<contextName>${system.name}</contextName>
 
@@ -15,8 +12,7 @@
 		<file>logs/${system.name}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>30</maxHistory>
-			<fileNamePattern>logs/${system.name}.log-%d{yyyy-MM-dd}
-			</fileNamePattern>
+			<fileNamePattern>logs/${system.name}.log-%d{yyyy-MM-dd}</fileNamePattern>
 		</rollingPolicy>
 		<bufferSize>8192</bufferSize>
 		<immediateFlush>false</immediateFlush>

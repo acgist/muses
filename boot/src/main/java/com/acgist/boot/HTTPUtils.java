@@ -1,7 +1,6 @@
 package com.acgist.boot;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -19,6 +18,7 @@ import javax.net.ssl.SSLContext;
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -80,7 +80,7 @@ public final class HTTPUtils {
 			.setSoReuseAddress(true)
 			.build();
 //		final ConnectionConfig connectionConfig = ConnectionConfig.custom()
-//			.setCharset(StandardCharsets.UTF_8)
+//			.setCharset(MusesConfig.CHARSET)
 //			.build();
 		// 如果设置连接管理后面配置无效
 		final PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
@@ -174,7 +174,7 @@ public final class HTTPUtils {
 		addHeaders(get, headers);
 		requestConfig(get, timeout);
 		if (StringUtils.isNotEmpty(body)) {
-			get.setEntity(new StringEntity(body, MusesConfig.CHARSET));
+			get.setEntity(new StringEntity(body, MusesConfig.CHARSET_VALUE));
 		}
 		return execute(get);
 	}
@@ -240,11 +240,7 @@ public final class HTTPUtils {
 		requestConfig(post, timeout);
 		post.setHeader("Content-Type", URLEncodedUtils.CONTENT_TYPE);
 		if (MapUtils.isNotEmpty(body)) {
-			try {
-				post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), MusesConfig.CHARSET));
-			} catch (UnsupportedEncodingException e) {
-				LOGGER.error("设置请求参数异常：{}", body, e);
-			}
+			post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), MusesConfig.CHARSET));
 		}
 		return execute(post);
 	}
@@ -289,7 +285,7 @@ public final class HTTPUtils {
 		addHeaders(post, headers);
 		requestConfig(post, timeout);
 		if (StringUtils.isNotEmpty(body)) {
-			post.setEntity(new StringEntity(body, MusesConfig.CHARSET));
+			post.setEntity(new StringEntity(body, MusesConfig.CHARSET_VALUE));
 		}
 		return execute(post);
 	}
@@ -355,13 +351,12 @@ public final class HTTPUtils {
 			if (statusCode != HttpStatus.SC_OK) {
 				LOGGER.warn("HTTP返回错误状态：{}-{}-{}", statusCode, request, response);
 			}
-			return EntityUtils.toString(response.getEntity(), MusesConfig.CHARSET);
-		} catch (Exception e) {
-			LOGGER.error("发送请求异常", e);
+			return EntityUtils.toString(response.getEntity(), MusesConfig.CHARSET_VALUE);
+		} catch (ParseException | IOException e) {
+			throw MessageCodeException.of(e);
 		} finally {
 			close(response);
 		}
-		return null;
 	}
 
 	/**

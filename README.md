@@ -69,6 +69,14 @@ spring:
 ```
 # 系统序列号
 system.sn=01
+# 线程初始数量
+system.thread.min=2
+# 线程最大数量
+system.thread.max=10
+# 线程最大长度
+system.thread.size=1000
+# 线程活跃时间
+system.thread.live=30
 # 序列化类型：Redis
 system.serializer.type=jdk|jackson
 # 是否启用拦截器

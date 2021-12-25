@@ -26,8 +26,8 @@ import com.acgist.gateway.service.RsaService;
 /**
  * 请求数据
  * 
- * <p>session：发生异常、请求转发均不会丢失数据（重定向时不丢失数据）</p>
- * <p>request：发生异常、请求转发均不会丢失数据（重定向时会丢失数据）</p>
+ * session：发生异常、请求转发均不会丢失数据（重定向时不丢失数据）
+ * request：发生异常、请求转发均不会丢失数据（重定向时会丢失数据）
  * 
  * @author acgist
  */
