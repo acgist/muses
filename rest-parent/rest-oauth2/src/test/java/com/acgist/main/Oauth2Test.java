@@ -1,5 +1,7 @@
 package com.acgist.main;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,17 +92,17 @@ public class Oauth2Test {
 	
 	@Test
 	public void testRest() {
-		final RestTemplate restTemplate = new RestTemplate();
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		// 没有通过网关需要注入用户信息
-//		headers.set(User.HEADER_CURRENT_USER, "{\"id\":1,\"name\":\"root\"}");
-		headers.set("Authorization", "Bearer eyJraWQiOiItMTIwMzIwOTE1OCIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjM5ODk1MjE3LCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjM5OTAyNDE3LCJpYXQiOjE2Mzk4OTUyMTd9.mtCAVPxVh0MAkOHDlHzAYA0uDd33BwMkksQcgbK8uiDwrkr_n1wxRs8F33SUO_2JZnXgWIG_K1iaDV0BdvUBFdOn6GJxqpURu6fS2hss2cYgFkUSpm4POvESIJq71nGrjEBBIGMMl5CInd2MIQhbVwOgDIvL1u3trnnDZDL0iIX2hGTBn8eAMTd5v2q1HkaJ5K_l1lkcb-N2KYE3S3hVdW_OEcHMzeq9SfStnBD-RP0MDWnKH5y0hi6I2UkBrQF2-EQkzVbW0RdGEGELx1QgWP-BamR-1I20i9z2ZIdtzaU_3fLETcE9y-v-fyzJmpaNmh4LEDa7T9tdsAB2hS_mYA");
-		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-//		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:9090/user", requestEntity, String.class);
-		final ResponseEntity<String> userBody = restTemplate.postForEntity("http://localhost:8888/rest/user", requestEntity, String.class);
-		LOGGER.info("{}", userBody.getBody());
+		final String body = HTTPUtils.post(
+//			"http://localhost:9090/user",
+			"http://localhost:8888/rest/user",
+			Map.of(),
+			Map.of(
+//				User.HEADER_CURRENT_USER, "{\"id\":1,\"name\":\"root\"}",
+				"Authorization", "Bearer eyJraWQiOiItMTIwMzIwOTE1OCIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjM5ODk1MjE3LCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjM5OTAyNDE3LCJpYXQiOjE2Mzk4OTUyMTd9.mtCAVPxVh0MAkOHDlHzAYA0uDd33BwMkksQcgbK8uiDwrkr_n1wxRs8F33SUO_2JZnXgWIG_K1iaDV0BdvUBFdOn6GJxqpURu6fS2hss2cYgFkUSpm4POvESIJq71nGrjEBBIGMMl5CInd2MIQhbVwOgDIvL1u3trnnDZDL0iIX2hGTBn8eAMTd5v2q1HkaJ5K_l1lkcb-N2KYE3S3hVdW_OEcHMzeq9SfStnBD-RP0MDWnKH5y0hi6I2UkBrQF2-EQkzVbW0RdGEGELx1QgWP-BamR-1I20i9z2ZIdtzaU_3fLETcE9y-v-fyzJmpaNmh4LEDa7T9tdsAB2hS_mYA"
+			),
+			1000
+		);
+		LOGGER.info("{}", body);
 	}
 	
 }

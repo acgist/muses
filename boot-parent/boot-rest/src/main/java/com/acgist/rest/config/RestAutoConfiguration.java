@@ -24,5 +24,11 @@ public class RestAutoConfiguration {
 	public RestControllerAdvice gatewayControllerAdvice() {
 		return new RestControllerAdvice();
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public RestErrorPageRegistrar errorPageRegistrar() {
+		return new RestErrorPageRegistrar();
+	}
 
 }

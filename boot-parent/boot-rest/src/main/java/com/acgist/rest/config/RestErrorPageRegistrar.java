@@ -3,7 +3,6 @@ package com.acgist.rest.config;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 
 import com.acgist.rest.controller.RestErrorController;
@@ -13,8 +12,7 @@ import com.acgist.rest.controller.RestErrorController;
  * 
  * @author acgist
  */
-@Configuration
-public class GatewayErrorPageRegistrarAutoConfiguration implements ErrorPageRegistrar {
+public class RestErrorPageRegistrar implements ErrorPageRegistrar {
 
 	@Override
 	public void registerErrorPages(ErrorPageRegistry registry) {

@@ -25,4 +25,10 @@ public class WebAutoConfiguration {
 		return new WebErrorController();
 	}
 	
+	@Bean
+	@ConditionalOnMissingBean
+	public WebErrorPageRegistrar errorPageRegistrar() {
+		return new WebErrorPageRegistrar();
+	}
+	
 }

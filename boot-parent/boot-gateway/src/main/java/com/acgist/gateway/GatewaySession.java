@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import com.acgist.boot.DateUtils;
@@ -253,7 +254,7 @@ public class GatewaySession implements Serializable {
 	 */
 	public void response(HttpServletResponse response) {
 		try {
-			response.setContentType("application/json;charset=utf-8");
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			response.getWriter().write(this.gatewayResponse.toString());
 		} catch (IOException e) {
 			LOGGER.error("写出响应数据异常", e);

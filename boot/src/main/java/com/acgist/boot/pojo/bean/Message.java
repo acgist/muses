@@ -3,6 +3,7 @@ package com.acgist.boot.pojo.bean;
 import java.io.Serializable;
 
 import com.acgist.boot.JSONUtils;
+import com.acgist.boot.StringUtils;
 
 /**
  * 响应消息
@@ -81,7 +82,11 @@ public class Message<T> implements Serializable {
 	public static final <T> Message<T> fail(MessageCode code, String message) {
 		final Message<T> failMessage = new Message<>();
 		failMessage.code = code.getCode();
-		failMessage.message = code.getMessage();
+		if(StringUtils.isEmpty(message)) {
+			failMessage.message = code.getMessage();
+		} else {
+			failMessage.message = message;
+		}
 		return failMessage;
 	}
 

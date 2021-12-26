@@ -14,7 +14,7 @@ import com.acgist.web.controller.WebErrorController;
  * @author acgist
  */
 @Configuration
-public class GatewayErrorPageRegistrarAutoConfiguration implements ErrorPageRegistrar {
+public class WebErrorPageRegistrar implements ErrorPageRegistrar {
 
 	@Override
 	public void registerErrorPages(ErrorPageRegistry registry) {

@@ -38,14 +38,16 @@ public class GatewayConfig {
 				HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 				final Message<String> message;
 				if (e instanceof ResponseStatusException) {
-					status = ((ResponseStatusException) e).getStatus();
-					response.setStatusCode(status);
-					message = Message.fail(MessageCode.of(status.value()), e.getMessage());
+					final ResponseStatusException responseStatusException = (ResponseStatusException) e;
+					status = responseStatusException.getStatus();
+					message = Message.fail(MessageCode.of(status.value()), responseStatusException.getMessage());
 				} else if(e instanceof MessageCodeException) {
 					final MessageCodeException messageCodeException = (MessageCodeException) e;
 					message = Message.fail(messageCodeException.getCode(), messageCodeException.getMessage());
-				} else {
+				} else if(e != null) {
 					message = Message.fail(MessageCode.CODE_9999, e.getMessage());
+				} else {
+					message = Message.fail(MessageCode.CODE_9999);
 				}
 				response.setStatusCode(status);
 				response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
