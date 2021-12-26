@@ -17,9 +17,8 @@ public class RestErrorPageRegistrar implements ErrorPageRegistrar {
 	@Override
 	public void registerErrorPages(ErrorPageRegistry registry) {
 		final ErrorPage errorPage400 = new ErrorPage(HttpStatus.BAD_REQUEST, RestErrorController.ERROR_PATH);
-		final ErrorPage errorPage404 = new ErrorPage(HttpStatus.NOT_FOUND, RestErrorController.ERROR_PATH);
 		final ErrorPage errorPage500 = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, RestErrorController.ERROR_PATH);
-		registry.addErrorPages(errorPage400, errorPage404, errorPage500);
+		registry.addErrorPages(errorPage400, errorPage500);
 	}
 
 }

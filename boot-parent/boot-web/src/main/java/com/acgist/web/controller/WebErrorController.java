@@ -46,6 +46,11 @@ public class WebErrorController implements ErrorController {
 	public static final String STATUS_SERVLET = "javax.servlet.error.status_code";
 	public static final String THROWABLE_SERVLET = "javax.servlet.error.exception";
 	public static final String THROWABLE_SPRINTBOOT = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
+	
+	@Override
+	public String getErrorPath() {
+		return ERROR_PATH;
+	}
 
 	@ResponseBody
 	@RequestMapping(value = ERROR_PATH)
@@ -57,11 +62,6 @@ public class WebErrorController implements ErrorController {
 	@RequestMapping(value = ERROR_PATH, produces = MediaType.TEXT_HTML_VALUE)
 	public String index(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
 		model.put("message", this.message(request, response));
-		return ERROR_PATH;
-	}
-
-	@Override
-	public String getErrorPath() {
 		return ERROR_PATH;
 	}
 	
@@ -79,8 +79,9 @@ public class WebErrorController implements ErrorController {
 		int status = this.status(request, response);
 		if(object instanceof MessageCodeException) {
 			final MessageCodeException messageCodeException = (MessageCodeException) object;
-			if(status == HttpServletResponse.SC_OK) {
-				status = messageCodeException.getCode().getStatus();
+			final int codeStatus = messageCodeException.getCode().getStatus();
+			if(codeStatus != HttpServletResponse.SC_OK) {
+				status = codeStatus;
 			}
 			message = Message.fail(messageCodeException.getCode(), messageCodeException.getMessage());
 		} else if(object instanceof Throwable) {
