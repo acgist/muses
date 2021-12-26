@@ -28,7 +28,7 @@ try {
 ```
 @Scheduled(cron = "*/5 * * * * ?")
 @DistributedScheduled(name = "lockName", ttl = 10)
-public void scheduledGroupB() {
-	System.out.println("scheduledGroupB");
+public void scheduled() {
+	...
 }
 ```

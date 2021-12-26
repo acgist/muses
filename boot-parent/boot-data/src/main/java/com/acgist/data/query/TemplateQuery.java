@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 /**
  * 模板查询
  * 
- * 专注查询
- * 
  * List(paramter...)
  * Result(paramter...)
  * Page(paramter..., Pageable)

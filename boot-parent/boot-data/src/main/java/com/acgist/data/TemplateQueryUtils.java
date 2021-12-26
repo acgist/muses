@@ -117,7 +117,6 @@ public final class TemplateQueryUtils {
 		final String[] lines = StringUtils.splitFull(where, TemplateQuery.CONDITION);
 		final String whereQuery = Stream.of(lines)
 			.map(line -> line.strip())
-			.filter(line -> StringUtils.isNotEmpty(line))
 			.map(line -> buildWhereLine(paramterMap, line))
 			.filter(line -> StringUtils.isNotEmpty(line))
 			.collect(Collectors.joining(TemplateQuery.SPACE));

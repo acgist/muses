@@ -250,7 +250,6 @@ public class TemplateQueryAutoConfiguration {
 	 * 执行语句
 	 * 
 	 * @param selectQuery 是否查询
-	 * @param voidable 是否返回
 	 * @param listable 是否列表
 	 * @param pageable 是否分页
 	 * @param query 执行语句
