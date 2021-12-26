@@ -36,14 +36,14 @@ public @interface TemplateQuery {
 	public static final String IF = "$";
 	public static final String LEFT = "(";
 	public static final String RIGHT = ")";
-	public static final String LINE = "\n";
 	public static final String COLON = ":";
 	public static final String COMMA = ",";
 	public static final String SPACE = " ";
 	public static final String COMMA_SPACE = TemplateQuery.COMMA + TemplateQuery.SPACE;
 	// 条件判断
-	public static final String CONDITION_OR = "\\|\\|";
-	public static final String CONDITION_AND = "\\&\\&";
+	public static final String CONDITION = "$(";
+	public static final String CONDITION_OR = "||";
+	public static final String CONDITION_AND = "&&";
 	// 语句拼接
 	public static final String WHERE = "where";
 	public static final String ORDER_BY = "order by";

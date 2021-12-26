@@ -39,7 +39,7 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	public void testCost() {
+	public void testCosted() {
 //		final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 //		context.stop();
 		CostUtils.costed(10000, () -> {

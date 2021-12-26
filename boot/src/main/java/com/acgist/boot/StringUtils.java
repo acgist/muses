@@ -8,6 +8,11 @@ import java.util.Base64;
  * @author acgist
  */
 public final class StringUtils {
+	
+	/**
+	 * 初始数组大小
+	 */
+	private static final int SIZE = 16;
 
 	private StringUtils() {
 	}
@@ -84,6 +89,76 @@ public final class StringUtils {
 			return false;
 		}
 		return source.toLowerCase().startsWith(target.toLowerCase());
+	}
+
+	/**
+	 * 字符串分隔
+	 * 
+	 * @param source 原始字符串
+	 * @param symbol 符号
+	 * 
+	 * @return 字符串数组
+	 */
+	public static final String[] split(String source, String symbol) {
+		return split(source, symbol, false);
+	}
+	
+	/**
+	 * 字符串分隔
+	 * 
+	 * @param source 原始字符串
+	 * @param symbol 符号
+	 * 
+	 * @return 字符串数组
+	 */
+	public static final String[] splitFull(String source, String symbol) {
+		return split(source, symbol, true);
+	}
+	
+	/**
+	 * 字符串分隔
+	 * 
+	 * @param source 原始字符串
+	 * @param symbol 符号
+	 * @param full 是否完整返回
+	 * 
+	 * @return 字符串数组
+	 */
+	public static final String[] split(String source, String symbol, boolean full) {
+		if(source == null || symbol == null) {
+			return new String[0];
+		}
+		int size = 0;
+		int left = 0;
+		int index = 0;
+		final int length = symbol.length();
+		String[] array = new String[SIZE];
+		do {
+			index = source.indexOf(symbol, left);
+			if(index < 0) {
+				if(full) {
+					array[size] = source.substring(left == 0 ? left : left - length);
+				} else {
+					array[size] = source.substring(left);
+				}
+			} else {
+				if(full) {
+					array[size] = source.substring(left == 0 ? left : left - length, index);
+				} else {
+					array[size] = source.substring(left, index);
+				}
+				left = index + length;
+			}
+			size++;
+			if(size >= array.length) {
+				final String[] newArray = new String[size + SIZE];
+				System.arraycopy(array, 0, newArray, 0, size);
+				array = newArray;
+			}
+		} while (index >= 0);
+		final String[] result = new String[size];
+		System.arraycopy(array, 0, result, 0, size);
+		return result;
 	}
 
 }

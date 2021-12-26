@@ -125,10 +125,16 @@ public class TemplateQueryUtilsTest {
 		map.put("number", 100);
 		map.put("string", "acgist");
 		final String query = TemplateQueryUtils.buildWhere(
-			"$(date == null) and date = :date \n"
-			+ "$(bool) and bool = :bool \n"
-			+ "$(number > 111) and age = :number \n"
-			+ "$(string == acgist) and name = :name",
+			"$(date == null) and :date \n"
+			+ "$(bool) and :bool \n"
+			+ "$(number > 111) and :number \n"
+			+ "$(number > 111 || bool) and :ora \n"
+			+ "$(number > 111 || string == null) and :orb \n"
+			+ "$(number > 111 && bool) and :anda \n"
+			+ "$(number < 111 && bool) and :andb \n"
+			+ "$(string == acgist) and string \n"
+			+ "and stringa \n"
+			+ "and stringb \n",
 			map
 		);
 		LOGGER.info("{}", query);

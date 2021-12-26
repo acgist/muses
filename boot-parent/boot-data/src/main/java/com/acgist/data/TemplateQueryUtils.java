@@ -114,7 +114,7 @@ public final class TemplateQueryUtils {
 		if (StringUtils.isEmpty(where)) {
 			return where;
 		}
-		final String[] lines = where.split(TemplateQuery.LINE);
+		final String[] lines = StringUtils.splitFull(where, TemplateQuery.CONDITION);
 		final String whereQuery = Stream.of(lines)
 			.map(line -> line.strip())
 			.filter(line -> StringUtils.isNotEmpty(line))
@@ -147,7 +147,7 @@ public final class TemplateQueryUtils {
 			}
 			final String query = line.substring(right + 1).strip();
 			final String conditionQuery = line.substring(left + 1, right).strip();
-			final String[] orConditionQueries = conditionQuery.split(TemplateQuery.CONDITION_OR);
+			final String[] orConditionQueries = StringUtils.split(conditionQuery, TemplateQuery.CONDITION_OR);
 			if(orConditionQueries.length > 1) {
 				boolean success = false;
 				for (String orConditionQuery : orConditionQueries) {
@@ -162,7 +162,7 @@ public final class TemplateQueryUtils {
 					return null;
 				}
 			}
-			final String[] andConditionQueries = conditionQuery.split(TemplateQuery.CONDITION_AND);
+			final String[] andConditionQueries = StringUtils.split(conditionQuery, TemplateQuery.CONDITION_AND);
 			if(andConditionQueries.length > 1) {
 				boolean success = true;
 				for (String andConditionQuery : andConditionQueries) {
