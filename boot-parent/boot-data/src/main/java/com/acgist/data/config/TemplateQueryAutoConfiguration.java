@@ -91,7 +91,10 @@ public class TemplateQueryAutoConfiguration {
 		this.buildParamter(query, pageableParamter, queryParamterMap);
 		this.buildResultType(query, voidable, resultType);
 		// 执行查询
-		final Object result = this.execute(selectQuery, voidable, listable, pageable, query, templateQuery, whereString, pageableParamter, paramterMap);
+		final Object result = this.execute(selectQuery, listable, pageable, query, templateQuery, whereString, pageableParamter, paramterMap);
+		if(voidable) {
+			return null;
+		}
 		if(result == null && fallback) {
 			return proceedingJoinPoint.proceed(args);
 		}
@@ -259,7 +262,7 @@ public class TemplateQueryAutoConfiguration {
 	 * @return 执行结果
 	 */
 	private Object execute(
-		boolean selectQuery, boolean voidable, boolean listable, boolean pageable,
+		boolean selectQuery, boolean listable, boolean pageable,
 		Query query, TemplateQuery templateQuery, String whereString,
 		Pageable pageableParamter, Map<String, Object> paramterMap
 	) {
@@ -277,18 +280,9 @@ public class TemplateQueryAutoConfiguration {
 					result = list.get(0);
 				}
 			}
-			if(voidable) {
-				return null;
-			} else {
-				return result;
-			}
+			return result;
 		} else {
-			final int result = query.executeUpdate();
-			if(voidable) {
-				return null;
-			} else {
-				return result;
-			}
+			return query.executeUpdate();
 		}
 	}
 	
