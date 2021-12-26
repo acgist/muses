@@ -1,18 +1,14 @@
 package com.acgist.gateway;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import com.acgist.boot.DateUtils;
@@ -23,6 +19,7 @@ import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.request.GatewayRequest;
 import com.acgist.gateway.service.RsaService;
+import com.acgist.www.ResponseUtils;
 
 /**
  * 请求数据
@@ -37,8 +34,6 @@ import com.acgist.gateway.service.RsaService;
 public class GatewaySession implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewaySession.class);
 	
 	private static final ThreadLocal<GatewaySession> LOCAL = new ThreadLocal<>();
 	
@@ -253,12 +248,7 @@ public class GatewaySession implements Serializable {
 	 * @param response 响应
 	 */
 	public void response(HttpServletResponse response) {
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		try {
-			response.getWriter().write(this.gatewayResponse.toString());
-		} catch (IOException e) {
-			LOGGER.error("写出响应数据异常", e);
-		}
+	    ResponseUtils.response(this.gatewayResponse, response);
 	}
 	
 }

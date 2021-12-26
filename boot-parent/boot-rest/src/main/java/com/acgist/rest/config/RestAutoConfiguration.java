@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.acgist.rest.controller.RestControllerAdvice;
 import com.acgist.rest.controller.RestErrorController;
+import com.acgist.www.WwwErrorPageRegistrar;
 
 @Configuration
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
@@ -25,10 +26,10 @@ public class RestAutoConfiguration {
 		return new RestControllerAdvice();
 	}
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public RestErrorPageRegistrar errorPageRegistrar() {
-		return new RestErrorPageRegistrar();
-	}
+    @Bean
+    @ConditionalOnMissingBean
+    public WwwErrorPageRegistrar errorPageRegistrar() {
+        return new WwwErrorPageRegistrar();
+    }
 
 }

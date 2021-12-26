@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.acgist.www.ErrorUtils;
+
 /**
  * 统一异常处理
  * 
@@ -16,8 +18,8 @@ public class WebControllerAdvice {
 
 	@ExceptionHandler(Exception.class)
 	public String exception(Exception e, HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute(WebErrorController.THROWABLE_SPRINTBOOT, e);
-		return "forward:" + WebErrorController.ERROR_PATH;
+		request.setAttribute(ErrorUtils.THROWABLE_SPRINTBOOT, e);
+		return "forward:" + ErrorUtils.ERROR_PATH;
 	}
 	
 }

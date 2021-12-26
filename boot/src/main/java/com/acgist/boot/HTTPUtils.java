@@ -26,7 +26,6 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
@@ -44,6 +43,8 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import com.acgist.boot.config.MusesConfig;
 
@@ -65,8 +66,8 @@ public final class HTTPUtils {
 
 	static {
 		final List<Header> headers = new ArrayList<>();
-		headers.add(new BasicHeader("User-Agent", "ACGIST/1.0.0 +(https://www.acgist.com)"));
-		headers.add(new BasicHeader("Content-Type", "application/json"));
+		headers.add(new BasicHeader(HttpHeaders.USER_AGENT, "ACGIST/1.0.0 +(https://www.acgist.com)"));
+		headers.add(new BasicHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
 		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
 			.register("http", PlainConnectionSocketFactory.getSocketFactory())
 			.register("https", createSSLConnSocketFactory())
@@ -238,7 +239,7 @@ public final class HTTPUtils {
 		final HttpPost post = new HttpPost(url);
 		addHeaders(post, headers);
 		requestConfig(post, timeout);
-		post.setHeader("Content-Type", URLEncodedUtils.CONTENT_TYPE);
+		post.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 		if (MapUtils.isNotEmpty(body)) {
 			post.setEntity(new UrlEncodedFormEntity(buildFormParams(body), MusesConfig.CHARSET));
 		}

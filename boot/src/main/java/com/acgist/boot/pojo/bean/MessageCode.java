@@ -1,7 +1,5 @@
 package com.acgist.boot.pojo.bean;
 
-import org.springframework.http.HttpStatus;
-
 /**
  * 状态编码
  * 
@@ -89,14 +87,6 @@ public enum MessageCode {
 		return code;
 	}
 
-	public int getStatus() {
-		final int length = HTTP_STATUS.length();
-		if(HTTP_STATUS.equals(this.code.substring(0, length))) {
-			return Integer.parseInt(this.code.substring(length));
-		}
-		return HttpStatus.OK.value();
-	}
-	
 	public String getMessage() {
 		return message;
 	}

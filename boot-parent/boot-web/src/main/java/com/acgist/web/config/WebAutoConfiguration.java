@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.acgist.web.controller.WebControllerAdvice;
 import com.acgist.web.controller.WebErrorController;
+import com.acgist.www.WwwErrorPageRegistrar;
 
 @Configuration
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
@@ -27,8 +28,8 @@ public class WebAutoConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WebErrorPageRegistrar errorPageRegistrar() {
-		return new WebErrorPageRegistrar();
+	public WwwErrorPageRegistrar errorPageRegistrar() {
+		return new WwwErrorPageRegistrar();
 	}
 	
 }

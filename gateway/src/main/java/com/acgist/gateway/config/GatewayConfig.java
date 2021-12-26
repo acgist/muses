@@ -16,6 +16,7 @@ import org.springframework.web.server.ServerWebExchange;
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.MessageCode;
+import com.google.common.net.HttpHeaders;
 
 import reactor.core.publisher.Mono;
 
@@ -50,7 +51,7 @@ public class GatewayConfig {
 					message = Message.fail(MessageCode.CODE_9999);
 				}
 				response.setStatusCode(status);
-				response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+				response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 				return response.writeWith(Mono.fromSupplier(() -> {
 					return response.bufferFactory().wrap(message.toString().getBytes());
 				}));

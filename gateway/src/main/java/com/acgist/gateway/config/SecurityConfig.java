@@ -17,6 +17,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.MessageCode;
+import com.google.common.net.HttpHeaders;
 
 import reactor.core.publisher.Mono;
 
@@ -66,7 +67,7 @@ public class SecurityConfig {
 			}
 			final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有权限");
 			response.setStatusCode(HttpStatus.UNAUTHORIZED);
-			response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 			return response.writeWith(Mono.fromSupplier(() -> {
 				return response.bufferFactory().wrap(message.toString().getBytes());
 			}));
@@ -89,7 +90,7 @@ public class SecurityConfig {
 			}
 			final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有认证");
 			response.setStatusCode(HttpStatus.UNAUTHORIZED);
-			response.getHeaders().add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 			return response.writeWith(Mono.fromSupplier(() -> {
 				return response.bufferFactory().wrap(message.toString().getBytes());
 			}));

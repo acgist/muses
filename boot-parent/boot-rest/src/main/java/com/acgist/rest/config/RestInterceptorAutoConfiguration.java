@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ import com.acgist.rest.interceptor.UserInteceptor;
  */
 @Configuration
 @ConditionalOnProperty(value = "system.rest.interceptor", matchIfMissing = true, havingValue = "true")
-@ConditionalOnMissingClass("com.acgist.gateway.config.GatewayInterceptorAutoConfiguration")
+@ConditionalOnMissingBean(value = {UserInteceptor.class, WebMvcConfigurer.class})
 public class RestInterceptorAutoConfiguration implements WebMvcConfigurer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RestInterceptorAutoConfiguration.class);

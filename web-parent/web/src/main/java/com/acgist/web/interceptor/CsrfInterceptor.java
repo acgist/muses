@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.pojo.bean.MessageCode;
-import com.acgist.web.controller.WebErrorController;
+import com.acgist.www.ErrorUtils;
 
 /**
  * CSRF拦截器
@@ -30,7 +30,7 @@ public class CsrfInterceptor implements HandlerInterceptor {
 		final String path = request.getServletPath();
 		final String trueToken = (String) session.getAttribute(SESSION_CSRF_TOKEN);
 		if (
-			!WebErrorController.ERROR_PATH.equals(path) &&
+			!ErrorUtils.ERROR_PATH.equals(path) &&
 			HttpMethod.POST.matches(method.toUpperCase())
 		) {
 			String token = (String) request.getParameter(SESSION_CSRF_TOKEN);

@@ -18,11 +18,11 @@ public class UserInteceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		final String currentUser = request.getHeader(User.HEADER_CURRENT_USER);
 		if(StringUtils.isEmpty(currentUser)) {
-			throw new MessageCodeException(MessageCode.CODE_3401);
+			throw MessageCodeException.of(MessageCode.CODE_3401);
 		}
 		final User user = JSONUtils.toJava(currentUser, User.class);
 		if(user == null) {
-			throw new MessageCodeException(MessageCode.CODE_3401);
+			throw MessageCodeException.of(MessageCode.CODE_3401);
 		}
 		UserContext.set(user);
 		return true;

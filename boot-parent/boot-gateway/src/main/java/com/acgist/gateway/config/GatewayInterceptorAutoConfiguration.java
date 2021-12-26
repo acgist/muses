@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.acgist.gateway.interceptor.PackageInterceptor;
 import com.acgist.gateway.interceptor.ProcessInterceptor;
 import com.acgist.rest.config.CurrentUserArgumentResolver;
+import com.acgist.rest.config.RestInterceptorAutoConfiguration;
 import com.acgist.rest.interceptor.UserInteceptor;
 
 /**
@@ -23,6 +25,7 @@ import com.acgist.rest.interceptor.UserInteceptor;
  * @author acgist
  */
 @Configuration
+@AutoConfigureBefore(value = RestInterceptorAutoConfiguration.class)
 @ConditionalOnProperty(value = "system.rest.interceptor", matchIfMissing = true, havingValue = "true")
 public class GatewayInterceptorAutoConfiguration implements WebMvcConfigurer {
 
