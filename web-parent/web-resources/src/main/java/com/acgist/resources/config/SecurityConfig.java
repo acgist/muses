@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 //			.sessionManagement().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//			.httpStrictTransportSecurity().disable()
+//			.httpStrictTransportSecurity().disable();
 	}
 	
 }

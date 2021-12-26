@@ -1,5 +1,7 @@
 package com.acgist.boot.pojo.bean;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * 状态编码
  * 
@@ -11,7 +13,7 @@ package com.acgist.boot.pojo.bean;
  * @author acgist
  */
 public enum MessageCode {
-
+	
 	CODE_0000("0000", "成功"),
 	CODE_1000("1000", "未知接口"),
 	CODE_1001("1001", "上次请求没有完成"),
@@ -28,6 +30,11 @@ public enum MessageCode {
 	CODE_3503("3503", "服务正在维护"),
 	CODE_3504("3504", "服务超时"),
 	CODE_9999("9999", "未知错误");
+	
+	/**
+	 * HTTP状态编码头部
+	 */
+	public static final String HTTP_STATUS = "3";
 
 	/**
 	 * 状态编码
@@ -68,7 +75,7 @@ public enum MessageCode {
 	 * @return 状态编码
 	 */
 	public static final MessageCode of(int status) {
-		final String code = "3" + status;
+		final String code = HTTP_STATUS + status;
 		final MessageCode[] codes = MessageCode.values();
 		for (MessageCode value : codes) {
 			if (value.code.equals(code)) {
@@ -78,30 +85,18 @@ public enum MessageCode {
 		return CODE_9999;
 	}
 
-	/**
-	 * 通过code、HTTP Status获取状态编码
-	 * 
-	 * @param code code
-	 * @param status HTTP Status
-	 * 
-	 * @return 状态编码
-	 */
-	public static final MessageCode of(String code, int status) {
-		MessageCode messageCode = of(code);
-		if (messageCode != CODE_9999) {
-			return messageCode;
-		}
-		messageCode = of(status);
-		if (messageCode != CODE_9999) {
-			return messageCode;
-		}
-		return CODE_9999;
-	}
-
 	public String getCode() {
 		return code;
 	}
 
+	public int getStatus() {
+		final int length = HTTP_STATUS.length();
+		if(HTTP_STATUS.equals(this.code.substring(0, length))) {
+			return Integer.parseInt(this.code.substring(length));
+		}
+		return HttpStatus.OK.value();
+	}
+	
 	public String getMessage() {
 		return message;
 	}

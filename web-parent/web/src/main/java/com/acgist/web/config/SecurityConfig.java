@@ -45,7 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests().antMatchers("/user/**").authenticated()
 			.anyRequest().permitAll()
 			.and()
-			.exceptionHandling().accessDeniedPage("/login")
+			.exceptionHandling()
+			// 没有权限
+			.accessDeniedPage("/login")
+			// 没有认证
+//			.authenticationEntryPoint(null)
 			.and()
 			.logout().logoutUrl("/logout").logoutSuccessUrl("/")
 			.and()
@@ -53,10 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //			.sessionManagement().sessionFixation()
 			.formLogin().usernameParameter("username").passwordParameter("password").loginPage("/login")
 			.loginProcessingUrl("/login").defaultSuccessUrl("/user").failureUrl("/login");
-//			.and()
-//			.exceptionHandling()
-//			.accessDeniedHandler(null)
-//			.authenticationEntryPoint(null);
 	}
 
 	@Override

@@ -17,23 +17,29 @@ public class MessageCodeException extends RuntimeException {
 		return of(null, MessageCode.CODE_9999, messages);
 	}
 	
-	public static final MessageCodeException of(MessageCode code, Object ... messages) {
-		return of(null, code, messages);
-	}
-	
 	public static final MessageCodeException of(Throwable t, Object ... messages) {
 		return of(t, MessageCode.CODE_9999, messages);
 	}
 	
+	public static final MessageCodeException of(MessageCode code, Object ... messages) {
+		return of(null, code, messages);
+	}
+	
 	public static final MessageCodeException of(Throwable t, MessageCode code, Object ... messages) {
-		final StringBuilder builder = new StringBuilder();
-		for (Object message : messages) {
-			builder.append(message);
+		final String message;
+		if(ArrayUtils.isEmpty(messages)) {
+			message = t == null ? code.getMessage() : t.getMessage();
+		} else {
+			final StringBuilder builder = new StringBuilder();
+			for (Object value : messages) {
+				builder.append(value);
+			}
+			message = builder.toString();
 		}
 		if(t == null) {
-			return new MessageCodeException(code, builder.toString());
+			return new MessageCodeException(code, message);
 		} else {
-			return new MessageCodeException(code, builder.toString(), t);
+			return new MessageCodeException(code, message, t);
 		}
 	}
 	
@@ -46,12 +52,12 @@ public class MessageCodeException extends RuntimeException {
 		this.code = code;
 	}
 
-	public MessageCodeException(MessageCode code, Throwable throwable) {
-		this(code, code.getMessage(), throwable);
+	public MessageCodeException(MessageCode code, Throwable t) {
+		this(code, t == null ? code.getMessage() : t.getMessage(), t);
 	}
 
-	public MessageCodeException(MessageCode code, String message, Throwable throwable) {
-		super(message, throwable);
+	public MessageCodeException(MessageCode code, String message, Throwable t) {
+		super(message, t);
 		this.code = code;
 	}
 
@@ -60,10 +66,11 @@ public class MessageCodeException extends RuntimeException {
 	}
 
 	public String getMessage() {
-		if (StringUtils.isEmpty(super.getMessage())) {
+		final String message = super.getMessage();
+		if (StringUtils.isEmpty(message)) {
 			return this.code.getMessage();
 		} else {
-			return super.getMessage();
+			return message;
 		}
 	}
 

@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.pojo.bean.MessageCode;
+import com.acgist.web.controller.WebErrorController;
 
 /**
  * CSRF拦截器
@@ -27,14 +27,20 @@ public class CsrfInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		final String method = request.getMethod();
 		final HttpSession session = request.getSession();
+		final String path = request.getServletPath();
 		final String trueToken = (String) session.getAttribute(SESSION_CSRF_TOKEN);
-		if (HttpMethod.POST.name().equalsIgnoreCase(method)) {
-			final String token = (String) request.getParameter(SESSION_CSRF_TOKEN);
-			if (StringUtils.equals(token, trueToken)) {
+		if (
+			!WebErrorController.ERROR_PATH.equals(path) &&
+			HttpMethod.POST.matches(method.toUpperCase())
+		) {
+			String token = (String) request.getParameter(SESSION_CSRF_TOKEN);
+			if(StringUtils.isEmpty(token)) {
+				token = request.getHeader(SESSION_CSRF_TOKEN);
+			}
+			if (StringUtils.isNotEmpty(trueToken) && StringUtils.equals(token, trueToken)) {
 				this.buildCsrfToken(session);
 				return true;
 			} else {
-				response.setStatus(HttpStatus.FORBIDDEN.value());
 				throw MessageCodeException.of(MessageCode.CODE_3403);
 			}
 		}
@@ -43,7 +49,7 @@ public class CsrfInterceptor implements HandlerInterceptor {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * 生成Token
 	 * 

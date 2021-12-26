@@ -39,7 +39,7 @@ public class GatewaySession implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GatewaySession.class);
-
+	
 	private static final ThreadLocal<GatewaySession> LOCAL = new ThreadLocal<>();
 	
 	@Autowired
@@ -253,8 +253,8 @@ public class GatewaySession implements Serializable {
 	 * @param response 响应
 	 */
 	public void response(HttpServletResponse response) {
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		try {
-			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			response.getWriter().write(this.gatewayResponse.toString());
 		} catch (IOException e) {
 			LOGGER.error("写出响应数据异常", e);
