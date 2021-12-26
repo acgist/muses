@@ -17,6 +17,10 @@ public class MessageCodeException extends RuntimeException {
 		return of(null, MessageCode.CODE_9999, messages);
 	}
 	
+	public static final MessageCodeException of(MessageCode code, Object ... messages) {
+		return of(null, code, messages);
+	}
+	
 	public static final MessageCodeException of(Throwable t, Object ... messages) {
 		return of(t, MessageCode.CODE_9999, messages);
 	}

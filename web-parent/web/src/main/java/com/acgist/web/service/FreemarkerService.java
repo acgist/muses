@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acgist.boot.StringUtils;
+import com.acgist.boot.config.MusesConfig;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
@@ -55,8 +55,8 @@ public class FreemarkerService {
 		if(!htmlFile.getParentFile().exists()) {
 			htmlFile.getParentFile().mkdirs();
 		}
-		try (final Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlFile), StandardCharsets.UTF_8))) {
-			final Template template = this.configuration.getTemplate(templatePath, StandardCharsets.UTF_8.name());
+		try (final Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlFile), MusesConfig.CHARSET))) {
+			final Template template = this.configuration.getTemplate(templatePath, MusesConfig.CHARSET_VALUE);
 			template.process(data, writer);
 			writer.flush();
 		} catch (TemplateException | IOException e) {
@@ -76,7 +76,7 @@ public class FreemarkerService {
 		loader.putTemplate(TEMPLATE, content);
 		this.configuration.setTemplateLoader(loader);
 		try (final Writer writer = new StringWriter()) {
-			final Template template = this.configuration.getTemplate(TEMPLATE, StandardCharsets.UTF_8.name());
+			final Template template = this.configuration.getTemplate(TEMPLATE, MusesConfig.CHARSET_VALUE);
 			template.process(data, writer);
 			content = writer.toString();
 		} catch (TemplateException | IOException e) {

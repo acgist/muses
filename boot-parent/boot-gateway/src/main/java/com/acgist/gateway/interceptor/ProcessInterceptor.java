@@ -11,7 +11,7 @@ import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.boot.service.IdService;
 import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.pojo.dto.GatewayDto;
-import com.acgist.gateway.service.IGatewayService;
+import com.acgist.gateway.service.GatewayService;
 
 /**
  * 处理拦截
@@ -25,7 +25,7 @@ public class ProcessInterceptor implements HandlerInterceptor {
 	@Autowired
 	private ApplicationContext context;
 	@Autowired
-	private IGatewayService gatewayService;
+	private GatewayService gatewayService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

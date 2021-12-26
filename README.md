@@ -5,12 +5,6 @@
 * Web服务使用传统Session记录状态通过Redis实现共享
 * REST服务使用Oauth2服务通过JWT实现网关统一认证鉴权
 
-## TODO
-
-Stream使用新版配置
-Oauth2优化和网关契合度：登陆页面不能正常接入
-Oauth2添加密码模式
-
 ## 开发日志
 
 * [+] 添加功能
@@ -85,11 +79,6 @@ system.rest.interceptor=true|false
 system.gateway.slow.request.duration=1000
 ```
 
-## pom.xml
+## 优化位置
 
-* java
-* javax
-* 本身依赖
-* 外部依赖
-* Boot依赖
-* Cloud依赖
+/boot-gateway/src/main/java/com/acgist/gateway/service/GatewayChannel.java

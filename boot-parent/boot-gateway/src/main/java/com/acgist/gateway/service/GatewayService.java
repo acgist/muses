@@ -7,14 +7,23 @@ import org.springframework.stereotype.Service;
 
 import com.acgist.gateway.pojo.dto.GatewayDto;
 
+/**
+ * 网关
+ * 
+ * @author acgist
+ */
 @Service
 @EnableBinding(GatewayChannel.class)
-public class GatewayService implements IGatewayService {
+public class GatewayService {
 
 	@Autowired
 	private GatewayChannel gatewayChannel;
 
-	@Override
+	/**
+	 * 推送网关消息
+	 * 
+	 * @param gatewayDto GatewayDto
+	 */
 	public void push(GatewayDto gatewayDto) {
 		this.gatewayChannel.channel().send(MessageBuilder.withPayload(gatewayDto).build());
 	}

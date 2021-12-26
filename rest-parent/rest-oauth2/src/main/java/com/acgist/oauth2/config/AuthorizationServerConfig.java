@@ -53,6 +53,8 @@ import com.nimbusds.jose.proc.SecurityContext;
 /**
  * Oauth2授权配置
  * 
+ * TODO：密码模式
+ * 
  * @author acgist
  */
 @Configuration
