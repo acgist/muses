@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<name>service-user-parent</name>
-	<description>用户内部服务</description>
+	<description>用户内部服务模块</description>
 
 	<modules>
 		<module>service-user-api</module>

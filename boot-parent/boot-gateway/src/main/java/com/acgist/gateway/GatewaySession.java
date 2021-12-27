@@ -248,7 +248,7 @@ public class GatewaySession implements Serializable {
 	 * @param response 响应
 	 */
 	public void response(HttpServletResponse response) {
-	    ResponseUtils.response(this.gatewayResponse, response);
+		ResponseUtils.response(this.gatewayResponse, response);
 	}
 	
 }

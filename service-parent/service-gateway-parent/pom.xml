@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<name>service-gateway-parent</name>
-	<description>网关内部服务</description>
+	<description>网关内部服务模块</description>
 
 	<modules>
 		<module>service-gateway-api</module>

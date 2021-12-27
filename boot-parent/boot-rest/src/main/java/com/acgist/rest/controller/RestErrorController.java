@@ -25,7 +25,7 @@ public class RestErrorController implements ErrorController {
 
 	@RequestMapping(value = ErrorUtils.ERROR_PATH)
 	public Message<String> index(HttpServletRequest request, HttpServletResponse response) {
-	    return ErrorUtils.message(request, response);
+		return ErrorUtils.message(request, response);
 	}
 
 }

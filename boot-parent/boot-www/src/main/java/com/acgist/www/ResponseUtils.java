@@ -17,24 +17,24 @@ import com.acgist.boot.pojo.bean.Message;
  */
 public final class ResponseUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtils.class);
-    
-    private ResponseUtils() {
-    }
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtils.class);
+	
+	private ResponseUtils() {
+	}
 
-    /**
-     * 写出消息
-     * 
-     * @param message 消息
-     * @param response 响应
-     */
-    public static final void response(Message<?> message, HttpServletResponse response) {
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        try {
-            response.getWriter().write(message.toString());
-        } catch (IOException e) {
-            LOGGER.error("写出响应数据异常", e);
-        }
-    }
-    
+	/**
+	 * 写出消息
+	 * 
+	 * @param message 消息
+	 * @param response 响应
+	 */
+	public static final void response(Message<?> message, HttpServletResponse response) {
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		try {
+			response.getWriter().write(message.toString());
+		} catch (IOException e) {
+			LOGGER.error("写出响应数据异常", e);
+		}
+	}
+	
 }

@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-web</name>
-	<description>Web模块Boot</description>
+	<description>Web模块Boot：提供网页资源服务</description>
 
 	<dependencies>
 		<dependency>

@@ -26,10 +26,10 @@ public class RestAutoConfiguration {
 		return new RestControllerAdvice();
 	}
 	
-    @Bean
-    @ConditionalOnMissingBean
-    public WwwErrorPageRegistrar errorPageRegistrar() {
-        return new WwwErrorPageRegistrar();
-    }
+	@Bean
+	@ConditionalOnMissingBean
+	public WwwErrorPageRegistrar errorPageRegistrar() {
+		return new WwwErrorPageRegistrar();
+	}
 
 }

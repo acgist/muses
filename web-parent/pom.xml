@@ -14,7 +14,7 @@
 	<packaging>pom</packaging>
 
 	<name>web-parent</name>
-	<description>Web服务模块：提供网页资源访问</description>
+	<description>Web服务模块：提供网页资源服务</description>
 
 	<modules>
 		<module>web</module>

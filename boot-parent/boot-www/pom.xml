@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-www</name>
-	<description>Www模块Boot</description>
+	<description>Www模块Boot：所有通过网络提供服务的模块必须包含此依赖</description>
 
 	<dependencies>
 		<dependency>

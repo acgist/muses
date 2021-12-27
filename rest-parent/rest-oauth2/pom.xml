@@ -25,6 +25,7 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>service-user-api</artifactId>
 		</dependency>
+		<!-- 版本问题：需要升级SpringBoot/SpringCloud/SpringCloudAlibaba -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-core</artifactId>

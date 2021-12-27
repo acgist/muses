@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-rest</name>
-	<description>Rest模块Boot</description>
+	<description>Rest模块Boot：提供Rest接口服务</description>
 
 	<dependencies>
 		<dependency>

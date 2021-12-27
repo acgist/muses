@@ -18,7 +18,7 @@ public class RestControllerAdvice {
 
 	@ExceptionHandler(Exception.class)
 	public Message<String> exception(Exception e, HttpServletRequest request, HttpServletResponse response) {
-	    return ErrorUtils.message(e, request, response);
+		return ErrorUtils.message(e, request, response);
 	}
 	
 }

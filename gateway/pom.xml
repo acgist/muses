@@ -14,7 +14,7 @@
 	<packaging>jar</packaging>
 
 	<name>gateway</name>
-	<description>网关</description>
+	<description>网关：通过网关访问内部Www服务</description>
 
 	<dependencies>
 		<dependency>
