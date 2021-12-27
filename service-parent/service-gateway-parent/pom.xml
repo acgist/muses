@@ -3,12 +3,6 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>service-gateway-api</artifactId>
-	<packaging>jar</packaging>
-
-	<name>service-gateway-api</name>
-	<description>网关接口服务接口</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>service-parent</artifactId>
@@ -16,12 +10,18 @@
 		<relativePath>../</relativePath>
 	</parent>
 
+	<artifactId>service-gateway-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>service-gateway-parent</name>
+	<description>网关内部服务</description>
+
+	<modules>
+		<module>service-gateway-api</module>
+		<module>service-gateway-impl</module>
+	</modules>
+
 	<dependencies>
-		<dependency>
-			<groupId>com.acgist</groupId>
-			<artifactId>boot-data</artifactId>
-			<optional>true</optional>
-		</dependency>
 	</dependencies>
 
 </project>

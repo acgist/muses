@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>rest-parent</artifactId>
-	<packaging>pom</packaging>
-
-	<name>rest-parent</name>
-	<description>REST服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>muses</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>rest-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>rest-parent</name>
+	<description>Rest服务模块：提供Rest接口访问</description>
 
 	<modules>
 		<module>rest</module>

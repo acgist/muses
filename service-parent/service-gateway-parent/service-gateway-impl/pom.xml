@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>service-gateway</artifactId>
-	<packaging>jar</packaging>
-
-	<name>service-gateway</name>
-	<description>网关接口服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>service-parent</artifactId>
+		<artifactId>service-gateway-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>service-gateway-impl</artifactId>
+	<packaging>jar</packaging>
+
+	<name>service-gateway-impl</name>
+	<description>网关内部服务实现</description>
 
 	<dependencies>
 		<dependency>

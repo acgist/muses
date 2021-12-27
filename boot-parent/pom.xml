@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>boot-parent</artifactId>
-	<packaging>pom</packaging>
-
-	<name>boot-parent</name>
-	<description>服务接口</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>muses</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>boot-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>boot-parent</name>
+	<description>Boot模块：各种模块自动配置</description>
 
 	<modules>
 		<module>boot-mq</module>

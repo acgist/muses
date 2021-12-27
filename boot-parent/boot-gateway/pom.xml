@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>boot-gateway</artifactId>
-	<packaging>jar</packaging>
-
-	<name>boot-gateway</name>
-	<description>网关接口：对外服务接口</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>boot-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>boot-gateway</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-gateway</name>
+	<description>网关Rest模块Boot</description>
 
 	<dependencies>
 		<dependency>

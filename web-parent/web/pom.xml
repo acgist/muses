@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>web</artifactId>
-	<packaging>jar</packaging>
-
-	<name>web</name>
-	<description>网页服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>web-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>web</artifactId>
+	<packaging>jar</packaging>
+
+	<name>web</name>
+	<description>Web服务</description>
 
 	<dependencies>
 		<dependency>

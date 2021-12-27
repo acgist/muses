@@ -5,27 +5,23 @@
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>muses</artifactId>
+		<artifactId>service-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>service-parent</artifactId>
+	<artifactId>service-user-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>service-parent</name>
-	<description>内部服务模块：内部Dubbo服务</description>
+	<name>service-user-parent</name>
+	<description>用户内部服务</description>
 
 	<modules>
-		<module>service-user-parent</module>
-		<module>service-gateway-parent</module>
+		<module>service-user-api</module>
+		<module>service-user-impl</module>
 	</modules>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.acgist</groupId>
-			<artifactId>boot</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

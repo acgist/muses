@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>boot-rest</artifactId>
-	<packaging>jar</packaging>
-
-	<name>boot-rest</name>
-	<description>Rest接口：后台服务接口</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>boot-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>boot-rest</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-rest</name>
+	<description>Rest模块Boot</description>
 
 	<dependencies>
 		<dependency>

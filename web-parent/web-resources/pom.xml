@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>web-resources</artifactId>
-	<packaging>jar</packaging>
-
-	<name>web-resources</name>
-	<description>静态资源</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>web-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>web-resources</artifactId>
+	<packaging>jar</packaging>
+
+	<name>web-resources</name>
+	<description>静态资源Web服务</description>
 
 	<dependencies>
 	</dependencies>

@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>web-parent</artifactId>
-	<packaging>pom</packaging>
-
-	<name>web-parent</name>
-	<description>Web服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>muses</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>web-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>web-parent</name>
+	<description>Web服务模块：提供网页资源访问</description>
 
 	<modules>
 		<module>web</module>

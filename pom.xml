@@ -57,6 +57,16 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>gateway</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>boot-parent</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>boot-mq</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
@@ -102,12 +112,27 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>service-parent</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>service-user-parent</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>service-user-api</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>service-user</artifactId>
+				<artifactId>service-user-impl</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>service-gateway-parent</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
@@ -117,7 +142,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>service-gateway</artifactId>
+				<artifactId>service-gateway-impl</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>rest-parent</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
 			<dependency>
@@ -137,6 +167,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>web-parent</artifactId>
+				<version>${acgist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>web</artifactId>
 				<version>${acgist.version}</version>
 			</dependency>
@@ -144,20 +179,6 @@
 				<groupId>com.acgist</groupId>
 				<artifactId>web-resources</artifactId>
 				<version>${acgist.version}</version>
-			</dependency>
-			<!-- OAuth2 -->
-			<!-- spring-boot-starter-oauth2-client -->
-			<!-- spring-boot-starter-oauth2-resource-server -->
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-oauth2-authorization-server</artifactId>
-				<version>${oauth2.authorization.version}</version>
-			</dependency>
-			<!-- shardingjdbc -->
-			<dependency>
-				<groupId>org.apache.shardingsphere</groupId>
-				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-				<version>${shardingjdbc.version}</version>
 			</dependency>
 			<!-- JavaEE -->
 			<dependency>
@@ -174,6 +195,20 @@
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>
 				<version>${annotation.version}</version>
+			</dependency>
+			<!-- ShardingJDBC -->
+			<dependency>
+				<groupId>org.apache.shardingsphere</groupId>
+				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+				<version>${shardingjdbc.version}</version>
+			</dependency>
+			<!-- OAuth2 -->
+			<!-- spring-boot-starter-oauth2-client -->
+			<!-- spring-boot-starter-oauth2-resource-server -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-oauth2-authorization-server</artifactId>
+				<version>${oauth2.authorization.version}</version>
 			</dependency>
 			<!-- SpringCloud -->
 			<dependency>

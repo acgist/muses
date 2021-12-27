@@ -18,12 +18,12 @@
 
 |模块|描述|
 |:-|:-|
-|boot|启动模块|
-|boot-parent|通用模块|
-|gateway|网关模块|
-|web-parent|Web服务：网页相关|
-|rest-parent|Rest服务：接口相关|
-|service-parent|内部服务|
+|boot|启动|
+|gateway|网关|
+|web-parent|Web服务模块|
+|rest-parent|Rest服务模块|
+|boot-parent|Boot模块|
+|service-parent|内部服务模块|
 |docs|配置文档|
 
 ## 配置

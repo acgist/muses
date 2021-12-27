@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>boot-www</artifactId>
-	<packaging>jar</packaging>
-
-	<name>boot-www</name>
-	<description>WWW服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>boot-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>boot-www</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-www</name>
+	<description>Www模块Boot</description>
 
 	<dependencies>
 		<dependency>

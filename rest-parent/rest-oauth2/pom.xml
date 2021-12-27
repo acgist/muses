@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>rest-oauth2</artifactId>
-	<packaging>jar</packaging>
-
-	<name>rest-oauth2</name>
-	<description>认证授权服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>rest-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>rest-oauth2</artifactId>
+	<packaging>jar</packaging>
+
+	<name>rest-oauth2</name>
+	<description>认证授权Rest服务</description>
 
 	<dependencies>
 		<dependency>

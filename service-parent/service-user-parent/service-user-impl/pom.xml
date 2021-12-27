@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>service-user</artifactId>
-	<packaging>jar</packaging>
-
-	<name>service-user</name>
-	<description>用户服务</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>service-parent</artifactId>
+		<artifactId>service-user-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>service-user-impl</artifactId>
+	<packaging>jar</packaging>
+
+	<name>service-user-impl</name>
+	<description>用户内部服务实现</description>
 
 	<dependencies>
 		<dependency>

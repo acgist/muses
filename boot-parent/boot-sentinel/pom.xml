@@ -3,18 +3,18 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>boot-sentinel</artifactId>
-	<packaging>jar</packaging>
-
-	<name>boot-sentinel</name>
-	<description>熔断降级</description>
-
 	<parent>
 		<groupId>com.acgist</groupId>
 		<artifactId>boot-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
+
+	<artifactId>boot-sentinel</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-sentinel</name>
+	<description>熔断降级模块Boot</description>
 
 	<dependencies>
 		<dependency>
