@@ -1,4 +1,8 @@
-## Redis
+# Boot-Redis
+
+Redis和缓存
+
+## 配置
 
 ```
 spring:
