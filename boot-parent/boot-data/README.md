@@ -1,3 +1,11 @@
+## 数据源
+
+```
+ES *
+MySQL
+Neo4j *
+```
+
 ## 分库分表
 
 #### Maven
@@ -142,19 +150,6 @@ spring:
         batch_size: 10
         fetch_size: 10
     properties.hibernate.temp.use_jdbc_metadata_defaults: false
-```
-
-## 其他数据
-
-```
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-neo4j</artifactId>
-</dependency>
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-</dependency>
 ```
 
 ## 注意事项
