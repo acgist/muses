@@ -16,6 +16,10 @@
 	<name>boot-data</name>
 	<description>数据模块Boot</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.data</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>

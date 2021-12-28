@@ -16,6 +16,10 @@
 	<name>boot-rest</name>
 	<description>Rest模块Boot：提供Rest接口服务</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.rest</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>

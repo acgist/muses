@@ -16,6 +16,10 @@
 	<name>boot-redis</name>
 	<description>Redis和缓存模块Boot</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.redis</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -3,7 +3,6 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- TODO：升级javassist -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -17,11 +16,20 @@
 	<packaging>pom</packaging>
 
 	<name>muses</name>
-	<description>缪斯女神</description>
+	<description>基于SpringCloudAlibaba技术栈微服务模板项目</description>
 
 	<properties>
-		<acgist.version>1.0.0</acgist.version>
 		<encoding>UTF-8</encoding>
+		<!-- 系统配置 -->
+		<acgist.jvm></acgist.jvm>
+		<acgist.xms>256M</acgist.xms>
+		<acgist.xmx>512M</acgist.xmx>
+		<acgist.unpack>true</acgist.unpack>
+		<acgist.vendor>acgist</acgist.vendor>
+		<acgist.module>com.acgist.muses</acgist.module>
+		<acgist.basedir>./</acgist.basedir>
+		<acgist.version>1.0.0</acgist.version>
+		<!-- 版本配置 -->
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
 		<xml.bind.version>2.3.1</xml.bind.version>
@@ -231,6 +239,30 @@
 	</dependencyManagement>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+				 	<include>**/*.yml</include>
+				 	<include>**/*.properties</include>
+				 </includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				 <includes>
+				 	<!-- 匹配所有文件：**/* -->
+				 	<!-- 匹配所有带有后缀文件：**/*.* -->
+				 	<include>**/*.*</include>
+				 </includes>
+				 <excludes>
+				 	<exclude>**/*.yml</exclude>
+				 	<exclude>**/*.properties</exclude>
+				 </excludes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -254,10 +286,17 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<configuration>
 						<archive>
-							<manifest>
-								<addClasspath>true</addClasspath>
-								<classpathPrefix>./</classpathPrefix>
-							</manifest>
+							<manifestEntries>
+								<Built-By>${acgist.vendor}</Built-By>
+								<Automatic-Module-Name>${acgist.module}</Automatic-Module-Name>
+								<Specification-Title>${project.artifactId}</Specification-Title>
+								<Specification-Vendor>${acgist.vendor}</Specification-Vendor>
+								<Specification-Version>${acgist.version}</Specification-Version>
+								<Implementation-Title>${project.artifactId}</Implementation-Title>
+								<Implementation-Vendor>${acgist.vendor}</Implementation-Vendor>
+								<Implementation-Version>${acgist.version}</Implementation-Version>
+								<Implementation-Vendor-Id>${acgist.vendor}</Implementation-Vendor-Id>
+							</manifestEntries>
 						</archive>
 					</configuration>
 				</plugin>
@@ -273,6 +312,7 @@
 							</goals>
 							<configuration>
 								<attach>false</attach>
+								<skipAssembly>${acgist.unpack}</skipAssembly>
 								<appendAssemblyId>false</appendAssemblyId>
 							</configuration>
 						</execution>
@@ -281,5 +321,68 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
+	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<profile>dev</profile>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>${acgist.basedir}/docs/pack/assembly/dev.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<profile>test</profile>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>${acgist.basedir}/docs/pack/assembly/test.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<profile>release</profile>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>${acgist.basedir}/docs/pack/assembly/release.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 </project>

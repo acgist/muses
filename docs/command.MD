@@ -1,10 +1,10 @@
-## 命令
+# 命令
 
-#### 编译
+## 编译
 
 mvn clean package -D skipTests -P dev|test|release
 
-#### 版本
+## 版本
 
 mvn versions:set -D "newVersion=1.0.0"
 mvn versions:update-child-modules

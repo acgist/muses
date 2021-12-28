@@ -23,12 +23,12 @@ public class IdService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(IdService.class);
 
 	/**
-	 * 最大序号
+	 * 最大系统编号
 	 */
 	private static final int MAX_INDEX = 9999;
 
 	/**
-	 * 当前机器序号
+	 * 当前系统编号
 	 */
 	private int sn;
 	/**

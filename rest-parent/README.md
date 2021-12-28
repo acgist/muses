@@ -1,4 +1,6 @@
-# Rest
+# Rest-Parent
+
+Rest服务模块：提供Rest接口服务
 
 ## 端口
 
@@ -6,11 +8,9 @@
 
 ## 认证授权
 
-请看网关
+网关
 
 ## 注意事项
 
-* rest：前端接口
-* rest-gateway：外部接口
-
-> 主要区别：gateway存在网关记录推送服务
+* `rest`：前端接口
+* `rest-gateway`：外部接口

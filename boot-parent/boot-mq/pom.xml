@@ -16,6 +16,10 @@
 	<name>boot-mq</name>
 	<description>消息队列模块Boot</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.mq</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

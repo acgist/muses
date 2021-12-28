@@ -1,18 +1,41 @@
-# 数据
+# Boot-Data
 
-## 支持数据源
+数据模块Boot
+
+## MySQL
+
+#### 单库单表
 
 ```
-ES *
-MySQL
-Neo4j *
+spring:
+  shardingsphere.enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/muses?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: HikariCP
+      auto-commit: true
+      minimum-idle: 2
+      maximum-pool-size: 10
+  jpa:
+    database: MYSQL
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    hibernate:
+      ddl-auto: none
+      jdbc:
+        batch_size: 10
+        fetch_size: 10
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
 ```
 
-> 默认数据库是`MySQL`
+#### 分库分表
 
-## 分库分表
-
-#### Maven
+###### Maven
 
 ```
 <dependency>
@@ -21,7 +44,7 @@ Neo4j *
 </dependency>
 ```
 
-#### 配置
+###### 配置
 
 ```
 spring:
@@ -127,35 +150,30 @@ spring:
 
 > 注意`ShardingJDBC`版本配置
 
-## 单库单表
-
-```
-spring:
-  shardingsphere.enabled: false
-  datasource:
-    url: jdbc:mysql://localhost:3306/muses?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      pool-name: HikariCP
-      auto-commit: true
-      minimum-idle: 2
-      maximum-pool-size: 10
-  jpa:
-    database: MYSQL
-    show-sql: true
-    open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL57Dialect
-    hibernate:
-      ddl-auto: none
-      jdbc:
-        batch_size: 10
-        fetch_size: 10
-    properties.hibernate.temp.use_jdbc_metadata_defaults: false
-```
-
-## 注意事项
+#### 注意事项
 
 本地测试不想建立太多数据库，所以都是连接单个数据库，实际只有分库没有分表。
+
+## ES
+
+#### Maven
+
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+	<optional>true</optional>
+</dependency>
+```
+
+## Neo4j
+
+#### Maven
+
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-neo4j</artifactId>
+	<optional>true</optional>
+</dependency>
+```

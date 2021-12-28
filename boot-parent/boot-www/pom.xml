@@ -16,6 +16,10 @@
 	<name>boot-www</name>
 	<description>Www模块Boot：所有通过网络提供服务的模块必须包含此依赖</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.www</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>

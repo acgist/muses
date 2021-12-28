@@ -1,8 +1,6 @@
-# 网关
+# Gateway
 
-网关主要负责负载均衡、认证鉴权
-
-> 除此之外其他网关均为系统接口
+网关：通过网关访问内部Www服务
 
 ## 跨域
 
@@ -14,12 +12,6 @@
 
 Rest服务统一使用`rest-oauth2`认证授权
 
-## 注意
-
-* 不能配置`issuer-uri`
-* 可以将Web和Rest分开两个网关
-* Web登陆成功访问Rest服务时会导致Session失效
-
 ## 模块
 
 #### gateway sentinel adapter
@@ -30,3 +22,9 @@ Rest服务统一使用`rest-oauth2`认证授权
 	<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
 </dependency>
 ```
+
+## 注意事项
+
+* 不能配置`issuer-uri`
+* Web服务和Rest服务可以分开两个网关
+* Web服务登陆成功访问Rest服务时会导致`Session`失效

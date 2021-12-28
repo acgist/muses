@@ -16,6 +16,12 @@
 	<name>rest-gateway</name>
 	<description>网关Rest服务</description>
 
+	<properties>
+		<acgist.unpack>false</acgist.unpack>
+		<acgist.module>com.acgist.rest.gateway</acgist.module>
+		<acgist.basedir>${project.parent.parent.basedir}</acgist.basedir>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
@@ -36,88 +42,13 @@
 					<archive>
 						<manifest>
 							<mainClass>com.acgist.main.GatewayApplication</mainClass>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>./</classpathPrefix>
 						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
 		</plugins>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<profile>dev</profile>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/dev.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<profile>test</profile>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/test</directory>
-					</resource>
-				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/test.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>release</id>
-			<properties>
-				<profile>release</profile>
-			</properties>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/profiles/release</directory>
-					</resource>
-				</resources>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<configuration>
-							<descriptors>
-								<descriptor>src/main/assembly/release.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 </project>

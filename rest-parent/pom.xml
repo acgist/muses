@@ -16,6 +16,10 @@
 	<name>rest-parent</name>
 	<description>Rest服务模块：提供Rest接口服务</description>
 
+	<properties>
+		<acgist.module>com.acgist.rest.parent</acgist.module>
+	</properties>
+
 	<modules>
 		<module>rest</module>
 		<module>rest-oauth2</module>

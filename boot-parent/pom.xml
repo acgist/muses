@@ -16,6 +16,10 @@
 	<name>boot-parent</name>
 	<description>Boot模块：各种模块自动配置</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.parent</acgist.module>
+	</properties>
+
 	<modules>
 		<module>boot-mq</module>
 		<module>boot-web</module>

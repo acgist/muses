@@ -15,6 +15,10 @@
 
 	<name>service-user-api</name>
 	<description>用户内部服务接口</description>
+	
+	<properties>
+		<acgist.module>com.acgist.service.user.api</acgist.module>
+	</properties>
 
 	<dependencies>
 		<dependency>

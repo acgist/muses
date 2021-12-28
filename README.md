@@ -1,23 +1,6 @@
-# SpringCloudAlibaba
+# Muses
 
-## 认证鉴权
-
-* Web服务使用传统Session记录状态通过Redis实现共享
-* REST服务使用Oauth2服务通过JWT实现网关统一认证鉴权
-
-## 开发日志
-
-* [+] 添加功能
-* [-] 删除功能
-* [*] 修改功能
-* [!] 危险操作
-* [#] 没有完成
-* [~] 日常任务
-
-## 符号说明
-
-* `+`：必选
-* `*`：可选
+基于`SpringCloudAlibaba`技术栈微服务模板项目
 
 ## 模块
 
@@ -31,9 +14,35 @@
 |service-parent|内部服务模块|
 |docs|配置文档|
 
+## 规范
+
+#### 开发日志
+
+* `[+]` 添加功能
+* `[-]` 删除功能
+* `[*]` 修改功能
+* `[!]` 危险操作
+* `[#]` 没有完成
+* `[~]` 日常任务
+
+#### 符号说明
+
+* `+`：必选
+* `*`：可选
+
+## 安全
+
+#### Web服务
+
+`Web`服务使用传统`Session`记录状态，通过`RedisSession`实现共享，需要用户自己通过拦截器或者`Spring Security`实现认证授权。
+
+#### Rest服务
+
+`Rest`服务使用`OAuth2`服务通过网关实现统一认证鉴权
+
 ## 配置
 
-配置建议放在Nacos配置中心通过bootstrap.yml加载：
+配置统一放在`Nacos`配置中心通过`bootstrap.yml`加载：
 
 ```
 spring:
@@ -56,7 +65,7 @@ spring:
         refreshable-dataids: redis.yml, dubbo.yml
 ```
 
-> Nacos配置备份[./docs/nacos_config.zip](./docs/nacos_config.zip)
+> 配置备份[./docs/nacos_config.zip](./docs/nacos_config.zip)
 
 ## 关机
 
@@ -66,7 +75,7 @@ spring:
 ## 系统配置
 
 ```
-# 系统序列号
+# 系统编号（负数自动生成）：主要用于生成ID，相同服务建议设置不同编号。
 system.sn=01
 # 线程初始数量
 system.thread.min=2
@@ -74,13 +83,13 @@ system.thread.min=2
 system.thread.max=10
 # 线程最大长度
 system.thread.size=1000
-# 线程活跃时间
+# 线程活跃时间：秒
 system.thread.live=30
-# 序列化类型：Redis
+# 系统序列化类型
 system.serializer.type=jdk|jackson
 # 是否启用拦截器
 system.rest.interceptor=true|false
-# 慢请求统计时间
+# 慢请求统计时间：毫秒
 system.gateway.slow.request.duration=1000
 ```
 

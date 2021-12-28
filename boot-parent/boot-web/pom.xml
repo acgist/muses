@@ -16,6 +16,10 @@
 	<name>boot-web</name>
 	<description>Web模块Boot：提供网页资源服务</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.web</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>

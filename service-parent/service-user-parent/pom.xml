@@ -16,6 +16,10 @@
 	<name>service-user-parent</name>
 	<description>用户内部服务模块</description>
 
+	<properties>
+		<acgist.module>com.acgist.service.user.parent</acgist.module>
+	</properties>
+
 	<modules>
 		<module>service-user-api</module>
 		<module>service-user-impl</module>

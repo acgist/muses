@@ -1,6 +1,6 @@
-# 内部服务
+# Service-Parent
 
-对内使用Dubbo提供服务，不要使用任何Web模块。
+内部服务模块：内部Dubbo服务
 
 ## API
 

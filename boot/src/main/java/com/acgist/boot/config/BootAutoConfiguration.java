@@ -60,7 +60,7 @@ public class BootAutoConfiguration {
 	}
 
 	/**
-	 * 系统SN：01~99
+	 * 系统编号：01~99
 	 * 
 	 * 可以配置负数：自动生成
 	 */

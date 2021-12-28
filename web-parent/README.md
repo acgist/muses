@@ -1,4 +1,6 @@
-# Web
+# Web-Parent
+
+Web服务模块：提供网页资源服务
 
 ## 端口
 
@@ -10,4 +12,4 @@ Web服务使用`Redis Session`记录登陆状态
 
 ## 认证授权
 
-只有身份认证没有权限鉴定
+需要用户自己通过拦截器或者`Spring Security`实现

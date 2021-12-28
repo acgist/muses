@@ -16,6 +16,10 @@
 	<name>service-gateway-parent</name>
 	<description>网关内部服务模块</description>
 
+	<properties>
+		<acgist.module>com.acgist.service.gateway.parent</acgist.module>
+	</properties>
+
 	<modules>
 		<module>service-gateway-api</module>
 		<module>service-gateway-impl</module>

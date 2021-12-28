@@ -16,6 +16,10 @@
 	<name>boot</name>
 	<description>启动：含有所有基础配置和必须依赖，所有项目必须包含启动依赖。</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot</acgist.module>
+	</properties>
+
 	<dependencies>
 		<!-- JavaEE -->
 		<dependency>

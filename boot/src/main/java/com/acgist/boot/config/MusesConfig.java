@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class MusesConfig {
 
 	/**
-	 * 最大机器序号
+	 * 最大系统编号
 	 */
 	public static final int MAX_SN = 100;
 	/**
@@ -32,7 +32,7 @@ public class MusesConfig {
 	public static final String MUSES_CONFIG = "muses.json";
 	
 	/**
-	 * 当前机器序号
+	 * 当前系统编号
 	 */
 	private Integer sn;
 

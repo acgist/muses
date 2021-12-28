@@ -16,6 +16,10 @@
 	<name>boot-sentinel</name>
 	<description>熔断降级模块Boot</description>
 
+	<properties>
+		<acgist.module>com.acgist.boot.sentinel</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

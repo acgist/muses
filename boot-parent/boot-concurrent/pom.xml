@@ -15,6 +15,10 @@
 
 	<name>boot-concurrent</name>
 	<description>高并发分布式模块Boot</description>
+	
+	<properties>
+		<acgist.module>com.acgist.boot.concurrent</acgist.module>
+	</properties>
 
 	<dependencies>
 		<dependency>

@@ -16,6 +16,10 @@
 	<name>service-gateway-api</name>
 	<description>网关内部服务接口</description>
 
+	<properties>
+		<acgist.module>com.acgist.service.gateway.api</acgist.module>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>

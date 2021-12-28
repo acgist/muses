@@ -16,6 +16,10 @@
 	<name>web-parent</name>
 	<description>Web服务模块：提供网页资源服务</description>
 
+	<properties>
+		<acgist.module>com.acgist.web.parent</acgist.module>
+	</properties>
+
 	<modules>
 		<module>web</module>
 		<module>web-resources</module>
