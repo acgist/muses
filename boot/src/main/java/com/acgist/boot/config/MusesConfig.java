@@ -35,6 +35,10 @@ public class MusesConfig {
 	 * 当前系统编号
 	 */
 	private Integer sn;
+	/**
+	 * 当前系统端口
+	 */
+	private Integer port;
 
 	/**
 	 * 初始配置
@@ -55,5 +59,13 @@ public class MusesConfig {
 	public void setSn(Integer sn) {
 		this.sn = sn;
 	}
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 	
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -17,9 +19,9 @@
 	<description>Rest服务</description>
 
 	<properties>
-		<acgist.unpack>false</acgist.unpack>
-		<acgist.module>com.acgist.rest</acgist.module>
-		<acgist.basedir>${project.parent.parent.basedir}</acgist.basedir>
+		<system.maven.unpack>false</system.maven.unpack>
+		<system.maven.module>com.acgist.rest</system.maven.module>
+		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>
 	</properties>
 
 	<dependencies>
