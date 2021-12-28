@@ -21,7 +21,7 @@ import com.acgist.rest.interceptor.UserInteceptor;
  */
 @Configuration
 @ConditionalOnProperty(value = "system.rest.interceptor", matchIfMissing = true, havingValue = "true")
-@ConditionalOnMissingBean(value = {UserInteceptor.class, WebMvcConfigurer.class})
+@ConditionalOnMissingBean(value = UserInteceptor.class)
 public class RestInterceptorAutoConfiguration implements WebMvcConfigurer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RestInterceptorAutoConfiguration.class);
