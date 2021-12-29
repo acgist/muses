@@ -48,18 +48,6 @@ public class MusesConfig {
 	@JsonIgnore
 	private Integer port;
 
-	/**
-	 * 初始配置
-	 * 
-	 * @return 配置
-	 */
-	public MusesConfig build() {
-		if(++this.sn >= MAX_SN) {
-			this.sn = 0;
-		}
-		return this;
-	}
-	
 	public Integer getSn() {
 		return sn;
 	}

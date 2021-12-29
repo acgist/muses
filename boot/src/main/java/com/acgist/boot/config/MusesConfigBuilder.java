@@ -69,9 +69,15 @@ public final class MusesConfigBuilder {
 	 * @return this
 	 */
 	public MusesConfigBuilder buildSn(int sn) {
-		if(sn > 0) {
-			this.musesConfig.setSn(sn);
+		if(sn < 0) {
+		} else {
+			sn = this.musesConfig.getSn();
+			if (++sn >= MusesConfig.MAX_SN) {
+				sn = 0;
+			}
 		}
+		this.musesConfig.setSn(sn);
+		LOGGER.info("系统编号：{}", sn);
 		return this;
 	}
 	
@@ -81,8 +87,11 @@ public final class MusesConfigBuilder {
 	 * @return this
 	 */
 	public MusesConfigBuilder buildPid() {
-		final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
-		this.musesConfig.setPid(Integer.parseInt(jvmName.split("@")[0]));
+//		final long pid = ManagementFactory.getRuntimeMXBean().getPid();
+//		final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+		final long pid = ProcessHandle.current().pid();
+		this.musesConfig.setPid((int) pid);
+		LOGGER.info("系统PID：{}", pid);
 		return this;
 	}
 	
@@ -93,6 +102,7 @@ public final class MusesConfigBuilder {
 	 */
 	public MusesConfigBuilder buildPort() {
 		// TODO：port
+		LOGGER.info("系统端口：{}", this.musesConfig.getPort());
 		return this;
 	}
 	
@@ -104,10 +114,6 @@ public final class MusesConfigBuilder {
 	 * @return
 	 */
 	public MusesConfig build(NacosConfigManager nacosConfigManager) {
-		this.musesConfig.build();
-		LOGGER.info("系统编号：{}", this.musesConfig.getSn());
-		LOGGER.info("系统PID：{}", this.musesConfig.getPid());
-		LOGGER.info("系统端口：{}", this.musesConfig.getPort());
 		final ConfigService configService = nacosConfigManager.getConfigService();
 		final NacosConfigProperties nacosConfigProperties = nacosConfigManager.getNacosConfigProperties();
 		try {
