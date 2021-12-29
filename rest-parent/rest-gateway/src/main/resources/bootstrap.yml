@@ -15,4 +15,4 @@ spring:
       config:
         namespace: ${spring.profiles.active}
         file-extension: yml
-        refreshable-dataids: mq.yml, dubbo.yml, sentinel.yml
+        refreshable-dataids: mq.yml, dubbo.yml, sentinel.yml, rest-server.yml

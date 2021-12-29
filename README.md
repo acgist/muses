@@ -93,6 +93,8 @@ system.serializer.type=jdk|jackson
 system.rest.interceptor=true|false
 # 慢请求统计时间：毫秒
 system.gateway.slow.request.duration=1000
+# 静态资源地址
+system.static.host=//localhost:8888
 ```
 
 ## Maven配置

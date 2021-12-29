@@ -68,7 +68,6 @@ public final class MusesConfigBuilder {
 	 */
 	public MusesConfigBuilder buildSn(int sn) {
 		if(sn < 0) {
-		} else {
 			sn = this.musesConfig.getSn();
 			if (++sn >= MusesConfig.MAX_SN) {
 				sn = 0;
