@@ -20,6 +20,6 @@
 ```
 <dependency>
 	<groupId>org.springframework.cloud</groupId>
-	<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+	<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
 </dependency>
 ```
