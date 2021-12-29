@@ -1,0 +1,119 @@
+    stream:
+#     DLQ：死信队列
+#     两个配置一致：顺序优先
+#     spring.cloud.stream.kafka.streams.binder.brokers
+#     spring.cloud.stream.kafka.binder.brokers
+#     spring.cloud.stream.kafka.bindings.process-in|out-0.producer.configuration.key.serializer
+      kafka.streams.binder.borkers: localhost:9092
+#     kafka.bindings.gateway-out-0.producer.configuration.key.serializer: org.apache.kafka.common.serialization.StringSerializer
+#     spring.cloud.stream.function.definition
+      function.definition: gateway
+#     function.definition: gateway;gatewayA;gatewayB
+#     spring.cloud.stream.binders.binder-name.type: kafka
+      binders.kafka-gateway.type: kafka
+#     spring.cloud.stream.bindings.process-in|out-0.contentType
+#     spring.cloud.stream.bindings.process-in|out-0.destination: topic
+      bindings:
+        gateway-in-0:
+          binder: kafka-gateway
+          destination: topic-gateway
+        gatewayA-in-0:
+          binder: kafka-gateway
+          destination: topic-gateway
+        gatewayB-in-0:
+          binder: kafka-gateway
+          destination: topic-gateway
+        gateway-out-0:
+          binder: kafka-gateway
+          destination: topic-gateway
+
+
+	  package com.xyh.boot.core.gateway;
+
+import java.util.function.Consumer;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import com.xyh.boot.core.gateway.KafkaProducter.Message;
+
+@Component
+public class KafkaConsumer {
+    
+    @Bean
+    Consumer<Message> gateway() {
+        return message -> {
+            System.out.println("gateway" + message);
+        };
+    }
+
+    @Bean
+    Consumer<Message> gatewayA() {
+        return message -> {
+            System.out.println("gatewayA" + message);
+        };
+    }
+    
+    @Bean
+    Consumer<Message> gatewayB() {
+        return message -> {
+            System.out.println("gatewayB" + message);
+        };
+    }
+    
+}
+
+
+
+package com.xyh.boot.core.gateway;
+
+import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+@Component
+public class KafkaProducter {
+
+//    @Autowired
+//    StreamBridge streamBridge;
+    @Autowired
+//    private Function<Message , Message> gateway;
+
+    @PostConstruct
+    public void init() {
+        new Thread(
+        () -> {
+            while(true) {
+//                this.sendMethod("====" + System.currentTimeMillis());
+//                gateway.apply(new Message());
+                try {
+                    TimeUnit.SECONDS.sleep(4);
+                } catch (InterruptedException e) {
+                }
+            }
+        }    
+        ).start();
+    }
+    
+//    public void sendMethod(String message) {
+//        this.streamBridge.send("topic-gateway", message);
+////        this.streamBridge.send("gateway-out-0", message);
+//    }
+    
+    @Bean
+    public Supplier<Message> gateway() {
+        return () -> new Message();
+    }
+    
+    public static class Message implements Serializable {
+        
+    }
+
+}

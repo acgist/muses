@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -19,16 +21,16 @@
 	<description>基于SpringCloudAlibaba技术栈微服务模板项目</description>
 
 	<properties>
-		<encoding>UTF-8</encoding>
 		<!-- 系统配置 -->
-		<acgist.jvm></acgist.jvm>
-		<acgist.xms>256M</acgist.xms>
-		<acgist.xmx>512M</acgist.xmx>
-		<acgist.unpack>true</acgist.unpack>
-		<acgist.vendor>acgist</acgist.vendor>
-		<acgist.module>com.acgist.muses</acgist.module>
-		<acgist.basedir>./</acgist.basedir>
-		<acgist.version>1.0.0</acgist.version>
+		<system.maven.jvm></system.maven.jvm>
+		<system.maven.xms>256M</system.maven.xms>
+		<system.maven.xmx>512M</system.maven.xmx>
+		<system.maven.unpack>true</system.maven.unpack>
+		<system.maven.vendor>acgist</system.maven.vendor>
+		<system.maven.module>com.acgist.muses</system.maven.module>
+		<system.maven.basedir>${project.basedir}</system.maven.basedir>
+		<system.maven.version>1.0.0</system.maven.version>
+		<system.maven.encoding>UTF-8</system.maven.encoding>
 		<!-- 版本配置 -->
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
@@ -36,6 +38,7 @@
 		<annotation.version>1.3.2</annotation.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
 		<oauth2.authorization.version>0.2.1</oauth2.authorization.version>
+		<!-- SpringCloud版本配置 -->
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
 	</properties>
@@ -62,132 +65,132 @@
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>gateway</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-parent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-mq</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-web</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-www</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-rest</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-data</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-redis</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-gateway</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-sentinel</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-concurrent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-parent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-user-parent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-user-api</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-user-impl</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-gateway-parent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-gateway-api</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-gateway-impl</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-parent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-oauth2</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-gateway</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>web-parent</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>web</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>web-resources</artifactId>
-				<version>${acgist.version}</version>
+				<version>${system.maven.version}</version>
 			</dependency>
 			<!-- JavaEE -->
 			<dependency>
@@ -243,26 +246,26 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-				 	<include>**/*.yml</include>
-				 	<include>**/*.properties</include>
-				 </includes>
+					<include>**/*.yml</include>
+					<include>**/*.properties</include>
+				</includes>
 				<filtering>true</filtering>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-				 <includes>
-				 	<!-- 匹配所有文件：**/* -->
-				 	<!-- 匹配所有带有后缀文件：**/*.* -->
-				 	<include>**/*.*</include>
-				 </includes>
-				 <excludes>
-				 	<exclude>**/*.yml</exclude>
-				 	<exclude>**/*.properties</exclude>
-				 </excludes>
+				<includes>
+					<!-- 匹配所有文件：**/* -->
+					<!-- 匹配所有带有后缀文件：**/*.* -->
+					<include>**/*.*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.yml</exclude>
+					<exclude>**/*.properties</exclude>
+				</excludes>
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-	
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -278,7 +281,7 @@
 					<configuration>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
-						<encoding>${encoding}</encoding>
+						<encoding>${system.maven.encoding}</encoding>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -287,15 +290,15 @@
 					<configuration>
 						<archive>
 							<manifestEntries>
-								<Built-By>${acgist.vendor}</Built-By>
-								<Automatic-Module-Name>${acgist.module}</Automatic-Module-Name>
+								<Built-By>${system.maven.vendor}</Built-By>
+								<Automatic-Module-Name>${system.maven.module}</Automatic-Module-Name>
 								<Specification-Title>${project.artifactId}</Specification-Title>
-								<Specification-Vendor>${acgist.vendor}</Specification-Vendor>
-								<Specification-Version>${acgist.version}</Specification-Version>
+								<Specification-Vendor>${system.maven.vendor}</Specification-Vendor>
+								<Specification-Version>${system.maven.version}</Specification-Version>
 								<Implementation-Title>${project.artifactId}</Implementation-Title>
-								<Implementation-Vendor>${acgist.vendor}</Implementation-Vendor>
-								<Implementation-Version>${acgist.version}</Implementation-Version>
-								<Implementation-Vendor-Id>${acgist.vendor}</Implementation-Vendor-Id>
+								<Implementation-Vendor>${system.maven.vendor}</Implementation-Vendor>
+								<Implementation-Version>${system.maven.version}</Implementation-Version>
+								<Implementation-Vendor-Id>${system.maven.vendor}</Implementation-Vendor-Id>
 							</manifestEntries>
 						</archive>
 					</configuration>
@@ -312,7 +315,7 @@
 							</goals>
 							<configuration>
 								<attach>false</attach>
-								<skipAssembly>${acgist.unpack}</skipAssembly>
+								<skipAssembly>${system.maven.unpack}</skipAssembly>
 								<appendAssemblyId>false</appendAssemblyId>
 							</configuration>
 						</execution>
@@ -321,7 +324,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -338,7 +341,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${acgist.basedir}/docs/pack/assembly/dev.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/pack/assembly/dev.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -357,7 +360,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${acgist.basedir}/docs/pack/assembly/test.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/pack/assembly/test.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -376,7 +379,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${acgist.basedir}/docs/pack/assembly/release.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/pack/assembly/release.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -384,5 +387,5 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 </project>

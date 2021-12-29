@@ -12,14 +12,14 @@
 
 	<fileSets>
 		<fileSet>
-			<directory>${acgist.basedir}/docs/pack</directory>
+			<directory>${system.maven.basedir}/docs/pack</directory>
 			<outputDirectory>./</outputDirectory>
 			<includes>
 				<include>README.md</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${acgist.basedir}/docs/pack/bin</directory>
+			<directory>${system.maven.basedir}/docs/pack/bin</directory>
 			<outputDirectory>bin</outputDirectory>
 			<fileMode>0755</fileMode>
 			<filtered>true</filtered>

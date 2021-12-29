@@ -6,13 +6,20 @@
 
 ## 其他消息队列
 
+#### RocketMQ
+
 ```
 <dependency>
 	<groupId>org.apache.rocketmq</groupId>
 	<artifactId>rocketmq-spring-boot-starter</artifactId>
 </dependency>
+```
+
+#### RabbitMQ
+
+```
 <dependency>
 	<groupId>org.springframework.cloud</groupId>
-	<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+	<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
 </dependency>
 ```

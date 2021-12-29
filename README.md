@@ -77,6 +77,8 @@ spring:
 ```
 # 系统编号（负数自动生成）：主要用于生成ID，相同服务建议设置不同编号。
 system.sn=01
+# 系统端口范围
+system.port.range=[18000,19000)
 # 线程初始数量
 system.thread.min=2
 # 线程最大数量
@@ -91,6 +93,57 @@ system.serializer.type=jdk|jackson
 system.rest.interceptor=true|false
 # 慢请求统计时间：毫秒
 system.gateway.slow.request.duration=1000
+```
+
+## Maven配置
+
+```
+# JVM参数
+system.maven.jvm=
+# JVM参数：xms
+system.maven.xms=256M
+# JVM参数：xmx
+system.maven.xmx=512M
+# 是否打包
+system.maven.unpack=true
+# 作者
+system.maven.vendor=acgist
+# 模块
+system.maven.module=com.acgist.muses
+# 项目的根目录
+system.maven.basedir=${project.basedir}
+# 版本
+system.maven.version=1.0.0
+# 编码
+system.maven.encoding=UTF-8
+```
+
+## 端口
+
+|模块|端口|
+|:-|:-|
+|gateway|8888|
+|rest-oauth2|9999|
+|web|[18000,19000)|
+|rest|[19000,20000)|
+
+#### 固定端口
+
+```
+server.port=8888
+```
+
+#### 完全随机
+
+```
+server.port=0
+```
+
+#### 范围随机
+
+```
+server.port=${system.port:8080}
+system.port.range=[18000,19000)
 ```
 
 ## 优化位置
