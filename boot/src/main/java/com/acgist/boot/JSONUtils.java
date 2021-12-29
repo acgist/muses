@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,7 +37,7 @@ public final class JSONUtils {
 	 * @return JSON
 	 */
 	public static final String toJSON(Object object) {
-		if (object == null) {
+		if (Objects.isNull(object)) {
 			return null;
 		}
 		final ObjectMapper mapper = getMapper();
@@ -56,7 +57,7 @@ public final class JSONUtils {
 	 * @return Java
 	 */
 	public static final <T> T toJava(String json) {
-		if (json == null) {
+		if (Objects.isNull(json)) {
 			return null;
 		}
 		final ObjectMapper mapper = getMapper();
@@ -78,7 +79,7 @@ public final class JSONUtils {
 	 * @return Java
 	 */
 	public static final <T> T toJava(String json, Class<T> clazz) {
-		if (json == null) {
+		if (Objects.isNull(json) || Objects.isNull(clazz)) {
 			return null;
 		}
 		final ObjectMapper mapper = getMapper();
@@ -99,7 +100,7 @@ public final class JSONUtils {
 	 * @return Map
 	 */
 	public static final <K, V> Map<K, V> toMap(String json) {
-		if (json == null) {
+		if (Objects.isNull(json)) {
 			return null;
 		}
 		final ObjectMapper mapper = getMapper();
@@ -120,7 +121,7 @@ public final class JSONUtils {
 	 * @return List
 	 */
 	public static final <T> List<T> toList(String json) {
-		if (json == null) {
+		if (Objects.isNull(json)) {
 			return null;
 		}
 		final ObjectMapper mapper = getMapper();

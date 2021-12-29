@@ -28,6 +28,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -181,25 +182,25 @@ public final class RsaUtils {
 	/**
 	 * 公钥加密
 	 * 
-	 * @param publicKey 公钥
 	 * @param data 原始数据
+	 * @param publicKey 公钥
 	 * 
 	 * @return Base64编码加密数据
 	 */
-	public static final String encrypt(PublicKey publicKey, String data) {
-		return StringUtils.base64Encode(encrypt(publicKey, data.getBytes()));
+	public static final String encrypt(String data, PublicKey publicKey) {
+		return StringUtils.base64Encode(encrypt(data.getBytes(), publicKey));
 	}
 
 	/**
 	 * 公钥加密
 	 * 
-	 * @param publicKey 公钥
 	 * @param data 原始数据
+	 * @param publicKey 公钥
 	 * 
 	 * @return Base64编码加密数据
 	 */
-	private static final byte[] encrypt(PublicKey publicKey, byte[] data) {
-		if (publicKey == null || data == null) {
+	private static final byte[] encrypt(byte[] data, PublicKey publicKey) {
+		if (Objects.isNull(data) || Objects.isNull(publicKey)) {
 			return null;
 		}
 		try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -224,25 +225,25 @@ public final class RsaUtils {
 	/**
 	 * 私钥解密
 	 * 
-	 * @param privateKey 私钥
 	 * @param data Base64编码加密数据
+	 * @param privateKey 私钥
 	 * 
 	 * @return 原始数据
 	 */
-	public static final String decrypt(PrivateKey privateKey, String data) {
-		return new String(decrypt(privateKey, StringUtils.base64Decode(data)));
+	public static final String decrypt(String data, PrivateKey privateKey) {
+		return new String(decrypt(StringUtils.base64Decode(data), privateKey));
 	}
 
 	/**
 	 * 私钥解密
 	 * 
-	 * @param privateKey 私钥
 	 * @param data 加密数据
+	 * @param privateKey 私钥
 	 * 
 	 * @return 原始数据
 	 */
-	private static final byte[] decrypt(PrivateKey privateKey, byte[] data) {
-		if (privateKey == null || data == null) {
+	private static final byte[] decrypt(byte[] data, PrivateKey privateKey) {
+		if (Objects.isNull(data) || Objects.isNull(privateKey)) {
 			return null;
 		}
 		try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -273,7 +274,7 @@ public final class RsaUtils {
 	 * @return Base64编码签名
 	 */
 	public static final String signature(String data, PrivateKey privateKey) {
-		if (data == null || privateKey == null) {
+		if (Objects.isNull(data) || Objects.isNull(privateKey)) {
 			return null;
 		}
 		return StringUtils.base64Encode(signature(data.getBytes(), privateKey));
@@ -308,7 +309,7 @@ public final class RsaUtils {
 	 * @return 验签结果
 	 */
 	public static final boolean verify(String data, String signature, PublicKey publicKey) {
-		if (data == null || signature == null || publicKey == null) {
+		if (Objects.isNull(data) || Objects.isNull(signature) || Objects.isNull(publicKey)) {
 			return false;
 		}
 		return verify(data.getBytes(), StringUtils.base64Decode(signature), publicKey);

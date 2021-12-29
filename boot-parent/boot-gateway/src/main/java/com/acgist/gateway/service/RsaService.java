@@ -67,7 +67,7 @@ public class RsaService {
 	 * @return 加密内容
 	 */
 	public String encrypt(String content) {
-		return RsaUtils.encrypt(this.publicKey, content);
+		return RsaUtils.encrypt(content, this.publicKey);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class RsaService {
 	 * @return 原始内容
 	 */
 	public String decrypt(String content) {
-		return RsaUtils.decrypt(this.privateKey, content);
+		return RsaUtils.decrypt(content, this.privateKey);
 	}
 	
 	/**

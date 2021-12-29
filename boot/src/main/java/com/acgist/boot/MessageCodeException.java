@@ -1,5 +1,7 @@
 package com.acgist.boot;
 
+import java.util.Objects;
+
 import com.acgist.boot.pojo.bean.MessageCode;
 
 /**
@@ -28,7 +30,7 @@ public class MessageCodeException extends RuntimeException {
 	public static final MessageCodeException of(Throwable t, MessageCode code, Object ... messages) {
 		final String message;
 		if(ArrayUtils.isEmpty(messages)) {
-			message = t == null ? code.getMessage() : t.getMessage();
+			message = Objects.isNull(t) ? code.getMessage() : t.getMessage();
 		} else {
 			final StringBuilder builder = new StringBuilder();
 			for (Object value : messages) {
@@ -36,7 +38,7 @@ public class MessageCodeException extends RuntimeException {
 			}
 			message = builder.toString();
 		}
-		if(t == null) {
+		if(Objects.isNull(t)) {
 			return new MessageCodeException(code, message);
 		} else {
 			return new MessageCodeException(code, message, t);
@@ -53,7 +55,7 @@ public class MessageCodeException extends RuntimeException {
 	}
 
 	public MessageCodeException(MessageCode code, Throwable t) {
-		this(code, t == null ? code.getMessage() : t.getMessage(), t);
+		this(code, Objects.isNull(t) ? code.getMessage() : t.getMessage(), t);
 	}
 
 	public MessageCodeException(MessageCode code, String message, Throwable t) {

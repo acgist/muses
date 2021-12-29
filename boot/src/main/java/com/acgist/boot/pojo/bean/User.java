@@ -1,6 +1,7 @@
 package com.acgist.boot.pojo.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 import com.acgist.boot.CollectionUtils;
@@ -62,7 +63,7 @@ public class User implements Serializable {
 	 * @return 是否含有角色
 	 */
 	public boolean hasRole(String role) {
-		if (role == null) {
+		if (Objects.isNull(role)) {
 			return false;
 		}
 		if (CollectionUtils.isEmpty(this.paths)) {
@@ -80,7 +81,7 @@ public class User implements Serializable {
 	 * @return 是否含有权限
 	 */
 	public boolean hasPath(String method, String path) {
-		if (method == null || path == null) {
+		if (Objects.isNull(method) || Objects.isNull(path)) {
 			return false;
 		}
 		if (CollectionUtils.isEmpty(this.paths)) {

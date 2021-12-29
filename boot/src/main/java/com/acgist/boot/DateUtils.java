@@ -2,6 +2,7 @@ package com.acgist.boot;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * 日期工具
@@ -39,7 +40,7 @@ public final class DateUtils {
 	 * @see #FORMAT
 	 */
 	public static final String buildTime(LocalDateTime time) {
-		if (time == null) {
+		if (Objects.isNull(time)) {
 			return buildTime();
 		}
 		return time.format(FORMAT);
