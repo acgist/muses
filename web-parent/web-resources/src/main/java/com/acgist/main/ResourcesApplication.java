@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.acgist.boot.config.PortConfig;
+
 @ComponentScan("com.acgist.resources")
 @DubboComponentScan("com.acgist.resources")
 @EnableDiscoveryClient
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class ResourcesApplication {
 
 	public static void main(String[] args) {
+		PortConfig.setWebPort();
 		SpringApplication.run(ResourcesApplication.class, args);
 	}
 

@@ -8,15 +8,15 @@ import org.springframework.context.annotation.ComponentScan;
 
 import com.acgist.boot.config.PortConfig;
 
-@ComponentScan("com.acgist.rest")
-@DubboComponentScan("com.acgist.rest")
+@ComponentScan("com.acgist.oauth2")
+@DubboComponentScan("com.acgist.oauth2")
 @EnableDiscoveryClient
 @SpringBootApplication
-public class RestApplication {
+public class OAuth2Application {
 
 	public static void main(String[] args) {
-		PortConfig.setRestPort();
-		SpringApplication.run(RestApplication.class, args);
+		PortConfig.setRestOAuth2Port();
+		SpringApplication.run(OAuth2Application.class, args);
 	}
-	
+
 }

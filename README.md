@@ -77,8 +77,8 @@ spring:
 ```
 # 系统编号（负数自动生成）：主要用于生成ID，相同服务建议设置不同编号。
 system.sn=01
-# 系统端口范围
-system.port.range=[18000,19000)
+# 系统端口：随机生成
+system.port=8080
 # 线程初始数量
 system.thread.min=2
 # 线程最大数量
@@ -143,7 +143,6 @@ server.port=0
 
 ```
 server.port=${system.port:8080}
-system.port.range=[18000,19000)
 ```
 
 ## 优化位置

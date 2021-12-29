@@ -1,7 +1,5 @@
 package com.acgist.boot.config;
 
-import java.lang.management.ManagementFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,11 +96,13 @@ public final class MusesConfigBuilder {
 	/**
 	 * 设置当前系统端口
 	 * 
+	 * @param port 端口
+	 * 
 	 * @return this
 	 */
-	public MusesConfigBuilder buildPort() {
-		// TODO：port
-		LOGGER.info("系统端口：{}", this.musesConfig.getPort());
+	public MusesConfigBuilder buildPort(int port) {
+		this.musesConfig.setPort(port);
+		LOGGER.info("系统端口：{}", port);
 		return this;
 	}
 	

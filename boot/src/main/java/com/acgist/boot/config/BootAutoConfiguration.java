@@ -38,6 +38,8 @@ public class BootAutoConfiguration {
 
 	@Value("${spring.application.name:}")
 	private String name;
+	@Value("${server.port:0}")
+	private int port;
 	@Value("${system.thread.min:2}")
 	private int min;
 	@Value("${system.thread.max:10}")
@@ -46,8 +48,6 @@ public class BootAutoConfiguration {
 	private int size;
 	@Value("${system.thread.live:30}")
 	private int live;
-	@Value("${system.port.range:}")
-	private String portRange;
 	
 	/**
 	 * 序列化类型
@@ -85,7 +85,7 @@ public class BootAutoConfiguration {
 			.init(this.nacosConfigManager)
 			.buildSn(this.sn)
 			.buildPid()
-			.buildPort()
+			.buildPort(this.port)
 			.build(this.nacosConfigManager);
 	}
 	
@@ -125,6 +125,12 @@ public class BootAutoConfiguration {
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ShutdownListener shutdownListener() {
+		return new ShutdownListener();
 	}
 
 	@PreDestroy
