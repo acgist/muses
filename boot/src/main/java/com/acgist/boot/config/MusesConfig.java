@@ -3,6 +3,8 @@ package com.acgist.boot.config;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 系统配置
  * 
@@ -36,8 +38,14 @@ public class MusesConfig {
 	 */
 	private Integer sn;
 	/**
+	 * 当前系统PID
+	 */
+	@JsonIgnore
+	private Integer pid;
+	/**
 	 * 当前系统端口
 	 */
+	@JsonIgnore
 	private Integer port;
 
 	/**
@@ -60,12 +68,20 @@ public class MusesConfig {
 		this.sn = sn;
 	}
 
-    public Integer getPort() {
-        return port;
-    }
+	public Integer getPid() {
+		return pid;
+	}
 
-    public void setPort(Integer port) {
-        this.port = port;
-    }
+	public void setPid(Integer pid) {
+		this.pid = pid;
+	}
+
+	public Integer getPort() {
+		return port;
+	}
+
+	public void setPort(Integer port) {
+		this.port = port;
+	}
 	
 }
