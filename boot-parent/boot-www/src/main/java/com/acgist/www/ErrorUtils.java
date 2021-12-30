@@ -152,7 +152,7 @@ public final class ErrorUtils {
 	 */
 	public static final int status(int status, MessageCodeException e) {
 		final String code = e.getCode().getCode();
-		final int length =  MessageCode.HTTP_STATUS.length();
+		final int length = MessageCode.HTTP_STATUS.length();
 		if (MessageCode.HTTP_STATUS.equals(code.substring(0, length))) {
 			return Integer.parseInt(code.substring(length));
 		}

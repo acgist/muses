@@ -141,28 +141,28 @@ public class BootAutoConfiguration {
 
 	@PostConstruct
 	public void init() {
-        final var runtime = Runtime.getRuntime();
-        final RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
-        final String freeMemory = FileUtils.formatSize(runtime.freeMemory());
-        final String totalMemory = FileUtils.formatSize(runtime.totalMemory());
-        final String maxMemory = FileUtils.formatSize(runtime.maxMemory());
-        final String jvmArgs = bean.getInputArguments().stream().collect(Collectors.joining(" "));
-        LOGGER.info("操作系统名称：{}", System.getProperty("os.name"));
-        LOGGER.info("操作系统架构：{}", System.getProperty("os.arch"));
-        LOGGER.info("操作系统版本：{}", System.getProperty("os.version"));
-        LOGGER.info("操作系统可用处理器数量：{}", runtime.availableProcessors());
-        LOGGER.info("Java版本：{}", System.getProperty("java.version"));
-        LOGGER.info("Java主目录：{}", System.getProperty("java.home"));
-        LOGGER.info("Java库目录：{}", System.getProperty("java.library.path"));
-        LOGGER.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
-        LOGGER.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
-        LOGGER.info("虚拟机空闲内存：{}", freeMemory);
-        LOGGER.info("虚拟机已用内存：{}", totalMemory);
-        LOGGER.info("虚拟机最大内存：{}", maxMemory);
-        LOGGER.info("用户目录：{}", System.getProperty("user.home"));
-        LOGGER.info("工作目录：{}", System.getProperty("user.dir"));
-        LOGGER.info("文件编码：{}", System.getProperty("file.encoding"));
-        LOGGER.info("JVM启动参数：{}", jvmArgs);
+		final var runtime = Runtime.getRuntime();
+		final RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
+		final String freeMemory = FileUtils.formatSize(runtime.freeMemory());
+		final String totalMemory = FileUtils.formatSize(runtime.totalMemory());
+		final String maxMemory = FileUtils.formatSize(runtime.maxMemory());
+		final String jvmArgs = bean.getInputArguments().stream().collect(Collectors.joining(" "));
+		LOGGER.info("操作系统名称：{}", System.getProperty("os.name"));
+		LOGGER.info("操作系统架构：{}", System.getProperty("os.arch"));
+		LOGGER.info("操作系统版本：{}", System.getProperty("os.version"));
+		LOGGER.info("操作系统可用处理器数量：{}", runtime.availableProcessors());
+		LOGGER.info("Java版本：{}", System.getProperty("java.version"));
+		LOGGER.info("Java主目录：{}", System.getProperty("java.home"));
+		LOGGER.info("Java库目录：{}", System.getProperty("java.library.path"));
+		LOGGER.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
+		LOGGER.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
+		LOGGER.info("虚拟机空闲内存：{}", freeMemory);
+		LOGGER.info("虚拟机已用内存：{}", totalMemory);
+		LOGGER.info("虚拟机最大内存：{}", maxMemory);
+		LOGGER.info("用户目录：{}", System.getProperty("user.home"));
+		LOGGER.info("工作目录：{}", System.getProperty("user.dir"));
+		LOGGER.info("文件编码：{}", System.getProperty("file.encoding"));
+		LOGGER.info("JVM启动参数：{}", jvmArgs);
 	}
 	
 	@PreDestroy
@@ -173,9 +173,6 @@ public class BootAutoConfiguration {
 		if (context != null) {
 			context.stop();
 		}
-//		System.exit(0);
-		// 强制关机
-		Runtime.getRuntime().halt(0);
 	}
 
 }

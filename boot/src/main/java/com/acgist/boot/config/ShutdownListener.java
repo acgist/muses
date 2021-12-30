@@ -135,6 +135,9 @@ public class ShutdownListener {
 							ShutdownListener.this.context.close();
 							// 再次等待系统关闭：如果不能正常关闭将会强制关机
 							this.condition.await(ShutdownListener.this.shutdownGracefully, TimeUnit.SECONDS);
+//							System.exit(0);
+							// 强制关机
+							Runtime.getRuntime().halt(0);
 						} else {
 							LOGGER.debug("实例有效：忽略关闭事件：{}-{}", ShutdownListener.this.serviceName, TimeUnit.NANOSECONDS.toSeconds(remaing));
 						}

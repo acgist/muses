@@ -59,9 +59,9 @@ public final class StringUtils {
 	 * @return 编码数据
 	 */
 	public static final String base64Encode(byte[] value) {
-	    if(value == null) {
-	        return null;
-	    }
+		if(value == null) {
+			return null;
+		}
 		return new String(Base64.getEncoder().encode(value));
 	}
 
@@ -74,7 +74,7 @@ public final class StringUtils {
 	 */
 	public static final byte[] base64Decode(String value) {
 		if (value == null) {
-		    return null;
+			return null;
 		}
 		return Base64.getDecoder().decode(value.getBytes());
 	}
