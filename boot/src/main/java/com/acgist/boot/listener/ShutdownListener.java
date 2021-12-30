@@ -71,7 +71,7 @@ public class ShutdownListener {
 		if(!this.shutdownEnable) {
 			LOGGER.info("服务没有配置自动关机：{}", this.serviceName);
 		}
-		LOGGER.info("启动服务关机配置：{}-{}-{}", this.serviceName, this.shutdownGracefully);
+		LOGGER.info("启动服务关机配置：{}-{}", this.serviceName, this.shutdownGracefully);
 		NotifyCenter.registerSubscriber(new Subscriber<InstancesChangeEvent>() {
 
 			/**
