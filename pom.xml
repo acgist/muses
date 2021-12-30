@@ -34,8 +34,6 @@
 		<!-- 版本配置 -->
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
-		<xml.bind.version>2.3.1</xml.bind.version>
-		<annotation.version>1.3.2</annotation.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
 		<oauth2.authorization.version>0.2.1</oauth2.authorization.version>
 		<!-- SpringCloud版本配置 -->
@@ -194,19 +192,9 @@
 			</dependency>
 			<!-- JavaEE -->
 			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>${xml.bind.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>javax.ws.rs-api</artifactId>
 				<version>${ws.rs.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.annotation</groupId>
-				<artifactId>javax.annotation-api</artifactId>
-				<version>${annotation.version}</version>
 			</dependency>
 			<!-- ShardingJDBC -->
 			<dependency>

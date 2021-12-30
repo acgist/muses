@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.acgist.boot.config.PortConfig;
-
 @ComponentScan("com.acgist.rest")
 @DubboComponentScan("com.acgist.rest")
 @EnableDiscoveryClient
@@ -15,7 +13,6 @@ import com.acgist.boot.config.PortConfig;
 public class RestApplication {
 
 	public static void main(String[] args) {
-		PortConfig.setRestPort();
 		SpringApplication.run(RestApplication.class, args);
 	}
 	

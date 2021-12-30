@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.acgist.boot.config.PortConfig;
-
 @ComponentScan({"com.acgist.user", "com.acgist.gateway"})
 @DubboComponentScan({"com.acgist.user", "com.acgist.gateway"})
 @EnableDiscoveryClient
@@ -15,7 +13,6 @@ import com.acgist.boot.config.PortConfig;
 public class GatewayApplication {
 
 	public static void main(String[] args) {
-		PortConfig.setRestPort();
 		SpringApplication.run(GatewayApplication.class, args);
 	}
 

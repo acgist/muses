@@ -132,7 +132,13 @@ system.maven.encoding=UTF-8
 #### 固定端口
 
 ```
+# 配置
 server.port=8888
+# 命令
+java -jar appliation.jar --server.port=8888
+java -Dserver.port=8888 -jar appliation.jar
+java -jar appliation.jar --system.port=8888
+java -Dsystem.port=8888 -jar appliation.jar
 ```
 
 #### 完全随机

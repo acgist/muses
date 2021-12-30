@@ -1,5 +1,9 @@
 package com.acgist.boot.config;
 
+import java.util.Objects;
+
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.util.SocketUtils;
 
 /**
@@ -13,40 +17,87 @@ public final class PortConfig {
 	}
 	
 	/**
+	 * 服务端口
+	 */
+	public static final String SERVER_PORT = "server.port";
+	/**
 	 * 系统端口
 	 */
 	public static final String SYSTEM_PORT = "system.port";
 	/**
-	 * 网关端口
+	 * 系统端口最小
 	 */
-	public static final int PORT_GATEWAY = 8888;
+	public static final String SYSTEM_PORT_MIN = "system.port.min";
 	/**
-	 * Rest-OAuth2端口
+	 * 系统端口最大
 	 */
-	public static final int PORT_REST_OAUTH2 = 9999;
+	public static final String SYSTEM_PORT_MAX = "system.port.max";
+	
 	/**
-	 * Web服务开始端口
+	 * 类型
+	 * 
+	 * @author acgist
 	 */
-	public static final int PORT_WEB_MIN = 18000;
-	/**
-	 * Rest服务开始端口
-	 */
-	public static final int PORT_REST_MIN = 19000;
-
-	public static final void setGatewayPort() {
-		System.setProperty(SYSTEM_PORT, String.valueOf(PORT_GATEWAY));
+	public enum Type {
+		
+		GATEWAY(8888),
+		REST_OAUTH2(9999),
+		WEB(18000, 19000),
+		REST(19000, 20000);
+		
+		// 最小端口
+		private final int min;
+		// 最大端口
+		private final int max;
+		
+		private Type(int port) {
+			this.min = port;
+			this.max = port;
+		}
+		
+		private Type(int min, int max) {
+			this.min = min;
+			this.max = max;
+		}
+		
+		public int getMin() {
+			return min;
+		}
+		
+		public int getMax() {
+			return max;
+		}
+		
 	}
 	
-	public static final void setRestOAuth2Port() {
-		System.setProperty(SYSTEM_PORT, String.valueOf(PORT_REST_OAUTH2));
+	/**
+	 * 设置端口
+	 * 
+	 * @param type 类型类型
+	 * @param args 启动参数
+	 */
+	public static final void buildPort(Type type, String ... args) {
+		Objects.requireNonNull(type, "没有设置启动类型");
+		final ApplicationArguments arguments = new DefaultApplicationArguments(args);
+		final String serverPort = getArgument(SERVER_PORT, arguments);
+		if(serverPort != null) {
+			System.setProperty(SYSTEM_PORT, serverPort);
+			return;
+		}
+		final String systemPort = getArgument(SYSTEM_PORT, arguments);
+		if(systemPort != null) {
+			System.setProperty(SYSTEM_PORT, systemPort);
+			return;
+		}
+		final String systemPortMin = getArgument(SYSTEM_PORT_MIN, arguments);
+		final String systemPortMax = getArgument(SYSTEM_PORT_MAX, arguments);
+		final int portMin = Objects.isNull(systemPortMin) ? type.getMin() : Integer.parseInt(systemPortMin);
+		final int portMax = Objects.isNull(systemPortMax) ? type.getMax() : Integer.parseInt(systemPortMax);
+		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(portMin, portMax)));
 	}
 	
-	public static final void setWebPort() {
-		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(PORT_WEB_MIN, PORT_WEB_MIN + 1000)));
-	}
-	
-	public static final void setRestPort() {
-		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(PORT_REST_MIN, PORT_REST_MIN + 1000)));
+	private static final String getArgument(String name, ApplicationArguments arguments) {
+	    return arguments.getOptionValues(name).stream().findFirst().orElse(System.getProperty(name));
 	}
 	
 }

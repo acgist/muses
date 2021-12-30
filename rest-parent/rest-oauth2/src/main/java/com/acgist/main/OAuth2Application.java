@@ -6,8 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.acgist.boot.config.PortConfig;
-
 @ComponentScan("com.acgist.oauth2")
 @DubboComponentScan("com.acgist.oauth2")
 @EnableDiscoveryClient
@@ -15,7 +13,6 @@ import com.acgist.boot.config.PortConfig;
 public class OAuth2Application {
 
 	public static void main(String[] args) {
-		PortConfig.setRestOAuth2Port();
 		SpringApplication.run(OAuth2Application.class, args);
 	}
 

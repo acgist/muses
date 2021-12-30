@@ -177,3 +177,39 @@ spring:
 	<optional>true</optional>
 </dependency>
 ```
+
+## QueryDSL
+
+```
+<dependency>
+	<groupId>com.querydsl</groupId>
+	<artifactId>querydsl-jpa</artifactId>
+</dependency>
+<dependency>
+	<groupId>com.querydsl</groupId>
+	<artifactId>querydsl-apt</artifactId>
+	<scope>provided</scope>
+</dependency>
+```
+
+> 注意：需要配置`Maven`插件（`apt-maven-plugin`）和`Eclipse`插件（`m2e-apt`）
+
+##  版本管理
+
+#### flyway
+
+```
+<dependency>
+	<groupId>org.flywaydb</groupId>
+	<artifactId>flyway-core</artifactId>
+</dependency>
+```
+
+#### liquibase
+
+```
+<dependency>
+	<groupId>org.liquibase</groupId>
+	<artifactId>liquibase-core</artifactId>
+</dependency>
+```
