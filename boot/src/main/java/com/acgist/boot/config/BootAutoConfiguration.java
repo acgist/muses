@@ -86,7 +86,7 @@ public class BootAutoConfiguration {
 	public MusesConfig musesConfig() {
 		return MusesConfigBuilder.builder()
 			.init(this.nacosConfigManager)
-			.buildSn(this.sn)
+			.buildSn(this.sn, this.name)
 			.buildPid()
 			.buildPort(this.port)
 			.build(this.nacosConfigManager);

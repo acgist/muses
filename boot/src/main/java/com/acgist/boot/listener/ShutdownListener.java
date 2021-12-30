@@ -132,9 +132,8 @@ public class ShutdownListener {
 						if (ShutdownListener.this.shutdown) {
 							LOGGER.info("实例无效：关闭实例：{}", ShutdownListener.this.serviceName);
 							// 关闭NacosServiceManager.nacosServiceShutDown()会出现空指针异常：2021-08以后版本已经修复
+							// 阻塞关闭：不用再次等待
 							ShutdownListener.this.context.close();
-							// 再次等待系统关闭：如果不能正常关闭将会强制关机
-							this.condition.await(ShutdownListener.this.shutdownGracefully, TimeUnit.SECONDS);
 //							System.exit(0);
 							// 强制关机
 							Runtime.getRuntime().halt(0);

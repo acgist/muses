@@ -14,9 +14,9 @@ import com.acgist.boot.config.PortConfig;
  */
 public class StartingEventListener implements ApplicationListener<ApplicationStartingEvent> {
 
-    @Override
-    public void onApplicationEvent(ApplicationStartingEvent event) {
-        PortConfig.buildPort(PortConfig.Type.REST, event.getArgs());
-    }
+	@Override
+	public void onApplicationEvent(ApplicationStartingEvent event) {
+		PortConfig.buildPort(PortConfig.Type.REST, event.getArgs());
+	}
 
 }

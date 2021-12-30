@@ -1,5 +1,6 @@
 package com.acgist.boot.config;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.boot.ApplicationArguments;
@@ -96,8 +97,20 @@ public final class PortConfig {
 		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(portMin, portMax)));
 	}
 	
+	/**
+	 * 获取参数
+	 * 
+	 * @param name 参数名称
+	 * @param arguments 启动参数
+	 * 
+	 * @return 参数
+	 */
 	private static final String getArgument(String name, ApplicationArguments arguments) {
-	    return arguments.getOptionValues(name).stream().findFirst().orElse(System.getProperty(name));
+		final List<String> list = arguments.getOptionValues(name);
+		if(Objects.isNull(list)) {
+			return System.getProperty(name);
+		}
+		return list.stream().findFirst().orElse(System.getProperty(name));
 	}
 	
 }

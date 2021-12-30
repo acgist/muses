@@ -1,5 +1,8 @@
 package com.acgist.boot.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,16 +66,23 @@ public final class MusesConfigBuilder {
 	 * 设置当前系统编号
 	 * 
 	 * @param sn sn
+	 * @param serviceName 服务名称
 	 * 
 	 * @return this
 	 */
-	public MusesConfigBuilder buildSn(int sn) {
+	public MusesConfigBuilder buildSn(int sn, String serviceName) {
+		Map<String, Integer> sns = this.musesConfig.getSns();
+		if(sns == null) {
+			sns = new HashMap<>();
+			this.musesConfig.setSns(sns);
+		}
 		if(sn < 0) {
-			sn = this.musesConfig.getSn();
+			sn = sns.getOrDefault(serviceName, 0);
 			if (++sn >= MusesConfig.MAX_SN) {
 				sn = 0;
 			}
 		}
+		sns.put(serviceName, sn);
 		this.musesConfig.setSn(sn);
 		LOGGER.info("系统编号：{}", sn);
 		return this;
