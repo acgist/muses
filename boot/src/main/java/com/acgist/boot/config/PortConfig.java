@@ -42,11 +42,11 @@ public final class PortConfig {
 	}
 	
 	public static final void setWebPort() {
-		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(PORT_WEB_MIN)));
+		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(PORT_WEB_MIN, PORT_WEB_MIN + 1000)));
 	}
 	
 	public static final void setRestPort() {
-		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(PORT_REST_MIN)));
+		System.setProperty(SYSTEM_PORT, String.valueOf(SocketUtils.findAvailableTcpPort(PORT_REST_MIN, PORT_REST_MIN + 1000)));
 	}
 	
 }
