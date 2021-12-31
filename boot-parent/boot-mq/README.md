@@ -10,8 +10,8 @@
 
 ```
 <dependency>
-	<groupId>org.apache.rocketmq</groupId>
-	<artifactId>rocketmq-spring-boot-starter</artifactId>
+	<groupId>com.alibaba.cloud</groupId>
+	<artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
 </dependency>
 ```
 
