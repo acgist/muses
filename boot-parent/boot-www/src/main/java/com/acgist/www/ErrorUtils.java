@@ -40,6 +40,10 @@ public final class ErrorUtils {
 	 */
 	public static final String ERROR_PATH = "/error";
 	/**
+	 * 系统异常
+	 */
+	public static final String ERROR_MESSAGE = "system.error.message";
+	/**
 	 * 错误响应
 	 */
 	public static final String STATUS_SERVLET = "javax.servlet.error.status_code";
@@ -104,6 +108,7 @@ public final class ErrorUtils {
 		} else {
 			LOGGER.warn("系统错误：{}-{}-{}-{}-{}", message, method, path, query, globalThrowable);
 		}
+		request.setAttribute(ERROR_MESSAGE, message);
 		return message;
 	}
 	

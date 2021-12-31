@@ -17,10 +17,10 @@ public class UserControllerTest {
 	@Test
 	public void testGetMemo() throws IOException {
 		final String response = HTTPUtils.get(
-			"http://localhost:9091/user/memo",
+			"http://localhost:19102/user/memo",
 			"{\"reqTime\":\"12312312312312\"}",
 //			"{\"name\":\"acgist\",\"reqTime\":\"12312312312312\"}",
-			Map.of("current-user", "acgist"),
+			Map.of("current-user", "{\"name\":\"acgist\"}"),
 			10000
 		);
 		LOGGER.info("响应：{}", response);
@@ -29,10 +29,10 @@ public class UserControllerTest {
 	@Test
 	public void testSetMemo() throws IOException {
 		final String response = HTTPUtils.post(
-			"http://localhost:9091/user/memo",
+			"http://localhost:19632/user/memo",
 //			"{\"reqTime\":\"12312312312312\"}",
 			"{\"memo\":\"acgist\",\"reqTime\":\"12312312312312\"}",
-			Map.of("current-user", "acgist"),
+			Map.of("current-user", "{\"name\":\"acgist\"}"),
 			10000
 		);
 		LOGGER.info("响应：{}", response);

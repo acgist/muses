@@ -95,6 +95,8 @@ system.rest.interceptor=true|false
 system.gateway.slow.request.duration=1000
 # 静态资源地址
 system.static.host=//localhost:8888
+# 网关Topic
+system.topic.gateway=topic-gateway
 ```
 
 ## Maven配置

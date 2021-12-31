@@ -1,28 +1,29 @@
 package com.acgist.gateway.service;
 
+import java.util.function.Consumer;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.Message;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import com.acgist.gateway.pojo.dto.GatewayDto;
 import com.acgist.gateway.pojo.entity.GatewayEntity;
 import com.acgist.gateway.repository.GatewayRepository;
 
-@EnableBinding(value = GatewayChannel.class)
+@Configuration
 public class GatewayListener {
 
 	@Autowired
 	private GatewayRepository gatewayRepository;
 	
-	@Transactional
-	@StreamListener("gateway-input")
-	public void gatewayInput(Message<GatewayDto> message) {
-		final GatewayDto gatewayDto = message.getPayload();
-		final GatewayEntity gatewayEntity = new GatewayEntity();
-		gatewayEntity.copy(gatewayDto);
-		this.gatewayRepository.save(gatewayEntity);
+	@Bean
+//	@Transactional
+	public Consumer<GatewayDto> gatewayRecord() {
+		return gatewayDto -> {
+			final GatewayEntity gatewayEntity = new GatewayEntity();
+			gatewayEntity.copy(gatewayDto);
+			this.gatewayRepository.save(gatewayEntity);
+		};
 	}
-
+	
 }

@@ -159,14 +159,20 @@ public class ShutdownListener {
 	/**
 	 * 判断是否实例本身
 	 * 
+	 * 注意：需要判断两个端口
+	 * 
 	 * @param instance 实例
 	 * 
 	 * @return 是否实例本身
 	 */
 	private boolean myself(Instance instance) {
+		final String dubboPort = nacosDiscoveryProperties.getMetadata().get("dubbo.protocols.dubbo.port");
 		return
 			this.nacosDiscoveryProperties.getIp().equals(instance.getIp()) &&
-			this.nacosDiscoveryProperties.getPort() == instance.getPort();
+			(
+				String.valueOf(instance.getPort()).equals(dubboPort) ||
+				this.nacosDiscoveryProperties.getPort() == instance.getPort()
+			);
 	}
 	
 	/**

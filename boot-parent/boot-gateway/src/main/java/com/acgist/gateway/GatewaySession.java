@@ -243,6 +243,15 @@ public class GatewaySession implements Serializable {
 	}
 	
 	/**
+	 * 判断是否含有响应
+	 * 
+	 * @return 是否含有响应
+	 */
+	public boolean hasResponse() {
+		return this.gatewayResponse != null;
+	}
+	
+	/**
 	 * 写出响应数据
 	 * 
 	 * @param response 响应

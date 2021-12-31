@@ -11,7 +11,7 @@
  Target Server Version : 50735
  File Encoding         : 65001
 
- Date: 29/12/2021 20:56:19
+ Date: 31/12/2021 23:54:51
 */
 
 SET NAMES utf8mb4;
@@ -37,6 +37,25 @@ CREATE TABLE `t_gateway`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for t_gateway_0
+-- ----------------------------
+DROP TABLE IF EXISTS `t_gateway_0`;
+CREATE TABLE `t_gateway_0`  (
+  `id` bigint(20) NOT NULL,
+  `create_date` datetime(6) NULL DEFAULT NULL,
+  `modify_date` datetime(6) NULL DEFAULT NULL,
+  `query_id` bigint(20) NULL DEFAULT NULL,
+  `request` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `response` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `index_gateway_query_id`(`query_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_gateway_0
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for t_gateway_1
 -- ----------------------------
 DROP TABLE IF EXISTS `t_gateway_1`;
@@ -53,25 +72,6 @@ CREATE TABLE `t_gateway_1`  (
 
 -- ----------------------------
 -- Records of t_gateway_1
--- ----------------------------
-
--- ----------------------------
--- Table structure for t_gateway_2
--- ----------------------------
-DROP TABLE IF EXISTS `t_gateway_2`;
-CREATE TABLE `t_gateway_2`  (
-  `id` bigint(20) NOT NULL,
-  `create_date` datetime(6) NULL DEFAULT NULL,
-  `modify_date` datetime(6) NULL DEFAULT NULL,
-  `query_id` bigint(20) NULL DEFAULT NULL,
-  `request` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `response` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `index_gateway_query_id`(`query_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of t_gateway_2
 -- ----------------------------
 
 -- ----------------------------
