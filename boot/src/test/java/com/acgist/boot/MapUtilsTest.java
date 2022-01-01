@@ -16,6 +16,7 @@ public class MapUtilsTest {
 		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of()));
 		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of("", "")));
 		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of("1", "2", "3", "4")));
+		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of("1", "2", "3", "测试")));
 	}
 	
 }

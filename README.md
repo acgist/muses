@@ -97,6 +97,10 @@ system.gateway.slow.request.duration=1000
 system.static.host=//localhost:8888
 # 网关Topic
 system.topic.gateway=topic-gateway
+# 是否允许下线自动关机
+system.shutdown.enable=true
+# 自动关机等待时间：秒
+system.shutdown.gracefully=30
 ```
 
 ## Maven配置

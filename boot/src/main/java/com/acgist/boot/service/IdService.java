@@ -14,8 +14,6 @@ import com.acgist.boot.config.MusesConfig;
 /**
  * ID生成
  * 
- * TODO：没有配置sn根据当前系统应用信息自动生成
- * 
  * @author acgist
  */
 public class IdService {
@@ -23,7 +21,7 @@ public class IdService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(IdService.class);
 
 	/**
-	 * 最大系统编号
+	 * 最大序号
 	 */
 	private static final int MAX_INDEX = 9999;
 

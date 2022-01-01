@@ -11,7 +11,7 @@ public class JSONUtilsTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtilsTest.class);
 	
 	@Test
-	public void test() {
+	public void testJSON() {
 		final User user = new User();
 		user.setId(1L);
 		user.setName("acgist");

@@ -33,5 +33,20 @@ public final class CollectionUtils {
 	public static final boolean isNotEmpty(Collection<?> collection) {
 		return !isEmpty(collection);
 	}
+	
+	/**
+	 * 获取第一个元素
+	 * 
+	 * @param <T> 类型
+	 * @param collection 集合
+	 * 
+	 * @return 第一个元素
+	 */
+	public static final <T> T getFirst(Collection<T> collection) {
+		if(isEmpty(collection)) {
+			return null;
+		}
+		return collection.stream().findFirst().orElse(null);
+	}
 
 }

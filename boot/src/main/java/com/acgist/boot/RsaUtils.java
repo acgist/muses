@@ -152,17 +152,17 @@ public final class RsaUtils {
 			final KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			return keyFactory.generatePrivate(keySpec);
 		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-			throw MessageCodeException.of(e, "加载公钥失败");
+			throw MessageCodeException.of(e, "加载私钥失败");
 		}
 	}
 
 	/**
-	 * 加载密钥文件
+	 * 加载私钥文件
 	 * 
 	 * @param path 文件路径
 	 * @param password 密码
 	 * 
-	 * @return 密钥
+	 * @return 私钥
 	 */
 	public static final PrivateKey loadFilePrivateKey(String path, String password) {
 		try (final InputStream input = new FileInputStream(path)) {
@@ -348,7 +348,7 @@ public final class RsaUtils {
 			final X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(input);
 			return certificate.getSerialNumber();
 		} catch (IOException | CertificateException e) {
-			throw MessageCodeException.of(e, "对齐公钥序列号失败");
+			throw MessageCodeException.of(e, "读取公钥序列号失败");
 		}
 	}
 

@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 消耗时间工具
+ * 时间消耗统计工具
  * 
  * @author acgist
  */
@@ -16,7 +16,7 @@ public final class CostUtils {
 	}
 
 	/**
-	 * 执行消耗
+	 * 执行消耗统计
 	 * 
 	 * @param count 执行次数
 	 * @param coster 消耗函数

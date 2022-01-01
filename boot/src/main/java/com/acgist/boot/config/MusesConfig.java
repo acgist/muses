@@ -51,6 +51,10 @@ public class MusesConfig {
 	private Integer port;
 	/**
 	 * 实例系统编号
+	 * 
+	 * 如果服务编号配置为负数时，系统自动为不同服务配置一个递增的系统编号。
+	 * 
+	 * @see #MAX_SN
 	 */
 	private Map<String, Integer> sns;
 

@@ -9,9 +9,7 @@ public class IdServiceTest {
 	@Test
 	public void testId() {
 		final IdService idService = new IdService();
-		CostUtils.costed(100000, () -> {
-			idService.id();
-		});
+		CostUtils.costed(100000, idService::id);
 	}
 	
 }

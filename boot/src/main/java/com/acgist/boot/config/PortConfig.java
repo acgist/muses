@@ -98,12 +98,12 @@ public final class PortConfig {
 	}
 	
 	/**
-	 * 获取参数
+	 * 获取启动参数
 	 * 
 	 * @param name 参数名称
 	 * @param arguments 启动参数
 	 * 
-	 * @return 参数
+	 * @return 启动参数
 	 */
 	private static final String getArgument(String name, ApplicationArguments arguments) {
 		final List<String> list = arguments.getOptionValues(name);

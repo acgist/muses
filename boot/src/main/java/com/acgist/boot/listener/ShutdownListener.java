@@ -1,6 +1,5 @@
 package com.acgist.boot.listener;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -14,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.NacosServiceManager;
@@ -54,8 +53,8 @@ public class ShutdownListener {
 	 */
 	private volatile boolean shutdown = false;
 
-	@Autowired(required = false)
-	private ThreadPoolTaskExecutor executor;
+	@Autowired
+	private TaskExecutor taskExecutor;
 	@Autowired
 	private ConfigurableApplicationContext context;
 	@Autowired
@@ -65,11 +64,9 @@ public class ShutdownListener {
 	
 	@PostConstruct
 	public void init() {
-		if(Objects.isNull(this.executor)) {
-			LOGGER.info("服务自动关机没有线程：{}", this.serviceName);
-		}
 		if(!this.shutdownEnable) {
 			LOGGER.info("服务没有配置自动关机：{}", this.serviceName);
+			return;
 		}
 		LOGGER.info("启动服务关机配置：{}-{}", this.serviceName, this.shutdownGracefully);
 		NotifyCenter.registerSubscriber(new Subscriber<InstancesChangeEvent>() {
@@ -85,11 +82,10 @@ public class ShutdownListener {
 			
 			@Override
 			public void onEvent(InstancesChangeEvent event) {
-				// 事件获取实例列表
 				final Optional<Instance> optional = event.getHosts().stream()
 					.filter(ShutdownListener.this::myself)
 					.findFirst()
-					.or(() -> ShutdownListener.this.findMyself());
+					.or(ShutdownListener.this::findMyself);
 				if (optional.isPresent()) {
 					this.up();
 				} else {
@@ -125,7 +121,7 @@ public class ShutdownListener {
 				}
 				LOGGER.debug("实例无效：启动关闭事件：{}-{}", ShutdownListener.this.serviceName, ShutdownListener.this.shutdownGracefully);
 				ShutdownListener.this.shutdown = true;
-				ShutdownListener.this.executor.submit(() -> {
+				ShutdownListener.this.taskExecutor.execute(() -> {
 					try {
 						this.lock.lock();
 						final long remaing = this.condition.awaitNanos(TimeUnit.SECONDS.toNanos(ShutdownListener.this.shutdownGracefully));
@@ -159,19 +155,19 @@ public class ShutdownListener {
 	/**
 	 * 判断是否实例本身
 	 * 
-	 * 注意：需要判断两个端口
-	 * 
 	 * @param instance 实例
 	 * 
 	 * @return 是否实例本身
 	 */
 	private boolean myself(Instance instance) {
-		final String dubboPort = nacosDiscoveryProperties.getMetadata().get("dubbo.protocols.dubbo.port");
+		final String dubboPort = this.nacosDiscoveryProperties.getMetadata().get("dubbo.protocols.dubbo.port");
 		return
 			this.nacosDiscoveryProperties.getIp().equals(instance.getIp()) &&
 			(
+				// Dubbo服务端口
 				String.valueOf(instance.getPort()).equals(dubboPort) ||
-				this.nacosDiscoveryProperties.getPort() == instance.getPort()
+				// Web服务端口
+				instance.getPort() == this.nacosDiscoveryProperties.getPort()
 			);
 	}
 	

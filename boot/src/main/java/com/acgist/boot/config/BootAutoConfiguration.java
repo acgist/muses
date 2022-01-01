@@ -1,7 +1,6 @@
 package com.acgist.boot.config;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
@@ -38,19 +37,6 @@ import ch.qos.logback.classic.LoggerContext;
 public class BootAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BootAutoConfiguration.class);
-
-	@Value("${spring.application.name:}")
-	private String name;
-	@Value("${server.port:0}")
-	private int port;
-	@Value("${system.thread.min:2}")
-	private int min;
-	@Value("${system.thread.max:10}")
-	private int max;
-	@Value("${system.thread.size:1000}")
-	private int size;
-	@Value("${system.thread.live:30}")
-	private int live;
 	
 	/**
 	 * 序列化类型
@@ -58,9 +44,9 @@ public class BootAutoConfiguration {
 	 * @author acgist
 	 */
 	public enum SerializerType {
-
+		
 		JDK, JACKSON;
-
+		
 	}
 
 	/**
@@ -70,6 +56,36 @@ public class BootAutoConfiguration {
 	 */
 	@Value("${system.sn:-1}")
 	private int sn;
+	/**
+	 * 服务名称
+	 */
+	@Value("${spring.application.name:}")
+	private String name;
+	/**
+	 * 服务端口
+	 */
+	@Value("${server.port:0}")
+	private int port;
+	/**
+	 * 最小线程数量
+	 */
+	@Value("${system.thread.min:2}")
+	private int min;
+	/**
+	 * 最大线程数量
+	 */
+	@Value("${system.thread.max:10}")
+	private int max;
+	/**
+	 * 线程队列长度
+	 */
+	@Value("${system.thread.size:1000}")
+	private int size;
+	/**
+	 * 线程存活事件
+	 */
+	@Value("${system.thread.live:30}")
+	private int live;
 	/**
 	 * 默认使用JDK序列化
 	 * 
@@ -84,12 +100,11 @@ public class BootAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public MusesConfig musesConfig() {
-		return MusesConfigBuilder.builder()
-			.init(this.nacosConfigManager)
+		return MusesConfigBuilder.builder(this.nacosConfigManager)
 			.buildSn(this.sn, this.name)
 			.buildPid()
 			.buildPort(this.port)
-			.build(this.nacosConfigManager);
+			.build();
 	}
 	
 	@Bean
@@ -118,7 +133,7 @@ public class BootAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public TaskExecutor taskExecutor() {
-		LOGGER.info("系统线程池：{}-{}-{}-{}", this.min, this.max, this.size, this.live);
+		LOGGER.info("系统线程池配置：{}-{}-{}-{}", this.min, this.max, this.size, this.live);
 		final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setDaemon(true);
 		executor.setCorePoolSize(this.min);
@@ -140,7 +155,7 @@ public class BootAutoConfiguration {
 	@PostConstruct
 	public void init() {
 		final var runtime = Runtime.getRuntime();
-		final RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
+		final var bean = ManagementFactory.getRuntimeMXBean();
 		final String freeMemory = FileUtils.formatSize(runtime.freeMemory());
 		final String totalMemory = FileUtils.formatSize(runtime.totalMemory());
 		final String maxMemory = FileUtils.formatSize(runtime.maxMemory());
@@ -153,13 +168,13 @@ public class BootAutoConfiguration {
 		LOGGER.info("Java主目录：{}", System.getProperty("java.home"));
 		LOGGER.info("Java库目录：{}", System.getProperty("java.library.path"));
 		LOGGER.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
-		LOGGER.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
 		LOGGER.info("虚拟机空闲内存：{}", freeMemory);
 		LOGGER.info("虚拟机已用内存：{}", totalMemory);
 		LOGGER.info("虚拟机最大内存：{}", maxMemory);
 		LOGGER.info("用户目录：{}", System.getProperty("user.home"));
 		LOGGER.info("工作目录：{}", System.getProperty("user.dir"));
 		LOGGER.info("文件编码：{}", System.getProperty("file.encoding"));
+		LOGGER.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
 		LOGGER.info("JVM启动参数：{}", jvmArgs);
 	}
 	
@@ -167,6 +182,7 @@ public class BootAutoConfiguration {
 	public void destroy() {
 		LOGGER.info("系统关闭");
 		// 刷出日志缓存
+		// TODO：JDK17类型转换
 		final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 		if (context != null) {
 			context.stop();

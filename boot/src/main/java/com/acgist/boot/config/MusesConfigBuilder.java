@@ -26,17 +26,25 @@ public final class MusesConfigBuilder {
 	 * 系统配置
 	 */
 	private MusesConfig musesConfig;
+	/**
+	 * NacosConfigManager
+	 */
+	private final NacosConfigManager nacosConfigManager;
 	
-	private MusesConfigBuilder() {
+	private MusesConfigBuilder(NacosConfigManager nacosConfigManager) {
+		this.nacosConfigManager = nacosConfigManager;
 	}
 	
 	/**
 	 * 获取系统配置Builder
 	 * 
+	 * @param nacosConfigManager NacosConfigManager
+	 * 
 	 * @return 系统配置Builder
 	 */
-	public static final MusesConfigBuilder builder() {
-		return new MusesConfigBuilder();
+	public static final MusesConfigBuilder builder(NacosConfigManager nacosConfigManager) {
+		final MusesConfigBuilder builder = new MusesConfigBuilder(nacosConfigManager);
+		return builder.init();
 	}
 	
 	/**
@@ -46,9 +54,9 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return this
 	 */
-	public MusesConfigBuilder init(NacosConfigManager nacosConfigManager) {
-		final ConfigService configService = nacosConfigManager.getConfigService();
-		final NacosConfigProperties nacosConfigProperties = nacosConfigManager.getNacosConfigProperties();
+	private MusesConfigBuilder init() {
+		final ConfigService configService = this.nacosConfigManager.getConfigService();
+		final NacosConfigProperties nacosConfigProperties = this.nacosConfigManager.getNacosConfigProperties();
 		try {
 			final String oldConfig = configService.getConfig(MusesConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), MusesConfig.TIMEOUT);
 			if(StringUtils.isEmpty(oldConfig)) {
@@ -94,8 +102,6 @@ public final class MusesConfigBuilder {
 	 * @return this
 	 */
 	public MusesConfigBuilder buildPid() {
-//		final long pid = ManagementFactory.getRuntimeMXBean().getPid();
-//		final String jvmName = ManagementFactory.getRuntimeMXBean().getName();
 		final long pid = ProcessHandle.current().pid();
 		this.musesConfig.setPid((int) pid);
 		LOGGER.info("系统PID：{}", pid);
@@ -116,16 +122,15 @@ public final class MusesConfigBuilder {
 	}
 	
 	/**
-	 * 创建保存系统配置
-	 * 
-	 * @param nacosConfigManager NacosConfigManager
+	 * 创建系统配置
 	 * 
 	 * @return
 	 */
-	public MusesConfig build(NacosConfigManager nacosConfigManager) {
-		final ConfigService configService = nacosConfigManager.getConfigService();
-		final NacosConfigProperties nacosConfigProperties = nacosConfigManager.getNacosConfigProperties();
+	public MusesConfig build() {
+		final ConfigService configService = this.nacosConfigManager.getConfigService();
+		final NacosConfigProperties nacosConfigProperties = this.nacosConfigManager.getNacosConfigProperties();
 		try {
+			// 保存配置中心
 			configService.publishConfig(MusesConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), JSONUtils.toJSON(this.musesConfig));
 		} catch (NacosException e) {
 			LOGGER.error("设置系统配置异常", e);

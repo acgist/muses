@@ -13,6 +13,9 @@ public class MessageCodeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 状态编码
+	 */
 	private final MessageCode code;
 
 	public static final MessageCodeException of(Object ... messages) {

@@ -28,7 +28,11 @@ public final class JSONUtils {
 	 * Mapper（线程安全）
 	 */
 	private static final ObjectMapper MAPPER = buildMapper();
-
+	/**
+	 * 时间格式
+	 */
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	
 	/**
 	 * Java转JSON
 	 * 
@@ -149,7 +153,7 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
@@ -161,9 +165,11 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildSerializeMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class)
+		// 设置类型
+		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
+			.allowIfBaseType(Object.class)
 			.build();
-		return mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);

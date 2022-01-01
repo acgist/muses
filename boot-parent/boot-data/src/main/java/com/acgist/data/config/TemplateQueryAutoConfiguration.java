@@ -273,11 +273,7 @@ public class TemplateQueryAutoConfiguration {
 			} else if (pageable) {
 				result = new PageImpl(list, pageableParamter, this.executeCount(templateQuery, whereString, paramterMap));
 			} else {
-				if(CollectionUtils.isEmpty(list)) {
-					result = null;
-				} else {
-					result = list.get(0);
-				}
+				return CollectionUtils.getFirst(list);
 			}
 			return result;
 		} else {

@@ -43,7 +43,7 @@
 		</root>
 	</springProfile>
 	
-	<springProfile name="prod">
+	<springProfile name="release">
 		<root level="INFO">
 			<appender-ref ref="file" />
 		</root>
