@@ -52,7 +52,7 @@ public class DistributedScheduledAutoConfiguration {
 	public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		final DistributedScheduled distributedScheduled = this.getAnnotation(proceedingJoinPoint);
 		if (distributedScheduled == null) {
-			return null;
+			throw MessageCodeException.of("获取注解失败");
 		}
 		final String name = distributedScheduled.name();
 		try {
@@ -80,6 +80,7 @@ public class DistributedScheduledAutoConfiguration {
 	 * @return 注解
 	 */
 	private DistributedScheduled getAnnotation(ProceedingJoinPoint proceedingJoinPoint) {
+		// TODO：JDK17
 		if (proceedingJoinPoint.getSignature() instanceof MethodSignature) {
 			final MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
 			return methodSignature.getMethod().getAnnotation(DistributedScheduled.class);

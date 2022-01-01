@@ -79,7 +79,7 @@ public class BootAutoConfiguration {
 	/**
 	 * 线程队列长度
 	 */
-	@Value("${system.thread.size:1000}")
+	@Value("${system.thread.size:100000}")
 	private int size;
 	/**
 	 * 线程存活事件

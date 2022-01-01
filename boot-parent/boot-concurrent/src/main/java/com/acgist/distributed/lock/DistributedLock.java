@@ -1,6 +1,9 @@
 package com.acgist.distributed.lock;
 
+import java.util.Objects;
 import java.util.UUID;
+
+import com.acgist.boot.MessageCodeException;
 
 /**
  * 分布式锁
@@ -17,7 +20,7 @@ public interface DistributedLock {
 	/**
 	 * 锁值
 	 */
-	public static final ThreadLocal<String> VALUE_LOCAL = ThreadLocal.withInitial(() -> UUID.randomUUID().toString());
+	public static final ThreadLocal<String> VALUE_LOCAL = ThreadLocal.withInitial(UUID.randomUUID()::toString);
 
 	/**
 	 * 重入
@@ -50,10 +53,7 @@ public interface DistributedLock {
 			if (this.lock(key, ttl)) {
 				return true;
 			}
-			if (duration > 0) {
-				duration = this.blocking(key, duration);
-			}
-		} while (duration > 0);
+		} while ((duration = this.blocking(key, duration)) > 0);
 		return false;
 	}
 
@@ -66,8 +66,8 @@ public interface DistributedLock {
 	 * @return 是否成功
 	 */
 	public default boolean lock(String key, int ttl) {
-		if (key == null) {
-			throw new IllegalArgumentException("参数异常");
+		if (Objects.isNull(key)) {
+			throw MessageCodeException.of("锁名错误：" + key);
 		}
 		final String value = VALUE_LOCAL.get();
 		// 加锁
@@ -95,8 +95,8 @@ public interface DistributedLock {
 	 * @param key 锁名
 	 */
 	public default void unlock(String key) {
-		if (key == null) {
-			throw new IllegalArgumentException("参数异常");
+		if (Objects.isNull(key)) {
+			throw MessageCodeException.of("锁名错误：" + key);
 		}
 		final String oldValue = this.get(key);
 		// 优先判断oldValue避免VALUE_LOCAL内存泄露
@@ -124,7 +124,7 @@ public interface DistributedLock {
 	boolean set(String key, String value, int ttl);
 
 	/**
-	 * 重试锁
+	 * 重置锁
 	 * 
 	 * @param key 锁名
 	 * @param value 锁值

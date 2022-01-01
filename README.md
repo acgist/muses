@@ -84,7 +84,7 @@ system.thread.min=2
 # 线程最大数量
 system.thread.max=10
 # 线程最大长度
-system.thread.size=1000
+system.thread.size=100000
 # 线程活跃时间：秒
 system.thread.live=30
 # 系统序列化类型

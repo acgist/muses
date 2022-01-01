@@ -65,8 +65,8 @@ public class ExecutorsTest {
 		@Override
 		public String doExecute() {
 			LOGGER.info("执行任务：{}", this);
-			final String value = String.valueOf(100 / 0);
-//			final String vlaue = String.valueOf(100 / 1);
+//			final String value = String.valueOf(100 / 0);
+			final String value = String.valueOf(100 / 1);
 			this.success = true;
 			return value;
 		}

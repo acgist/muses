@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 分布式定时任务切点
+ * 分布式定时任务注解切点
  * 
  * @author acgist
  */
@@ -31,7 +31,7 @@ public @interface DistributedScheduled {
 	/**
 	 * 判断是否自动释放
 	 * 
-	 * 注意：如果时间不同步并且任务时间果断不建议自动释放
+	 * 注意：如果时间不同步并且任务时间过短不建议自动释放
 	 * 
 	 * @return 是否自动释放
 	 */

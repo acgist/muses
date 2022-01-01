@@ -36,7 +36,7 @@ public class Executors {
 		20,
 		30,
 		TimeUnit.SECONDS,
-		new LinkedBlockingQueue<>(1000),
+		new LinkedBlockingQueue<>(100000),
 		runnable -> {
 			final Thread thread = new Thread(runnable);
 			thread.setName(String.format("EXECUTORS-%02d", INDEX.getAndIncrement()));
@@ -67,9 +67,7 @@ public class Executors {
 	 * @return supplier
 	 */
 	private static final Supplier<Boolean> rollback(Executor<?, ?> executor) {
-		return () -> {
-			return executor.rollback();
-		};
+		return () -> executor.rollback();
 	}
 	
 	/**
