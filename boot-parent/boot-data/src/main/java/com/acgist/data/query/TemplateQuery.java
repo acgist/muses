@@ -9,19 +9,19 @@ import java.lang.annotation.Target;
 /**
  * 模板查询
  * 
+ * Pojo(paramter...)
  * List(paramter...)
- * Result(paramter...)
  * Page(paramter..., Pageable)
  * 
  * 注意：参数 操作 目标
  * 
  * $(boolean)
  * $(name != null)
- * $(name == acgist)
  * $(name == root || name == acgist)
+ * $(name != null && name == acgist)
  * 
  * 默认使用SQL
- * 如果使用JPQL列名需要指定名称：SELECT user.name as name, user.memo as memo FROM UserEntity user
+ * 如果使用JPQL需要指定列名：SELECT user.name as name, user.memo as memo FROM UserEntity user
  * 
  * @author acgist
  */

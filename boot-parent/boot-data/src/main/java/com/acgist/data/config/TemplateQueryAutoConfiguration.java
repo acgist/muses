@@ -3,8 +3,6 @@ package com.acgist.data.config;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
@@ -24,9 +22,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Order;
 
 import com.acgist.boot.CollectionUtils;
+import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
 import com.acgist.data.TemplateQueryUtils;
 import com.acgist.data.query.TemplateQuery;
@@ -85,7 +83,7 @@ public class TemplateQueryAutoConfiguration {
 		// 设置参数
 		final Map<String, Object> paramterMap = TemplateQueryUtils.buildParamterMap(args, argsNames, parameterLength);
 		final String whereString = TemplateQueryUtils.buildWhere(sourceWhereString, paramterMap);
-		final String queryString = this.buildQuery(templateQuery, sourceQueryString, whereString, pageableParamter);
+		final String queryString = TemplateQueryUtils.buildQuery(templateQuery, sourceQueryString, whereString, pageableParamter);
 		final Map<String, Object> queryParamterMap = TemplateQueryUtils.filterParamterMap(queryString, paramterMap);
 		final Query query = this.createQuery(templateQuery, queryString);
 		this.buildParamter(query, pageableParamter, queryParamterMap);
@@ -105,97 +103,9 @@ public class TemplateQueryAutoConfiguration {
 	 * 创建执行语句
 	 * 
 	 * @param templateQuery 模板语句
-	 * @param queryString 原始语句
-	 * @param whereString 条件语句
-	 * @param pageableParamter 分页信息
-	 * 
-	 * @return 执行语句
-	 */
-	private String buildQuery(TemplateQuery templateQuery, String queryString, String whereString, Pageable pageableParamter) {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(queryString).append(TemplateQuery.SPACE);
-		if (StringUtils.isNotEmpty(whereString)) {
-			builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
-			builder.append(whereString).append(TemplateQuery.SPACE);
-		}
-		final String sorted = this.buildSortedQuery(templateQuery, pageableParamter).strip();
-		if(StringUtils.isNotEmpty(sorted)) {
-			builder.append(sorted).append(TemplateQuery.SPACE);
-		}
-		final String attach = templateQuery.attach().strip();
-		if(StringUtils.isNotEmpty(attach)) {
-			builder.append(attach).append(TemplateQuery.SPACE);
-		}
-		return builder.toString();
-	}
-	
-	/**
-	 * 创建排序语句
-	 * 
-	 * @param templateQuery 模板语句
-	 * @param pageableParamter 分页信息
-	 * 
-	 * @return 排序语句
-	 */
-	private String buildSortedQuery(TemplateQuery templateQuery, Pageable pageableParamter) {
-		final StringBuilder builder = new StringBuilder();
-		final String sorted = templateQuery.sorted().strip();
-		final boolean empty = StringUtils.isEmpty(sorted);
-		if(!empty) {
-			builder.append(sorted);
-		}
-		if(pageableParamter != null) {
-			final Stream<Order> stream = pageableParamter.getSort().get();
-			final String orderString = stream
-				.map(order -> order.getProperty() + TemplateQuery.SPACE + order.getDirection())
-				.collect(Collectors.joining(TemplateQuery.COMMA_SPACE));
-			if(StringUtils.isEmpty(orderString)) {
-				builder.append(TemplateQuery.SPACE);
-			} else {
-				if(empty) {
-					builder.append(TemplateQuery.ORDER_BY).append(TemplateQuery.SPACE);
-				} else {
-					builder.append(TemplateQuery.COMMA).append(TemplateQuery.SPACE);
-				}
-				builder.append(orderString).append(TemplateQuery.SPACE);
-			}
-		} else {
-			builder.append(TemplateQuery.SPACE);
-		}
-		return builder.toString();
-	}
-	
-	/**
-	 * 创建统计语句
-	 * 
-	 * @param templateQuery 模板语句
-	 * @param whereString 条件语句
-	 * 
-	 * @return 统计语句
-	 */
-	private String buildCountQuery(TemplateQuery templateQuery, String whereString) {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(templateQuery.count().strip()).append(TemplateQuery.SPACE);
-		if (StringUtils.isNotEmpty(whereString)) {
-			builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
-			builder.append(whereString).append(TemplateQuery.SPACE);
-		}
-		// 统计不要排序语句
-		final String attach = templateQuery.attach().strip();
-		if(StringUtils.isNotEmpty(attach)) {
-			builder.append(attach).append(TemplateQuery.SPACE);
-		}
-		return builder.toString();
-	}
-
-	
-	/**
-	 * 创建查询语句
-	 * 
-	 * @param templateQuery 模板语句
 	 * @param queryString 查询语句
 	 * 
-	 * @return 查询语句
+	 * @return 执行语句
 	 */
 	private Query createQuery(TemplateQuery templateQuery, String queryString) {
 		final Query query;
@@ -240,10 +150,16 @@ public class TemplateQueryAutoConfiguration {
 	 * @param voidable 是否返回
 	 * @param resultType 返回类型
 	 */
+	@SuppressWarnings("deprecation")
 	private void buildResultType(Query query, boolean voidable, Class<?> resultType) {
-		if(!voidable) {
-			query.unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(resultType));
+		if(voidable) {
+			return;
 		}
+		if(resultType == null) {
+			throw MessageCodeException.of("没有设置返回类型或者集合类型（TemplateQuery#resultType）");
+		}
+		// TODO：过时
+		query.unwrap(org.hibernate.query.Query.class).setResultTransformer(Transformers.aliasToBean(resultType));
 	}
 
 	/**
@@ -260,6 +176,7 @@ public class TemplateQueryAutoConfiguration {
 	 * 
 	 * @return 执行结果
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Object execute(
 		boolean selectQuery, boolean listable, boolean pageable,
 		Query query, TemplateQuery templateQuery, String whereString,
@@ -271,6 +188,7 @@ public class TemplateQueryAutoConfiguration {
 			if (listable) {
 				result = list;
 			} else if (pageable) {
+				// TODO：泛型
 				result = new PageImpl(list, pageableParamter, this.executeCount(templateQuery, whereString, paramterMap));
 			} else {
 				return CollectionUtils.getFirst(list);
@@ -291,9 +209,9 @@ public class TemplateQueryAutoConfiguration {
 	 * @return 统计数量
 	 */
 	private long executeCount(TemplateQuery templateQuery, String whereString, Map<String, Object> paramterMap) {
-		final String countQueryString = this.buildCountQuery(templateQuery, whereString).strip();
+		final String countQueryString = TemplateQueryUtils.buildCountQuery(templateQuery, whereString).strip();
 		if(StringUtils.isEmpty(countQueryString)) {
-			throw new IllegalArgumentException("没有统计查询语句");
+			throw MessageCodeException.of("没有统计查询语句");
 		}
 		final Map<String, Object> countParamterMap = TemplateQueryUtils.filterParamterMap(countQueryString, paramterMap);
 		final Query countQuery = this.createQuery(templateQuery, countQueryString);

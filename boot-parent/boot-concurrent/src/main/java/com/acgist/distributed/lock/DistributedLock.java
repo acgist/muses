@@ -67,7 +67,7 @@ public interface DistributedLock {
 	 */
 	public default boolean lock(String key, int ttl) {
 		if (Objects.isNull(key)) {
-			throw MessageCodeException.of("锁名错误：" + key);
+			throw MessageCodeException.of("锁名错误：", key);
 		}
 		final String value = VALUE_LOCAL.get();
 		// 加锁
@@ -96,7 +96,7 @@ public interface DistributedLock {
 	 */
 	public default void unlock(String key) {
 		if (Objects.isNull(key)) {
-			throw MessageCodeException.of("锁名错误：" + key);
+			throw MessageCodeException.of("锁名错误：", key);
 		}
 		final String oldValue = this.get(key);
 		// 优先判断oldValue避免VALUE_LOCAL内存泄露

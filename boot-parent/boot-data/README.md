@@ -166,6 +166,10 @@ spring:
 </dependency>
 ```
 
+#### 中文分词
+
+[https://github.com/medcl/elasticsearch-analysis-ik](https://github.com/medcl/elasticsearch-analysis-ik)
+
 ## Neo4j
 
 #### Maven

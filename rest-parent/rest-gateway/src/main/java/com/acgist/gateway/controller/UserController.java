@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,9 +39,14 @@ public class UserController {
 		return this.userService.getMemo(user);
 	}
 	
+//	@PutMapping("/memo")
 	@PostMapping("/memo")
 	public Message<Map<String, Object>> memo(@CurrentUser User user, @Valid @GatewayBody SetMemoRequest request) {
 		return this.userService.setMemo(user, request);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public void delete(@PathVariable String id) {
 	}
 	
 }

@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.cglib.beans.BeanMap;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
@@ -36,6 +38,93 @@ public final class TemplateQueryUtils {
 	}
 	
 	/**
+	 * 创建执行语句
+	 * 
+	 * @param templateQuery 模板语句
+	 * @param queryString 查询语句
+	 * @param whereString 条件语句
+	 * @param pageableParamter 分页信息
+	 * 
+	 * @return 执行语句
+	 */
+	public static final String buildQuery(TemplateQuery templateQuery, String queryString, String whereString, Pageable pageableParamter) {
+		final StringBuilder builder = new StringBuilder();
+		builder.append(queryString).append(TemplateQuery.SPACE);
+		if (StringUtils.isNotEmpty(whereString)) {
+			builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
+			builder.append(whereString).append(TemplateQuery.SPACE);
+		}
+		final String sorted = buildSortedQuery(templateQuery, pageableParamter).strip();
+		if(StringUtils.isNotEmpty(sorted)) {
+			builder.append(sorted).append(TemplateQuery.SPACE);
+		}
+		final String attach = templateQuery.attach().strip();
+		if(StringUtils.isNotEmpty(attach)) {
+			builder.append(attach).append(TemplateQuery.SPACE);
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * 创建排序语句
+	 * 
+	 * @param templateQuery 模板语句
+	 * @param pageableParamter 分页信息
+	 * 
+	 * @return 排序语句
+	 */
+	public static final String buildSortedQuery(TemplateQuery templateQuery, Pageable pageableParamter) {
+		final StringBuilder builder = new StringBuilder();
+		final String sorted = templateQuery.sorted().strip();
+		final boolean empty = StringUtils.isEmpty(sorted);
+		if(!empty) {
+			builder.append(sorted);
+		}
+		if(pageableParamter != null) {
+			final Stream<Order> stream = pageableParamter.getSort().get();
+			final String orderString = stream
+				.map(order -> order.getProperty() + TemplateQuery.SPACE + order.getDirection())
+				.collect(Collectors.joining(TemplateQuery.COMMA_SPACE));
+			if(StringUtils.isEmpty(orderString)) {
+				builder.append(TemplateQuery.SPACE);
+			} else {
+				if(empty) {
+					builder.append(TemplateQuery.ORDER_BY).append(TemplateQuery.SPACE);
+				} else {
+					builder.append(TemplateQuery.COMMA).append(TemplateQuery.SPACE);
+				}
+				builder.append(orderString).append(TemplateQuery.SPACE);
+			}
+		} else {
+			builder.append(TemplateQuery.SPACE);
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * 创建统计语句
+	 * 
+	 * @param templateQuery 模板语句
+	 * @param whereString 条件语句
+	 * 
+	 * @return 统计语句
+	 */
+	public static final String buildCountQuery(TemplateQuery templateQuery, String whereString) {
+		final StringBuilder builder = new StringBuilder();
+		builder.append(templateQuery.count().strip()).append(TemplateQuery.SPACE);
+		if (StringUtils.isNotEmpty(whereString)) {
+			builder.append(TemplateQuery.WHERE).append(TemplateQuery.SPACE);
+			builder.append(whereString).append(TemplateQuery.SPACE);
+		}
+		// 统计不要排序语句
+		final String attach = templateQuery.attach().strip();
+		if(StringUtils.isNotEmpty(attach)) {
+			builder.append(attach).append(TemplateQuery.SPACE);
+		}
+		return builder.toString();
+	}
+	
+	/**
 	 * 创建参数
 	 * 
 	 * @param args 参数
@@ -44,6 +133,7 @@ public final class TemplateQueryUtils {
 	 * 
 	 * @return 参数
 	 */
+	@SuppressWarnings("unchecked")
 	public static final Map<String, Object> buildParamterMap(Object[] args, String[] argsNames, int parameterLength) {
 		// TODO：JDK17
 		Object object;
@@ -116,9 +206,9 @@ public final class TemplateQueryUtils {
 		}
 		final String[] lines = StringUtils.splitFull(where, TemplateQuery.CONDITION);
 		final String whereQuery = Stream.of(lines)
-			.map(line -> line.strip())
+			.map(String::strip)
 			.map(line -> buildWhereLine(paramterMap, line))
-			.filter(line -> StringUtils.isNotEmpty(line))
+			.filter(StringUtils::isNotEmpty)
 			.collect(Collectors.joining(TemplateQuery.SPACE));
 		if(StringUtils.startsWidthIgnoreCase(whereQuery, TemplateQuery.QUERY_OR)) {
 			return whereQuery.substring(TemplateQuery.QUERY_OR_LENGHT);
@@ -249,7 +339,7 @@ public final class TemplateQueryUtils {
 		if(source == target) {
 			return result;
 		} else if (source instanceof Number) {
-			return Long.compare(((Number) source).intValue(), Integer.valueOf(target));
+			return Integer.compare(((Number) source).intValue(), Integer.valueOf(target));
 		} else if(target != null) {
 			result = String.valueOf(source).compareTo(target);
 		}

@@ -29,7 +29,7 @@ import com.acgist.boot.pojo.bean.MessageCode;
 /**
  * 异常处理工具
  * 
- * @author yusheng
+ * @author acgist
  */
 public final class ErrorUtils {
 	

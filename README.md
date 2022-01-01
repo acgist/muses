@@ -158,7 +158,3 @@ server.port=0
 ```
 server.port=${system.port:8080}
 ```
-
-## 优化位置
-
-/boot-gateway/src/main/java/com/acgist/gateway/service/GatewayChannel.java

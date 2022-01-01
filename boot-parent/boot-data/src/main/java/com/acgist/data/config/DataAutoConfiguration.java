@@ -11,7 +11,7 @@ import com.acgist.boot.service.IdService;
 import com.acgist.data.entity.SnowflakeGenerator;
 
 /**
- * 自动装配
+ * 数据自动配置
  * 
  * @author acgist
  */
