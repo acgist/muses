@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.sql.DataSource;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,6 +17,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.hibernate.transform.Transformers;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +40,7 @@ import com.acgist.data.query.TemplateQuery;
  */
 @Aspect
 @Configuration
+@ConditionalOnBean(DataSource.class)
 @ConditionalOnClass(JpaRepositoriesAutoConfiguration.class)
 @AutoConfigureAfter(JpaRepositoriesAutoConfiguration.class)
 public class TemplateQueryAutoConfiguration {

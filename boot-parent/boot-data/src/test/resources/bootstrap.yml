@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: boot-data
+  profiles:
+    active: dev
+  shardingsphere:
+    enabled: false
+  data:
+    neo4j:
+      uri: bolt://localhost:7687
+      username: neo4j
+      password: neo4j
+    elasticsearch:
+      cluster-name: ${spring.application.name:muses}
+      cluster-nodes: localhost:9300
