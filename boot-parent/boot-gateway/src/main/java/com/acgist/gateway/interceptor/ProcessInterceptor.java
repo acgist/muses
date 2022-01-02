@@ -44,7 +44,7 @@ public class ProcessInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-		final GatewaySession session = GatewaySession.getInstance(this.context);
+		final GatewaySession session = GatewaySession.getInstance();
 		if (session.record()) {
 			final GatewayDto gatewayDto = new GatewayDto();
 			if(session.hasResponse()) {

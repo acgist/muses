@@ -77,9 +77,7 @@ public class GatewaySession implements Serializable {
 	}
 	
 	public static final GatewaySession getInstance(ApplicationContext context) {
-		final GatewaySession session = context.getBean(GatewaySession.class);
-		LOCAL.set(session);
-		return session;
+		return context.getBean(GatewaySession.class);
 	}
 
 	/**
@@ -96,6 +94,7 @@ public class GatewaySession implements Serializable {
 			} else {
 				this.process = true;
 				this.queryId = queryId;
+				LOCAL.set(this);
 				return true;
 			}
 		}
@@ -112,6 +111,7 @@ public class GatewaySession implements Serializable {
 			this.gatewayRequest = null;
 			this.gatewayMapping = null;
 			this.responseData.clear();
+			LOCAL.remove();
 		}
 	}
 
