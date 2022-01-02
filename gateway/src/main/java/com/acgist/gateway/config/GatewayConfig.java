@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.acgist.boot.MessageCodeException;
+import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.MessageCode;
 import com.google.common.net.HttpHeaders;
@@ -51,7 +51,7 @@ public class GatewayConfig {
 					message = Message.fail(MessageCode.CODE_9999);
 				}
 				response.setStatusCode(status);
-				response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+				response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8);
 				return response.writeWith(Mono.fromSupplier(() -> {
 					return response.bufferFactory().wrap(message.toString().getBytes());
 				}));

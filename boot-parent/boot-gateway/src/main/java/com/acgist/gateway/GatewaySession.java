@@ -35,6 +35,9 @@ public class GatewaySession implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private static final String PROPERTY_QUERY_ID = "queryId";
+	private static final String PROPERTY_RESERVED = "reserved";
+	private static final String PROPERTY_RESP_TIME = "respTime";
 	private static final ThreadLocal<GatewaySession> LOCAL = new ThreadLocal<>();
 	
 	@Autowired
@@ -124,7 +127,7 @@ public class GatewaySession implements Serializable {
 	/**
 	 * 创建失败响应
 	 * 
-	 * @param code 状态码
+	 * @param code 状态编码
 	 * 
 	 * @return 响应
 	 */
@@ -143,9 +146,7 @@ public class GatewaySession implements Serializable {
 	public Message<Map<String, Object>> buildFail(MessageCode code, String message) {
 		this.buildResponse();
 		this.gatewayResponse = Message.fail(code, message, this.responseData);
-		final String signature = this.rsaService.signature(this.responseData);
-		this.gatewayResponse.setSignature(signature);
-		return this.gatewayResponse;
+		return this.signature();
 	}
 
 	/**
@@ -170,6 +171,15 @@ public class GatewaySession implements Serializable {
 		}
 		this.buildResponse();
 		this.gatewayResponse = Message.success(this.responseData);
+		return this.signature();
+	}
+	
+	/**
+	 * 签名响应数据
+	 * 
+	 * @return 响应数据
+	 */
+	private Message<Map<String, Object>> signature() {
 		final String signature = this.rsaService.signature(this.responseData);
 		this.gatewayResponse.setSignature(signature);
 		return this.gatewayResponse;
@@ -184,11 +194,6 @@ public class GatewaySession implements Serializable {
 		return queryId;
 	}
 
-	/**
-	 * 获取请求JSON
-	 * 
-	 * @return 请求JSON
-	 */
 	public String getRequestJSON() {
 		return this.requestJSON;
 	}
@@ -209,11 +214,6 @@ public class GatewaySession implements Serializable {
 		this.gatewayMapping = gatewayMapping;
 	}
 
-	/**
-	 * 获取响应JSON
-	 * 
-	 * @return 响应JSON
-	 */
 	public String getResponseJSON() {
 		return JSONUtils.toJSON(this.gatewayResponse);
 	}
@@ -235,11 +235,11 @@ public class GatewaySession implements Serializable {
 	 * 创建响应数据
 	 */
 	public void buildResponse() {
-		this.responseData.put(Gateway.PROPERTY_QUERY_ID, this.queryId);
 		if(this.gatewayRequest != null) {
-			this.responseData.put(Gateway.PROPERTY_RESERVED, this.gatewayRequest.getReserved());
+			this.responseData.put(PROPERTY_RESERVED, this.gatewayRequest.getReserved());
 		}
-		this.responseData.put(Gateway.PROPERTY_RESP_TIME, DateUtils.buildTime());
+		this.responseData.put(PROPERTY_QUERY_ID, this.queryId);
+		this.responseData.put(PROPERTY_RESP_TIME, DateUtils.buildTime());
 	}
 	
 	/**
@@ -252,11 +252,12 @@ public class GatewaySession implements Serializable {
 	}
 	
 	/**
-	 * 写出响应数据
+	 * 写出错误响应数据
 	 * 
 	 * @param response 响应
 	 */
 	public void response(HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		ResponseUtils.response(this.gatewayResponse, response);
 	}
 	

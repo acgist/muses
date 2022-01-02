@@ -52,7 +52,6 @@ public class ProcessInterceptor implements HandlerInterceptor {
 			} else {
 				final Object errorMessage = request.getAttribute(ErrorUtils.ERROR_MESSAGE);
 				if(errorMessage != null) {
-					// TODO：签名
 					gatewayDto.setResponse(JSONUtils.toJSON(errorMessage));
 				}
 			}

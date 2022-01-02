@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import com.acgist.gateway.pojo.dto.GatewayDto;
 
 /**
- * 网关
+ * 网关配置
  * 
  * @author acgist
  */
@@ -25,6 +26,7 @@ public class GatewayAutoConfiguration {
 	private StreamBridge streamBridge;
 
 	@Bean
+	@ConditionalOnMissingBean
 	public Consumer<GatewayDto> gatewayPush() {
 		return gatewayDto -> this.streamBridge.send(this.topic, gatewayDto);
 	}

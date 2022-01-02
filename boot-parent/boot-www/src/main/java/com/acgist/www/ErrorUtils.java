@@ -29,6 +29,8 @@ import com.acgist.boot.pojo.bean.MessageCode;
 /**
  * 异常处理工具
  * 
+ * 注意：浏览器访问时有时候会出现多次异常输入属于正常情况（浏览器会重试）
+ * 
  * @author acgist
  */
 public final class ErrorUtils {
@@ -82,13 +84,14 @@ public final class ErrorUtils {
 	public static final Message<String> message(Throwable t, HttpServletRequest request, HttpServletResponse response) {
 		final Message<String> message;
 		int status = status(request, response);
-		final Object globalThrowable = t == null ? throwable(request) : t;
-		if(globalThrowable instanceof MessageCodeException) {
-			final MessageCodeException messageCodeException = (MessageCodeException) globalThrowable;
+		final Object globalErrorMessage = t == null ? globalErrorMessage(request) : t;
+		final Object rootErrorMessage = rootErrorMessage(globalErrorMessage);
+		if(rootErrorMessage instanceof MessageCodeException) {
+			final MessageCodeException messageCodeException = (MessageCodeException) rootErrorMessage;
 			status = status(status, messageCodeException);
 			message = Message.fail(messageCodeException.getCode(), messageCodeException.getMessage());
-		} else if(globalThrowable instanceof Throwable) {
-			final Throwable throwable = (Throwable) globalThrowable;
+		} else if(rootErrorMessage instanceof Throwable) {
+			final Throwable throwable = (Throwable) rootErrorMessage;
 			status = status(status, throwable);
 			final MessageCode messageCode = MessageCode.of(status);
 			message = Message.fail(messageCode, throwable.getMessage());
@@ -103,10 +106,11 @@ public final class ErrorUtils {
 		final String method = request.getMethod();
 		final String path = request.getServletPath();
 		final String query = request.getQueryString();
-		if(globalThrowable instanceof Throwable) {
-			LOGGER.error("系统错误：{}-{}-{}-{}", message, method, path, query, globalThrowable);
+		if(globalErrorMessage instanceof Throwable) {
+			// 有时候dispatcherServlet会打印异常有时候又不会
+			LOGGER.error("系统错误：{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
 		} else {
-			LOGGER.warn("系统错误：{}-{}-{}-{}-{}", message, method, path, query, globalThrowable);
+			LOGGER.warn("系统错误：{}-{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
 		}
 		request.setAttribute(ERROR_MESSAGE, message);
 		return message;
@@ -119,7 +123,7 @@ public final class ErrorUtils {
 	 * 
 	 * @return 异常
 	 */
-	public static final Object throwable(HttpServletRequest request) {
+	public static final Object globalErrorMessage(HttpServletRequest request) {
 		Object throwable = request.getAttribute(THROWABLE_SERVLET);
 		if(throwable != null) {
 			return throwable;
@@ -129,6 +133,25 @@ public final class ErrorUtils {
 			return throwable;
 		}
 		return throwable;
+	}
+	
+	/**
+	 * 获取原始异常
+	 * 
+	 * @param t 异常
+	 * 
+	 * @return 原始异常
+	 */
+	public static final Object rootErrorMessage(Object t) {
+		if(t instanceof Throwable) {
+			Throwable cause = (Throwable) t;
+			while((cause = cause.getCause()) != null) {
+				if(cause instanceof MessageCodeException) {
+					return cause;
+				}
+			}
+		}
+		return t;
 	}
 	
 	/**
@@ -221,6 +244,17 @@ public final class ErrorUtils {
 			return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 		}
 		return status;
+	}
+	
+	/**
+	 * 判断是否错误请求
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 是否错误请求
+	 */
+	public static final boolean error(HttpServletRequest request) {
+		return ERROR_PATH.equals(request.getServletPath());
 	}
 	
 }

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 请求数据
+ * 获取请求数据
  * 
  * @author acgist
  */

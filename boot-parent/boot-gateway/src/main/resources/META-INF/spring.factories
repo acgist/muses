@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.gateway.config.GatewayMappingAutoConfiguration,\
-com.acgist.gateway.config.GatewayInterceptorAutoConfiguration
+com.acgist.gateway.config.GatewayAutoConfiguration,\
+com.acgist.gateway.config.GatewayMvcAutoConfiguration,\
+com.acgist.gateway.config.GatewayMappingAutoConfiguration

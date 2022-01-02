@@ -2,6 +2,7 @@ package com.acgist.gateway.service;
 
 import java.util.List;
 
+import com.acgist.boot.UrlUtils;
 import com.acgist.gateway.config.GatewayMapping;
 
 /**
@@ -11,6 +12,9 @@ import com.acgist.gateway.config.GatewayMapping;
  */
 public class GatewayMappingService {
 
+	/**
+	 * 网关映射
+	 */
 	private final List<GatewayMapping> mapping;
 	
 	public GatewayMappingService(List<GatewayMapping> mapping) {
@@ -26,7 +30,7 @@ public class GatewayMappingService {
 	 * @return 网关映射
 	 */
 	public GatewayMapping gatewayMapping(String method, String path) {
-		final String gateway = method.toUpperCase() + ":" + path;
+		final String gateway = UrlUtils.authority(method, path);
 		for (GatewayMapping gatewayMapping : this.mapping) {
 			if (gatewayMapping.getGateway().equals(gateway)) {
 				return gatewayMapping;

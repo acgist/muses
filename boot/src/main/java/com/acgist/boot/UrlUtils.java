@@ -44,5 +44,17 @@ public final class UrlUtils {
 		}
 		return URLDecoder.decode(content, MusesConfig.CHARSET);
 	}
+	
+	/**
+	 * 通过请求信息获取权限路径
+	 * 
+	 * @param method 请求方法
+	 * @param path 请求地址
+	 * 
+	 * @return 权限路径
+	 */
+	public static final String authority(String method, String path) {
+		return method.toUpperCase() + ":" + path;
+	}
 
 }

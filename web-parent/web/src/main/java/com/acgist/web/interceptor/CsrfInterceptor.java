@@ -25,14 +25,13 @@ public class CsrfInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(ErrorUtils.error(request)) {
+			return true;
+		}
 		final String method = request.getMethod();
 		final HttpSession session = request.getSession();
-		final String path = request.getServletPath();
 		final String trueToken = (String) session.getAttribute(SESSION_CSRF_TOKEN);
-		if (
-			!ErrorUtils.ERROR_PATH.equals(path) &&
-			HttpMethod.POST.matches(method.toUpperCase())
-		) {
+		if (HttpMethod.POST.matches(method.toUpperCase())) {
 			String token = (String) request.getParameter(SESSION_CSRF_TOKEN);
 			if(StringUtils.isEmpty(token)) {
 				token = request.getHeader(SESSION_CSRF_TOKEN);

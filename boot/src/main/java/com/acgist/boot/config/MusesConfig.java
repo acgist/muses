@@ -33,6 +33,10 @@ public class MusesConfig {
 	 * 系统自动配置
 	 */
 	public static final String MUSES_CONFIG = "muses.json";
+	/**
+	 * JSON HTTP数据类型
+	 */
+	public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
 
 	/**
 	 * 当前系统编号

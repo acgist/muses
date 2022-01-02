@@ -14,6 +14,16 @@ public class RestTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RestTest.class);
 	
 	@Test
+	public void testUser() {
+		LOGGER.info("{}", HTTPUtils.get(
+			"http://localhost:19298/user",
+			"",
+			Map.of(User.HEADER_CURRENT_USER, new User().currentUser().toString()),
+			1000
+		));
+	}
+	
+	@Test
 	public void testException() {
 		LOGGER.info("{}", HTTPUtils.get("http://localhost:9090/404"));
 		LOGGER.info("{}", HTTPUtils.get("http://localhost:9090/user"));
@@ -44,7 +54,7 @@ public class RestTest {
 			"",
 			Map.of(),
 			1000
-			));
+		));
 	}
 	
 }

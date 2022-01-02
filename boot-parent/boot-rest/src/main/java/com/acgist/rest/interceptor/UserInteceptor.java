@@ -11,11 +11,15 @@ import com.acgist.boot.StringUtils;
 import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.boot.pojo.bean.User;
 import com.acgist.rest.UserContext;
+import com.acgist.www.ErrorUtils;
 
 public class UserInteceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(ErrorUtils.error(request)) {
+			return true;
+		}
 		final String currentUser = request.getHeader(User.HEADER_CURRENT_USER);
 		if(StringUtils.isEmpty(currentUser)) {
 			throw MessageCodeException.of(MessageCode.CODE_3401);

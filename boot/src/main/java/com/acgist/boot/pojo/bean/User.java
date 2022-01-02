@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.acgist.boot.CollectionUtils;
 import com.acgist.boot.JSONUtils;
+import com.acgist.boot.UrlUtils;
 
 /**
  * 用户
@@ -87,8 +88,8 @@ public class User implements Serializable {
 		if (CollectionUtils.isEmpty(this.paths)) {
 			return false;
 		}
-		final String value = method + ":" + path;
-		return this.paths.stream().anyMatch(pathValue -> pathValue.equalsIgnoreCase(value));
+		final String value = UrlUtils.authority(method, path);
+		return this.paths.stream().anyMatch(pathValue -> pathValue.equals(value));
 	}
 
 	public Long getId() {

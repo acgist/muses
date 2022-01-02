@@ -15,6 +15,11 @@ import org.springframework.stereotype.Service;
 
 import com.acgist.boot.RsaUtils;
 
+/**
+ * RSA
+ * 
+ * @author acgist
+ */
 @Service
 public class RsaService {
 
@@ -117,7 +122,7 @@ public class RsaService {
 		final Map<String, Object> sortMap = new TreeMap<>((source, target) -> source.compareTo(target));
 		sortMap.putAll(map);
 		return sortMap.entrySet().stream()
-			.filter(entity -> SIGNATURE.equals(entity.getKey()))
+			.filter(entity -> !SIGNATURE.equals(entity.getKey()))
 			.map(entity -> entity.getKey() + entity.getValue())
 			.collect(Collectors.joining());
 	}

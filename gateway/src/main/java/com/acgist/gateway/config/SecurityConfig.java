@@ -3,7 +3,6 @@ package com.acgist.gateway.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -15,6 +14,7 @@ import org.springframework.security.web.server.authorization.ServerAccessDeniedH
 import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.MessageCode;
 import com.google.common.net.HttpHeaders;
@@ -67,7 +67,7 @@ public class SecurityConfig {
 			}
 			final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有权限");
 			response.setStatusCode(HttpStatus.UNAUTHORIZED);
-			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8);
 			return response.writeWith(Mono.fromSupplier(() -> {
 				return response.bufferFactory().wrap(message.toString().getBytes());
 			}));
@@ -90,7 +90,7 @@ public class SecurityConfig {
 			}
 			final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有认证");
 			response.setStatusCode(HttpStatus.UNAUTHORIZED);
-			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8);
 			return response.writeWith(Mono.fromSupplier(() -> {
 				return response.bufferFactory().wrap(message.toString().getBytes());
 			}));

@@ -67,7 +67,7 @@ public final class HTTPUtils {
 	static {
 		final List<Header> headers = new ArrayList<>();
 		headers.add(new BasicHeader(HttpHeaders.USER_AGENT, "ACGIST/1.0.0 +(https://www.acgist.com)"));
-		headers.add(new BasicHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE));
+		headers.add(new BasicHeader(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8));
 		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
 			.register("http", PlainConnectionSocketFactory.getSocketFactory())
 			.register("https", createSSLConnSocketFactory())
