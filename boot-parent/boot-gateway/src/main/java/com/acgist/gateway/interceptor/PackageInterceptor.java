@@ -29,13 +29,6 @@ public class PackageInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		final GatewaySession session = GatewaySession.getInstance();
-		final String requestJSON = StreamUtils.copyToString(request.getInputStream(), MusesConfig.CHARSET);
-		if(StringUtils.isEmpty(requestJSON)) {
-			session.buildFail(MessageCode.CODE_1002);
-			session.response(response);
-			return false;
-		}
-		session.setRequestJSON(requestJSON);
 		final GatewayMapping gatewayMapping = this.gatewayMappingService.gatewayMapping(request.getMethod(), request.getRequestURI());
 		if(gatewayMapping == null) {
 			session.buildFail(MessageCode.CODE_1000);
@@ -43,6 +36,13 @@ public class PackageInterceptor implements HandlerInterceptor {
 			return false;
 		}
 		session.setGatewayMapping(gatewayMapping);
+		final String requestJSON = StreamUtils.copyToString(request.getInputStream(), MusesConfig.CHARSET);
+		if(StringUtils.isEmpty(requestJSON)) {
+			session.buildFail(MessageCode.CODE_1002);
+			session.response(response);
+			return false;
+		}
+		session.setRequestJSON(requestJSON);
 		final GatewayRequest gatewayRequest = JSONUtils.toJava(requestJSON, gatewayMapping.getClazz());
 		if(gatewayRequest == null) {
 			session.buildFail(MessageCode.CODE_1002);

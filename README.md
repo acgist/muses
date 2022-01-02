@@ -76,20 +76,21 @@ spring:
 
 ```
 # 系统编号（负数自动生成）：主要用于生成ID，相同服务建议设置不同编号。
-system.sn=01
+system.sn=-1
 # 系统端口：随机生成
 system.port=8080
 # 线程初始数量
 system.thread.min=2
 # 线程最大数量
 system.thread.max=10
-# 线程最大长度
+# 线程队列最大长度
 system.thread.size=100000
 # 线程活跃时间：秒
 system.thread.live=30
 # 系统序列化类型
 system.serializer.type=jdk|jackson
 # 是否自动配置MVC：拦截器、参数注解
+system.web.mvc=true|false
 system.rest.mvc=true|false
 # 慢请求统计时间：毫秒
 system.gateway.slow.request.duration=1000
@@ -101,18 +102,20 @@ system.topic.gateway=topic-gateway
 system.shutdown.enable=true
 # 自动关机等待时间：秒
 system.shutdown.gracefully=30
+# 缓存前缀
+system.cache.prefix=cache::
 ```
 
 ## Maven配置
 
 ```
-# JVM参数
+# 应用启动JVM参数
 system.maven.jvm=
-# JVM参数：xms
+# 应用启动JVM参数：xms
 system.maven.xms=256M
-# JVM参数：xmx
+# 应用启动JVM参数：xmx
 system.maven.xmx=512M
-# 是否打包
+# 是否忽略打包
 system.maven.unpack=true
 # 作者
 system.maven.vendor=acgist

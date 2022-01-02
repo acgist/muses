@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.acgist.boot.JSONUtils;
 import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.boot.service.IdService;
 import com.acgist.gateway.GatewaySession;
@@ -37,6 +36,7 @@ public class ProcessInterceptor implements HandlerInterceptor {
 		if (session.buildProcess(queryId)) {
 			return true;
 		}
+		// 注意不要完成
 		session.buildFail(MessageCode.CODE_1001);
 		session.response(response);
 		return false;
@@ -52,7 +52,7 @@ public class ProcessInterceptor implements HandlerInterceptor {
 			} else {
 				final Object errorMessage = request.getAttribute(ErrorUtils.ERROR_MESSAGE);
 				if(errorMessage != null) {
-					gatewayDto.setResponse(JSONUtils.toJSON(errorMessage));
+					gatewayDto.setResponse(errorMessage.toString());
 				}
 			}
 			gatewayDto.setQueryId(session.getQueryId());

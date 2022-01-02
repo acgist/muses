@@ -13,6 +13,11 @@ import com.acgist.boot.pojo.bean.User;
 import com.acgist.rest.UserContext;
 import com.acgist.www.ErrorUtils;
 
+/**
+ * 用户拦截
+ * 
+ * @author acgist
+ */
 public class UserInteceptor implements HandlerInterceptor {
 
 	@Override

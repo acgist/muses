@@ -4,4 +4,5 @@ com.acgist.web.listener.StartingEventListener
 
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.web.config.WebAutoConfiguration
+com.acgist.web.config.WebMvcAutoConfiguration,\
+com.acgist.web.config.WebErrorAutoConfiguration

@@ -2,9 +2,11 @@
 
 消息队列模块Boot
 
-> 默认使用`Kafka`
+## Kafka
 
-## 配置
+默认使用`Kafka`
+
+#### 配置
 
 ```
 # 配置参考：https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/current/reference/html/spring-cloud-stream-binder-kafka.html
@@ -53,9 +55,7 @@
 #spring.cloud.stream.bindings.gatewayRecordCopy-in-0.destination=topic-gateway
 ```
 
-## 其他消息队列
-
-#### RocketMQ
+## RocketMQ
 
 ```
 <dependency>
@@ -64,7 +64,7 @@
 </dependency>
 ```
 
-#### RabbitMQ
+## RabbitMQ
 
 ```
 <dependency>

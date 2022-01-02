@@ -8,7 +8,7 @@ import com.acgist.boot.config.PortConfig;
 /**
  * 启动
  * 
- * 注意：SpringApplicationRunListeners执行里面同步执行
+ * 注意：SpringApplicationRunListeners里面同步执行
  * 
  * @author acgist
  */

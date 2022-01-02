@@ -1,4 +1,4 @@
-package com.acgist.rest.config;
+package com.acgist.web.config;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -6,24 +6,29 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.rest.controller.RestControllerAdvice;
-import com.acgist.rest.controller.RestErrorController;
+import com.acgist.web.controller.WebControllerAdvice;
+import com.acgist.web.controller.WebErrorController;
 import com.acgist.www.WwwErrorPageRegistrar;
 
+/**
+ * Web异常配置
+ * 
+ * @author acgist
+ */
 @Configuration
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
-public class RestAutoConfiguration {
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public RestErrorController restErrorController() {
-		return new RestErrorController();
-	}
+public class WebErrorAutoConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean
-	public RestControllerAdvice gatewayControllerAdvice() {
-		return new RestControllerAdvice();
+	@ConditionalOnMissingBean(WebControllerAdvice.class)
+	public WebControllerAdvice gatewayControllerAdvice() {
+		return new WebControllerAdvice();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean(WebErrorController.class)
+	public WebErrorController webErrorController() {
+		return new WebErrorController();
 	}
 	
 	@Bean
@@ -31,5 +36,5 @@ public class RestAutoConfiguration {
 	public WwwErrorPageRegistrar errorPageRegistrar() {
 		return new WwwErrorPageRegistrar();
 	}
-
+	
 }

@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 import com.acgist.rest.interceptor.UserInteceptor;
 
 /**
- * 加载配置
+ * Rest MVC配置
  * 
  * @author acgist
  */
 @Configuration
 @ConditionalOnProperty(value = "system.rest.mvc", matchIfMissing = true, havingValue = "true")
-@ConditionalOnMissingBean(value = UserInteceptor.class)
+@ConditionalOnMissingBean(value = RestMvcConfig.class)
 public class RestMvcAutoConfiguration {
 
 	@Bean

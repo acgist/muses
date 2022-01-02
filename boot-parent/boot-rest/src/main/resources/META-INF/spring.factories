@@ -4,5 +4,5 @@ com.acgist.rest.listener.StartingEventListener
 
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.rest.config.RestAutoConfiguration,\
-com.acgist.rest.config.RestMvcAutoConfiguration
+com.acgist.rest.config.RestMvcAutoConfiguration,\
+com.acgist.rest.config.RestErrorAutoConfiguration

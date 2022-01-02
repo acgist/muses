@@ -8,7 +8,7 @@ import com.acgist.boot.config.PortConfig;
 /**
  * 启动
  * 
- * 注意：SpringApplicationRunListeners执行里面同步执行
+ * 注意：SpringApplicationRunListeners里面同步执行
  * 
  * @author acgist
  */
@@ -16,7 +16,7 @@ public class StartingEventListener implements ApplicationListener<ApplicationSta
 
 	@Override
 	public void onApplicationEvent(ApplicationStartingEvent event) {
-		PortConfig.buildPort(PortConfig.Type.REST, event.getArgs());
+		PortConfig.buildPort(PortConfig.Type.WEB, event.getArgs());
 	}
 
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
 
+/**
+ * Redis和缓存配置
+ * 
+ * @author acgist
+ */
 @Configuration
 @EnableCaching
 @ConditionalOnClass({CacheManager.class, RedisTemplate.class})
@@ -31,6 +37,9 @@ public class RedisAutoConfiguration {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RedisAutoConfiguration.class);
 
+	/**
+	 * 缓存前缀
+	 */
 	@Value("${system.cache.prefix:cache::}")
 	private String cachePrefix;
 	
@@ -38,6 +47,7 @@ public class RedisAutoConfiguration {
 	private SerializerType serializerType;
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public CacheManager cacheManager(RedisConnectionFactory factory) {
 		LOGGER.info("配置CacheManager");
 		final RedisCacheConfiguration config = RedisCacheConfiguration
@@ -48,7 +58,7 @@ public class RedisAutoConfiguration {
 //			.disableCachingNullValues()
 			// 设置缓存前缀
 			.prefixCacheNameWith(this.cachePrefix)
-			// 设置过期时间
+			// 设置过期时间：不同时间通过缓存名称配置
 			.entryTtl(Duration.ofMinutes(30));
 		final RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
 			.cacheDefaults(config)
@@ -57,6 +67,7 @@ public class RedisAutoConfiguration {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
 		LOGGER.info("配置RedisTemplate");
 		final RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -67,11 +78,11 @@ public class RedisAutoConfiguration {
 		return template;
 	}
 	
-	public RedisSerializer<String> buildKeySerializer() {
+	private RedisSerializer<String> buildKeySerializer() {
 		return StringRedisSerializer.UTF_8;
 	}
 	
-	public RedisSerializer<?> buildValueSerializer() {
+	private RedisSerializer<?> buildValueSerializer() {
 		if(this.serializerType == SerializerType.JACKSON) {
 			final Jackson2JsonRedisSerializer<?> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
 			serializer.setObjectMapper(JSONUtils.buildSerializeMapper());
