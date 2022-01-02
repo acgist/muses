@@ -36,6 +36,11 @@
 
 `Web`服务使用传统`Session`记录状态，通过`RedisSession`实现共享，需要用户自己通过拦截器或者`Spring Security`实现认证授权。
 
+#### Session失效
+
+如果`Web`登录成功访问没有集成`RedisSession`的项目，那么就会导致`Session`失效。
+解决方法设置`session`的`cookie.name`、`cookie.domain`或者`cookie.path`进行区分。
+
 #### Rest服务
 
 `Rest`服务使用`OAuth2`服务通过网关实现统一认证鉴权

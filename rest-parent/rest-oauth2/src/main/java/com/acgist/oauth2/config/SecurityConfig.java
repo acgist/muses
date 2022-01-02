@@ -21,8 +21,8 @@ public class SecurityConfig {
 	private UserDetailsService userDetailsService;
 	
 	@Bean
-	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-		http
+	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity security) throws Exception {
+		security
 			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
 //			.anyRequest().permitAll()
 			.anyRequest().authenticated()
@@ -31,7 +31,7 @@ public class SecurityConfig {
 			.formLogin();
 //			.httpBasic();
 //			.formLogin(withDefaults());
-		return http.build();
+		return security.build();
 	}
 
 }

@@ -16,6 +16,7 @@ import com.acgist.web.interceptor.CsrfInterceptor;
  */
 @Configuration
 @ConditionalOnProperty(value = "system.web.mvc", matchIfMissing = true, havingValue = "true")
+@ConditionalOnMissingBean(value = WebMvcConfig.class)
 public class WebMvcAutoConfiguration {
 
 	@Bean

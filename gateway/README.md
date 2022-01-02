@@ -27,4 +27,3 @@ Rest服务统一使用`rest-oauth2`认证授权
 
 * 不能配置`issuer-uri`
 * Web服务和Rest服务可以分开两个网关
-* Web服务登陆成功访问Rest服务时会导致`Session`失效

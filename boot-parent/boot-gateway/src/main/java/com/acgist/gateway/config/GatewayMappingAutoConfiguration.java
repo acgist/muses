@@ -32,13 +32,6 @@ public class GatewayMappingAutoConfiguration {
 		return mapping;
 	}
 	
-	/**
-	 * 设置网关映射配置
-	 * 
-	 * 注意：必须配置setter
-	 * 
-	 * @param mapping 网关映射
-	 */
 	public void setMapping(List<GatewayMapping> mapping) {
 		this.mapping = mapping;
 		this.mapping.forEach(value -> LOGGER.info("网关映射：{}", value));

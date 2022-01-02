@@ -28,27 +28,27 @@ public class SecurityConfig {
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity security) {
 		security
-		.csrf().disable()
-		.cors().disable()
-		.logout().disable()
-		.httpBasic().disable()
-		.formLogin().disable()
-		// 解决SESSION失效：系统自动检查SESSION无效就会删除
-		.requestCache().requestCache(NoOpServerRequestCache.getInstance())
-		.and()
-		.authorizeExchange(authorize -> {
-			authorize
-			// 授权
-//			.pathMatchers("/rest/**").access(null)
-			// 认证
-			.pathMatchers("/rest/**").authenticated()
-			// 其他服务直接放行
-			.anyExchange().permitAll();
-		})
-		.oauth2ResourceServer().jwt()
-		.and()
-		.accessDeniedHandler(new GatewayServerAccessDeniedHandler())
-		.authenticationEntryPoint(new GatewayServerAuthenticationEntryPoint());
+			.csrf().disable()
+			.cors().disable()
+			.logout().disable()
+			.httpBasic().disable()
+			.formLogin().disable()
+			// 解决SESSION失效：系统自动检查SESSION无效就会删除
+			.requestCache().requestCache(NoOpServerRequestCache.getInstance())
+			.and()
+			.authorizeExchange(authorize -> {
+				authorize
+				// 授权
+//				.pathMatchers("/rest/**").access(null)
+				// 认证
+				.pathMatchers("/rest/**").authenticated()
+				// 其他服务直接放行
+				.anyExchange().permitAll();
+			})
+			.oauth2ResourceServer().jwt()
+			.and()
+			.accessDeniedHandler(new GatewayServerAccessDeniedHandler())
+			.authenticationEntryPoint(new GatewayServerAuthenticationEntryPoint());
 		return security.build();
 	}
 	

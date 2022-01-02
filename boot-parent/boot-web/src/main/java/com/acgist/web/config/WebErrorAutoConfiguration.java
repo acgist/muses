@@ -20,13 +20,13 @@ import com.acgist.www.WwwErrorPageRegistrar;
 public class WebErrorAutoConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(WebControllerAdvice.class)
+	@ConditionalOnMissingBean
 	public WebControllerAdvice gatewayControllerAdvice() {
 		return new WebControllerAdvice();
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean(WebErrorController.class)
+	@ConditionalOnMissingBean
 	public WebErrorController webErrorController() {
 		return new WebErrorController();
 	}
