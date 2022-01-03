@@ -49,13 +49,14 @@ public final class RsaUtils {
 	 */
 	private static final int KEY_LENGTH = 2048;
 	/**
-	 * RSA最大加密明文大小
+	 * RSA最大加密明文大小：密钥长度 / 8 - 11
+	 * 11：填充长度
 	 */
-	private static final int MAX_ENCRYPT_BLOCK = 117;
+	private static final int MAX_ENCRYPT_BLOCK = KEY_LENGTH / 8 - 11;
 	/**
-	 * RSA最大解密密文大小
+	 * RSA最大解密密文大小：密钥长度 / 8
 	 */
-	private static final int MAX_DECRYPT_BLOCK = 128;
+	private static final int MAX_DECRYPT_BLOCK = KEY_LENGTH / 8;
 	/**
 	 * CER文件
 	 */
@@ -209,8 +210,9 @@ public final class RsaUtils {
 			final Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 			while (index < length) {
+				// 注意：这里不是使用update方法
 				if (length - index > MAX_ENCRYPT_BLOCK) {
-					out.write(cipher.update(data, index, MAX_ENCRYPT_BLOCK));
+					out.write(cipher.doFinal(data, index, MAX_ENCRYPT_BLOCK));
 				} else {
 					out.write(cipher.doFinal(data, index, length - index));
 				}
@@ -252,8 +254,9 @@ public final class RsaUtils {
 			final Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, privateKey);
 			while (index < length) {
+				// 注意：这里不是使用update方法
 				if (length - index > MAX_DECRYPT_BLOCK) {
-					out.write(cipher.update(data, index, MAX_DECRYPT_BLOCK));
+					out.write(cipher.doFinal(data, index, MAX_DECRYPT_BLOCK));
 				} else {
 					out.write(cipher.doFinal(data, index, length - index));
 				}

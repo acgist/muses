@@ -21,11 +21,6 @@ import com.acgist.gateway.request.SetMemoRequest;
 import com.acgist.gateway.service.UserService;
 import com.acgist.rest.config.CurrentUser;
 
-/**
- * 用户
- * 
- * @author acgist
- */
 @Validated
 @RestController
 @RequestMapping("/user")
@@ -46,7 +41,9 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public void delete(@PathVariable String id) {
+	public Message<Map<String, Object>> delete(@PathVariable String id) {
+		// 忽略
+		return Message.success();
 	}
 	
 }

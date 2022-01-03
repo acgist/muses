@@ -3,7 +3,6 @@ package com.acgist.gateway.service;
 import java.util.Map;
 
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acgist.boot.pojo.bean.Message;
@@ -18,9 +17,6 @@ public class UserService {
 
 	@DubboReference
 	private IUserService userService;
-	
-	@Autowired
-	private RsaService rsaService;
 	
 	private static final String PROPERTY_MEMO = "memo";
 	
@@ -47,7 +43,6 @@ public class UserService {
 	 */
 	public Message<Map<String, Object>> setMemo(User user, SetMemoRequest request) {
 		final UserDto userDto = new UserDto();
-		// TODO：解密
 		userDto.setName(user.getName());
 		userDto.setMemo(request.getMemo());
 		this.userService.updateMemo(userDto);
