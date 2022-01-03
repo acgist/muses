@@ -320,6 +320,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<nacos>localhost:8848</nacos>
 				<profile>dev</profile>
 			</properties>
 			<build>
@@ -339,6 +340,7 @@
 		<profile>
 			<id>test</id>
 			<properties>
+				<nacos>localhost:8848</nacos>
 				<profile>test</profile>
 			</properties>
 			<build>
@@ -358,6 +360,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
+				<nacos>localhost:8848</nacos>
 				<profile>release</profile>
 			</properties>
 			<build>

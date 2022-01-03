@@ -56,14 +56,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
   profiles:
-    active: dev
+    active: @profile@
   cloud:
     nacos:
       username: nacos
       password: nacos
       discovery:
         namespace: ${spring.profiles.active}
-        server-addr: localhost:8848
+        server-addr: @nacos@
       config:
         namespace: ${spring.profiles.active}
         file-extension: yml

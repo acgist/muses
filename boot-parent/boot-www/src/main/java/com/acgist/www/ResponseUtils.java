@@ -1,6 +1,7 @@
 package com.acgist.www;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,11 +41,13 @@ public final class ResponseUtils {
 	 * @param response 响应
 	 */
 	public static final void response(Message<?> message, HttpServletResponse response) {
+		Objects.requireNonNull(message, "响应错误：message");
+		Objects.requireNonNull(response, "响应错误：response");
 		response.setContentType(MusesConfig.APPLICATION_JSON_UTF8);
 		try {
 			response.getWriter().write(message.toString());
 		} catch (IOException e) {
-			LOGGER.error("写出响应数据异常", e);
+			LOGGER.error("写出响应数据异常：{}", message, e);
 		}
 	}
 	
