@@ -13,13 +13,17 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.acgist.boot.MessageCodeException;
-import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.MessageCode;
-import com.google.common.net.HttpHeaders;
+import com.acgist.gateway.ResponseUtils;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * 网关配置
+ * 
+ * @author acgist
+ */
 @Configuration
 public class GatewayConfig {
 
@@ -30,35 +34,30 @@ public class GatewayConfig {
 	public ErrorWebExceptionHandler errorWebExceptionHandler() {
 		return new ErrorWebExceptionHandler() {
 			@Override
-			public Mono<Void> handle(ServerWebExchange exchange, Throwable e) {
-				LOGGER.debug("网关异常", e);
+			public Mono<Void> handle(ServerWebExchange exchange, Throwable t) {
+				LOGGER.debug("网关异常", t);
 				final ServerHttpResponse response = exchange.getResponse();
 				if (response.isCommitted()) {
-					return Mono.error(e);
+					return Mono.error(t);
 				}
 				HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 				final Message<String> message;
-				if (e instanceof ResponseStatusException) {
-					final ResponseStatusException responseStatusException = (ResponseStatusException) e;
+				t = MessageCodeException.root(t);
+				if (t instanceof ResponseStatusException) {
+					final ResponseStatusException responseStatusException = (ResponseStatusException) t;
 					status = responseStatusException.getStatus();
 					message = Message.fail(MessageCode.of(status.value()), responseStatusException.getMessage());
-				} else if(e instanceof MessageCodeException) {
-					final MessageCodeException messageCodeException = (MessageCodeException) e;
+				} else if(t instanceof MessageCodeException) {
+					final MessageCodeException messageCodeException = (MessageCodeException) t;
 					message = Message.fail(messageCodeException.getCode(), messageCodeException.getMessage());
-				} else if(e != null) {
-					message = Message.fail(MessageCode.CODE_9999, e.getMessage());
+				} else if(t != null) {
+					message = Message.fail(MessageCode.CODE_9999, t.getMessage());
 				} else {
 					message = Message.fail(MessageCode.CODE_9999);
 				}
-				response.setStatusCode(status);
-				response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8);
-				return response.writeWith(Mono.fromSupplier(() -> {
-					return response.bufferFactory().wrap(message.toString().getBytes());
-				}));
+				return ResponseUtils.response(message, status, response);
 			}
 		};
 	}
 
-	
-	
 }

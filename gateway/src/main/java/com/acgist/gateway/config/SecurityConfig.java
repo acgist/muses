@@ -14,13 +14,17 @@ import org.springframework.security.web.server.authorization.ServerAccessDeniedH
 import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.MessageCode;
-import com.google.common.net.HttpHeaders;
+import com.acgist.gateway.ResponseUtils;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * 安全配置
+ * 
+ * @author acgist
+ */
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
@@ -66,11 +70,7 @@ public class SecurityConfig {
 				return Mono.error(e);
 			}
 			final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有权限");
-			response.setStatusCode(HttpStatus.UNAUTHORIZED);
-			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8);
-			return response.writeWith(Mono.fromSupplier(() -> {
-				return response.bufferFactory().wrap(message.toString().getBytes());
-			}));
+			return ResponseUtils.response(message, HttpStatus.UNAUTHORIZED, response);
 		}
 		
 	}
@@ -89,11 +89,7 @@ public class SecurityConfig {
 				return Mono.error(e);
 			}
 			final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有认证");
-			response.setStatusCode(HttpStatus.UNAUTHORIZED);
-			response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8);
-			return response.writeWith(Mono.fromSupplier(() -> {
-				return response.bufferFactory().wrap(message.toString().getBytes());
-			}));
+			return ResponseUtils.response(message, HttpStatus.UNAUTHORIZED, response);
 		}
 		
 	}

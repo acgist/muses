@@ -144,12 +144,7 @@ public final class ErrorUtils {
 	 */
 	public static final Object rootErrorMessage(Object t) {
 		if(t instanceof Throwable) {
-			Throwable cause = (Throwable) t;
-			while((cause = cause.getCause()) != null) {
-				if(cause instanceof MessageCodeException) {
-					return cause;
-				}
-			}
+			return MessageCodeException.root((Throwable) t);
 		}
 		return t;
 	}
