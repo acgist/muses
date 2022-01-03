@@ -3,6 +3,7 @@ package com.acgist.gateway;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,9 +36,21 @@ public class GatewaySession implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 请求编号
+	 */
 	private static final String PROPERTY_QUERY_ID = "queryId";
+	/**
+	 * 透传信息
+	 */
 	private static final String PROPERTY_RESERVED = "reserved";
+	/**
+	 * 响应事件
+	 */
 	private static final String PROPERTY_RESP_TIME = "respTime";
+	/**
+	 * 本地线程
+	 */
 	private static final ThreadLocal<GatewaySession> LOCAL = new ThreadLocal<>();
 	
 	@Autowired
@@ -46,7 +59,7 @@ public class GatewaySession implements Serializable {
 	/**
 	 * 是否正在处理
 	 */
-	private boolean process = false;
+	private volatile boolean process = false;
 	/**
 	 * 请求标识
 	 */
@@ -58,7 +71,7 @@ public class GatewaySession implements Serializable {
 	/**
 	 * 请求数据
 	 */
-	private String requestJSON;
+	private String requestData;
 	/**
 	 * 请求数据
 	 */
@@ -66,16 +79,28 @@ public class GatewaySession implements Serializable {
 	/**
 	 * 响应数据
 	 */
-	private Message<Map<String, Object>> gatewayResponse;
+	private Map<String, Object> responseData;
 	/**
 	 * 响应数据
 	 */
-	private final Map<String, Object> responseData = new HashMap<>();
+	private Message<Map<String, Object>> gatewayResponse;
 
+	/**
+	 * 获取请求
+	 * 
+	 * @return 请求
+	 */
 	public static final GatewaySession getInstance() {
 		return LOCAL.get();
 	}
 	
+	/**
+	 * 首次获取请求
+	 * 
+	 * @param context context
+	 * 
+	 * @return 请求
+	 */
 	public static final GatewaySession getInstance(ApplicationContext context) {
 		return context.getBean(GatewaySession.class);
 	}
@@ -94,6 +119,7 @@ public class GatewaySession implements Serializable {
 			} else {
 				this.process = true;
 				this.queryId = queryId;
+				this.responseData = new HashMap<>();
 				LOCAL.set(this);
 				return true;
 			}
@@ -107,10 +133,10 @@ public class GatewaySession implements Serializable {
 		synchronized (this) {
 			this.process = false;
 			this.queryId = null;
-			this.requestJSON = null;
+			this.requestData = null;
 			this.gatewayRequest = null;
+			this.responseData = null;
 			this.gatewayMapping = null;
-			this.responseData.clear();
 			LOCAL.remove();
 		}
 	}
@@ -146,7 +172,7 @@ public class GatewaySession implements Serializable {
 	public Message<Map<String, Object>> buildFail(MessageCode code, String message) {
 		this.buildResponse();
 		this.gatewayResponse = Message.fail(code, message, this.responseData);
-		return this.signature();
+		return this.buildSignature();
 	}
 
 	/**
@@ -171,7 +197,18 @@ public class GatewaySession implements Serializable {
 		}
 		this.buildResponse();
 		this.gatewayResponse = Message.success(this.responseData);
-		return this.signature();
+		return this.buildSignature();
+	}
+	
+	/**
+	 * 创建响应数据
+	 */
+	public void buildResponse() {
+		if(this.gatewayRequest != null) {
+			this.responseData.put(PROPERTY_RESERVED, this.gatewayRequest.getReserved());
+		}
+		this.responseData.put(PROPERTY_QUERY_ID, this.queryId);
+		this.responseData.put(PROPERTY_RESP_TIME, DateUtils.buildTime());
 	}
 	
 	/**
@@ -179,41 +216,20 @@ public class GatewaySession implements Serializable {
 	 * 
 	 * @return 响应数据
 	 */
-	private Message<Map<String, Object>> signature() {
-		final String signature = this.rsaService.signature(this.responseData);
-		this.gatewayResponse.setSignature(signature);
+	private Message<Map<String, Object>> buildSignature() {
+		// 含有响应数据需要签名
+		if(MapUtils.isNotEmpty(this.responseData)) {
+			final String signature = this.rsaService.signature(this.responseData);
+			this.gatewayResponse.setSignature(signature);
+		}
 		return this.gatewayResponse;
 	}
 	
 	/**
-	 * 获取请求ID
+	 * 获取响应数据
 	 * 
-	 * @return 请求ID
+	 * @return 响应数据
 	 */
-	public Long getQueryId() {
-		return queryId;
-	}
-
-	public String getRequestJSON() {
-		return this.requestJSON;
-	}
-	
-	public void setRequestJSON(String requestJSON) {
-		this.requestJSON = requestJSON;
-	}
-	
-	public GatewayRequest getGatewayRequest() {
-		return gatewayRequest;
-	}
-
-	public void setGatewayRequest(GatewayRequest gatewayRequest) {
-		this.gatewayRequest = gatewayRequest;
-	}
-
-	public void setGatewayMapping(GatewayMapping gatewayMapping) {
-		this.gatewayMapping = gatewayMapping;
-	}
-
 	public String getResponseJSON() {
 		return JSONUtils.toJSON(this.gatewayResponse);
 	}
@@ -232,23 +248,12 @@ public class GatewaySession implements Serializable {
 	}
 	
 	/**
-	 * 创建响应数据
-	 */
-	public void buildResponse() {
-		if(this.gatewayRequest != null) {
-			this.responseData.put(PROPERTY_RESERVED, this.gatewayRequest.getReserved());
-		}
-		this.responseData.put(PROPERTY_QUERY_ID, this.queryId);
-		this.responseData.put(PROPERTY_RESP_TIME, DateUtils.buildTime());
-	}
-	
-	/**
 	 * 判断是否含有响应
 	 * 
 	 * @return 是否含有响应
 	 */
 	public boolean hasResponse() {
-		return this.gatewayResponse != null;
+		return Objects.nonNull(this.gatewayResponse);
 	}
 	
 	/**
@@ -256,9 +261,64 @@ public class GatewaySession implements Serializable {
 	 * 
 	 * @param response 响应
 	 */
-	public void response(HttpServletResponse response) {
-		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		ResponseUtils.response(this.gatewayResponse, response);
+	public void fail(HttpServletResponse response) {
+		ResponseUtils.fail(this.gatewayResponse, response);
+	}
+
+	public boolean isProcess() {
+		return process;
+	}
+
+	public void setProcess(boolean process) {
+		this.process = process;
+	}
+
+	public Long getQueryId() {
+		return queryId;
+	}
+
+	public void setQueryId(Long queryId) {
+		this.queryId = queryId;
+	}
+
+	public GatewayMapping getGatewayMapping() {
+		return gatewayMapping;
+	}
+
+	public void setGatewayMapping(GatewayMapping gatewayMapping) {
+		this.gatewayMapping = gatewayMapping;
+	}
+
+	public String getRequestData() {
+		return requestData;
+	}
+
+	public void setRequestData(String requestData) {
+		this.requestData = requestData;
+	}
+
+	public GatewayRequest getGatewayRequest() {
+		return gatewayRequest;
+	}
+
+	public void setGatewayRequest(GatewayRequest gatewayRequest) {
+		this.gatewayRequest = gatewayRequest;
+	}
+
+	public Map<String, Object> getResponseData() {
+		return responseData;
+	}
+
+	public void setResponseData(Map<String, Object> responseData) {
+		this.responseData = responseData;
+	}
+
+	public Message<Map<String, Object>> getGatewayResponse() {
+		return gatewayResponse;
+	}
+
+	public void setGatewayResponse(Message<Map<String, Object>> gatewayResponse) {
+		this.gatewayResponse = gatewayResponse;
 	}
 	
 }

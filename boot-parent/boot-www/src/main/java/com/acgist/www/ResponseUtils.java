@@ -23,6 +23,17 @@ public final class ResponseUtils {
 	}
 
 	/**
+	 * 写出错误消息
+	 * 
+	 * @param message 消息
+	 * @param response 响应
+	 */
+	public static final void fail(Message<?> message, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		response(message, response);
+	}
+	
+	/**
 	 * 写出消息
 	 * 
 	 * @param message 消息

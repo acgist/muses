@@ -38,7 +38,7 @@ public class ProcessInterceptor implements HandlerInterceptor {
 		}
 		// 注意不要完成
 		session.buildFail(MessageCode.CODE_1001);
-		session.response(response);
+		session.fail(response);
 		return false;
 	}
 
@@ -47,6 +47,8 @@ public class ProcessInterceptor implements HandlerInterceptor {
 		final GatewaySession session = GatewaySession.getInstance();
 		if (session.record()) {
 			final GatewayDto gatewayDto = new GatewayDto();
+			gatewayDto.setQueryId(session.getQueryId());
+			gatewayDto.setRequest(session.getRequestData());
 			if(session.hasResponse()) {
 				gatewayDto.setResponse(session.getResponseJSON());
 			} else {
@@ -55,8 +57,6 @@ public class ProcessInterceptor implements HandlerInterceptor {
 					gatewayDto.setResponse(errorMessage.toString());
 				}
 			}
-			gatewayDto.setQueryId(session.getQueryId());
-			gatewayDto.setRequest(session.getRequestJSON());
 			this.gatewayPush.accept(gatewayDto);
 		}
 		session.completeProcess();

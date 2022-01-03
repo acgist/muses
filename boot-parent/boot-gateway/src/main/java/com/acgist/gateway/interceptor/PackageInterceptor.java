@@ -32,21 +32,21 @@ public class PackageInterceptor implements HandlerInterceptor {
 		final GatewayMapping gatewayMapping = this.gatewayMappingService.gatewayMapping(request.getMethod(), request.getRequestURI());
 		if(gatewayMapping == null) {
 			session.buildFail(MessageCode.CODE_1000);
-			session.response(response);
+			session.fail(response);
 			return false;
 		}
 		session.setGatewayMapping(gatewayMapping);
-		final String requestJSON = StreamUtils.copyToString(request.getInputStream(), MusesConfig.CHARSET);
-		if(StringUtils.isEmpty(requestJSON)) {
+		final String requestData = StreamUtils.copyToString(request.getInputStream(), MusesConfig.CHARSET);
+		if(StringUtils.isEmpty(requestData)) {
 			session.buildFail(MessageCode.CODE_1002);
-			session.response(response);
+			session.fail(response);
 			return false;
 		}
-		session.setRequestJSON(requestJSON);
-		final GatewayRequest gatewayRequest = JSONUtils.toJava(requestJSON, gatewayMapping.getClazz());
+		session.setRequestData(requestData);
+		final GatewayRequest gatewayRequest = JSONUtils.toJava(requestData, gatewayMapping.getClazz());
 		if(gatewayRequest == null) {
 			session.buildFail(MessageCode.CODE_1002);
-			session.response(response);
+			session.fail(response);
 			return false;
 		}
 		session.setGatewayRequest(gatewayRequest);
