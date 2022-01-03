@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * freemarker
+ * Freemarker自动配置
  * 
  * @author acgist
  */
 @Configuration
-public class FreemarkerConfig {
+public class FreemarkerAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerAutoConfiguration.class);
 
 	@Value("${system.static.host:}")
 	private String staticHost;
@@ -26,7 +26,7 @@ public class FreemarkerConfig {
 
 	@PostConstruct
 	public void init() throws Exception {
-		LOGGER.info("freemarker静态文件域名：{}", this.staticHost);
+		LOGGER.info("Freemarker静态文件域名：{}", this.staticHost);
 		this.configuration.setSharedVariable("staticHost", this.staticHost);
 	}
 

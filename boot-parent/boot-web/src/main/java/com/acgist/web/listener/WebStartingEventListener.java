@@ -12,7 +12,7 @@ import com.acgist.boot.config.PortConfig;
  * 
  * @author acgist
  */
-public class StartingEventListener implements ApplicationListener<ApplicationStartingEvent> {
+public class WebStartingEventListener implements ApplicationListener<ApplicationStartingEvent> {
 
 	@Override
 	public void onApplicationEvent(ApplicationStartingEvent event) {

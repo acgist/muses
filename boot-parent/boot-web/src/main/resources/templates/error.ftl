@@ -10,10 +10,9 @@
 	</head>
 
 	<body>
-		<header>
-			<p>系统错误</p>
-		</header>
+		<#include "/include/header.ftl">
 		<main>
+			<p>系统错误</p>
 			<#if message??>
 			<p>错误描述：${message.code} - ${message.message}</p>
 			</#if>
