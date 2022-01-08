@@ -1,4 +1,4 @@
-package com.acgist.rest;
+package com.acgist.rest.controller;
 
 import java.util.Map;
 
@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.acgist.boot.HTTPUtils;
 import com.acgist.boot.pojo.bean.User;
 
-public class RestTest {
+public class UserControllerTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RestTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerTest.class);
 	
 	@Test
 	public void testUser() {

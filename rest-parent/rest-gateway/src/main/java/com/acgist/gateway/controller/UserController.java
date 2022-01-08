@@ -8,14 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.User;
+import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.config.GatewayBody;
+import com.acgist.gateway.request.DeleteRequest;
 import com.acgist.gateway.request.GetMemoRequest;
 import com.acgist.gateway.request.SetMemoRequest;
 import com.acgist.gateway.service.UserService;
@@ -40,10 +41,12 @@ public class UserController {
 		return this.userService.setMemo(user, request);
 	}
 
-	@DeleteMapping("/delete/{id}")
-	public Message<Map<String, Object>> delete(@PathVariable String id) {
+	@DeleteMapping("/delete")
+	public Message<Map<String, Object>> delete(@Valid @GatewayBody DeleteRequest request) {
 		// 忽略
-		return Message.success();
+		return GatewaySession.getInstance()
+			.putResponse("id", request.getId())
+			.buildSuccess();
 	}
 	
 }
