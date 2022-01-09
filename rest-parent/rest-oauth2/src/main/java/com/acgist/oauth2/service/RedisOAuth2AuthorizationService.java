@@ -14,17 +14,19 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 
-import com.acgist.oauth2.config.Oauth2Config;
+import com.acgist.oauth2.config.OAuth2Config;
 
 /**
  * 授权信息
+ * 
+ * TODO：刷新删除过期信息
  * 
  * @author acgist
  */
 public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationService {
 
 	@Autowired
-	private Oauth2Config oauth2Config;
+	private OAuth2Config oauth2Config;
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 	

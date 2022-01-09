@@ -2,6 +2,14 @@
 
 认证授权Rest服务
 
+## 术语
+
+|术语|描述|
+|:-|:-|
+|JWT|JSON Web Token|
+|JWS|签过名的JWT|
+|JWK|JWT签名密钥|
+
 ## jwk.jks
 
 ```

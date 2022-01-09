@@ -3,12 +3,12 @@ package com.acgist.oauth2.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Oauth2配置
+ * OAuth2配置
  * 
  * @author acgist
  */
 @ConfigurationProperties(prefix = "system.oauth2")
-public class Oauth2Config {
+public class OAuth2Config {
 
 	/**
 	 * 客户端：web
@@ -19,11 +19,29 @@ public class Oauth2Config {
 	 */
 	public static final String CLIENT_REST = "rest";
 
+	/**
+	 * Web密码
+	 */
 	private String web;
+	/**
+	 * Rest密码
+	 */
 	private String rest;
+	/**
+	 * Code刷新时间
+	 */
 	private int code;
+	/**
+	 * Access Code刷新时间
+	 */
 	private int access;
+	/**
+	 * Refresh Code刷新时间
+	 */
 	private int refresh;
+	/**
+	 * 跳转地址
+	 */
 	private String redirectUri;
 
 	public String getWeb() {

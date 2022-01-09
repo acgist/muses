@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,14 +52,12 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 /**
- * Oauth2授权配置
- * 
- * TODO：密码模式
+ * OAuth2授权配置
  * 
  * @author acgist
  */
 @Configuration
-@EnableConfigurationProperties(Oauth2Config.class)
+@EnableConfigurationProperties(OAuth2Config.class)
 @Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
 
@@ -70,9 +69,10 @@ public class AuthorizationServerConfig {
 	private String jwkSecret;
 	
 	@Autowired
-	private Oauth2Config oauth2Config;
+	private OAuth2Config oAuth2Config;
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
@@ -86,36 +86,47 @@ public class AuthorizationServerConfig {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public RedisOAuth2AuthorizationService redisOAuth2AuthorizationService() {
 		return new RedisOAuth2AuthorizationService();
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public RedisOAuth2AuthorizationConsentService redisOAuth2AuthorizationConsentService() {
 		return new RedisOAuth2AuthorizationConsentService();
 	}
 
+	/**
+	 * 注意ID不能随机生成否者重启之后Redis不能正确加载
+	 * 
+	 * 如果需要指定重定向地址不能使用localhost等等本地回环地址
+	 * 正确跳转：http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state
+	 * 不能跳转：http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&redirect_uri=http://localhost:9999/code
+	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-		// 注意ID不能随机生成否者重启之后Redis不能正确加载
-		final RegisteredClient clientWeb = RegisteredClient.withId(Oauth2Config.CLIENT_WEB)
-			.clientId(Oauth2Config.CLIENT_WEB)
-			.clientSecret(passwordEncoder.encode(this.oauth2Config.getWeb()))
+		// TODO：密码模式
+		final TokenSettings tokenSettings = this.tokenSettings();
+		final RegisteredClient clientWeb = RegisteredClient.withId(OAuth2Config.CLIENT_WEB)
+			.clientId(OAuth2Config.CLIENT_WEB)
+			.clientSecret(passwordEncoder.encode(this.oAuth2Config.getWeb()))
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-			.redirectUri(this.oauth2Config.getRedirectUri())
-			.tokenSettings(this.tokenSettings())
+			.redirectUri(this.oAuth2Config.getRedirectUri())
+			.tokenSettings(tokenSettings)
 			.scope("all")
 			.build();
-		final RegisteredClient clientRest = RegisteredClient.withId(Oauth2Config.CLIENT_REST)
-			.clientId(Oauth2Config.CLIENT_REST)
-			.clientSecret(passwordEncoder.encode(this.oauth2Config.getRest()))
+		final RegisteredClient clientRest = RegisteredClient.withId(OAuth2Config.CLIENT_REST)
+			.clientId(OAuth2Config.CLIENT_REST)
+			.clientSecret(passwordEncoder.encode(this.oAuth2Config.getRest()))
 			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-			.redirectUri(this.oauth2Config.getRedirectUri())
-			.tokenSettings(this.tokenSettings())
+			.redirectUri(this.oAuth2Config.getRedirectUri())
+			.tokenSettings(tokenSettings)
 			.scope("all")
 			.build();
 		return new InMemoryRegisteredClientRepository(clientWeb, clientRest);
@@ -131,6 +142,7 @@ public class AuthorizationServerConfig {
 			String aliase = null;
 			while(aliases.hasMoreElements()) {
 				aliase = aliases.nextElement();
+				LOGGER.info("加载JWT密钥：{}", aliase);
 				final PublicKey publicKey = keyStore.getCertificate(aliase).getPublicKey();
 				final PrivateKey privateKey = (PrivateKey) keyStore.getKey(aliase, this.jwkSecret.toCharArray());
 				return new KeyPair(publicKey, privateKey);
@@ -149,6 +161,7 @@ public class AuthorizationServerConfig {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
 		final RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		final RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
@@ -162,16 +175,20 @@ public class AuthorizationServerConfig {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	public JwtDecoder jwtDecoder(KeyPair keyPair) {
 		return NimbusJwtDecoder
 			.withPublicKey((RSAPublicKey) keyPair.getPublic())
 			.build();
 	}
 	
+	/**
+	 * @return Token设置
+	 */
 	private TokenSettings tokenSettings() {
 		return TokenSettings.builder()
-			.accessTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getAccess()))
-			.refreshTokenTimeToLive(Duration.ofSeconds(this.oauth2Config.getRefresh()))
+			.accessTokenTimeToLive(Duration.ofSeconds(this.oAuth2Config.getAccess()))
+			.refreshTokenTimeToLive(Duration.ofSeconds(this.oAuth2Config.getRefresh()))
 			.build();
 	}
 

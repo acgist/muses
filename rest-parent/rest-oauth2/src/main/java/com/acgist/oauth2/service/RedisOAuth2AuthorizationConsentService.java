@@ -7,17 +7,19 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsent;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 
-import com.acgist.oauth2.config.Oauth2Config;
+import com.acgist.oauth2.config.OAuth2Config;
 
 /**
  * 授权信息
+ * 
+ * TODO：刷新删除过期信息
  * 
  * @author acgist
  */
 public class RedisOAuth2AuthorizationConsentService implements OAuth2AuthorizationConsentService {
 
 	@Autowired
-	private Oauth2Config oauth2Config;
+	private OAuth2Config oauth2Config;
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 	
