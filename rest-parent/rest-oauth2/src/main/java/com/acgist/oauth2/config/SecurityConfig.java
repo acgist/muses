@@ -18,7 +18,7 @@ public class SecurityConfig {
 
 	@Bean
 	@Order(0)
-	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity security) throws Exception {
+	public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity security) throws Exception {
 		security
 			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
 			.and()

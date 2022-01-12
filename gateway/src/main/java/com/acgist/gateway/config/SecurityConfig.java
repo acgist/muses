@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
 public class SecurityConfig {
 
 	@Bean
-	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity security) {
+	public SecurityWebFilterChain gatewaySecurityFilterChain(ServerHttpSecurity security) {
 		security
 			.csrf().disable()
 			.cors().disable()
