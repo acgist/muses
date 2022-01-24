@@ -2,6 +2,27 @@
 
 数据模块Boot
 
+## Auditing
+
+```
+@EntityListeners(AuditingEntityListener.class)
+
+@CreatedBy
+@CreatedDate
+@LastModifiedBy
+@LastModifiedDate
+
+@EnableJpaAuditing
+
+@Bean
+@ConditionalOnMissingBean
+public AuditorAware<Long> auditorAware() {
+	return () -> {
+		return id;
+	};
+}
+```
+
 ## MySQL
 
 #### 单库单表

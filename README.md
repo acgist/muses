@@ -94,9 +94,8 @@ system.thread.size=100000
 system.thread.live=30
 # 系统序列化类型
 system.serializer.type=jdk|jackson
-# 是否自动配置MVC：拦截器、参数注解
-system.web.mvc=true|false
-system.rest.mvc=true|false
+# 是否自动配置MVC：请求拦截器、参数解析器
+system.mvc=true|false
 # 慢请求统计时间：毫秒
 system.gateway.slow.request.duration=1000
 # 静态资源地址

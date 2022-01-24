@@ -7,22 +7,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.www.ErrorUtils;
+import com.acgist.www.interceptor.WwwInterceptor;
 
 /**
  * CSRF拦截器
  * 
  * POST请求验证是否含有Token防止CSRF攻击
  */
-public class CsrfInterceptor implements HandlerInterceptor {
+public class CsrfInterceptor implements WwwInterceptor {
 
 	private static final String SESSION_CSRF_TOKEN = "token";
 
+	@Override
+	public String[] patterns() {
+		return new String[] { "/**" };
+	}
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if(ErrorUtils.error(request)) {

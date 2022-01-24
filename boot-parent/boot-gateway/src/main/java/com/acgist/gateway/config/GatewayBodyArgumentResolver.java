@@ -3,17 +3,17 @@ package com.acgist.gateway.config;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.acgist.gateway.GatewaySession;
+import com.acgist.www.config.WwwMethodArgumentResolver;
 
 /**
  * 获取请求数据
  * 
  * @author acgist
  */
-public class GatewayBodyArgumentResolver implements HandlerMethodArgumentResolver {
+public class GatewayBodyArgumentResolver implements WwwMethodArgumentResolver {
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {

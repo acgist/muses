@@ -3,8 +3,6 @@ package com.acgist.rest.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.HandlerInterceptor;
-
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
@@ -12,14 +10,20 @@ import com.acgist.boot.pojo.bean.MessageCode;
 import com.acgist.boot.pojo.bean.User;
 import com.acgist.rest.UserContext;
 import com.acgist.www.ErrorUtils;
+import com.acgist.www.interceptor.WwwInterceptor;
 
 /**
  * 用户拦截
  * 
  * @author acgist
  */
-public class UserInteceptor implements HandlerInterceptor {
+public class UserInterceptor implements WwwInterceptor {
 
+	@Override
+	public String[] patterns() {
+		return new String[] { "/**" };
+	}
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if(ErrorUtils.error(request)) {

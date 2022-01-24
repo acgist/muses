@@ -1,11 +1,13 @@
 package com.acgist.rest.config;
 
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.rest.interceptor.UserInteceptor;
+import com.acgist.rest.interceptor.UserInterceptor;
+import com.acgist.www.config.WwwMvcAutoConfiguration;
 
 /**
  * Rest MVC配置
@@ -13,20 +15,20 @@ import com.acgist.rest.interceptor.UserInteceptor;
  * @author acgist
  */
 @Configuration
-@ConditionalOnProperty(value = "system.rest.mvc", matchIfMissing = true, havingValue = "true")
-@ConditionalOnMissingBean(value = RestMvcConfig.class)
+@AutoConfigureBefore(WwwMvcAutoConfiguration.class)
+@ConditionalOnProperty(value = "system.mvc", matchIfMissing = true, havingValue = "true")
 public class RestMvcAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public UserInteceptor userInteceptor() {
-		return new UserInteceptor();
+	public UserInterceptor userInterceptor() {
+		return new UserInterceptor();
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public RestMvcConfig restMvcConfig() {
-		return new RestMvcConfig();
+	public CurrentUserArgumentResolver currentUserArgumentResolver() {
+		return new CurrentUserArgumentResolver();
 	}
 	
 }

@@ -32,7 +32,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -71,12 +70,6 @@ public class AuthorizationServerConfig {
 	@Autowired
 	private OAuth2Config oAuth2Config;
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {

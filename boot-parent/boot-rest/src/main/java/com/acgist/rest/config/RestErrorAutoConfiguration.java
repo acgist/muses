@@ -27,13 +27,13 @@ public class RestErrorAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RestControllerAdvice gatewayControllerAdvice() {
+	public RestControllerAdvice restControllerAdvice() {
 		return new RestControllerAdvice();
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WwwErrorPageRegistrar errorPageRegistrar() {
+	public WwwErrorPageRegistrar wwwErrorPageRegistrar() {
 		return new WwwErrorPageRegistrar();
 	}
 

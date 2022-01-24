@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.StringUtils;
@@ -15,16 +14,27 @@ import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.request.GatewayRequest;
 import com.acgist.gateway.service.GatewayMappingService;
+import com.acgist.www.interceptor.WwwInterceptor;
 
 /**
  * 数据打包
  * 
  * @author acgist
  */
-public class PackageInterceptor implements HandlerInterceptor {
+public class PackageInterceptor implements WwwInterceptor {
 
 	@Autowired
 	private GatewayMappingService gatewayMappingService;
+
+	@Override
+	public int order() {
+		return 2;
+	}
+	
+	@Override
+	public String[] patterns() {
+		return new String[] { "/**" };
+	}
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

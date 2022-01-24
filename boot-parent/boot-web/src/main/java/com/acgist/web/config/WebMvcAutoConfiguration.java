@@ -1,13 +1,13 @@
 package com.acgist.web.config;
 
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.acgist.web.interceptor.CsrfInterceptor;
+import com.acgist.www.config.WwwMvcAutoConfiguration;
 
 /**
  * Web MVC配置
@@ -15,16 +15,10 @@ import com.acgist.web.interceptor.CsrfInterceptor;
  * @author acgist
  */
 @Configuration
-@ConditionalOnProperty(value = "system.web.mvc", matchIfMissing = true, havingValue = "true")
-@ConditionalOnMissingBean(value = WebMvcConfig.class)
+@AutoConfigureBefore(WwwMvcAutoConfiguration.class)
+@ConditionalOnProperty(value = "system.mvc", matchIfMissing = true, havingValue = "true")
 public class WebMvcAutoConfiguration {
 
-	@Bean
-	@ConditionalOnMissingBean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
 	@Bean
 	@ConditionalOnMissingBean
 	public CsrfInterceptor csrfInterceptor() {
@@ -33,8 +27,8 @@ public class WebMvcAutoConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WebMvcConfig webMvcConfig() {
-		return new WebMvcConfig();
+	public CurrentUserArgumentResolver currentUserArgumentResolver() {
+		return new CurrentUserArgumentResolver();
 	}
 	
 }

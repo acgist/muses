@@ -21,7 +21,7 @@ public class WebErrorAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public WebControllerAdvice gatewayControllerAdvice() {
+	public WebControllerAdvice webControllerAdvice() {
 		return new WebControllerAdvice();
 	}
 	
@@ -33,7 +33,7 @@ public class WebErrorAutoConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WwwErrorPageRegistrar errorPageRegistrar() {
+	public WwwErrorPageRegistrar wwwErrorPageRegistrar() {
 		return new WwwErrorPageRegistrar();
 	}
 	

@@ -12,7 +12,7 @@
 		<file>logs/${system.name}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>30</maxHistory>
-			<fileNamePattern>logs/${system.name}.log-%d{yyyy-MM-dd}</fileNamePattern>
+			<fileNamePattern>logs/${system.name}-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 		</rollingPolicy>
 		<bufferSize>8192</bufferSize>
 		<immediateFlush>false</immediateFlush>
@@ -22,8 +22,7 @@
 		</encoder>
 	</appender>
 
-	<appender name="console"
-		class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<charset>${system.charset}</charset>
 			<pattern>${system.pattern}</pattern>
