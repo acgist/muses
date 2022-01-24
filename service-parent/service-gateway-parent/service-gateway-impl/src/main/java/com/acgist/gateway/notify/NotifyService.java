@@ -38,6 +38,11 @@ public class NotifyService {
 		this.notifies.forEach(notify -> LOGGER.info("通知类型：{}", notify.name()));
 	}
 	
+	/**
+	 * 发送通知
+	 * 
+	 * @param gateway 网关信息
+	 */
 	public void notify(GatewayEntity gateway) {
 		// TODO：获取推送地址（注意验证IP地址）
 		final String url = gateway.getResponse();

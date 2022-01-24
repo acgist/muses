@@ -25,9 +25,9 @@ public class ProcessInterceptor implements WwwInterceptor {
 	@Autowired
 	private IdService idService;
 	@Autowired
-	Consumer<GatewayDto> gatewayPush;
-	@Autowired
 	private ApplicationContext context;
+	@Autowired
+	private Consumer<GatewayDto> gatewayPush;
 
 	@Override
 	public int order() {
