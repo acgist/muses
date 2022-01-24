@@ -11,6 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.acgist.gateway.pojo.entity.GatewayEntity;
+
+/**
+ * 发送通知
+ * 
+ * @author acgist
+ *
+ */
 @Service
 public class NotifyService {
 	
@@ -27,16 +35,18 @@ public class NotifyService {
 			.filter(Notify::enable)
 			.sorted()
 			.collect(Collectors.toList());
-		this.notify("http://www.acgist.com");
+		this.notifies.forEach(notify -> LOGGER.info("通知类型：{}", notify.name()));
 	}
 	
-	public void notify(String url) {
+	public void notify(GatewayEntity gateway) {
+		// TODO：获取推送地址（注意验证IP地址）
+		final String url = gateway.getResponse();
 		this.notifies.stream()
 			.filter(notify -> notify.match(url))
 			.findFirst().ifPresentOrElse(notify -> {
-				notify.execute();
+				notify.execute(gateway);
 			}, () -> {
-				LOGGER.warn("没有匹配通知类型：{}", url);
+				LOGGER.warn("没有匹配通知类型：{}", gateway);
 			});
 	}
 	

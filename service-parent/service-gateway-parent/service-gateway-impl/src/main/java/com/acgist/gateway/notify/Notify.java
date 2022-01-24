@@ -1,5 +1,7 @@
 package com.acgist.gateway.notify;
 
+import com.acgist.gateway.pojo.entity.GatewayEntity;
+
 /**
  * 通知
  * 
@@ -43,6 +45,13 @@ public abstract class Notify implements Comparable<Notify> {
 		return this.notifyConfig.getOrder().compareTo(target.notifyConfig.getOrder());
 	}
 	
-	public abstract String execute();
+	/**
+	 * 发送通知
+	 * 
+	 * @param gatewayEntity 网关信息
+	 * 
+	 * @return 响应报文
+	 */
+	public abstract String execute(GatewayEntity gatewayEntity);
 	
 }

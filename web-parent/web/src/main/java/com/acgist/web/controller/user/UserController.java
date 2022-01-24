@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acgist.web.UserContext;
-import com.acgist.web.config.CurrentUser;
+import com.acgist.web.resolver.CurrentUser;
 
 @Controller
 @RequestMapping("/user")

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.acgist.www.interceptor.WwwInterceptor;
+import com.acgist.www.resolver.WwwMethodArgumentResolver;
 
 /**
  * MVC配置

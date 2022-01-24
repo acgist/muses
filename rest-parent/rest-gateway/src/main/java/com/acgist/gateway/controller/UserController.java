@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.acgist.boot.pojo.bean.Message;
 import com.acgist.boot.pojo.bean.User;
 import com.acgist.gateway.GatewaySession;
-import com.acgist.gateway.config.GatewayBody;
 import com.acgist.gateway.request.DeleteRequest;
 import com.acgist.gateway.request.GetMemoRequest;
 import com.acgist.gateway.request.SetMemoRequest;
+import com.acgist.gateway.resolver.GatewayBody;
 import com.acgist.gateway.service.UserService;
-import com.acgist.rest.config.CurrentUser;
+import com.acgist.rest.resolver.CurrentUser;
 
 @Validated
 @RestController

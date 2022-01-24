@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.acgist.web.controller.WebControllerAdvice;
 import com.acgist.web.controller.WebErrorController;
-import com.acgist.www.WwwErrorPageRegistrar;
+import com.acgist.www.config.WwwErrorPageRegistrar;
 
 /**
  * Web异常配置

@@ -1,4 +1,4 @@
-package com.acgist.www.config;
+package com.acgist.www.resolver;
 
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 

@@ -1,3 +1,3 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.web.config.WwwMvcAutoConfiguration
+com.acgist.www.config.WwwMvcAutoConfiguration

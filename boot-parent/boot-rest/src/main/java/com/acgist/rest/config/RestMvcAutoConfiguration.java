@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.rest.interceptor.UserInterceptor;
+import com.acgist.rest.resolver.CurrentUserArgumentResolver;
 import com.acgist.www.config.WwwMvcAutoConfiguration;
 
 /**

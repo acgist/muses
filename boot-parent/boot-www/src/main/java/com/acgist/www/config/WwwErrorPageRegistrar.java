@@ -1,9 +1,11 @@
-package com.acgist.www;
+package com.acgist.www.config;
 
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.http.HttpStatus;
+
+import com.acgist.www.ErrorUtils;
 
 /**
  * 定义错误代码页面

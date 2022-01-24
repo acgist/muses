@@ -28,7 +28,7 @@ public class PackageInterceptor implements WwwInterceptor {
 
 	@Override
 	public int order() {
-		return 2;
+		return 200;
 	}
 	
 	@Override

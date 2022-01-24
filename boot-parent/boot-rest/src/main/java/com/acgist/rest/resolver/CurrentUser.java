@@ -1,4 +1,4 @@
-package com.acgist.web.config;
+package com.acgist.rest.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

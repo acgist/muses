@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.acgist.gateway.interceptor.PackageInterceptor;
 import com.acgist.gateway.interceptor.ProcessInterceptor;
+import com.acgist.gateway.resolver.GatewayBodyArgumentResolver;
 import com.acgist.www.config.WwwMvcAutoConfiguration;
 
 /**

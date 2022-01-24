@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.acgist.rest.controller.RestControllerAdvice;
 import com.acgist.rest.controller.RestErrorController;
-import com.acgist.www.WwwErrorPageRegistrar;
+import com.acgist.www.config.WwwErrorPageRegistrar;
 
 /**
  * Rest异常配置

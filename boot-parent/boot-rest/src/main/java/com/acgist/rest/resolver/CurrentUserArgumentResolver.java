@@ -1,4 +1,4 @@
-package com.acgist.rest.config;
+package com.acgist.rest.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -6,7 +6,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.acgist.rest.UserContext;
-import com.acgist.www.config.WwwMethodArgumentResolver;
+import com.acgist.www.resolver.WwwMethodArgumentResolver;
 
 /**
  * 获取当前用户

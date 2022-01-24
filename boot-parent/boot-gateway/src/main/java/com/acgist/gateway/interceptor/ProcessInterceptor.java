@@ -31,7 +31,7 @@ public class ProcessInterceptor implements WwwInterceptor {
 
 	@Override
 	public int order() {
-		return 1;
+		return -100;
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package com.acgist.gateway.config;
+package com.acgist.gateway.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

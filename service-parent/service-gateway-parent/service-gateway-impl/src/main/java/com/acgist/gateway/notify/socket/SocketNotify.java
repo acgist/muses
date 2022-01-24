@@ -2,9 +2,9 @@ package com.acgist.gateway.notify.socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acgist.gateway.notify.Notify;
+import com.acgist.gateway.pojo.entity.GatewayEntity;
 
 /**
  * Socket通知
@@ -15,16 +15,16 @@ public class SocketNotify extends Notify {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SocketNotify.class);
 
-	@Autowired
-	private SocketNotifyConfig config;
+//	@Autowired
+//	private SocketNotifyConfig config;
 
 	public SocketNotify(SocketNotifyConfig config) {
 		super(config);
 	}
 
 	@Override
-	public String execute() {
-		LOGGER.debug("超时时间：{}", this.config.getTimeout());
+	public String execute(GatewayEntity gatewayEntity) {
+		LOGGER.debug("发送通知：{}", gatewayEntity);
 		return null;
 	}
 

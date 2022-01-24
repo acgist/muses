@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.web.interceptor.CsrfInterceptor;
+import com.acgist.web.resolver.CurrentUserArgumentResolver;
 import com.acgist.www.config.WwwMvcAutoConfiguration;
 
 /**

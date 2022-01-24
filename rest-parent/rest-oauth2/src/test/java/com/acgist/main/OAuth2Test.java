@@ -56,7 +56,7 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "LLyFUPfccncnvY9jrZEjCgkXGb9DNPCZRQN_DRuGfePQmel_iUueKU2cS5lT8mn4SX1AwTQWjTiM-NRMNEqQqvwX_aZG2fIyHP-02mjEf7ab1j2nOpAYuIMDSmS385ig");
+		params.add("code", "psrSpXXFPp0Y2nlQ8QcZNAGe_QG4u1jkYlF4CYCplAxM0F7lHFOnM_72jRTPLA2578Jh08CQmUjxmuMC62ai3qD3Pfe3ch4XT9ZWK8ry0ZJ2HTFytSsZIjjGULlExp_d");
 		params.add("grant_type", "authorization_code");
 		// 如果没有指定redirect_uri可以填写也可以不填写
 //		params.add("redirect_uri", "https://www.acgist.com");
