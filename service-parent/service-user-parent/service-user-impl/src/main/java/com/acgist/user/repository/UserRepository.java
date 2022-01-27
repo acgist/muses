@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.acgist.boot.dao.BootRepository;
+import com.acgist.boot.dao.repository.BootRepository;
 import com.acgist.data.query.TemplateQuery;
 import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;

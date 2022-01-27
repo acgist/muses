@@ -7,8 +7,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acgist.boot.dao.BootMapper;
-import com.acgist.boot.dao.BootRepository;
+import com.acgist.boot.dao.mapper.BootMapper;
+import com.acgist.boot.dao.repository.BootRepository;
 import com.acgist.boot.service.BootService;
 import com.acgist.data.entity.DataEntity;
 import com.acgist.data.query.FilterQuery;

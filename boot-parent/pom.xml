@@ -23,7 +23,10 @@
 	</properties>
 
 	<modules>
+		<!-- 开发模块 -->
 		<module>boot-dev</module>
+		<module>boot-test</module>
+		<!-- 打包模块 -->
 		<module>boot-mq</module>
 		<module>boot-web</module>
 		<module>boot-www</module>

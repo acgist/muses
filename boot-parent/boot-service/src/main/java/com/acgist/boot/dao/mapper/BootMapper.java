@@ -1,4 +1,4 @@
-package com.acgist.boot.dao;
+package com.acgist.boot.dao.mapper;
 
 import com.acgist.data.entity.DataEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
