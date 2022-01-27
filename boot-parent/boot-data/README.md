@@ -23,6 +23,16 @@ public AuditorAware<Long> auditorAware() {
 }
 ```
 
+## MyBatis
+
+```
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations:
+    - classpath:/mybatis/mapper/**/*.xml
+```
+
 ## MySQL
 
 #### 单库单表

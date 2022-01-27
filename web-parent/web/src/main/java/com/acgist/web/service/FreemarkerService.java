@@ -42,6 +42,8 @@ public class FreemarkerService {
 	 * @param data 数据
 	 * @param htmlPath 生成HTML路径：/article/
 	 * @param htmlName 生成HTML文件名称：index.html
+	 * 
+	 * @return 是否成功
 	 */
 	public boolean build(String templatePath, Map<String, Object> data, String htmlPath, String htmlName) {
 		if (StringUtils.isEmpty(htmlPath)) {
@@ -70,6 +72,8 @@ public class FreemarkerService {
 	 * 
 	 * @param content 模板文本
 	 * @param data 数据
+	 * 
+	 * @return 文本
 	 */
 	public String templateConvert(String content, Map<String, Object> data) {
 		final StringTemplateLoader loader = new StringTemplateLoader();

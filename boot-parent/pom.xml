@@ -23,12 +23,14 @@
 	</properties>
 
 	<modules>
+		<module>boot-dev</module>
 		<module>boot-mq</module>
 		<module>boot-web</module>
 		<module>boot-www</module>
 		<module>boot-rest</module>
 		<module>boot-data</module>
 		<module>boot-redis</module>
+		<module>boot-service</module>
 		<module>boot-gateway</module>
 		<module>boot-sentinel</module>
 		<module>boot-concurrent</module>

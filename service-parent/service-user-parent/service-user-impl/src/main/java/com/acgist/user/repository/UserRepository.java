@@ -6,10 +6,9 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import com.acgist.boot.dao.BootRepository;
 import com.acgist.data.query.TemplateQuery;
 import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.UserEntity;
@@ -23,7 +22,7 @@ import com.acgist.user.pojo.query.UserQuery;
  * @author acgist
  */
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
+public interface UserRepository extends BootRepository<UserEntity> {
 
 	UserEntity findByName(String name);
 	

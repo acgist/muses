@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-data</artifactId>
+			<artifactId>boot-service</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>

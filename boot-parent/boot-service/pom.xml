@@ -7,25 +7,29 @@
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>service-user-parent</artifactId>
+		<artifactId>boot-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>service-user-api</artifactId>
+	<artifactId>boot-service</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-user-api</name>
-	<description>用户内部服务接口</description>
+	<name>boot-service</name>
+	<description>服务模块Boot：提供基本功能</description>
 
 	<properties>
-		<system.maven.module>com.acgist.service.user.api</system.maven.module>
+		<system.maven.module>com.acgist.boot.service</system.maven.module>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-service</artifactId>
+			<artifactId>boot-data</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>

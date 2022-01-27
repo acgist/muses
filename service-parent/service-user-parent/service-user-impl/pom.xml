@@ -27,11 +27,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-data</artifactId>
+			<artifactId>boot-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-redis</artifactId>
+			<artifactId>boot-service</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>

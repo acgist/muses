@@ -34,6 +34,7 @@
 		<!-- 版本配置 -->
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
+		<mybatis.plus.version>3.5.1</mybatis.plus.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
 		<oauth2.authorization.version>0.2.1</oauth2.authorization.version>
 		<!-- SpringCloud版本配置 -->
@@ -77,6 +78,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>boot-dev</artifactId>
+				<version>${system.maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>boot-mq</artifactId>
 				<version>${system.maven.version}</version>
 			</dependency>
@@ -103,6 +109,11 @@
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-redis</artifactId>
+				<version>${system.maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>boot-service</artifactId>
 				<version>${system.maven.version}</version>
 			</dependency>
 			<dependency>
@@ -195,6 +206,12 @@
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>javax.ws.rs-api</artifactId>
 				<version>${ws.rs.version}</version>
+			</dependency>
+			<!-- MyBatis-Plus -->
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis.plus.version}</version>
 			</dependency>
 			<!-- ShardingJDBC -->
 			<dependency>
