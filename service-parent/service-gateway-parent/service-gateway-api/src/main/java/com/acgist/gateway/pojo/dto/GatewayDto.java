@@ -1,6 +1,6 @@
 package com.acgist.gateway.pojo.dto;
 
-import com.acgist.data.dto.BootDto;
+import com.acgist.boot.pojo.BootDto;
 
 /**
  * 网关DTO

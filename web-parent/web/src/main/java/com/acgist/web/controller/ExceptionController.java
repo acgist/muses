@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.acgist.boot.MessageCodeException;
-import com.acgist.boot.pojo.bean.MessageCode;
+import com.acgist.boot.pojo.MessageCode;
 
 @Controller
 @RequestMapping("/exception")

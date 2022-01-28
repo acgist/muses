@@ -2,7 +2,7 @@ package com.acgist.boot;
 
 import java.util.Objects;
 
-import com.acgist.boot.pojo.bean.MessageCode;
+import com.acgist.boot.pojo.MessageCode;
 
 /**
  * 状态编码异常

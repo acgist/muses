@@ -1,6 +1,6 @@
 package com.acgist.user.pojo.vo;
 
-import com.acgist.data.vo.BootVo;
+import com.acgist.boot.pojo.BootVo;
 
 public class UserVo extends BootVo {
 

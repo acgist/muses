@@ -12,9 +12,9 @@ import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
-import com.acgist.boot.pojo.bean.Message;
-import com.acgist.boot.pojo.bean.MessageCode;
-import com.acgist.boot.pojo.bean.User;
+import com.acgist.boot.pojo.Message;
+import com.acgist.boot.pojo.MessageCode;
+import com.acgist.boot.pojo.User;
 import com.acgist.gateway.ResponseUtils;
 import com.acgist.user.service.IUserService;
 import com.nimbusds.jose.JWSObject;

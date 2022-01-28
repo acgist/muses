@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.acgist.boot.pojo.bean.User;
+import com.acgist.boot.pojo.User;
 import com.acgist.user.pojo.dto.UserDto;
 import com.acgist.user.pojo.entity.PathEntity;
 import com.acgist.user.pojo.entity.RoleEntity;

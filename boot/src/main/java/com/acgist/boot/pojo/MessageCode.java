@@ -1,4 +1,4 @@
-package com.acgist.boot.pojo.bean;
+package com.acgist.boot.pojo;
 
 /**
  * 状态编码

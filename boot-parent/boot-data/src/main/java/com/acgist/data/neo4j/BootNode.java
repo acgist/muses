@@ -1,6 +1,6 @@
 package com.acgist.data.neo4j;
 
-import com.acgist.boot.pojo.bean.PojoCopy;
+import com.acgist.boot.pojo.PojoCopy;
 
 /**
  * Neo4j节点

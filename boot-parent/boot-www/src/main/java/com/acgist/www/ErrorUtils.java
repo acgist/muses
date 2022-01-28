@@ -23,8 +23,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.acgist.boot.MessageCodeException;
-import com.acgist.boot.pojo.bean.Message;
-import com.acgist.boot.pojo.bean.MessageCode;
+import com.acgist.boot.pojo.Message;
+import com.acgist.boot.pojo.MessageCode;
 
 /**
  * 异常处理工具

@@ -1,6 +1,6 @@
 package com.acgist.data.es;
 
-import com.acgist.boot.pojo.bean.PojoCopy;
+import com.acgist.boot.pojo.PojoCopy;
 
 /**
  * ES文档

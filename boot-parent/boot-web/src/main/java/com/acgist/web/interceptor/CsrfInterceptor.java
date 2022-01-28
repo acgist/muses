@@ -10,7 +10,7 @@ import org.springframework.http.HttpMethod;
 
 import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
-import com.acgist.boot.pojo.bean.MessageCode;
+import com.acgist.boot.pojo.MessageCode;
 import com.acgist.www.ErrorUtils;
 import com.acgist.www.interceptor.WwwInterceptor;
 

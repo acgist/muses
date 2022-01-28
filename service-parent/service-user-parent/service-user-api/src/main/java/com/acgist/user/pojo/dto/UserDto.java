@@ -2,7 +2,7 @@ package com.acgist.user.pojo.dto;
 
 import java.math.BigInteger;
 
-import com.acgist.data.dto.BootDto;
+import com.acgist.boot.pojo.BootDto;
 
 public class UserDto extends BootDto {
 

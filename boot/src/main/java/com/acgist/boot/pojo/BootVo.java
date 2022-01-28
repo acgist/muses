@@ -1,6 +1,4 @@
-package com.acgist.data.vo;
-
-import com.acgist.boot.pojo.bean.PojoCopy;
+package com.acgist.boot.pojo;
 
 /**
  * VO

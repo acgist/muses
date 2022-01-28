@@ -1,6 +1,6 @@
 package com.acgist.rest;
 
-import com.acgist.boot.pojo.bean.User;
+import com.acgist.boot.pojo.User;
 
 /**
  * 用户上下文

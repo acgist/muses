@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.acgist.boot.pojo.bean.Message;
+import com.acgist.boot.pojo.Message;
 import com.acgist.www.ErrorUtils;
 
 /**

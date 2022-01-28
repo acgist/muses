@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.acgist.boot.pojo.bean.User;
+import com.acgist.boot.pojo.User;
 
 public class TemplateQueryUtilsTest {
 

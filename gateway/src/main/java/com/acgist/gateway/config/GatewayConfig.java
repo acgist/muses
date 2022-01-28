@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
 import com.acgist.boot.MessageCodeException;
-import com.acgist.boot.pojo.bean.Message;
-import com.acgist.boot.pojo.bean.MessageCode;
+import com.acgist.boot.pojo.Message;
+import com.acgist.boot.pojo.MessageCode;
 import com.acgist.gateway.ResponseUtils;
 
 import reactor.core.publisher.Mono;

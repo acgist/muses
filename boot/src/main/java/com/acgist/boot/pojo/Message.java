@@ -1,4 +1,4 @@
-package com.acgist.boot.pojo.bean;
+package com.acgist.boot.pojo;
 
 import java.io.Serializable;
 
