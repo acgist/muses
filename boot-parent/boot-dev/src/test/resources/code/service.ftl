@@ -1,6 +1,6 @@
-package com.acgist.admin.${module}.service;
+package ${modulePackage}${module}.service;
 
-import com.acgist.admin.data.${module}.entity.${prefix};
+import ${modulePackage}${module}.pojo.entity.${prefix};
 import com.acgist.service.BootService;
 
 /**

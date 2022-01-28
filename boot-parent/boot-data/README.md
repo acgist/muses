@@ -223,7 +223,6 @@ spring:
 <dependency>
 	<groupId>com.querydsl</groupId>
 	<artifactId>querydsl-apt</artifactId>
-	<scope>provided</scope>
 </dependency>
 ```
 

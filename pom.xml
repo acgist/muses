@@ -34,6 +34,7 @@
 		<!-- 版本配置 -->
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
+		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<mybatis.plus.version>3.5.1</mybatis.plus.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
 		<oauth2.authorization.version>0.2.1</oauth2.authorization.version>
@@ -211,6 +212,16 @@
 				<groupId>javax.ws.rs</groupId>
 				<artifactId>javax.ws.rs-api</artifactId>
 				<version>${ws.rs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct</artifactId>
+				<version>${mapstruct.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mapstruct</groupId>
+				<artifactId>mapstruct-processor</artifactId>
+				<version>${mapstruct.version}</version>
 			</dependency>
 			<!-- MyBatis-Plus -->
 			<dependency>

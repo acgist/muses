@@ -1,8 +1,8 @@
-package com.acgist.admin.${module}.dao.repository;
+package ${modulePackage}${module}.dao.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.acgist.admin.data.${module}.entity.${prefix};
+import ${modulePackage}${module}.pojo.entity.${prefix};
 import com.acgist.dao.repository.BootRepository;
 
 /**

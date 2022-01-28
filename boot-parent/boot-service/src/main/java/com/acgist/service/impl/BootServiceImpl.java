@@ -31,6 +31,15 @@ public abstract class BootServiceImpl<T extends BootEntity> implements BootServi
 	 * Repository
 	 */
 	protected BootRepository<T> repository;
+	
+	/**
+	 * 可以通过@Autowired注解构造函数注入
+	 * 
+	 * @param mapper mapper
+	 */
+	public BootServiceImpl(BootMapper<T> mapper) {
+		this.mapper = mapper;
+	}
 
 	/**
 	 * 可以通过@Autowired注解构造函数注入

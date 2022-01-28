@@ -36,7 +36,7 @@ public class FreemarkerUtils {
 		this.configuration = new Configuration(Configuration.VERSION_2_3_30);
 		this.configuration.setDefaultEncoding(MusesConfig.CHARSET_VALUE);
 		this.configuration.setClassicCompatible(true);
-		this.configuration.setClassForTemplateLoading(FreemarkerUtils.class, "/com/acgist/code");
+		this.configuration.setClassForTemplateLoading(FreemarkerUtils.class, "/code");
 	}
 
 	/**

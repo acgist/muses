@@ -30,17 +30,27 @@ public class CodeBuilderTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CodeBuilderTest.class);
 	
 	private String path;
+	// 输出目录
 	private String target = "/code";
+	// 基本路径
 	private String basePackage = "com.acgist";
+	// ID字段
+	private String id = "id";
+	// 输出JPA
 	private boolean jpa = true;
+	// 输出MyBatis
 	private boolean mybatis = true;
+	// 模块路径
 	private String modulePackage = this.basePackage + ".admin.";
-	private String dataPackage = this.modulePackage + ".data.";
+	// Mapper
 	private String mapperPackage = "mybatis.mapper.";
+	// Java目录
 	private String targetJava = "/java/";
+	// 资源目录
 	private String targetResources = "/resources/";
-	private String[] skipColumns = new String[] { };
-	private FreemarkerUtils freemarkerUtils = new FreemarkerUtils();
+	// 跳过字段
+//	private String[] skipColumns = new String[] {};
+	private String[] skipColumns = new String[] { "id", "create_date", "modify_date" };
 	// 顶级路径：t_acgist_user_list=com.acgist.admin.data.acgist.AcgistUserList
 	// 完整路径：t_acgist_user_list=com.acgist.admin.data.acgist.user.list.AcgistUserList
 	private boolean absolute = false;
@@ -49,10 +59,12 @@ public class CodeBuilderTest {
 	private String user = "root";
 	private String password = "";
 	private String driverClass = "com.mysql.cj.jdbc.Driver";
+	private FreemarkerUtils freemarkerUtils = new FreemarkerUtils();
 	
 	@Test
 	public void testBuildAll() throws Exception {
 		this.buildCode("acgist", "t_user", false);
+		this.buildCode("acgist", "t_user_role", false);
 	}
 	
 	/**
@@ -68,6 +80,11 @@ public class CodeBuilderTest {
 		this.path = new ClassPathResource("./").getFile().getParentFile().getAbsolutePath() + this.target;
 		LOGGER.info("输出目录：{}", this.path);
 		final Map<Object, Object> map = new HashMap<>();
+		map.put("id", this.id);
+		map.put("jpa", this.jpa);
+		map.put("mybatis", this.mybatis);
+		map.put("modulePackage", this.modulePackage);
+		map.put("hasId", Arrays.asList(this.skipColumns).indexOf(this.id) < 0);
 		final List<Column> list = this.loadTable(map, table, removePrefix);
 		// 作者
 		map.put("author", author);
@@ -89,12 +106,12 @@ public class CodeBuilderTest {
 		// 大写类型：SysAccount
 		map.put("prefix", prefix);
 		// 小写类型：sysAccount
-		map.put("prefixLower", prefix.substring(0, 1).toLowerCase() + prefix.substring(1));
+		map.put("prefixLower", lowerFirst(prefix));
 		// 字段信息
 		map.put("columns", list);
 		LOGGER.info("生成代码变量：{}", map);
 		LOGGER.info("生成data代码：{}", table);
-		this.buildData(map);
+		this.buildPojo(map);
 		LOGGER.info("生成dao代码：{}", table);
 		this.buildDao(map);
 		LOGGER.info("生成service代码：{}", table);
@@ -117,9 +134,31 @@ public class CodeBuilderTest {
 		}
 		String target = names[0];
 		for (int index = 1; index < names.length; index++) {
-			target += names[index].substring(0, 1).toUpperCase() + names[index].substring(1);
+			target += upperFirst(names[index]);
 		}
 		return target;
+	}
+	
+	/**
+	 * 首个字母大写
+	 * 
+	 * @param value 原始字符
+	 * 
+	 * @return 目标字符
+	 */
+	public static final String upperFirst(String value) {
+		return value.substring(0, 1).toUpperCase() + value.substring(1);
+	}
+	
+	/**
+	 * 首个字母大写
+	 * 
+	 * @param value 原始字符
+	 * 
+	 * @return 目标字符
+	 */
+	public static final String lowerFirst(String value) {
+		return value.substring(0, 1).toLowerCase() + value.substring(1);
 	}
 	
 	/**
@@ -195,24 +234,50 @@ public class CodeBuilderTest {
 		return list;
 	}
 	
-	public void buildData(Map<Object, Object> map) throws Exception {
-		String path = this.dataPackage + map.get("module") + ".entity";
+	/**
+	 * 生成Pojo
+	 * 
+	 * @param map 参数
+	 * 
+	 * @throws Exception 异常
+	 */
+	public void buildPojo(Map<Object, Object> map) throws Exception {
+		String path = this.modulePackage + map.get("module") + ".pojo.entity";
 		path = this.targetJava + path.replace('.', '/');
 		this.freemarkerUtils.build("entity.ftl", map, this.path + path, map.get("prefix") + ".java");
 	}
 	
+	/**
+	 * 生成Dao
+	 * 
+	 * @param map 参数
+	 * 
+	 * @throws Exception 异常
+	 */
 	public void buildDao(Map<Object, Object> map) throws Exception {
-		String path = this.modulePackage + map.get("module") + ".dao.mapper";
-		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("mapper.ftl", map, this.path + path, map.get("prefix") + "Mapper.java");
-		path = this.mapperPackage + map.get("module");
-		path = this.targetResources + path.replace('.', '/');
-		this.freemarkerUtils.build("mapper.xml.ftl", map, this.path + path, map.get("prefix") + "Mapper.xml");
-		path = this.modulePackage + map.get("module") + ".dao.repository";
-		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("repository.ftl", map, this.path + path, map.get("prefix") + "Repository.java");
+		String path;
+		if(this.mybatis) {
+			path = this.modulePackage + map.get("module") + ".dao.mapper";
+			path = this.targetJava + path.replace('.', '/');
+			this.freemarkerUtils.build("mapper.ftl", map, this.path + path, map.get("prefix") + "Mapper.java");
+			path = this.mapperPackage + map.get("module");
+			path = this.targetResources + path.replace('.', '/');
+			this.freemarkerUtils.build("mapper.xml.ftl", map, this.path + path, map.get("prefix") + "Mapper.xml");
+		}
+		if(this.jpa) {
+			path = this.modulePackage + map.get("module") + ".dao.repository";
+			path = this.targetJava + path.replace('.', '/');
+			this.freemarkerUtils.build("repository.ftl", map, this.path + path, map.get("prefix") + "Repository.java");
+		}
 	}
 	
+	/**
+	 * 生成Service
+	 * 
+	 * @param map 参数
+	 * 
+	 * @throws Exception 异常
+	 */
 	public void buildService(Map<Object, Object> map) throws Exception {
 		String path = this.modulePackage + map.get("module") + ".service";
 		path = this.targetJava + path.replace('.', '/');
@@ -222,21 +287,41 @@ public class CodeBuilderTest {
 		this.freemarkerUtils.build("service.impl.ftl", map, this.path + path, map.get("prefix") + "ServiceImpl.java");
 	}
 
+	/**
+	 * 生成Controller
+	 * 
+	 * @param map 参数
+	 * 
+	 * @throws Exception 异常
+	 */
 	public void buildController(Map<Object, Object> map) throws Exception {
 		String path = this.modulePackage + map.get("module") + ".controller";
 		path = this.targetJava + path.replace('.', '/');
 		this.freemarkerUtils.build("controller.ftl", map, this.path + path, map.get("prefix") + "Controller.java");
 	}
 	
+	/**
+	 * 字段
+	 * 
+	 * @author acgist
+	 */
 	public static class Column {
 		
-		// 列名：t_id
+		/**
+		 * 列名：t_id
+		 */
 		private String name;
-		// 类型
+		/**
+		 * 类型
+		 */
 		private String type;
-		// 名称：id
+		/**
+		 * Java字段：id
+		 */
 		private String value;
-		// 描述
+		/**
+		 * 描述
+		 */
 		private String comment;
 		
 		public Column(String name, String type, String value, String comment) {
@@ -244,6 +329,14 @@ public class CodeBuilderTest {
 			this.type = type;
 			this.value = value;
 			this.comment = comment;
+		}
+		
+		public String getGetter() {
+			return "get" + upperFirst(this.value);
+		}
+		
+		public String getSetter() {
+			return "set" + upperFirst(this.value);
 		}
 		
 		public String getName() {

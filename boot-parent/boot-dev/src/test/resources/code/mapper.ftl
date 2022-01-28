@@ -1,8 +1,8 @@
-package com.acgist.admin.${module}.dao.mapper;
+package ${modulePackage}${module}.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.acgist.admin.data.${module}.entity.${prefix};
+import ${modulePackage}${module}.pojo.entity.${prefix};
 import com.acgist.dao.mapper.BootMapper;
 
 /**
