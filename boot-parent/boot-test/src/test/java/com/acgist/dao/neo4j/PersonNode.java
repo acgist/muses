@@ -1,4 +1,4 @@
-package com.acgist.data.neo4j;
+package com.acgist.dao.neo4j;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
+
+import com.acgist.data.neo4j.BootNode;
 
 @Node("person")
 public class PersonNode extends BootNode {

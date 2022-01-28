@@ -1,4 +1,4 @@
-package com.acgist.data.neo4j;
+package com.acgist.dao.neo4j;
 
 import org.elasticsearch.common.collect.List;
 import org.junit.jupiter.api.Test;
@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.data.DataApplication;
+import com.acgist.dao.DaoApplication;
 
-@SpringBootTest(classes = DataApplication.class)
+@SpringBootTest(classes = DaoApplication.class)
 public class Neo4jTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Neo4jTest.class);

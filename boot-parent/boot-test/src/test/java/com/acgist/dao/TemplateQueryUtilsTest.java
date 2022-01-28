@@ -1,4 +1,4 @@
-package com.acgist.data;
+package com.acgist.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acgist.boot.pojo.User;
+import com.acgist.data.TemplateQueryUtils;
 
 public class TemplateQueryUtilsTest {
 

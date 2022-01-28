@@ -5,13 +5,16 @@ spring:
     allow-bean-definition-overriding: true
   profiles:
     active: dev
-  cloud:
-    nacos:
-      username: nacos
-      password: nacos
-      discovery:
-        namespace: ${spring.profiles.active}
-        server-addr: localhost:8848
+  shardingsphere:
+    enabled: false
+  data:
+    neo4j:
+      uri: bolt://localhost:7687
+      username: neo4j
+      password: neo4j
+    elasticsearch:
+      cluster-name: ${spring.application.name:muses}
+      cluster-nodes: localhost:9300
   datasource:
     url: jdbc:mysql://localhost:3306/muses?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root

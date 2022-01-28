@@ -1,8 +1,10 @@
-package com.acgist.data.neo4j;
+package com.acgist.dao.neo4j;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
+
+import com.acgist.data.neo4j.BootRelationship;
 
 @RelationshipProperties
 public class PersonRelationship extends BootRelationship {

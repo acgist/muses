@@ -1,4 +1,4 @@
-package com.acgist.data.es;
+package com.acgist.dao.es;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.data.DataApplication;
+import com.acgist.dao.DaoApplication;
 
 /**
  * 9300：TCP
@@ -14,7 +14,7 @@ import com.acgist.data.DataApplication;
  * 
  * @author acgist
  */
-@SpringBootTest(classes = DataApplication.class)
+@SpringBootTest(classes = DaoApplication.class)
 public class ESTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ESTest.class);

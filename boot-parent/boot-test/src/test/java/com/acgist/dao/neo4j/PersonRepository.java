@@ -1,4 +1,4 @@
-package com.acgist.data.neo4j;
+package com.acgist.dao.neo4j;
 
 import java.util.List;
 

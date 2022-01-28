@@ -1,11 +1,10 @@
-package com.acgist.data.es;
+package com.acgist.dao.es;
 
 import java.util.List;
 
 import org.springframework.data.elasticsearch.annotations.Query;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-public interface ArticleRepository extends ElasticsearchRepository<ArticleDocument, Long> {
+public interface ArticleRepository extends BootRepository<ArticleDocument> {
 
 	List<ArticleDocument> findByContent(String content);
 

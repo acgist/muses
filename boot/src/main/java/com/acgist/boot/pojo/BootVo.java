@@ -5,7 +5,7 @@ package com.acgist.boot.pojo;
  * 
  * @author acgist
  */
-public class BootVo extends PojoCopy {
+public class BootVo extends EntityCopy {
 
 	private static final long serialVersionUID = 1L;
 

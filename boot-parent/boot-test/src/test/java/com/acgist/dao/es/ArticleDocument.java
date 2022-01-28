@@ -1,9 +1,11 @@
-package com.acgist.data.es;
+package com.acgist.dao.es;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.acgist.data.es.BootDocument;
 
 @Document(indexName = "index_article")
 public class ArticleDocument extends BootDocument {
