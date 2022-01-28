@@ -2,7 +2,7 @@ package com.acgist.gateway.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.acgist.boot.dao.repository.BootRepository;
+import com.acgist.dao.repository.BootRepository;
 import com.acgist.gateway.pojo.entity.GatewayEntity;
 
 @Repository

@@ -3,6 +3,7 @@ package com.acgist.data.query;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,8 +15,10 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
+import com.acgist.boot.StringUtils;
 import com.acgist.data.entity.DataEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
@@ -28,6 +31,41 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
  */
 public class FilterQuery<T extends DataEntity> {
 
+	/**
+	 * Like查询
+	 */
+	public static final Function<Object, String> LIKE = source -> "%" + source + "%";
+	
+	/**
+	 * 通过MyBatis注解获取数据库列名
+	 * 
+	 * @param <T> 类型
+	 * 
+	 * @param entity entity
+	 * @param name Java字段名称
+	 * 
+	 * @return 数据库列名
+	 */
+	private static final <T> String column(Class<T> entity, final String name) {
+		String column = name;
+		try {
+			final Field field = entity.getDeclaredField(name);
+			final TableField tableField = field.getAnnotation(TableField.class);
+			if(tableField != null) {
+				column = tableField.value();
+			}
+			if(StringUtils.isEmpty(column)) {
+				final TableId tableId = field.getAnnotation(TableId.class);
+				if(tableId != null) {
+					column = tableId.value();
+				}
+			}
+		} catch (NoSuchFieldException | SecurityException e) {
+			throw new IllegalArgumentException("反射异常：" + name, e);
+		}
+		return StringUtils.isEmpty(column) ? name : column;
+	}
+	
 	/**
 	 * 过滤条件
 	 * 
@@ -64,7 +102,7 @@ public class FilterQuery<T extends DataEntity> {
             IS_NULL,
             // is not null
             IS_NOT_NULL;
-        	
+
         	public Filter of(String name, Object value) {
         		return new Filter(name, value, this);
         	}
@@ -93,7 +131,18 @@ public class FilterQuery<T extends DataEntity> {
             this.type = type;
         }
 
-        // TODO：JDK17
+        /**
+         * JPA查询条件
+         * 
+         * TODO：JDK17
+         * 
+         * @param <T> 类型
+         * 
+         * @param root root
+         * @param builder builder
+         * 
+         * @return 查询条件
+         */
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public <T> Predicate predicate(Root<T> root, CriteriaBuilder builder) {
             switch (this.type) {
@@ -112,7 +161,7 @@ public class FilterQuery<T extends DataEntity> {
             case IN:
                 return root.get(this.name).in(this.value);
             case LIKE:
-                return builder.like(root.get(this.name), "%" + this.value + "%");
+                return builder.like(root.get(this.name), LIKE.apply(this.value));
             case BETWEEN:
                 final List<?> list = (List<?>) this.value;
                 return builder.between(root.get(this.name), (Comparable) list.get(0), (Comparable) list.get(1));
@@ -125,15 +174,16 @@ public class FilterQuery<T extends DataEntity> {
             }
         }
         
+        /**
+         * MyBatis查询条件
+         * 
+         * @param <T> 类型
+         * 
+         * @param entity entity
+         * @param wrapper wrapper
+         */
         public <T> void predicate(Class<T> entity, QueryWrapper<T> wrapper) {
-        	String column = this.name;
-			try {
-				final Field field = entity.getDeclaredField(this.name);
-				final TableField annotation = field.getAnnotation(TableField.class);
-				column = annotation.value();
-			} catch (NoSuchFieldException | SecurityException e) {
-				throw new IllegalArgumentException("反射异常：" + this.name, e);
-			}
+        	final String column = column(entity, this.name);
         	switch (this.type) {
         	case EQ:
         		wrapper.eq(column, this.value);
@@ -157,7 +207,7 @@ public class FilterQuery<T extends DataEntity> {
         		wrapper.in(column, this.value);
         		break;
         	case LIKE:
-        		wrapper.like(column, "%" + this.value + "%");
+        		wrapper.like(column, LIKE.apply(this.value));
         		break;
         	case BETWEEN:
         		final List<?> list = (List<?>) this.value;
@@ -207,6 +257,11 @@ public class FilterQuery<T extends DataEntity> {
      */
     public static class Sorted {
 
+    	/**
+    	 * 排序类型
+    	 * 
+    	 * @author acgist
+    	 */
         public enum Type {
             // 递增
             ASC,
@@ -228,6 +283,16 @@ public class FilterQuery<T extends DataEntity> {
             this.type = type;
         }
 
+        /**
+         * JPA排序
+         * 
+         * @param <T> 类型
+         * 
+         * @param root root
+         * @param builder builder
+         * 
+         * @return 排序
+         */
         public <T> Order order(Root<T> root, CriteriaBuilder builder) {
             switch (this.type) {
             case ASC:
@@ -239,6 +304,13 @@ public class FilterQuery<T extends DataEntity> {
             }
         }
         
+        /**
+         * MyBatis排序
+         * 
+         * @param <T> 类型
+         * 
+         * @param wrapper wrapper
+         */
         public <T> void order(QueryWrapper<T> wrapper) {
         	switch (this.type) {
         	case ASC:
@@ -271,6 +343,23 @@ public class FilterQuery<T extends DataEntity> {
         return new FilterQuery<T>();
     }
     
+    public FilterQuery<T> nullable() {
+        this.nullable = true;
+        return this;
+    }
+
+    public FilterQuery<T> nullless() {
+        this.nullable = false;
+        return this;
+    }
+    
+    /**
+     * 合并过滤条件
+     * 
+     * @param list 过滤条件
+     * 
+     * @return this
+     */
     public FilterQuery<T> merge(List<Filter> list) {
     	if(CollectionUtils.isEmpty(list)) {
     		return this;
@@ -339,16 +428,11 @@ public class FilterQuery<T extends DataEntity> {
         return this;
     }
 
-    public FilterQuery<T> nullable() {
-        this.nullable = true;
-        return this;
-    }
-
-    public FilterQuery<T> nullless() {
-        this.nullable = false;
-        return this;
-    }
-    
+    /**
+     * 创建JPA查询条件
+     * 
+     * @return JPA查询条件
+     */
     public Specification<T> build() {
         return new Specification<T>() {
             private static final long serialVersionUID = 1L;
@@ -366,7 +450,14 @@ public class FilterQuery<T extends DataEntity> {
         };
     }
     
-    public Wrapper<T> buildWrapper(Class<T> entity) {
+    /**
+     * 创建MyBatis查询条件
+     * 
+     * @param entity entity
+     * 
+     * @return MyBatis查询条件
+     */
+    public Wrapper<T> build(Class<T> entity) {
     	final QueryWrapper<T> wrapper = new QueryWrapper<>();
     	FilterQuery.this.filter.stream()
     		.filter(filter -> FilterQuery.this.nullable || filter.value != null)

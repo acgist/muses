@@ -25,11 +25,25 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
+			<artifactId>boot-dev</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
 			<artifactId>boot-data</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>

@@ -25,6 +25,13 @@
 * `[#]` 没有完成
 * `[~]` 日常任务
 
+#### Service规范
+
+* 远程`Service`接口需要使用`I`开头：`IUserService`
+* 本地`Service`接口不要使用`I`开头：`UserService`
+* 实现使用`Impl`结尾：`UserServiceImpl`
+* 不要使用继承`BootService`提供远程服务
+
 #### 符号说明
 
 * `+`：必选
