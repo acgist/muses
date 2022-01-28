@@ -5,13 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.BootEntity;
 
 @Entity
 @Table(name = "t_gateway", indexes = {
 	@Index(name = "index_gateway_query_id", columnList = "query_id", unique = true)
 })
-public class GatewayEntity extends DataEntity {
+public class GatewayEntity extends BootEntity {
 
 	private static final long serialVersionUID = 1L;
 

@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -36,7 +36,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "${table}")
 @TableName(value = "${table}")
 @EqualsAndHashCode(callSuper = false)
-public class ${prefix} extends DataEntity {
+public class ${prefix} extends BootEntity {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,13 +1,13 @@
 package com.acgist.gateway.pojo.dto;
 
-import com.acgist.boot.pojo.bean.PojoCopy;
+import com.acgist.data.dto.BootDto;
 
 /**
  * 网关DTO
  * 
  * @author acgist
  */
-public class GatewayDto extends PojoCopy {
+public class GatewayDto extends BootDto {
 
 	private static final long serialVersionUID = 1L;
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.BootEntity;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.data.query.FilterQuery.Filter;
 
@@ -18,7 +18,7 @@ import com.acgist.data.query.FilterQuery.Filter;
  * 
  * @param <T> 类型
  */
-public interface BootService<T extends DataEntity> {
+public interface BootService<T extends BootEntity> {
 
 
 	/**

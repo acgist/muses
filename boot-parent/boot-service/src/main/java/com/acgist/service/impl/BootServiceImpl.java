@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.dao.repository.BootRepository;
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.BootEntity;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.data.query.FilterQuery.Filter;
 import com.acgist.service.BootService;
@@ -21,7 +21,7 @@ import com.acgist.service.BootService;
  *
  * @param <T> 类型
  */
-public abstract class BootServiceImpl<T extends DataEntity> implements BootService<T> {
+public abstract class BootServiceImpl<T extends BootEntity> implements BootService<T> {
 
 	/**
 	 * Mapper

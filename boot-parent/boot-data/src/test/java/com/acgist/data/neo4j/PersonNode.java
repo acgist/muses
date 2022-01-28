@@ -7,10 +7,8 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import com.acgist.boot.pojo.bean.PojoCopy;
-
 @Node("person")
-public class PersonNode extends PojoCopy {
+public class PersonNode extends BootNode {
 
 	private static final long serialVersionUID = 1L;
 

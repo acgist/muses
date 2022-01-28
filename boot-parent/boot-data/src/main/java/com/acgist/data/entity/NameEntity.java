@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
  * @author acgist
  */
 @MappedSuperclass
-public abstract class NameEntity extends DataEntity {
+public abstract class NameEntity extends BootEntity {
 
 	private static final long serialVersionUID = 1L;
 

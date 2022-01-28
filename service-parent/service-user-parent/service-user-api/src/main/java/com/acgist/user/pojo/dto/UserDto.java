@@ -2,9 +2,9 @@ package com.acgist.user.pojo.dto;
 
 import java.math.BigInteger;
 
-import com.acgist.boot.pojo.bean.PojoCopy;
+import com.acgist.data.dto.BootDto;
 
-public class UserDto extends PojoCopy {
+public class UserDto extends BootDto {
 
 	private static final long serialVersionUID = 1L;
 

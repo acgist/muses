@@ -1,6 +1,6 @@
 package com.acgist.dao.mapper;
 
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.BootEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *
  * @param <T> 类型
  */
-public interface BootMapper<T extends DataEntity> extends BaseMapper<T> {
+public interface BootMapper<T extends BootEntity> extends BaseMapper<T> {
 
 }

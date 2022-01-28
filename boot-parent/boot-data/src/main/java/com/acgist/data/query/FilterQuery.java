@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
 import com.acgist.boot.StringUtils;
-import com.acgist.data.entity.DataEntity;
+import com.acgist.data.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -29,7 +29,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
  *
  * @param <T> 类型
  */
-public class FilterQuery<T extends DataEntity> {
+public class FilterQuery<T extends BootEntity> {
 
 	/**
 	 * Like查询
@@ -339,7 +339,7 @@ public class FilterQuery<T extends DataEntity> {
      */
     private List<Sorted> sorted = new ArrayList<>();
 
-    public static final <T extends DataEntity> FilterQuery<T> builder() {
+    public static final <T extends BootEntity> FilterQuery<T> builder() {
         return new FilterQuery<T>();
     }
     

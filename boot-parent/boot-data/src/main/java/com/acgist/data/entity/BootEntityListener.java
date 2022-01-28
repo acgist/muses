@@ -10,16 +10,16 @@ import javax.persistence.PreUpdate;
  * 
  * @author acgist
  */
-public class DataEntityListener {
+public class BootEntityListener {
 
 	@PrePersist
-	public void prePersist(DataEntity entity) {
+	public void prePersist(BootEntity entity) {
 		entity.setCreateDate(new Date());
 		entity.setModifyDate(new Date());
 	}
 
 	@PreUpdate
-	public void preUpdate(DataEntity entity) {
+	public void preUpdate(BootEntity entity) {
 		entity.setModifyDate(new Date());
 	}
 

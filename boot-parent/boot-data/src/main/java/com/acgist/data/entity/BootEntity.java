@@ -14,6 +14,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.acgist.boot.pojo.bean.PojoCopy;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -23,9 +25,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * 
  * @author acgist
  */
-@EntityListeners(DataEntityListener.class)
+@EntityListeners(BootEntityListener.class)
 @MappedSuperclass
-public abstract class DataEntity extends PojoCopy {
+public abstract class BootEntity extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,6 +40,7 @@ public abstract class DataEntity extends PojoCopy {
 	 */
 	@Id
 	@Column(name = "id")
+	@TableId(value = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "snowflake")
 	@GenericGenerator(name = "snowflake", strategy = "com.acgist.data.entity.SnowflakeGenerator")
 	private Long id;
@@ -45,6 +48,7 @@ public abstract class DataEntity extends PojoCopy {
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
+	@TableField(value = "create_date")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
@@ -52,6 +56,7 @@ public abstract class DataEntity extends PojoCopy {
 	 * 修改时间
 	 */
 	@Column(name = "modify_date")
+	@TableField(value = "modify_date")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date modifyDate;
@@ -86,8 +91,8 @@ public abstract class DataEntity extends PojoCopy {
 			return true;
 		}
 		// 子类必须重写
-		if(obj instanceof DataEntity) {
-			final DataEntity entity = (DataEntity) obj;
+		if(obj instanceof BootEntity) {
+			final BootEntity entity = (BootEntity) obj;
 			return Objects.equals(this.getId(), entity.getId());
 		}
 		return false;

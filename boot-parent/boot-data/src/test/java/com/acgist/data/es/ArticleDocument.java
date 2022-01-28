@@ -5,10 +5,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import com.acgist.boot.pojo.bean.PojoCopy;
-
 @Document(indexName = "index_article")
-public class ArticleDocument extends PojoCopy {
+public class ArticleDocument extends BootDocument {
 
 	private static final long serialVersionUID = 1L;
 
