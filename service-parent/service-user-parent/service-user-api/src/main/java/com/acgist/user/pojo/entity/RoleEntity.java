@@ -11,7 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.StateEntity;
+import com.acgist.data.pojo.entity.StateEntity;
 
 @Entity
 @Table(name = "t_role")

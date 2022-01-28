@@ -3,7 +3,7 @@ package com.acgist.dao.repository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.acgist.data.entity.BootEntity;
+import com.acgist.data.pojo.entity.BootEntity;
 
 /**
  * JPA Repository

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.dao.repository.BootRepository;
-import com.acgist.data.entity.BootEntity;
+import com.acgist.data.pojo.entity.BootEntity;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.data.query.FilterQuery.Filter;
 import com.acgist.service.BootService;

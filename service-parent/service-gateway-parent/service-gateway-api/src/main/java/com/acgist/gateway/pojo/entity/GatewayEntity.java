@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.BootEntity;
+import com.acgist.data.pojo.entity.BootEntity;
 
 @Entity
 @Table(name = "t_gateway", indexes = {

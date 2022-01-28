@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.boot.service.IdService;
-import com.acgist.data.entity.SnowflakeGenerator;
+import com.acgist.data.pojo.entity.SnowflakeGenerator;
 
 /**
  * 数据自动配置

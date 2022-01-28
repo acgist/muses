@@ -1,6 +1,6 @@
 package com.acgist.dao.mapper;
 
-import com.acgist.data.entity.BootEntity;
+import com.acgist.data.pojo.entity.BootEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import com.acgist.data.entity.StateEntity;
+import com.acgist.data.pojo.entity.StateEntity;
 
 @Entity
 @Table(name = "t_path")

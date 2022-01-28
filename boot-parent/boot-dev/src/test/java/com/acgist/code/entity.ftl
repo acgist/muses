@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.acgist.data.entity.BootEntity;
+import com.acgist.data.pojo.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -49,7 +49,7 @@ public class ${prefix} extends BootEntity {
 	@Column(name = "${column.name}")
 	@TableId(value = "${column.name}")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "snowflake")
-	@GenericGenerator(name = "snowflake", strategy = "com.acgist.data.entity.SnowflakeGenerator")
+	@GenericGenerator(name = "snowflake", strategy = "com.acgist.data.pojo.entity.SnowflakeGenerator")
 	<#else>
 	@Column(name = "${column.name}")
 	@TableField(value = "${column.name}")
