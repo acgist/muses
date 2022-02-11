@@ -39,7 +39,6 @@ public class PathEntity extends StateEntity {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="parent_id", foreignKey = @ForeignKey(name = "key_path_parent_id"))
-	@JsonIgnore
 	private PathEntity parent;
 	/**
 	 * 子集

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -45,8 +46,14 @@ public class UserRepositoryTest {
 	private UserRepository userRepository;
 	
 	@Test
+	@Transactional
 	public void testFind() {
-		LOGGER.info("{}", this.userRepository.findById(1L));
+		final Optional<UserEntity> optional = this.userRepository.findById(1L);
+		LOGGER.error("{}", optional.get());
+		LOGGER.error("{}", optional.get().getRoles());
+		optional.get().getRoles().forEach(role -> {
+			LOGGER.error("{}", role.getPaths());
+		});
 	}
 	
 	@Test
