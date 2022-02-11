@@ -2,7 +2,6 @@ package com.acgist.user.pojo.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.acgist.data.pojo.entity.StateEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_user", indexes = {
@@ -34,7 +34,7 @@ public class UserEntity extends StateEntity {
 	/**
 	 * 角色
 	 */
-	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "t_user_role",
 		joinColumns = @JoinColumn(
@@ -48,6 +48,7 @@ public class UserEntity extends StateEntity {
 			foreignKey = @ForeignKey(name = "key_user_role_role_id")
 		)
 	)
+	@JsonIgnore
 	private List<RoleEntity> roles;
 
 	public String getPassword() {

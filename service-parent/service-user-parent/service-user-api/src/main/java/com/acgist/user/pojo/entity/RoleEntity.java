@@ -2,7 +2,6 @@ package com.acgist.user.pojo.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
@@ -12,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.acgist.data.pojo.entity.StateEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_role")
@@ -24,7 +24,7 @@ public class RoleEntity extends StateEntity {
 	/**
 	 * 权限
 	 */
-	@ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 	name = "t_role_path",
 		joinColumns = @JoinColumn(
@@ -38,6 +38,7 @@ public class RoleEntity extends StateEntity {
 			foreignKey = @ForeignKey(name = "key_role_path_path_id")
 		)
 	)
+	@JsonIgnore
 	private List<PathEntity> paths;
 
 	public List<PathEntity> getPaths() {

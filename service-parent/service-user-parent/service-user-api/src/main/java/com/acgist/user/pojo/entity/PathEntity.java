@@ -14,6 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.acgist.data.pojo.entity.StateEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_path")
@@ -38,12 +39,14 @@ public class PathEntity extends StateEntity {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="parent_id", foreignKey = @ForeignKey(name = "key_path_parent_id"))
+	@JsonIgnore
 	private PathEntity parent;
 	/**
 	 * 子集
 	 */
 	@OrderBy(value = "sort ASC")
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<PathEntity> children;
 
 	public String getPath() {

@@ -45,6 +45,11 @@ public class UserRepositoryTest {
 	private UserRepository userRepository;
 	
 	@Test
+	public void testFind() {
+		LOGGER.info("{}", this.userRepository.findById(1L));
+	}
+	
+	@Test
 	public void testSave() {
 		final UserEntity entity = new UserEntity();
 		entity.setName("acgist");
