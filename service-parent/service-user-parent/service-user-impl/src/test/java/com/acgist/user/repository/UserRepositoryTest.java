@@ -29,11 +29,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.acgist.boot.CostUtils;
 import com.acgist.main.UserApplication;
 import com.acgist.user.pojo.dto.UserDto;
+import com.acgist.user.pojo.entity.RoleEntity;
 import com.acgist.user.pojo.entity.UserEntity;
 import com.acgist.user.pojo.query.UserQuery;
 
@@ -57,12 +59,22 @@ public class UserRepositoryTest {
 	}
 	
 	@Test
+	@Commit
+	@Transactional(readOnly = false)
 	public void testSave() {
+//		final UserEntity old = this.userRepository.findByName("acgist");
+//		this.userRepository.delete(old);
 		final UserEntity entity = new UserEntity();
 		entity.setName("acgist");
 		entity.setPassword(new BCryptPasswordEncoder().encode("123456"));
 		entity.setMemo("测试");
-		this.userRepository.save(entity);
+		final RoleEntity roleEntity = new RoleEntity();
+		roleEntity.setId(1L);
+		entity.setRoles(List.of(roleEntity));
+//		this.userRepository.save(entity);
+		this.userRepository.saveAndFlush(entity);
+		entity.setMemo("1234");
+		entity.setRoles(List.of());
 	}
 	
 	@Test
