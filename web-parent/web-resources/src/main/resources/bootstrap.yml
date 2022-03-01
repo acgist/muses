@@ -2,6 +2,7 @@ spring:
   application:
     name: web-resources
   main:
+    allow-circular-references: true
     allow-bean-definition-overriding: true
   profiles:
     active: @profile@

@@ -17,7 +17,7 @@ import com.acgist.user.repository.UserRepository;
 import com.acgist.user.service.IUserService;
 
 @DubboService(protocol = "dubbo", retries = 0, timeout = 10000)
-public class UserService implements IUserService {
+public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private UserRepository userRepository;

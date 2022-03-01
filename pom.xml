@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.2</version>
+		<version>2.6.3</version>
 		<relativePath />
 	</parent>
 
@@ -29,18 +29,18 @@
 		<system.maven.vendor>acgist</system.maven.vendor>
 		<system.maven.module>com.acgist.muses</system.maven.module>
 		<system.maven.basedir>${project.basedir}</system.maven.basedir>
-		<system.maven.version>1.0.0</system.maven.version>
 		<system.maven.encoding>UTF-8</system.maven.encoding>
 		<!-- 版本配置 -->
+		<!-- TODO：JDK17 -->
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<mybatis.plus.version>3.5.1</mybatis.plus.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
-		<oauth2.authorization.version>0.2.1</oauth2.authorization.version>
+		<oauth2.authorization.version>0.2.2</oauth2.authorization.version>
 		<!-- SpringCloud版本配置 -->
-		<spring-cloud.version>2020.0.1</spring-cloud.version>
-		<spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+		<spring-cloud.version>2021.0.1</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
 	</properties>
 
 	<modules>
@@ -65,147 +65,147 @@
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>gateway</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-parent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-dev</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-test</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-mq</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-web</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-www</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-rest</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-data</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-redis</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-service</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-gateway</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-sentinel</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-concurrent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-parent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-user-parent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-user-api</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-user-impl</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-gateway-parent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-gateway-api</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>service-gateway-impl</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-parent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-oauth2</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>rest-gateway</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>web-parent</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>web</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
 				<artifactId>web-resources</artifactId>
-				<version>${system.maven.version}</version>
+				<version>${project.version}</version>
 			</dependency>
 			<!-- JavaEE -->
 			<dependency>
@@ -315,10 +315,10 @@
 								<Automatic-Module-Name>${system.maven.module}</Automatic-Module-Name>
 								<Specification-Title>${project.artifactId}</Specification-Title>
 								<Specification-Vendor>${system.maven.vendor}</Specification-Vendor>
-								<Specification-Version>${system.maven.version}</Specification-Version>
+								<Specification-Version>${project.version}</Specification-Version>
 								<Implementation-Title>${project.artifactId}</Implementation-Title>
 								<Implementation-Vendor>${system.maven.vendor}</Implementation-Vendor>
-								<Implementation-Version>${system.maven.version}</Implementation-Version>
+								<Implementation-Version>${project.version}</Implementation-Version>
 								<Implementation-Vendor-Id>${system.maven.vendor}</Implementation-Vendor-Id>
 							</manifestEntries>
 						</archive>

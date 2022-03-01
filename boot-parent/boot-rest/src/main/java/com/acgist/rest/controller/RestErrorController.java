@@ -18,11 +18,6 @@ import com.acgist.www.ErrorUtils;
 @RestController
 public class RestErrorController implements ErrorController {
 
-	@Override
-	public String getErrorPath() {
-		return ErrorUtils.ERROR_PATH;
-	}
-
 	@RequestMapping(value = ErrorUtils.ERROR_PATH)
 	public Message<String> index(HttpServletRequest request, HttpServletResponse response) {
 		return ErrorUtils.message(request, response);

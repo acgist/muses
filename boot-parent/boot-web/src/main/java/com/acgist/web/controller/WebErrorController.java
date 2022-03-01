@@ -21,11 +21,6 @@ import com.acgist.www.ErrorUtils;
 @Controller
 public class WebErrorController implements ErrorController {
 
-	@Override
-	public String getErrorPath() {
-		return ErrorUtils.ERROR_PATH;
-	}
-
 	@ResponseBody
 	@RequestMapping(value = ErrorUtils.ERROR_PATH)
 //	@RequestMapping(value = ErrorUtils.ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)

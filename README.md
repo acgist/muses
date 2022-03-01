@@ -134,8 +134,6 @@ system.maven.vendor=acgist
 system.maven.module=com.acgist.muses
 # 项目的根目录
 system.maven.basedir=${project.basedir}
-# 版本
-system.maven.version=1.0.0
 # 编码
 system.maven.encoding=UTF-8
 ```
