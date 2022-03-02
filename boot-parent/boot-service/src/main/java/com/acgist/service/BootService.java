@@ -71,24 +71,22 @@ public interface BootService<T extends BootEntity> {
 	/**
 	 * 分页查询
 	 * 
-	 * @param entity 类型
 	 * @param filters 过滤条件
 	 * @param pageable 分页信息
 	 * 
 	 * @return 分页
 	 */
-	Page<T> page(Class<T> entity, List<Filter> filters, Pageable pageable);
+	Page<T> pageWrapper(List<Filter> filters, Pageable pageable);
 	
 	/**
 	 * 分页查询
 	 * 
-	 * @param entity 类型
 	 * @param filterQuery 过滤条件
 	 * @param pageable 分页信息
 	 * 
 	 * @return 分页
 	 */
-	Page<T> page(Class<T> entity, FilterQuery<T> filterQuery, Pageable pageable);
+	Page<T> pageWrapper(FilterQuery<T> filterQuery, Pageable pageable);
 	
 	/**
 	 * 查询

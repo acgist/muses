@@ -13,6 +13,8 @@ import com.acgist.data.pojo.entity.BootEntity;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.data.query.FilterQuery.Filter;
 import com.acgist.service.BootService;
+import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 
 /**
  * BootServiceImpl
@@ -24,6 +26,10 @@ import com.acgist.service.BootService;
 public abstract class BootServiceImpl<T extends BootEntity> implements BootService<T> {
 
 	/**
+	 * 实体类型
+	 */
+	protected Class<T> entityClass = this.currentEntityClass();
+	/**
 	 * Mapper
 	 */
 	protected BootMapper<T> mapper;
@@ -31,6 +37,11 @@ public abstract class BootServiceImpl<T extends BootEntity> implements BootServi
 	 * Repository
 	 */
 	protected BootRepository<T> repository;
+
+	@SuppressWarnings("unchecked")
+	protected Class<T> currentEntityClass() {
+		return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), BootServiceImpl.class, 0);
+	}
 	
 	/**
 	 * 可以通过@Autowired注解构造函数注入
@@ -97,20 +108,20 @@ public abstract class BootServiceImpl<T extends BootEntity> implements BootServi
 	}
 	
 	@Override
-	public Page<T> page(Class<T> entity, List<Filter> filters, Pageable pageable) {
+	public Page<T> pageWrapper(List<Filter> filters, Pageable pageable) {
 		final FilterQuery<T> query = FilterQuery.builder();
 		query.merge(filters);
-		return this.page(entity, query, pageable);
+		return this.pageWrapper(query, pageable);
 	}
 
 	@Override
-	public Page<T> page(Class<T> entity, FilterQuery<T> filterQuery, Pageable pageable) {
+	public Page<T> pageWrapper(FilterQuery<T> filterQuery, Pageable pageable) {
 		final com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<T>(pageable.getPageNumber(), pageable.getPageSize());
 		final com.baomidou.mybatisplus.extension.plugins.pagination.Page<T> result;
 		if(filterQuery == null) {
-			result = this.mapper.selectPage(page, null);
+			result = this.mapper.selectPage(page, Wrappers.emptyWrapper());
 		} else {
-			result = this.mapper.selectPage(page, filterQuery.build(entity));
+			result = this.mapper.selectPage(page, filterQuery.build(this.entityClass));
 		}
 		return new PageImpl<>(result.getRecords(), pageable, result.getTotal());
 	}
