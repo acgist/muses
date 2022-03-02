@@ -80,9 +80,7 @@ public class DistributedScheduledAutoConfiguration {
 	 * @return 注解
 	 */
 	private DistributedScheduled getAnnotation(ProceedingJoinPoint proceedingJoinPoint) {
-		// TODO：JDK17
-		if (proceedingJoinPoint.getSignature() instanceof MethodSignature) {
-			final MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+		if (proceedingJoinPoint.getSignature() instanceof MethodSignature methodSignature) {
 			return methodSignature.getMethod().getAnnotation(DistributedScheduled.class);
 		}
 		throw MessageCodeException.of("注解错误");

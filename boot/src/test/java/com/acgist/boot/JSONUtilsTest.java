@@ -1,10 +1,14 @@
 package com.acgist.boot;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.acgist.boot.pojo.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class JSONUtilsTest {
 
@@ -22,6 +26,28 @@ public class JSONUtilsTest {
 		LOGGER.info("{}", JSONUtils.toJava(json, User.class));
 //		final User jsonUser = JSONUtils.toJava(json);
 //		LOGGER.info("{}", jsonUser);
+	}
+	
+	@Test
+	public void testDate() {
+		final DateDto dto = new DateDto();
+		LOGGER.info("{}", JSONUtils.toJSON(dto));
+	}
+	
+	static class DateDto {
+		
+		@JsonFormat(pattern = "yyyyMMddHHmmss")
+		@DateTimeFormat(pattern = "yyyyMMddHHmmss")
+		private LocalDateTime time = LocalDateTime.now();
+
+		public LocalDateTime getTime() {
+			return time;
+		}
+
+		public void setTime(LocalDateTime time) {
+			this.time = time;
+		}
+		
 	}
 	
 }

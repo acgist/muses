@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -116,7 +118,7 @@ public class BootAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public ObjectMapper objectMapper() {
-		return JSONUtils.getMapper();
+		return JSONUtils.buildWebMapper();
 	}
 
 	@Bean
@@ -131,6 +133,7 @@ public class BootAutoConfiguration {
 	}
 
 	@Bean
+	@Primary
 	@ConditionalOnMissingBean
 	public TaskExecutor taskExecutor() {
 		LOGGER.info("系统线程池配置：{}-{}-{}-{}", this.min, this.max, this.size, this.live);
@@ -182,9 +185,8 @@ public class BootAutoConfiguration {
 	public void destroy() {
 		LOGGER.info("系统关闭");
 		// 刷出日志缓存
-		// TODO：JDK17类型转换
-		final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-		if (context != null) {
+		final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
+		if (factory != null && factory instanceof LoggerContext context) {
 			context.stop();
 		}
 	}

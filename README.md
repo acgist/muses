@@ -1,5 +1,7 @@
 # Muses
 
+Dubbo需要Java11才能运行，现在使用Java17开发。
+
 基于`SpringCloudAlibaba`技术栈微服务模板项目
 
 ## 模块

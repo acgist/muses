@@ -135,7 +135,6 @@ public final class TemplateQueryUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static final Map<String, Object> buildParamterMap(Object[] args, String[] argsNames, int parameterLength) {
-		// TODO：JDK17
 		Object object;
 		final Map<String, Object> paramterMap = new HashMap<>();
 		for (int index = 0; index < parameterLength; index++) {

@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * JSON工具
@@ -44,9 +47,8 @@ public final class JSONUtils {
 		if (Objects.isNull(object)) {
 			return null;
 		}
-		final ObjectMapper mapper = getMapper();
 		try {
-			return mapper.writeValueAsString(object);
+			return MAPPER.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
 			throw MessageCodeException.of(e, "JSON格式失败：", object);
 		}
@@ -64,9 +66,8 @@ public final class JSONUtils {
 		if (Objects.isNull(json)) {
 			return null;
 		}
-		final ObjectMapper mapper = getMapper();
 		try {
-			return mapper.readValue(json, new TypeReference<T>() {
+			return MAPPER.readValue(json, new TypeReference<T>() {
 			});
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "JSON格式错误：", json);
@@ -86,9 +87,8 @@ public final class JSONUtils {
 		if (Objects.isNull(json) || Objects.isNull(clazz)) {
 			return null;
 		}
-		final ObjectMapper mapper = getMapper();
 		try {
-			return mapper.readValue(json, clazz);
+			return MAPPER.readValue(json, clazz);
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
@@ -107,9 +107,8 @@ public final class JSONUtils {
 		if (Objects.isNull(json)) {
 			return null;
 		}
-		final ObjectMapper mapper = getMapper();
 		try {
-			return mapper.readValue(json, new TypeReference<Map<K, V>>() {
+			return MAPPER.readValue(json, new TypeReference<Map<K, V>>() {
 			});
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "JSON格式错误：", json);
@@ -128,22 +127,12 @@ public final class JSONUtils {
 		if (Objects.isNull(json)) {
 			return null;
 		}
-		final ObjectMapper mapper = getMapper();
 		try {
-			return mapper.readValue(json, new TypeReference<List<T>>() {
+			return MAPPER.readValue(json, new TypeReference<List<T>>() {
 			});
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
-	}
-
-	/**
-	 * 获取Mapper
-	 * 
-	 * @return Mapper
-	 */
-	public static final ObjectMapper getMapper() {
-		return MAPPER;
 	}
 
 	/**
@@ -154,8 +143,23 @@ public final class JSONUtils {
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
+			.registerModules(new JavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setSerializationInclusion(Include.NON_NULL);
+	}
+	
+	/**
+	 * 创建WebMapper
+	 * 
+	 * @return Mapper
+	 */
+	public static final ObjectMapper buildWebMapper() {
+		final ObjectMapper mapper = new ObjectMapper();
+		final SimpleModule defaultModule = new SimpleModule();
+		defaultModule.addSerializer(Long.class, ToStringSerializer.instance);
+		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
+			.registerModules(defaultModule, new JavaTimeModule())
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 
 	/**
@@ -170,6 +174,7 @@ public final class JSONUtils {
 			.allowIfBaseType(Object.class)
 			.build();
 		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
+			.registerModules(new JavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);

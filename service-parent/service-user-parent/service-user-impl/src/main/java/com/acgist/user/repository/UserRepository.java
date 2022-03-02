@@ -17,8 +17,6 @@ import com.acgist.user.pojo.query.UserQuery;
 /**
  * 用户查询
  * 
- * TODO：JDK17多行
- * 
  * @author acgist
  */
 @Repository
@@ -68,10 +66,12 @@ public interface UserRepository extends BootRepository<UserEntity> {
 	
 	@TemplateQuery(
 		query = "select name, memo, (select count(*) from t_user) size from t_user",
-		where = "$(name != null) and name = :name\n"
-			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
-			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
-			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
+		where = """
+			$(name != null) and name = :name
+			$(beginDate != null && endDate == null) and create_date > :beginDate
+			$(beginDate == null && endDate != null) and create_date < :endDate
+			$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate
+		""",
 		sorted = "order by id desc",
 		attach = "limit 1"
 	)
@@ -81,10 +81,12 @@ public interface UserRepository extends BootRepository<UserEntity> {
 	
 	@TemplateQuery(
 		query = "select name, memo, (select count(*) from t_user) size from t_user",
-		where = "$(name != null) and name = :name\n"
-			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
-			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
-			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
+		where = """
+			$(name != null) and name = :name
+			$(beginDate != null && endDate == null) and create_date > :beginDate
+			$(beginDate == null && endDate != null) and create_date < :endDate
+			$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate
+		""",
 		sorted = "order by id desc",
 		attach = "limit 1"
 	)
@@ -94,11 +96,13 @@ public interface UserRepository extends BootRepository<UserEntity> {
 	
 	@TemplateQuery(
 		query = "select name, memo, (select count(*) from t_user) size from t_user",
-		where = "$(name != null) and name = :name\n"
-			+ "$(bool) and name = :name\n"
-			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
-			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
-			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
+		where = """
+			$(name != null) and name = :name
+			$(bool) and name = :name
+			$(beginDate != null && endDate == null) and create_date > :beginDate
+			$(beginDate == null && endDate != null) and create_date < :endDate
+			$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate
+		""",
 		sorted = "order by id desc",
 		attach = "limit 1"
 	)
@@ -126,10 +130,12 @@ public interface UserRepository extends BootRepository<UserEntity> {
 	@TemplateQuery(
 		query = "select name, memo from t_user",
 		count = "select count(*) from t_user",
-		where = "$(name != null) and name = :name\n"
-			+ "$(beginDate != null && endDate == null) and create_date > :beginDate\n"
-			+ "$(beginDate == null && endDate != null) and create_date < :endDate\n"
-			+ "$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate",
+		where = """
+			$(name != null) and name = :name
+			$(beginDate != null && endDate == null) and create_date > :beginDate
+			$(beginDate == null && endDate != null) and create_date < :endDate
+			$(beginDate != null && endDate != null) and create_date between :beginDate and :endDate
+		""",
 		sorted = "order by create_date desc",
 		resultType = UserDto.class
 	)

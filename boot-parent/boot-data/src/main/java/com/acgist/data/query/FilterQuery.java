@@ -134,8 +134,6 @@ public class FilterQuery<T extends BootEntity> {
         /**
          * JPA查询条件
          * 
-         * TODO：JDK17
-         * 
          * @param <T> 类型
          * 
          * @param root root

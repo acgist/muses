@@ -83,9 +83,9 @@ public class ShutdownListener {
 			@Override
 			public void onEvent(InstancesChangeEvent event) {
 				final Optional<Instance> optional = event.getHosts().stream()
-					.filter(ShutdownListener.this::myself)
+					.filter(ShutdownListener.this::self)
 					.findFirst()
-					.or(ShutdownListener.this::findMyself);
+					.or(ShutdownListener.this::findSelf);
 				if (optional.isPresent()) {
 					this.up();
 				} else {
@@ -159,7 +159,7 @@ public class ShutdownListener {
 	 * 
 	 * @return 是否实例本身
 	 */
-	private boolean myself(Instance instance) {
+	private boolean self(Instance instance) {
 		final String dubboPort = this.nacosDiscoveryProperties.getMetadata().get("dubbo.protocols.dubbo.port");
 		return
 			this.nacosDiscoveryProperties.getIp().equals(instance.getIp()) &&
@@ -176,12 +176,12 @@ public class ShutdownListener {
 	 * 
 	 * @return 服务实例本身
 	 */
-	private Optional<Instance> findMyself() {
+	private Optional<Instance> findSelf() {
 		try {
 			return this.nacosServiceManager
 				.getNamingService(this.nacosDiscoveryProperties.getNacosProperties())
 				.getAllInstances(this.serviceName).stream()
-				.filter(this::myself)
+				.filter(this::self)
 				.findFirst();
 		} catch (NacosException e) {
 			LOGGER.error("获取服务实例本身异常", e);
