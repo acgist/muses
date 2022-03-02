@@ -132,7 +132,7 @@ public class CodeBuilderTest {
 		if (names.length == 0) {
 			return source;
 		}
-		String target = names[0];
+		String target = names[0].toLowerCase();
 		for (int index = 1; index < names.length; index++) {
 			target += upperFirst(names[index]);
 		}
@@ -147,7 +147,7 @@ public class CodeBuilderTest {
 	 * @return 目标字符
 	 */
 	public static final String upperFirst(String value) {
-		return value.substring(0, 1).toUpperCase() + value.substring(1);
+		return value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
 	}
 	
 	/**
