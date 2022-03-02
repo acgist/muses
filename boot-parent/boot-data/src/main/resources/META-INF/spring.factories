@@ -1,4 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.acgist.data.config.DataAutoConfiguration,\
-com.acgist.data.config.MyBatisAutoConfiguration,\
-com.acgist.data.config.TemplateQueryAutoConfiguration
+com.acgist.data.config.MyBatisAutoConfiguration

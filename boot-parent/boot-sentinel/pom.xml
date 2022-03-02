@@ -23,6 +23,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-dev</artifactId>
+		</dependency>
 		<!-- dubbo包含netty-all是否去掉netty其他依赖 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

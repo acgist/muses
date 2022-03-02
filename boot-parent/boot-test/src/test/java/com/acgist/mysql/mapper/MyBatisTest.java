@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.mysql.MySQLApplication;
 import com.acgist.user.pojo.entity.UserEntity;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 @SpringBootTest(classes = MySQLApplication.class)
@@ -21,7 +21,7 @@ public class MyBatisTest {
 
 	@Test
 	public void testQuery() {
-		final Page<UserEntity> page = this.userMapper.selectPage(new Page<UserEntity>(0, 10), new LambdaQueryWrapper<UserEntity>());
+		final Page<UserEntity> page = this.userMapper.selectPage(new Page<UserEntity>(0, 10), Wrappers.lambdaQuery());
 		assertNotNull(page);
 		assertFalse(page.getRecords().isEmpty());
 	}

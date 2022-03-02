@@ -1,14 +1,19 @@
 package com.acgist.data.pojo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import com.baomidou.mybatisplus.annotation.TableField;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 数据库实体类
  * 
  * @author acgist
  */
-@MappedSuperclass
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 public abstract class NameEntity extends BootEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -19,28 +24,12 @@ public abstract class NameEntity extends BootEntity {
 	/**
 	 * 名称
 	 */
-	@Column(length = 32, nullable = false)
+	@TableField(value = "name")
 	private String name;
 	/**
 	 * 描述
 	 */
-	@Column(length = 128)
+	@TableField(value = "memo")
 	private String memo;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
 
 }

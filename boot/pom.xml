@@ -23,6 +23,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!-- JavaEE -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

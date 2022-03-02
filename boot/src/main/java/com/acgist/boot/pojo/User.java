@@ -1,19 +1,24 @@
 package com.acgist.boot.pojo;
 
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
 import com.acgist.boot.CollectionUtils;
-import com.acgist.boot.JSONUtils;
 import com.acgist.boot.UrlUtils;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 用户
  * 
  * @author acgist
  */
-public class User implements Serializable {
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false, of = "id")
+public class User extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
 
@@ -90,51 +95,6 @@ public class User implements Serializable {
 		}
 		final String value = UrlUtils.authority(method, path);
 		return this.paths.stream().anyMatch(pathValue -> pathValue.equals(value));
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Set<String> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
-	}
-
-	public Set<String> getPaths() {
-		return paths;
-	}
-
-	public void setPaths(Set<String> paths) {
-		this.paths = paths;
-	}
-
-	@Override
-	public String toString() {
-		return JSONUtils.toJSON(this);
 	}
 
 }

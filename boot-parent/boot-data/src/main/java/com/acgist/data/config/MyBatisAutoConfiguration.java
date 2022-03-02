@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.boot.service.IdService;
+import com.acgist.data.pojo.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
@@ -53,23 +54,22 @@ public class MyBatisAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public MetaObjectHandler metaObjectHandler() {
+	public MetaObjectHandler metaObjectHandler(@Autowired IdService idService) {
 		return new MetaObjectHandler() {
 			@Override
 			public void insertFill(MetaObject metaObject) {
+				// TODO：测试是否需要插入ID
+				final Object id = this.getFieldValByName(BootEntity.PROPERTY_ID, metaObject);
+				if(id == null) {
+					this.setFieldValByName(BootEntity.PROPERTY_ID, idService.id(), metaObject);
+				}
 				final Date date = new Date();
-				if (metaObject.hasSetter("createDate")) {
-					this.setFieldValByName("createDate", date, metaObject);
-				}
-				if (metaObject.hasSetter("modifyDate")) {
-					this.setFieldValByName("modifyDate", date, metaObject);
-				}
+				this.setFieldValByName(BootEntity.PROPERTY_CREATE_DATE, date, metaObject);
+				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, date, metaObject);
 			}
 			@Override
 			public void updateFill(MetaObject metaObject) {
-				if (metaObject.hasSetter("modifyDate")) {
-					this.setFieldValByName("modifyDate", new Date(), metaObject);
-				}
+				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, new Date(), metaObject);
 			}
 		};
 	}

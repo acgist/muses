@@ -4,15 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
 import com.acgist.boot.StringUtils;
@@ -130,47 +122,6 @@ public class FilterQuery<T extends BootEntity> {
             this.value = value;
             this.type = type;
         }
-
-        /**
-         * JPA查询条件
-         * 
-         * @param <T> 类型
-         * 
-         * @param root root
-         * @param builder builder
-         * 
-         * @return 查询条件
-         */
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public <T> Predicate predicate(Root<T> root, CriteriaBuilder builder) {
-            switch (this.type) {
-            case EQ:
-                return builder.equal(root.get(this.name), this.value);
-            case NE:
-                return builder.notEqual(root.get(this.name), this.value);
-            case LT:
-                return builder.lessThan(root.get(this.name), (Comparable) this.value);
-            case GT:
-                return builder.greaterThan(root.get(this.name), (Comparable) this.value);
-            case LE:
-                return builder.lessThanOrEqualTo(root.get(this.name), (Comparable) this.value);
-            case GE:
-                return builder.greaterThanOrEqualTo(root.get(this.name), (Comparable) this.value);
-            case IN:
-                return root.get(this.name).in(this.value);
-            case LIKE:
-                return builder.like(root.get(this.name), LIKE.apply(this.value));
-            case BETWEEN:
-                final List<?> list = (List<?>) this.value;
-                return builder.between(root.get(this.name), (Comparable) list.get(0), (Comparable) list.get(1));
-            case IS_NULL:
-                return root.get(this.name).isNull();
-            case IS_NOT_NULL:
-                return root.get(this.name).isNotNull();
-            default:
-                throw new IllegalArgumentException("未知过滤类型：" + this.type);
-            }
-        }
         
         /**
          * MyBatis查询条件
@@ -281,27 +232,6 @@ public class FilterQuery<T extends BootEntity> {
             this.type = type;
         }
 
-        /**
-         * JPA排序
-         * 
-         * @param <T> 类型
-         * 
-         * @param root root
-         * @param builder builder
-         * 
-         * @return 排序
-         */
-        public <T> Order order(Root<T> root, CriteriaBuilder builder) {
-            switch (this.type) {
-            case ASC:
-                return builder.asc(root.get(this.name));
-            case DESC:
-                return builder.desc(root.get(this.name));
-            default:
-                throw new IllegalArgumentException("未知排序类型：" + this.type);
-            }
-        }
-        
         /**
          * MyBatis排序
          * 
@@ -424,28 +354,6 @@ public class FilterQuery<T extends BootEntity> {
     public FilterQuery<T> desc(String name) {
         this.sorted.add(new Sorted(name, Sorted.Type.DESC));
         return this;
-    }
-
-    /**
-     * 创建JPA查询条件
-     * 
-     * @return JPA查询条件
-     */
-    public Specification<T> build() {
-        return new Specification<T>() {
-            private static final long serialVersionUID = 1L;
-            @Override
-            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                final Predicate[] filters = FilterQuery.this.filter.stream()
-                    .filter(filter -> FilterQuery.this.nullable || filter.value != null)
-                    .map(filter -> filter.predicate(root, builder)).collect(Collectors.toList())
-                    .toArray(Predicate[]::new);
-                final Order[] orders = FilterQuery.this.sorted.stream()
-                	.map(sorted -> sorted.order(root, builder))
-                    .collect(Collectors.toList()).toArray(Order[]::new);
-                return query.where(filters).orderBy(orders).getRestriction();
-            }
-        };
     }
     
     /**

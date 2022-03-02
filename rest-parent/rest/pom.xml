@@ -25,6 +25,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-dev</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

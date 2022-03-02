@@ -1,24 +1,17 @@
 package com.acgist.user.pojo.entity;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import com.acgist.data.pojo.entity.StateEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 
-@Entity
-@Table(name = "t_user", indexes = {
-	@Index(name = "index_user_name", columnList = "name", unique = true)
-})
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@TableName(value = "t_user")
 public class UserEntity extends StateEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -29,42 +22,7 @@ public class UserEntity extends StateEntity {
 	/**
 	 * 密码
 	 */
-	@Column(length = 128, nullable = false)
+	@TableField(value = "password")
 	private String password;
-	/**
-	 * 角色
-	 */
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(
-		name = "t_user_role",
-		joinColumns = @JoinColumn(
-			name = "user_id",
-			referencedColumnName = "id",
-			foreignKey = @ForeignKey(name = "key_user_role_user_id")
-		),
-		inverseJoinColumns = @JoinColumn(
-			name = "role_id",
-			referencedColumnName = "id",
-			foreignKey = @ForeignKey(name = "key_user_role_role_id")
-		)
-	)
-	@JsonIgnore
-	private List<RoleEntity> roles;
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<RoleEntity> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<RoleEntity> roles) {
-		this.roles = roles;
-	}
 	
 }

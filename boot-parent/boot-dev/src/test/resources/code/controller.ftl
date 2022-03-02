@@ -29,8 +29,8 @@ public class ${prefix}Controller {
 	private ${prefix}Service ${prefixLower}Service;
 	
     @GetMapping
-    public Page<${prefix}> index(@RequestBody FilterQuery<${prefix}> query, Pageable pageable) {
-        return this.${prefixLower}Service.page(query, pageable);
+    public Page<${prefix}> index(@RequestBody FilterQuery<${prefix}> query, Page<${prefix}> page) {
+        return this.${prefixLower}Service.page(query, page);
     }
     
     @PostMapping

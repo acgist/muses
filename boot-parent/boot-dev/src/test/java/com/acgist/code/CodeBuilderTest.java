@@ -36,10 +36,6 @@ public class CodeBuilderTest {
 	private String basePackage = "com.acgist";
 	// ID字段
 	private String id = "id";
-	// 输出JPA
-	private boolean jpa = true;
-	// 输出MyBatis
-	private boolean mybatis = true;
 	// 模块路径
 	private String modulePackage = this.basePackage + ".admin.";
 	// Mapper
@@ -55,7 +51,7 @@ public class CodeBuilderTest {
 	// 完整路径：t_acgist_user_list=com.acgist.admin.data.acgist.user.list.AcgistUserList
 	private boolean absolute = false;
 	// 数据配置
-	private String url = "jdbc:mysql://localhost:3306/muses?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true";
+	private String url = "jdbc:mysql://localhost:3306/muses?useSSL=false&useUnicode=true&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai";
 	private String user = "root";
 	private String password = "";
 	private String driverClass = "com.mysql.cj.jdbc.Driver";
@@ -81,8 +77,6 @@ public class CodeBuilderTest {
 		LOGGER.info("输出目录：{}", this.path);
 		final Map<Object, Object> map = new HashMap<>();
 		map.put("id", this.id);
-		map.put("jpa", this.jpa);
-		map.put("mybatis", this.mybatis);
 		map.put("modulePackage", this.modulePackage);
 		map.put("hasId", Arrays.asList(this.skipColumns).indexOf(this.id) < 0);
 		final List<Column> list = this.loadTable(map, table, removePrefix);
@@ -255,20 +249,12 @@ public class CodeBuilderTest {
 	 * @throws Exception 异常
 	 */
 	public void buildDao(Map<Object, Object> map) throws Exception {
-		String path;
-		if(this.mybatis) {
-			path = this.modulePackage + map.get("module") + ".dao.mapper";
-			path = this.targetJava + path.replace('.', '/');
-			this.freemarkerUtils.build("mapper.ftl", map, this.path + path, map.get("prefix") + "Mapper.java");
-			path = this.mapperPackage + map.get("module");
-			path = this.targetResources + path.replace('.', '/');
-			this.freemarkerUtils.build("mapper.xml.ftl", map, this.path + path, map.get("prefix") + "Mapper.xml");
-		}
-		if(this.jpa) {
-			path = this.modulePackage + map.get("module") + ".dao.repository";
-			path = this.targetJava + path.replace('.', '/');
-			this.freemarkerUtils.build("repository.ftl", map, this.path + path, map.get("prefix") + "Repository.java");
-		}
+		String path = this.modulePackage + map.get("module") + ".dao.mapper";
+		path = this.targetJava + path.replace('.', '/');
+		this.freemarkerUtils.build("mapper.ftl", map, this.path + path, map.get("prefix") + "Mapper.java");
+		path = this.mapperPackage + map.get("module");
+		path = this.targetResources + path.replace('.', '/');
+		this.freemarkerUtils.build("mapper.xml.ftl", map, this.path + path, map.get("prefix") + "Mapper.xml");
 	}
 	
 	/**

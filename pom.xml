@@ -33,6 +33,7 @@
 		<!-- 版本配置 -->
 		<java.version>17</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
+		<lombok.version>1.18.22</lombok.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<mybatis.plus.version>3.5.1</mybatis.plus.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
@@ -80,6 +81,7 @@
 				<groupId>com.acgist</groupId>
 				<artifactId>boot-dev</artifactId>
 				<version>${project.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
@@ -212,6 +214,7 @@
 				<artifactId>javax.ws.rs-api</artifactId>
 				<version>${ws.rs.version}</version>
 			</dependency>
+			<!-- mapstruct -->
 			<dependency>
 				<groupId>org.mapstruct</groupId>
 				<artifactId>mapstruct</artifactId>
@@ -221,6 +224,12 @@
 				<groupId>org.mapstruct</groupId>
 				<artifactId>mapstruct-processor</artifactId>
 				<version>${mapstruct.version}</version>
+			</dependency>
+			<!-- lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
 			</dependency>
 			<!-- MyBatis-Plus -->
 			<dependency>

@@ -1,16 +1,18 @@
 package com.acgist.boot.pojo;
 
-import java.io.Serializable;
-
-import com.acgist.boot.JSONUtils;
 import com.acgist.boot.StringUtils;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 响应消息
  * 
  * @author acgist
  */
-public class Message<T> implements Serializable {
+@Getter
+@Setter
+public class Message<T> extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
 
@@ -123,43 +125,6 @@ public class Message<T> implements Serializable {
 		failMessage.message = message;
 		failMessage.body = body;
 		return failMessage;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public T getBody() {
-		return body;
-	}
-
-	public void setBody(T body) {
-		this.body = body;
-	}
-
-	public String getSignature() {
-		return signature;
-	}
-
-	public void setSignature(String signature) {
-		this.signature = signature;
-	}
-
-	@Override
-	public String toString() {
-		return JSONUtils.toJSON(this);
 	}
 
 }

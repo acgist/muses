@@ -19,7 +19,7 @@ public class ServiceTest {
 
 	@Test
 	public void testService() {
-		final List<UserEntity> list = this.userService.findAll();
+		final List<UserEntity> list = this.userService.list();
 		assertNotNull(list);
 		assertFalse(list.isEmpty());
 	}

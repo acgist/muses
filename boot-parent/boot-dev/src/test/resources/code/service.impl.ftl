@@ -14,25 +14,6 @@ import ${modulePackage}${module}.service.${prefix}Service;
 import com.acgist.service.impl.BootServiceImpl;
 
 @Service
-public class ${prefix}ServiceImpl extends BootServiceImpl<${prefix}> implements ${prefix}Service {
-
-	<#if !jpa && mybatis>
-	@Autowired
-	public ${prefix}ServiceImpl(${prefix}Mapper mapper) {
-		super(mapper);
-	}
-	</#if>
-	<#if jpa && !mybatis>
-	@Autowired
-	public ${prefix}ServiceImpl(${prefix}Repository repository) {
-		super(repository);
-	}
-	</#if>
-	<#if jpa && mybatis>
-	@Autowired
-	public ${prefix}ServiceImpl(${prefix}Mapper mapper, ${prefix}Repository repository) {
-		super(mapper, repository);
-	}
-	</#if>
+public class ${prefix}ServiceImpl extends BootServiceImpl<${prefix}Mapper, ${prefix}Entity> implements ${prefix}Service {
 
 }

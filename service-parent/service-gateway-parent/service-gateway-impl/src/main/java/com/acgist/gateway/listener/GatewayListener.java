@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.acgist.gateway.mapper.GatewayMapper;
 import com.acgist.gateway.notify.NotifyService;
 import com.acgist.gateway.pojo.dto.GatewayDto;
 import com.acgist.gateway.pojo.entity.GatewayEntity;
-import com.acgist.gateway.repository.GatewayRepository;
 
 @Configuration
 public class GatewayListener {
 
 	@Autowired
-	private NotifyService notifyService;
+	private GatewayMapper gatewayMapper;
 	@Autowired
-	private GatewayRepository gatewayRepository;
+	private NotifyService notifyService;
 	
 	@Bean
 //	@Transactional
@@ -25,7 +25,7 @@ public class GatewayListener {
 		return gatewayDto -> {
 			final GatewayEntity gatewayEntity = new GatewayEntity();
 			gatewayEntity.copy(gatewayDto);
-			this.gatewayRepository.save(gatewayEntity);
+			this.gatewayMapper.insert(gatewayEntity);
 			this.notifyService.notify(gatewayEntity);
 		};
 	}

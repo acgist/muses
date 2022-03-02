@@ -2,11 +2,18 @@ package com.acgist.boot.pojo;
 
 import java.util.Date;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * EntityCopy
  * 
  * @author acgist
  */
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false, of = "id")
 public abstract class EntityCopy extends PojoCopy {
 
 	private static final long serialVersionUID = 1L;
@@ -23,29 +30,5 @@ public abstract class EntityCopy extends PojoCopy {
 	 * 修改时间
 	 */
 	private Date modifyDate;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
 
 }
