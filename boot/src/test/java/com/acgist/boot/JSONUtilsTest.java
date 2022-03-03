@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.acgist.boot.pojo.User;
+import com.acgist.boot.data.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class JSONUtilsTest {

@@ -15,12 +15,15 @@ import org.springframework.stereotype.Component;
 import com.acgist.boot.DateUtils;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.MapUtils;
-import com.acgist.boot.pojo.Message;
-import com.acgist.boot.pojo.MessageCode;
+import com.acgist.boot.data.Message;
+import com.acgist.boot.data.MessageCode;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.request.GatewayRequest;
 import com.acgist.gateway.service.RsaService;
 import com.acgist.www.ResponseUtils;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 请求数据
@@ -30,8 +33,10 @@ import com.acgist.www.ResponseUtils;
  * 
  * @author acgist
  */
-@Component
+@Getter
+@Setter
 @Scope("request")
+@Component
 public class GatewaySession implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -265,60 +270,4 @@ public class GatewaySession implements Serializable {
 		ResponseUtils.fail(this.gatewayResponse, response);
 	}
 
-	public boolean isProcess() {
-		return process;
-	}
-
-	public void setProcess(boolean process) {
-		this.process = process;
-	}
-
-	public Long getQueryId() {
-		return queryId;
-	}
-
-	public void setQueryId(Long queryId) {
-		this.queryId = queryId;
-	}
-
-	public GatewayMapping getGatewayMapping() {
-		return gatewayMapping;
-	}
-
-	public void setGatewayMapping(GatewayMapping gatewayMapping) {
-		this.gatewayMapping = gatewayMapping;
-	}
-
-	public String getRequestData() {
-		return requestData;
-	}
-
-	public void setRequestData(String requestData) {
-		this.requestData = requestData;
-	}
-
-	public GatewayRequest getGatewayRequest() {
-		return gatewayRequest;
-	}
-
-	public void setGatewayRequest(GatewayRequest gatewayRequest) {
-		this.gatewayRequest = gatewayRequest;
-	}
-
-	public Map<String, Object> getResponseData() {
-		return responseData;
-	}
-
-	public void setResponseData(Map<String, Object> responseData) {
-		this.responseData = responseData;
-	}
-
-	public Message<Map<String, Object>> getGatewayResponse() {
-		return gatewayResponse;
-	}
-
-	public void setGatewayResponse(Message<Map<String, Object>> gatewayResponse) {
-		this.gatewayResponse = gatewayResponse;
-	}
-	
 }

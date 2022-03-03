@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -24,7 +25,6 @@ import freemarker.template.TemplateException;
  * 代码生成
  * 
  * @author acgist
- *
  */
 public class FreemarkerUtils {
 
@@ -56,10 +56,7 @@ public class FreemarkerUtils {
 			LOGGER.warn("生成静态文件路径错误：{}", path);
 			return false;
 		}
-		if (!path.endsWith("/")) {
-			path += "/";
-		}
-		final File htmlFile = new File(path + file);
+		final File htmlFile = Paths.get(path, file).toFile();
 		if(!htmlFile.getParentFile().exists()) {
 			htmlFile.getParentFile().mkdirs();
 		}

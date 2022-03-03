@@ -7,6 +7,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.util.SocketUtils;
 
+import lombok.Getter;
+
 /**
  * 端口配置
  * 
@@ -39,6 +41,7 @@ public final class PortConfig {
 	 * 
 	 * @author acgist
 	 */
+	@Getter
 	public enum Type {
 		
 		GATEWAY(8888),
@@ -59,14 +62,6 @@ public final class PortConfig {
 		private Type(int min, int max) {
 			this.min = min;
 			this.max = max;
-		}
-		
-		public int getMin() {
-			return min;
-		}
-		
-		public int getMax() {
-			return max;
 		}
 		
 	}

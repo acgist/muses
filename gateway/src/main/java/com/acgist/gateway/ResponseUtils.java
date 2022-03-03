@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import com.acgist.boot.config.MusesConfig;
-import com.acgist.boot.pojo.Message;
+import com.acgist.boot.data.Message;
 
 import reactor.core.publisher.Mono;
 

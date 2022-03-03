@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.boot.MessageCodeException;
+import com.acgist.boot.data.MessageCodeException;
 import com.acgist.distributed.lock.DistributedLock;
 import com.acgist.distributed.scheduled.DistributedScheduled;
 
@@ -80,8 +80,9 @@ public class DistributedScheduledAutoConfiguration {
 	 * @return 注解
 	 */
 	private DistributedScheduled getAnnotation(ProceedingJoinPoint proceedingJoinPoint) {
-		if (proceedingJoinPoint.getSignature() instanceof MethodSignature methodSignature) {
-			return methodSignature.getMethod().getAnnotation(DistributedScheduled.class);
+		if (proceedingJoinPoint.getSignature() instanceof MethodSignature) {
+			// TODO：JDK17
+			return ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod().getAnnotation(DistributedScheduled.class);
 		}
 		throw MessageCodeException.of("注解错误");
 	}

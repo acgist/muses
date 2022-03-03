@@ -5,11 +5,11 @@ import java.util.Map;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Service;
 
-import com.acgist.boot.pojo.Message;
-import com.acgist.boot.pojo.User;
+import com.acgist.boot.data.Message;
+import com.acgist.boot.data.User;
 import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.request.SetMemoRequest;
-import com.acgist.user.pojo.dto.UserDto;
+import com.acgist.user.data.dto.UserDto;
 import com.acgist.user.service.IUserService;
 
 @Service

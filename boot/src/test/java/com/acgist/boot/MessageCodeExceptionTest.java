@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.acgist.boot.data.MessageCodeException;
+
 public class MessageCodeExceptionTest {
 
 	@Test

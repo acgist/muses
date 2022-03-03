@@ -1,7 +1,7 @@
 package com.acgist.user.service;
 
-import com.acgist.boot.pojo.User;
-import com.acgist.user.pojo.dto.UserDto;
+import com.acgist.boot.data.User;
+import com.acgist.user.data.dto.UserDto;
 
 /**
  * 用户服务

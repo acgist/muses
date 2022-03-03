@@ -4,10 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.acgist.boot.JSONUtils;
-import com.acgist.boot.MessageCodeException;
 import com.acgist.boot.StringUtils;
-import com.acgist.boot.pojo.MessageCode;
-import com.acgist.boot.pojo.User;
+import com.acgist.boot.data.MessageCode;
+import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.data.User;
 import com.acgist.rest.UserContext;
 import com.acgist.www.ErrorUtils;
 import com.acgist.www.interceptor.WwwInterceptor;

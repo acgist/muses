@@ -2,6 +2,7 @@ spring:
   application:
     name: boot-test
   main:
+    allow-circular-references: true
     allow-bean-definition-overriding: true
   profiles:
     active: dev
@@ -26,17 +27,6 @@ spring:
       auto-commit: true
       minimum-idle: 2
       maximum-pool-size: 10
-  jpa:
-    database: MYSQL
-    show-sql: true
-    open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL57Dialect
-    hibernate:
-      ddl-auto: none
-      jdbc:
-        batch_size: 10
-        fetch_size: 10
-    properties.hibernate.temp.use_jdbc_metadata_defaults: false
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true

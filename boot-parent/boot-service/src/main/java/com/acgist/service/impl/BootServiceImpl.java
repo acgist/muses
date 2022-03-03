@@ -3,7 +3,7 @@ package com.acgist.service.impl;
 import java.util.List;
 
 import com.acgist.dao.mapper.BootMapper;
-import com.acgist.data.pojo.entity.BootEntity;
+import com.acgist.data.entity.BootEntity;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.data.query.FilterQuery.Filter;
 import com.acgist.service.BootService;
@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 /**
- * BootServiceImpl
+ * 基础Service实现
  * 
  * @author acgist
  *
@@ -27,13 +27,11 @@ public abstract class BootServiceImpl<M extends BootMapper<T>, T extends BootEnt
 
 	@Override
 	public List<T> list(List<Filter> filters) {
-		final FilterQuery<T> query = FilterQuery.builder();
-		query.merge(filters);
-		return this.list(query);
+		return this.list(FilterQuery.builder().merge(filters));
 	}
 
 	@Override
-	public List<T> list(FilterQuery<T> filterQuery) {
+	public List<T> list(FilterQuery filterQuery) {
 		if(filterQuery == null) {
 			return this.baseMapper.selectList(Wrappers.emptyWrapper());
 		}
@@ -41,14 +39,7 @@ public abstract class BootServiceImpl<M extends BootMapper<T>, T extends BootEnt
 	}
 
 	@Override
-	public Page<T> page(List<Filter> filters, Page<T> page) {
-		final FilterQuery<T> query = FilterQuery.builder();
-		query.merge(filters);
-		return this.page(query, page);
-	}
-
-	@Override
-	public Page<T> page(FilterQuery<T> filterQuery, Page<T> page) {
+	public Page<T> page(FilterQuery filterQuery, Page<T> page) {
 		if(filterQuery == null) {
 			return this.baseMapper.selectPage(page, Wrappers.emptyWrapper());
 		}

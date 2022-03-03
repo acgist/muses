@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.gateway.mapper.GatewayMapper;
+import com.acgist.gateway.dao.mapper.GatewayMapper;
+import com.acgist.gateway.data.dto.GatewayDto;
+import com.acgist.gateway.data.entity.GatewayEntity;
 import com.acgist.gateway.notify.NotifyService;
-import com.acgist.gateway.pojo.dto.GatewayDto;
-import com.acgist.gateway.pojo.entity.GatewayEntity;
 
 @Configuration
 public class GatewayListener {
@@ -20,7 +20,6 @@ public class GatewayListener {
 	private NotifyService notifyService;
 	
 	@Bean
-//	@Transactional
 	public Consumer<GatewayDto> gatewayRecord() {
 		return gatewayDto -> {
 			final GatewayEntity gatewayEntity = new GatewayEntity();

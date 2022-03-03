@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.acgist.boot.config.MusesConfig;
+import com.acgist.boot.data.MessageCodeException;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,10 +33,6 @@ public final class JSONUtils {
 	 * Mapper（线程安全）
 	 */
 	private static final ObjectMapper MAPPER = buildMapper();
-	/**
-	 * 时间格式
-	 */
-	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	
 	/**
 	 * Java转JSON
@@ -58,6 +56,7 @@ public final class JSONUtils {
 	 * JSON转Java
 	 * 
 	 * @param <T> Java类型
+	 * 
 	 * @param json JSON
 	 * 
 	 * @return Java
@@ -78,6 +77,7 @@ public final class JSONUtils {
 	 * JSON转Java
 	 * 
 	 * @param <T> Java类型
+	 * 
 	 * @param json JSON
 	 * @param clazz Java类型
 	 * 
@@ -99,13 +99,14 @@ public final class JSONUtils {
 	 * 
 	 * @param <K> K类型
 	 * @param <V> V类型
+	 * 
 	 * @param json JSON
 	 * 
 	 * @return Map
 	 */
 	public static final <K, V> Map<K, V> toMap(String json) {
 		if (Objects.isNull(json)) {
-			return null;
+			return Map.of();
 		}
 		try {
 			return MAPPER.readValue(json, new TypeReference<Map<K, V>>() {
@@ -119,13 +120,14 @@ public final class JSONUtils {
 	 * JSON转List
 	 * 
 	 * @param <T> 元素类型
+	 * 
 	 * @param json JSON
 	 * 
 	 * @return List
 	 */
 	public static final <T> List<T> toList(String json) {
 		if (Objects.isNull(json)) {
-			return null;
+			return List.of();
 		}
 		try {
 			return MAPPER.readValue(json, new TypeReference<List<T>>() {
@@ -142,7 +144,7 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
+		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
 			.registerModules(new JavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setSerializationInclusion(Include.NON_NULL);
@@ -157,7 +159,7 @@ public final class JSONUtils {
 		final ObjectMapper mapper = new ObjectMapper();
 		final SimpleModule defaultModule = new SimpleModule();
 		defaultModule.addSerializer(Long.class, ToStringSerializer.instance);
-		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
+		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
 			.registerModules(defaultModule, new JavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
@@ -173,7 +175,7 @@ public final class JSONUtils {
 		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
 			.allowIfBaseType(Object.class)
 			.build();
-		return mapper.setDateFormat(new SimpleDateFormat(DATE_FORMAT))
+		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
 			.registerModules(new JavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)

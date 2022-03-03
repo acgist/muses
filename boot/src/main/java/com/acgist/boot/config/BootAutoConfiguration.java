@@ -84,7 +84,7 @@ public class BootAutoConfiguration {
 	@Value("${system.thread.size:100000}")
 	private int size;
 	/**
-	 * 线程存活事件
+	 * 线程存活时间
 	 */
 	@Value("${system.thread.live:30}")
 	private int live;
@@ -186,8 +186,9 @@ public class BootAutoConfiguration {
 		LOGGER.info("系统关闭");
 		// 刷出日志缓存
 		final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
-		if (factory != null && factory instanceof LoggerContext context) {
-			context.stop();
+		if (factory != null && factory instanceof LoggerContext) {
+			// TODO：JDK17
+			((LoggerContext) factory).stop();
 		}
 	}
 

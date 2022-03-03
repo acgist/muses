@@ -4,13 +4,12 @@ import java.util.Date;
 
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.boot.service.IdService;
-import com.acgist.data.pojo.entity.BootEntity;
+import com.acgist.data.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
@@ -23,20 +22,12 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
  * @author acgist
  */
 @Configuration
-@ConditionalOnClass(value = {
-	MetaObjectHandler.class,
-	IdentifierGenerator.class,
-	MybatisPlusInterceptor.class
-})
 public class MyBatisAutoConfiguration {
 
-	@Autowired
-	private IdService idService;
-	
 	@Bean
 	@ConditionalOnMissingBean
-	public IdentifierGenerator idGenerator() {
-	    return new IdentifierGenerator() {
+	public IdentifierGenerator idGenerator(@Autowired IdService idService) {
+		return new IdentifierGenerator() {
 			@Override
 			public Number nextId(Object entity) {
 				return idService.id();
@@ -58,11 +49,6 @@ public class MyBatisAutoConfiguration {
 		return new MetaObjectHandler() {
 			@Override
 			public void insertFill(MetaObject metaObject) {
-				// TODO：测试是否需要插入ID
-				final Object id = this.getFieldValByName(BootEntity.PROPERTY_ID, metaObject);
-				if(id == null) {
-					this.setFieldValByName(BootEntity.PROPERTY_ID, idService.id(), metaObject);
-				}
 				final Date date = new Date();
 				this.setFieldValByName(BootEntity.PROPERTY_CREATE_DATE, date, metaObject);
 				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, date, metaObject);

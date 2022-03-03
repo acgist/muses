@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.acgist.data.query.FilterQuery;
 import com.acgist.mysql.MySQLApplication;
-import com.acgist.user.pojo.entity.UserEntity;
+import com.acgist.user.data.entity.UserEntity;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -32,6 +33,14 @@ public class MyBatisTest {
 		assertNotNull(page);
 		assertEquals(1, page.getRecords().size());
 		assertEquals(2, page.getTotal());
+	}
+	
+	@Test
+	public void testFilterQuery() {
+		 final FilterQuery query = FilterQuery.builder();
+		 assertEquals(1, this.userMapper.selectList(query.build(UserEntity.class)).size());
+		 assertEquals(1, this.userMapper.selectList(query.eq("name", "root").build(UserEntity.class)).size());
+		 assertEquals(0, this.userMapper.selectList(query.eq("name", "acgist").build(UserEntity.class)).size());
 	}
 	
 }

@@ -9,7 +9,7 @@ import org.springframework.util.StreamUtils;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.config.MusesConfig;
-import com.acgist.boot.pojo.MessageCode;
+import com.acgist.boot.data.MessageCode;
 import com.acgist.gateway.GatewaySession;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.request.GatewayRequest;

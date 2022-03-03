@@ -31,7 +31,8 @@
 		<system.maven.basedir>${project.basedir}</system.maven.basedir>
 		<system.maven.encoding>UTF-8</system.maven.encoding>
 		<!-- 版本配置 -->
-		<java.version>17</java.version>
+		<!-- TODO：JDK17 -->
+		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
 		<lombok.version>1.18.22</lombok.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>

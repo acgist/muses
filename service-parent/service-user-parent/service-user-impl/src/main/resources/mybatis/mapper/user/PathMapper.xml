@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acgist.user.dao.mapper.PathMapper">
+
+	<select id="findByUser" resultType="com.acgist.user.data.entity.PathEntity">
+	SELECT path.* FROM t_path path
+		LEFT JOIN t_role_path rp ON path.id = rp.path_id
+		LEFT JOIN t_role role ON rp.role_id = role.id
+		LEFT JOIN t_user_role ur ON role.id = ur.role_id
+		LEFT JOIN t_user user ON ur.user_id = user.id
+	WHERE user.name = #{name}
+	</select>
+
+</mapper>

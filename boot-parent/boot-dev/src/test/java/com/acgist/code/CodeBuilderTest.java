@@ -19,6 +19,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.acgist.boot.StringUtils;
+import com.acgist.boot.data.PojoCopy;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 代码生成
@@ -60,7 +64,6 @@ public class CodeBuilderTest {
 	@Test
 	public void testBuildAll() throws Exception {
 		this.buildCode("acgist", "t_user", false);
-		this.buildCode("acgist", "t_user_role", false);
 	}
 	
 	/**
@@ -236,9 +239,9 @@ public class CodeBuilderTest {
 	 * @throws Exception 异常
 	 */
 	public void buildPojo(Map<Object, Object> map) throws Exception {
-		String path = this.modulePackage + map.get("module") + ".pojo.entity";
+		String path = this.modulePackage + map.get("module") + ".data.entity";
 		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("entity.ftl", map, this.path + path, map.get("prefix") + ".java");
+		this.freemarkerUtils.build("entity.ftl", map, this.path + path, map.get("prefix") + "Entity.java");
 	}
 	
 	/**
@@ -291,7 +294,11 @@ public class CodeBuilderTest {
 	 * 
 	 * @author acgist
 	 */
-	public static class Column {
+	@Getter
+	@Setter
+	public static class Column extends PojoCopy {
+		
+		private static final long serialVersionUID = 1L;
 		
 		/**
 		 * 列名：t_id
@@ -315,51 +322,6 @@ public class CodeBuilderTest {
 			this.type = type;
 			this.value = value;
 			this.comment = comment;
-		}
-		
-		public String getGetter() {
-			return "get" + upperFirst(this.value);
-		}
-		
-		public String getSetter() {
-			return "set" + upperFirst(this.value);
-		}
-		
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getType() {
-			return type;
-		}
-
-		public void setType(String type) {
-			this.type = type;
-		}
-
-		public String getValue() {
-			return value;
-		}
-
-		public void setValue(String value) {
-			this.value = value;
-		}
-
-		public String getComment() {
-			return comment;
-		}
-
-		public void setComment(String comment) {
-			this.comment = comment;
-		}
-
-		@Override
-		public String toString() {
-			return this.name + "-" + this.type + "-" + this.value + "-" + this.comment;
 		}
 		
 	}

@@ -19,28 +19,28 @@
 	</main>
 	<#include "/include/footer.ftl">
 	<script type="text/javascript">
-    var client = null;
-    if(WebSocket) {
-        client = new WebSocket("ws://localhost:8080/chat.socket");
-    } else {
-        alert("浏览器不支持WebSocket");
-    }
-    client.onopen = function(event) {
-    	console.log("打开WebSocket成功");
-    }
-    client.onerror = function() {
-    	console.log("打开WebSocket异常");
-    };
-    client.onmessage = function(event) {
-        console.log("收到WebSocket信息：" + event.data);
-        notice(event.data);
-    }
-    client.onclose = function() {
-    	console.log("关闭WebSocket成功");
-    }
-    window.onbeforeunload = function() {
-        client.close();
-    }
+	var client = null;
+	if(WebSocket) {
+		client = new WebSocket("ws://localhost:8080/chat.socket");
+	} else {
+		alert("浏览器不支持WebSocket");
+	}
+	client.onopen = function(event) {
+		console.log("打开WebSocket成功");
+	}
+	client.onerror = function() {
+		console.log("打开WebSocket异常");
+	};
+	client.onmessage = function(event) {
+		console.log("收到WebSocket信息：" + event.data);
+		notice(event.data);
+	}
+	client.onclose = function() {
+		console.log("关闭WebSocket成功");
+	}
+	window.onbeforeunload = function() {
+		client.close();
+	}
 	if(Notification && Notification.permission !== "granted"){
 		Notification.requestPermission(function(status){
 			if(Notification.permission !== status){
@@ -48,13 +48,13 @@
 			}
 		});
 	}
-    function send() {
-    	var message = document.getElementById("message").value;
-    	if(message && message != '') {
-	        console.log("发送WebSocket信息：" + message);
-	        client.send(message);
-    	}
-    }
+	function send() {
+		var message = document.getElementById("message").value;
+		if(message && message != '') {
+			console.log("发送WebSocket信息：" + message);
+			client.send(message);
+		}
+	}
 	function notice(message) {
 		if(!Notification) {
 			alert("浏览器不支持！");

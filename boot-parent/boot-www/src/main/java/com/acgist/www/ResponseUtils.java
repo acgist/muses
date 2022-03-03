@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acgist.boot.config.MusesConfig;
-import com.acgist.boot.pojo.Message;
+import com.acgist.boot.data.Message;
 
 /**
  * 响应工具

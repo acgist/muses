@@ -4,11 +4,16 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 更新
  * 
  * @author acgist
  */
+@Getter
+@Setter
 public class SetMemoRequest extends GatewayRequest {
 
 	private static final long serialVersionUID = 1L;
@@ -23,21 +28,5 @@ public class SetMemoRequest extends GatewayRequest {
 	 * 通知地址
 	 */
 	private String notice;
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
-	public String getNotice() {
-		return notice;
-	}
-
-	public void setNotice(String notice) {
-		this.notice = notice;
-	}
 
 }

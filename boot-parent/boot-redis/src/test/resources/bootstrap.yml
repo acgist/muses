@@ -1,6 +1,9 @@
 spring:
   application:
     name: boot-redis
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
   profiles:
     active: dev
   redis:

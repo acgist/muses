@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.user.pojo.entity.UserEntity;
+import com.acgist.user.data.entity.UserEntity;
 
 @SpringBootTest(classes = ServiceApplication.class)
 public class ServiceTest {

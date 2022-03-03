@@ -1,5 +1,8 @@
 package com.acgist.concurrent;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 任务执行器
  * 
@@ -8,6 +11,8 @@ package com.acgist.concurrent;
  * @param <I> 输入信息
  * @param <O> 输出信息
  */
+@Getter
+@Setter
 public abstract class Executor<I, O> {
 
 	/**
@@ -175,20 +180,4 @@ public abstract class Executor<I, O> {
 	 */
 	protected abstract boolean doRollback();
 	
-	public I getInput() {
-		return input;
-	}
-
-	public void setInput(I input) {
-		this.input = input;
-	}
-
-	public O getOutput() {
-		return output;
-	}
-
-	public void setOutput(O output) {
-		this.output = output;
-	}
-
 }

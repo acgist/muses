@@ -1,11 +1,16 @@
 package com.acgist.gateway.notify;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 通知配置
  * 
  * @author acgist
  */
-public class NotifyConfig {
+@Getter
+@Setter
+public abstract class NotifyConfig {
 
 	/**
 	 * 是否启用
@@ -23,37 +28,5 @@ public class NotifyConfig {
 	 * 排序
 	 */
 	private Integer order;
-
-	public boolean isEnable() {
-		return enable;
-	}
-
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMatch() {
-		return match;
-	}
-
-	public void setMatch(String match) {
-		this.match = match;
-	}
-
-	public Integer getOrder() {
-		return order;
-	}
-
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
 
 }

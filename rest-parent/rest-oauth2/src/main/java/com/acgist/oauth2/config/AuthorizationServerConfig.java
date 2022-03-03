@@ -14,8 +14,10 @@ import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,27 +104,22 @@ public class AuthorizationServerConfig {
 	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
 		// TODO：密码模式
 		final TokenSettings tokenSettings = this.tokenSettings();
-		final RegisteredClient clientWeb = RegisteredClient.withId(OAuth2Config.CLIENT_WEB)
-			.clientId(OAuth2Config.CLIENT_WEB)
-			.clientSecret(passwordEncoder.encode(this.oAuth2Config.getWeb()))
-			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-			.redirectUri(this.oAuth2Config.getRedirectUri())
-			.tokenSettings(tokenSettings)
-			.scope("all")
-			.build();
-		final RegisteredClient clientRest = RegisteredClient.withId(OAuth2Config.CLIENT_REST)
-			.clientId(OAuth2Config.CLIENT_REST)
-			.clientSecret(passwordEncoder.encode(this.oAuth2Config.getRest()))
-			.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-			.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-			.redirectUri(this.oAuth2Config.getRedirectUri())
-			.tokenSettings(tokenSettings)
-			.scope("all")
-			.build();
-		return new InMemoryRegisteredClientRepository(clientWeb, clientRest);
+		final List<RegisteredClient> clients = new ArrayList<>();
+		this.oAuth2Config.getClients().forEach((name, secret) -> {
+			LOGGER.info("注册授权客户端：{}", name);
+			final RegisteredClient client = RegisteredClient.withId(name)
+				.clientId(name)
+				.clientSecret(passwordEncoder.encode(secret))
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+				.redirectUri(this.oAuth2Config.getRedirectUri())
+				.tokenSettings(tokenSettings)
+				.scope("all")
+				.build();
+			clients.add(client);
+		});
+		return new InMemoryRegisteredClientRepository(clients);
 	}
 	
 	@Bean

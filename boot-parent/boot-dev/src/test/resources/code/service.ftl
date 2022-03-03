@@ -1,6 +1,6 @@
 package ${modulePackage}${module}.service;
 
-import ${modulePackage}${module}.pojo.entity.${prefix};
+import ${modulePackage}${module}.data.entity.${prefix}Entity;
 import com.acgist.service.BootService;
 
 /**
@@ -8,6 +8,6 @@ import com.acgist.service.BootService;
  * 
  * @author ${author}
  */
-public interface ${prefix}Service extends BootService<${prefix}> {
+public interface ${prefix}Service extends BootService<${prefix}Entity> {
 
 }

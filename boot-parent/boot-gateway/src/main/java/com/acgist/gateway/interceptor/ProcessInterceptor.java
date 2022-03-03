@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.acgist.boot.pojo.MessageCode;
+import com.acgist.boot.data.MessageCode;
 import com.acgist.boot.service.IdService;
 import com.acgist.gateway.GatewaySession;
-import com.acgist.gateway.pojo.dto.GatewayDto;
+import com.acgist.gateway.data.dto.GatewayDto;
 import com.acgist.www.ErrorUtils;
 import com.acgist.www.interceptor.WwwInterceptor;
 

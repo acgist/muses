@@ -3,7 +3,7 @@ package com.acgist.distributed.lock;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.acgist.boot.MessageCodeException;
+import com.acgist.boot.data.MessageCodeException;
 
 /**
  * 分布式锁

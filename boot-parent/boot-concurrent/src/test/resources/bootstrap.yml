@@ -2,6 +2,7 @@ spring:
   application:
     name: boot-concurrent
   main:
+    allow-circular-references: true
     allow-bean-definition-overriding: true
   profiles:
     active: dev

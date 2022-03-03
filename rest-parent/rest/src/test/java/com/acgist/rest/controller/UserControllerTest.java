@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.acgist.boot.HTTPUtils;
-import com.acgist.boot.pojo.User;
+import com.acgist.boot.data.User;
 
 public class UserControllerTest {
 

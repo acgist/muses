@@ -78,10 +78,16 @@ public class RedisAutoConfiguration {
 		return template;
 	}
 	
+	/**
+	 * @return 键序列号
+	 */
 	private RedisSerializer<String> buildKeySerializer() {
 		return StringRedisSerializer.UTF_8;
 	}
 	
+	/**
+	 * @return 值序列化
+	 */
 	private RedisSerializer<?> buildValueSerializer() {
 		if(this.serializerType == SerializerType.JACKSON) {
 			final Jackson2JsonRedisSerializer<?> serializer = new Jackson2JsonRedisSerializer<>(Object.class);

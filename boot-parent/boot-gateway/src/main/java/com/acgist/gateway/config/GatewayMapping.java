@@ -3,11 +3,16 @@ package com.acgist.gateway.config;
 import com.acgist.boot.JSONUtils;
 import com.acgist.gateway.request.GatewayRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 网关映射
  * 
  * @author acgist
  */
+@Getter
+@Setter
 public class GatewayMapping {
 
 	/**
@@ -29,41 +34,6 @@ public class GatewayMapping {
 	 * 请求类型
 	 */
 	private Class<GatewayRequest> clazz;
-
-	public GatewayMapping() {
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getGateway() {
-		return gateway;
-	}
-
-	public void setGateway(String gateway) {
-		this.gateway = gateway;
-	}
-
-	public boolean isRecord() {
-		return record;
-	}
-
-	public void setRecord(boolean record) {
-		this.record = record;
-	}
-
-	public Class<GatewayRequest> getClazz() {
-		return clazz;
-	}
-
-	public void setClazz(Class<GatewayRequest> clazz) {
-		this.clazz = clazz;
-	}
 
 	@Override
 	public String toString() {

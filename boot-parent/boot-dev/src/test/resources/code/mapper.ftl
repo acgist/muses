@@ -2,7 +2,7 @@ package ${modulePackage}${module}.dao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import ${modulePackage}${module}.pojo.entity.${prefix};
+import ${modulePackage}${module}.data.entity.${prefix}Entity;
 import com.acgist.dao.mapper.BootMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.acgist.dao.mapper.BootMapper;
  * @author ${author}
  */
 @Mapper
-public interface ${prefix}Mapper extends BootMapper<${prefix}> {
+public interface ${prefix}Mapper extends BootMapper<${prefix}Entity> {
 
 }

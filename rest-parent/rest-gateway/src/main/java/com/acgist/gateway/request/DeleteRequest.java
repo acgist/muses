@@ -2,11 +2,16 @@ package com.acgist.gateway.request;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 删除
  * 
  * @author acgist
  */
+@Getter
+@Setter
 public class DeleteRequest extends GatewayRequest {
 
 	private static final long serialVersionUID = 1L;
@@ -16,13 +21,5 @@ public class DeleteRequest extends GatewayRequest {
 	 */
 	@NotNull(message = "删除用户ID不能为空")
 	private Long id;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
 }

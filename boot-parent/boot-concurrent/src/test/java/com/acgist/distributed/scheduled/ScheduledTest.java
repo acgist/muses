@@ -10,7 +10,7 @@ public class ScheduledTest {
 
 	@Test
 	public void testScheduled() throws InterruptedException {
-		Thread.sleep(100000);
+		Thread.sleep(Long.MAX_VALUE);
 	}
 
 }

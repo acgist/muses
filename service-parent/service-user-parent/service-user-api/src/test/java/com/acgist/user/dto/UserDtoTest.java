@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.acgist.user.pojo.dto.UserDto;
-import com.acgist.user.pojo.entity.UserEntity;
+import com.acgist.user.data.dto.UserDto;
+import com.acgist.user.data.entity.UserEntity;
 
 public class UserDtoTest {
 

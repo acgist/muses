@@ -2,14 +2,14 @@ package com.acgist.service;
 
 import java.util.List;
 
-import com.acgist.data.pojo.entity.BootEntity;
+import com.acgist.data.entity.BootEntity;
 import com.acgist.data.query.FilterQuery;
 import com.acgist.data.query.FilterQuery.Filter;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * BootService
+ * 基础Service
  * 
  * 远程服务不要继承
  * 
@@ -45,17 +45,7 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * 
 	 * @return 列表
 	 */
-	List<T> list(FilterQuery<T> filterQuery);
-	
-	/**
-	 * 分页查询
-	 * 
-	 * @param filters 过滤条件
-	 * @param page 分页信息
-	 * 
-	 * @return 分页
-	 */
-	Page<T> page(List<Filter> filters, Page<T> page);
+	List<T> list(FilterQuery filterQuery);
 	
 	/**
 	 * 分页查询
@@ -65,6 +55,6 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * 
 	 * @return 分页
 	 */
-	Page<T> page(FilterQuery<T> filterQuery, Page<T> page);
+	Page<T> page(FilterQuery filterQuery, Page<T> page);
 	
 }

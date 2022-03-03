@@ -6,11 +6,16 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 系统配置
  * 
  * @author acgist
  */
+@Getter
+@Setter
 public class MusesConfig {
 
 	/**
@@ -33,6 +38,10 @@ public class MusesConfig {
 	 * 系统自动配置
 	 */
 	public static final String MUSES_CONFIG = "muses.json";
+	/**
+	 * 时间格式
+	 */
+	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	/**
 	 * JSON HTTP数据类型
 	 */
@@ -62,36 +71,4 @@ public class MusesConfig {
 	 */
 	private Map<String, Integer> sns;
 
-	public Integer getSn() {
-		return sn;
-	}
-
-	public void setSn(Integer sn) {
-		this.sn = sn;
-	}
-
-	public Integer getPid() {
-		return pid;
-	}
-
-	public void setPid(Integer pid) {
-		this.pid = pid;
-	}
-
-	public Integer getPort() {
-		return port;
-	}
-
-	public void setPort(Integer port) {
-		this.port = port;
-	}
-
-	public Map<String, Integer> getSns() {
-		return sns;
-	}
-
-	public void setSns(Map<String, Integer> sns) {
-		this.sns = sns;
-	}
-	
 }

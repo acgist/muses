@@ -1,6 +1,6 @@
 package com.acgist.gateway.notify;
 
-import com.acgist.gateway.pojo.entity.GatewayEntity;
+import com.acgist.gateway.data.entity.GatewayEntity;
 
 /**
  * 通知

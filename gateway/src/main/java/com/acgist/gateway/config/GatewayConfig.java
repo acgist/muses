@@ -12,9 +12,9 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.acgist.boot.MessageCodeException;
-import com.acgist.boot.pojo.Message;
-import com.acgist.boot.pojo.MessageCode;
+import com.acgist.boot.data.Message;
+import com.acgist.boot.data.MessageCode;
+import com.acgist.boot.data.MessageCodeException;
 import com.acgist.gateway.ResponseUtils;
 
 import reactor.core.publisher.Mono;

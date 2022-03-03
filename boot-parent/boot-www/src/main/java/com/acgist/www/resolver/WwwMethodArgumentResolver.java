@@ -23,5 +23,4 @@ public interface WwwMethodArgumentResolver extends HandlerMethodArgumentResolver
 		return this.getClass().getSimpleName();
 	}
 	
-	
 }

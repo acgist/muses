@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acgist.boot.pojo.User;
+import com.acgist.boot.data.User;
 import com.acgist.rest.UserContext;
 
 @RestController
