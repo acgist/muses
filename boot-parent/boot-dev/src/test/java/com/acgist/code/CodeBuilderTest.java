@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.data.PojoCopy;
@@ -40,8 +39,10 @@ public class CodeBuilderTest {
 	private String basePackage = "com.acgist";
 	// ID字段
 	private String id = "id";
+	// 模块
+	private String module = "admin";
 	// 模块路径
-	private String modulePackage = this.basePackage + ".admin.";
+	private String modulePackage = this.basePackage + "." + module + ".";
 	// Mapper
 	private String mapperPackage = "mybatis.mapper.";
 	// Java目录
@@ -63,7 +64,10 @@ public class CodeBuilderTest {
 	
 	@Test
 	public void testBuildAll() throws Exception {
-		this.buildCode("acgist", "t_user", false);
+		this.buildCode("acgist", "t_user");
+		this.buildCode("acgist", "t_gateway");
+		this.buildCode("acgist", "t_gateway_0");
+		this.buildCode("acgist", "t_gateway_1");
 	}
 	
 	/**
@@ -71,49 +75,46 @@ public class CodeBuilderTest {
 	 * 
 	 * @param author 用户
 	 * @param table 表名
-	 * @param removePrefix 是否去掉字段前缀
 	 * 
 	 * @throws Exception 异常
 	 */
-	public void buildCode(@RequestBody String author, String table, boolean removePrefix) throws Exception {
+	public void buildCode(String author, String table) throws Exception {
 		this.path = new ClassPathResource("./").getFile().getParentFile().getAbsolutePath() + this.target;
 		LOGGER.info("输出目录：{}", this.path);
 		final Map<Object, Object> map = new HashMap<>();
 		map.put("id", this.id);
 		map.put("modulePackage", this.modulePackage);
 		map.put("hasId", Arrays.asList(this.skipColumns).indexOf(this.id) < 0);
-		final List<Column> list = this.loadTable(map, table, removePrefix);
+		final List<Column> list = this.loadTable(map, table);
+		// 去掉前缀
+		final String tableSuffix = this.removePrefix(table);
 		// 作者
 		map.put("author", author);
 		// 表名
 		map.put("table", table);
 		// 路径
-		map.put("path", table.substring(table.indexOf("_") + 1).replace('_', '/'));
+		map.put("path", this.module + "/" + tableSuffix.replace('_', '/').toLowerCase());
 		// 模块
-		final int index = table.indexOf('_') + 1;
-		if (table.indexOf('_') == table.lastIndexOf('_')) {
-			map.put("module", table.substring(index).replace('_', '.'));
+		final int index = tableSuffix.indexOf('_');
+		if (index < 0) {
+			map.put("module", tableSuffix.replace('_', '.').toLowerCase());
 		} else if (this.absolute) {
-			map.put("module", table.substring(index, table.lastIndexOf("_")).replace('_', '.'));
+			map.put("module", tableSuffix.substring(0, tableSuffix.lastIndexOf("_")).replace('_', '.').toLowerCase());
 		} else {
-			map.put("module", table.substring(index, table.indexOf("_", index)).replace('_', '.'));
+			map.put("module", tableSuffix.substring(0, tableSuffix.indexOf("_", index)).replace('_', '.').toLowerCase());
 		}
 		// 驼峰类型
-		final String prefix = this.hump(table.substring(table.indexOf('_')));
+		final String prefix = this.hump(tableSuffix);
 		// 大写类型：SysAccount
-		map.put("prefix", prefix);
+		map.put("prefix", this.upperFirstOnly(prefix));
 		// 小写类型：sysAccount
-		map.put("prefixLower", lowerFirst(prefix));
+		map.put("prefixLower", this.lowerFirstOnly(prefix));
 		// 字段信息
 		map.put("columns", list);
 		LOGGER.info("生成代码变量：{}", map);
-		LOGGER.info("生成data代码：{}", table);
 		this.buildPojo(map);
-		LOGGER.info("生成dao代码：{}", table);
 		this.buildDao(map);
-		LOGGER.info("生成service代码：{}", table);
 		this.buildService(map);
-		LOGGER.info("生成controller代码：{}", table);
 		this.buildController(map);
 	}
 	
@@ -131,7 +132,7 @@ public class CodeBuilderTest {
 		}
 		String target = names[0].toLowerCase();
 		for (int index = 1; index < names.length; index++) {
-			target += upperFirst(names[index]);
+			target += this.upperFirst(names[index]);
 		}
 		return target;
 	}
@@ -143,7 +144,7 @@ public class CodeBuilderTest {
 	 * 
 	 * @return 目标字符
 	 */
-	public static final String upperFirst(String value) {
+	public String upperFirst(String value) {
 		return value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
 	}
 	
@@ -154,7 +155,18 @@ public class CodeBuilderTest {
 	 * 
 	 * @return 目标字符
 	 */
-	public static final String lowerFirst(String value) {
+	public String upperFirstOnly(String value) {
+		return value.substring(0, 1).toUpperCase() + value.substring(1);
+	}
+	
+	/**
+	 * 首个字母大写
+	 * 
+	 * @param value 原始字符
+	 * 
+	 * @return 目标字符
+	 */
+	public String lowerFirstOnly(String value) {
 		return value.substring(0, 1).toLowerCase() + value.substring(1);
 	}
 	
@@ -163,13 +175,12 @@ public class CodeBuilderTest {
 	 * 
 	 * @param map 参数
 	 * @param tableName 表名
-	 * @param removePrefix 是否去掉字段前缀
 	 * 
 	 * @return 数据表结构
 	 * 
 	 * @throws Exception 异常
 	 */
-	public List<Column> loadTable(Map<Object, Object> map, String tableName, boolean removePrefix) throws Exception {
+	public List<Column> loadTable(Map<Object, Object> map, String tableName) throws Exception {
 		Class.forName(this.driverClass);
 		final Connection connection = DriverManager.getConnection(this.url, this.user, this.password);
 		final Statement statement = connection.createStatement();
@@ -209,6 +220,7 @@ public class CodeBuilderTest {
 			if(StringUtils.isEmpty(comment)) {
 				comment = name;
 			}
+			comment = comment.replace("\r\n", " ").replace('\r', ' ').replace('\n', ' ');
 			// 添加类型
 			if("Date".equals(type)) {
 				map.put("hasDate", true);
@@ -218,17 +230,28 @@ public class CodeBuilderTest {
 				map.put("hasOtherType", true);
 			}
 			// 字段前缀
-			if(removePrefix) {
-				list.add(new Column(name, type, this.hump(name.substring(2)), comment));
-			} else {
-				list.add(new Column(name, type, this.hump(name), comment));
-			}
+			list.add(new Column(name, type, this.hump(this.removePrefix(name)), comment));
 		}
 		tableResultSet.close();
 		statement.close();
 		table.close();
 		connection.close();
 		return list;
+	}
+	
+	/**
+	 * 去掉前缀
+	 * 
+	 * @param name 内容
+	 * 
+	 * @return 去掉前缀内容
+	 */
+	public String removePrefix(String name) {
+		final int index = name.indexOf('_');
+		if(index == 1) {
+			return name.substring(index + 1);
+		}
+		return name;
 	}
 	
 	/**

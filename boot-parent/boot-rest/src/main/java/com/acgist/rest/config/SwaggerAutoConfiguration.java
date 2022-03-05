@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.acgist.boot.StringUtils;
@@ -46,21 +46,44 @@ public class SwaggerAutoConfiguration {
 	private String applicationName;
 	
 	@Bean
-	@ConditionalOnMissingBean
 	public Docket createRestApi() {
 		LOGGER.info("配置Swagger文档");
-		final ApiInfo info = new ApiInfoBuilder()
+		return this.buildDocket("Muses", "/**");
+	}
+	
+	/**
+	 * @return API信息
+	 */
+	private ApiInfo buildApiInfo() {
+		return new ApiInfoBuilder()
 			.title(StringUtils.isEmpty(this.systemName) ? this.applicationName : this.systemName)
 			.version(this.systemVersion)
+//			.license("Apache 2.0")
+//			.licenseUrl("https://www.acgist.com")
 			.description(this.applicationName)
 			.build();
-		return
-			new Docket(DocumentationType.OAS_30)
+	}
+	
+	/**
+	 * 创建分组
+	 * 
+	 * @param name 名称
+	 * @param path 地址
+	 * 
+	 * @return 分组
+	 */
+	private Docket buildDocket(String name, String path) {
+		return new Docket(DocumentationType.OAS_30)
+			.groupName(name)
 			.select()
 			.apis(RequestHandlerSelectors.withClassAnnotation(Tag.class))
-			.paths(PathSelectors.any())
+			.paths(PathSelectors.ant(path))
 			.build()
-			.apiInfo(info);
+//			.forCodeGeneration(true)
+//			.genericModelSubstitutes(Message.class)
+			.genericModelSubstitutes(DeferredResult.class)
+//			.useDefaultResponseMessages(false)
+			.apiInfo(this.buildApiInfo());
 	}
 	
 }

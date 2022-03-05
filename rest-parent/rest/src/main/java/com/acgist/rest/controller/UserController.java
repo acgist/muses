@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.acgist.boot.data.Message;
 import com.acgist.boot.data.User;
 import com.acgist.rest.UserContext;
 
@@ -15,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@PostMapping()
 	@Operation(summary = "查询当前用户", description = "查询当前登陆用户", tags = "用户接口")
 	public User index() {
@@ -24,10 +25,10 @@ public class UserController {
 	
 	@GetMapping
 	@Operation(summary = "模拟查询用户", description = "模拟返回查询用户", tags = "用户接口")
-	public User index(String name) {
+	public Message<User> index(String name) {
 		final User user = new User();
 		user.setName(name);
-		return user;
+		return Message.success(user);
 	}
 	
 }

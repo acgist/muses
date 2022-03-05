@@ -1,5 +1,7 @@
 package ${modulePackage}${module}.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  * @author ${author}
  */
 @RestController
-@RequestMapping("/admin/${path}")
+@RequestMapping("/${path}")
 public class ${prefix}Controller {
 
 	@Autowired
@@ -49,6 +51,15 @@ public class ${prefix}Controller {
 	@DeleteMapping("/{id}")
 	public Message<String> delete(@PathVariable Long id) {
 		if (this.${prefixLower}Service.removeById(id)) {
+			return Message.success();
+		} else {
+			return Message.fail();
+		}
+	}
+	
+	@DeleteMapping
+	public Message<String> delete(List<Long> ids) {
+		if (this.${prefixLower}Service.removeBatchByIds(ids)) {
 			return Message.success();
 		} else {
 			return Message.fail();
