@@ -31,6 +31,11 @@
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-www</artifactId>
 		</dependency>
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-boot-starter</artifactId>
+		    <optional>true</optional>
+		</dependency>
 	</dependencies>
 
 </project>

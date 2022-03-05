@@ -16,10 +16,27 @@ UserContext.get()
 ```
 <dependency>
 	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger2</artifactId>
+	<artifactId>springfox-boot-starter</artifactId>
 </dependency>
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger-ui</artifactId>
-</dependency>
+```
+
+> 目前只有`dev`环境有效：`/swagger-ui/index.html`
+
+#### Swagger3
+
+[https://springdoc.org/](https://springdoc.org/)
+
+###### 注解修改
+
+```
+@Api → @Tag
+@ApiIgnore → @Parameter(hidden = true) or @Operation(hidden = true) or @Hidden
+@ApiImplicitParam → @Parameter
+@ApiImplicitParams → @Parameters
+@ApiModel → @Schema
+@ApiModelProperty(hidden = true) → @Schema(accessMode = READ_ONLY)
+@ApiModelProperty → @Schema
+@ApiOperation(value = "foo", notes = "bar") → @Operation(summary = "foo", description = "bar")
+@ApiParam → @Parameter
+@ApiResponse(code = 404, message = "foo") → @ApiResponse(responseCode = "404", description = "foo")
 ```

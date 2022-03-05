@@ -48,4 +48,11 @@
 		</root>
 	</springProfile>
 
+	<springProfile name="!dev &amp; !test &amp; !release">
+		<root level="debug">
+			<appender-ref ref="file" />
+			<appender-ref ref="console" />
+		</root>
+	</springProfile>
+
 </configuration>

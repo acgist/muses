@@ -161,7 +161,9 @@ public final class JSONUtils {
 		defaultModule.addSerializer(Long.class, ToStringSerializer.instance);
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
 			.registerModules(defaultModule, new JavaTimeModule())
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			// 如果前台需要先是所有属性删除设置
+			.setSerializationInclusion(Include.NON_NULL);
 	}
 
 	/**

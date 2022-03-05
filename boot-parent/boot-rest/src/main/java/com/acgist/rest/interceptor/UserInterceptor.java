@@ -3,6 +3,8 @@ package com.acgist.rest.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.data.MessageCode;
@@ -19,6 +21,12 @@ import com.acgist.www.interceptor.WwwInterceptor;
  */
 public class UserInterceptor implements WwwInterceptor {
 
+	/**
+	 * 忽略用户登陆
+	 */
+	@Value("${system.rest.ignore-user:true}")
+	private boolean ignoreUser;
+	
 	@Override
 	public String[] patterns() {
 		return new String[] { "/**" };
@@ -31,6 +39,9 @@ public class UserInterceptor implements WwwInterceptor {
 		}
 		final String currentUser = request.getHeader(User.HEADER_CURRENT_USER);
 		if(StringUtils.isEmpty(currentUser)) {
+			if(this.ignoreUser) {
+				return true;
+			}
 			throw MessageCodeException.of(MessageCode.CODE_3401);
 		}
 		final User user = JSONUtils.toJava(currentUser, User.class);

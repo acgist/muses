@@ -35,6 +35,7 @@
 		<java.version>11</java.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
 		<lombok.version>1.18.22</lombok.version>
+		<springfox.version>3.0.0</springfox.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<mybatis.plus.version>3.5.1</mybatis.plus.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
@@ -231,6 +232,12 @@
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>${lombok.version}</version>
+			</dependency>
+			<!-- 文档 -->
+			<dependency>
+			    <groupId>io.springfox</groupId>
+			    <artifactId>springfox-boot-starter</artifactId>
+			    <version>${springfox.version}</version>
 			</dependency>
 			<!-- MyBatis-Plus -->
 			<dependency>

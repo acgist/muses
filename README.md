@@ -52,6 +52,11 @@
 
 `Rest`服务使用`OAuth2`服务通过网关实现统一认证鉴权
 
+#### 测试
+
+为了方便测试后台接口，可以绕过网关直接请求`WWW(Web/Rest)`服务，需要配置`system.rest.ignore-user=true`忽略用户拦截。
+如果需要模拟用户登陆需要添加请求头部`current-user`设置登陆用户信息。
+
 ## 配置
 
 配置统一放在`Nacos`配置中心通过`bootstrap.yml`加载：
@@ -87,6 +92,10 @@ spring:
 ## 系统配置
 
 ```
+# 系统名称
+system.name=muses
+# 系统版本
+system.version=1.0.0
 # 系统编号（负数自动生成）：主要用于生成ID，相同服务建议设置不同编号。
 system.sn=-1
 # 系统端口：随机生成
@@ -103,6 +112,8 @@ system.thread.live=30
 system.serializer.type=jdk|jackson
 # 是否自动配置MVC：请求拦截器、参数解析器
 system.mvc=true|false
+# Rest忽略用户拦截
+system.rest.ignore-user=true|false
 # 慢请求统计时间：毫秒
 system.gateway.slow.request.duration=1000
 # 静态资源地址
