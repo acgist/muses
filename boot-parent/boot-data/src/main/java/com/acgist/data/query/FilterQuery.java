@@ -3,9 +3,10 @@ package com.acgist.data.query;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import org.apache.dubbo.common.utils.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.acgist.boot.StringUtils;
@@ -30,12 +31,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FilterQuery {
-
-	/**
-	 * Like查询
-	 */
-	public static final Function<Object, String> LIKE = source -> "%" + source + "%";
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FilterQuery.class);
+
 	/**
 	 * 通过MyBatis注解获取数据库列名
 	 * 
@@ -162,11 +160,16 @@ public class FilterQuery {
 				wrapper.in(column, this.value);
 				break;
 			case LIKE:
-				wrapper.like(column, LIKE.apply(this.value));
+				wrapper.like(column, this.value);
 				break;
 			case BETWEEN:
-				final List<?> list = (List<?>) this.value;
-				wrapper.between(column, list.get(0), list.get(1));
+				if(this.value instanceof List) {
+					// TODO：JDK17
+					final List<?> list = (List<?>) this.value;
+					wrapper.between(column, list.get(0), list.get(1));
+				} else {
+					LOGGER.warn("不支持的between类型：{}", this.value == null ? null : this.value.getClass());
+				}
 				break;
 			case IS_NULL:
 				wrapper.isNull(column);
@@ -449,6 +452,18 @@ public class FilterQuery {
 	}
 	
 	/**
+	 * 重置数据
+	 * 
+	 * @return this
+	 */
+	public FilterQuery reset() {
+		this.filter.clear();
+		this.sorted.clear();
+		this.nullable = true;
+		return this;
+	}
+	
+	/**
 	 * 创建MyBatis查询条件
 	 * 
 	 * @param entity entity
@@ -464,5 +479,5 @@ public class FilterQuery {
 			.forEach(sorted -> sorted.order(wrapper));
 		return wrapper;
 	}
-
+	
 }

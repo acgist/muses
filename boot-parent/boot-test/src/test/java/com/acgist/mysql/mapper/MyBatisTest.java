@@ -39,8 +39,9 @@ public class MyBatisTest {
 	public void testFilterQuery() {
 		 final FilterQuery query = FilterQuery.builder();
 		 assertEquals(1, this.userMapper.selectList(query.build(UserEntity.class)).size());
-		 assertEquals(1, this.userMapper.selectList(query.eq("name", "root").build(UserEntity.class)).size());
-		 assertEquals(0, this.userMapper.selectList(query.eq("name", "acgist").build(UserEntity.class)).size());
+		 assertEquals(1, this.userMapper.selectList(query.reset().eq("name", "root").build(UserEntity.class)).size());
+		 assertEquals(0, this.userMapper.selectList(query.reset().eq("name", "acgist").build(UserEntity.class)).size());
+		 assertEquals(1, this.userMapper.selectList(query.reset().like("name", "o").build(UserEntity.class)).size());
 	}
 	
 }
