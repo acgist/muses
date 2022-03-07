@@ -24,6 +24,23 @@
 			<fileMode>0755</fileMode>
 			<filtered>true</filtered>
 		</fileSet>
+		<fileSet>
+			<directory>src/main/resources</directory>
+			<outputDirectory>config</outputDirectory>
+			<filtered>true</filtered>
+			<includes>
+				<include>*.jks</include>
+				<include>*.yml</include>
+				<include>*.properties</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>target</directory>
+			<outputDirectory>logs</outputDirectory>
+			<excludes>
+				<exclude>**/*</exclude>
+			</excludes>
+		</fileSet>
 	</fileSets>
 
 	<dependencySets>

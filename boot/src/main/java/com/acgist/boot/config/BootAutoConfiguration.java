@@ -170,6 +170,7 @@ public class BootAutoConfiguration {
 		LOGGER.info("Java版本：{}", System.getProperty("java.version"));
 		LOGGER.info("Java主目录：{}", System.getProperty("java.home"));
 		LOGGER.info("Java库目录：{}", System.getProperty("java.library.path"));
+		LOGGER.info("ClassPath：{}", System.getProperty("java.class.path"));
 		LOGGER.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
 		LOGGER.info("虚拟机空闲内存：{}", freeMemory);
 		LOGGER.info("虚拟机已用内存：{}", totalMemory);

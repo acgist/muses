@@ -51,4 +51,10 @@ services:
       - TZ=Asia/Shanghai
     external_links:
       - nacos
-``
+
+networks:
+  app_net:
+    external: true
+  default:
+    name: app_net
+```

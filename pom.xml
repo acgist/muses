@@ -235,9 +235,9 @@
 			</dependency>
 			<!-- 文档 -->
 			<dependency>
-			    <groupId>io.springfox</groupId>
-			    <artifactId>springfox-boot-starter</artifactId>
-			    <version>${springfox.version}</version>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-boot-starter</artifactId>
+				<version>${springfox.version}</version>
 			</dependency>
 			<!-- MyBatis-Plus -->
 			<dependency>
@@ -325,6 +325,12 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<configuration>
+						<!-- Jar配置独立config目录 -->
+						<excludes>
+							<exclude>*.jks</exclude>
+							<exclude>*.yml</exclude>
+							<exclude>*.properties</exclude>
+						</excludes>
 						<archive>
 							<manifestEntries>
 								<Built-By>${system.maven.vendor}</Built-By>
