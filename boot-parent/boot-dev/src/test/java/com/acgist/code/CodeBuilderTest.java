@@ -56,7 +56,7 @@ public class CodeBuilderTest {
 	// 完整路径：t_acgist_user_list=com.acgist.admin.data.acgist.user.list.AcgistUserList
 	private boolean absolute = false;
 	// 数据配置
-	private String url = "jdbc:mysql://localhost:3306/muses?useSSL=false&useUnicode=true&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai";
+	private String url = "jdbc:mysql://localhost:3306/muses?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true";
 	private String user = "root";
 	private String password = "";
 	private String driverClass = "com.mysql.cj.jdbc.Driver";

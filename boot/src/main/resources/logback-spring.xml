@@ -1,25 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="false" scanPeriod="60 seconds" debug="false">
 
+	<!-- 系统名称 -->
 	<springProperty scope="context" name="system.name" source="spring.application.name" />
-
-	<property name="system.charset" value="utf-8" />
-	<property name="system.pattern" value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %m%n" />
-
+	<!-- 系统名称 -->
 	<contextName>${system.name}</contextName>
+	<!-- 日志目录 -->
+	<property name="system.path" value="logs" />
+	<!-- 异步日志队列长度 -->
+	<property name="system.queue" value="2048" />
+	<!-- 日志文件缓存大小 -->
+	<property name="system.buffer" value="8192" />
+	<!-- 日志保留时间 -->
+	<property name="system.history" value="30" />
+	<!-- 日志编码 -->
+	<property name="system.charset" value="utf-8" />
+	<!-- 日志格式 -->
+	<property name="system.pattern" value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %file:%line - %m%n" />
 
 	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/${system.name}.log</file>
+		<file>${system.path}/${system.name}.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<maxHistory>30</maxHistory>
-			<fileNamePattern>logs/${system.name}-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<maxHistory>${system.history}</maxHistory>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 		</rollingPolicy>
-		<bufferSize>8192</bufferSize>
+		<bufferSize>${system.buffer}</bufferSize>
 		<immediateFlush>false</immediateFlush>
 		<encoder>
 			<charset>${system.charset}</charset>
 			<pattern>${system.pattern}</pattern>
 		</encoder>
+	</appender>
+	<appender name="fileAsync" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="file" />
+		<queueSize>${system.queue}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
+	<appender name="fileDebug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${system.path}/debug.${system.name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>${system.history}</maxHistory>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/debug.${system.name}%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+		</rollingPolicy>
+		<bufferSize>${system.buffer}</bufferSize>
+		<immediateFlush>false</immediateFlush>
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+	</appender>
+	<appender name="fileDebugAsync" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="fileDebug" />
+		<queueSize>${system.queue}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
+	<appender name="fileInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${system.path}/info.${system.name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>${system.history}</maxHistory>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/info.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+		</rollingPolicy>
+		<bufferSize>${system.buffer}</bufferSize>
+		<immediateFlush>false</immediateFlush>
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+	<appender name="fileInfoAsync" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="fileInfo" />
+		<queueSize>${system.queue}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
+	<appender name="fileError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${system.path}/error.${system.name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>${system.history}</maxHistory>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/error.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+		</rollingPolicy>
+		<bufferSize>${system.buffer}</bufferSize>
+		<immediateFlush>false</immediateFlush>
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+	</appender>
+	<appender name="fileErrorAsync" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="fileError" />
+		<queueSize>${system.queue}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
 	</appender>
 
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -28,6 +113,9 @@
 			<pattern>${system.pattern}</pattern>
 		</encoder>
 	</appender>
+	
+	<!-- 引入文件：文件可以不存在 -->
+	<include resource="logback-gateway.xml" />
 
 	<springProfile name="dev">
 		<root level="INFO">

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+
+	<appender name="gatewayFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${system.path}/gateway.${system.name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>${system.history}</maxHistory>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/gateway.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+		</rollingPolicy>
+		<bufferSize>${system.buffer}</bufferSize>
+		<immediateFlush>false</immediateFlush>
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+	</appender>
+	<appender name="gatewayFileAsync" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="gatewayFile" />
+		<queueSize>${system.queue}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
+	<!-- name：包名、日志名称 -->
+	<!-- additivity：是否追加到根（root）日志 -->
+	<logger name="com.acgist.gateway" level="INFO" additivity="false">
+		<appender-ref ref="gatewayFile" />
+	</logger>
+	
+</included>

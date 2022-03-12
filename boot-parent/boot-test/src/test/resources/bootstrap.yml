@@ -17,7 +17,7 @@ spring:
       cluster-name: ${spring.application.name:muses}
       cluster-nodes: localhost:9300
   datasource:
-    url: jdbc:mysql://localhost:3306/muses?useSSL=false&useUnicode=true&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/muses?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -116,8 +116,10 @@ public class BootAutoConfiguration {
 	}
 
 	@Bean
+	@Primary
 	@ConditionalOnMissingBean
 	public ObjectMapper objectMapper() {
+		// Jackson2ObjectMapperBuilder
 		return JSONUtils.buildWebMapper();
 	}
 
