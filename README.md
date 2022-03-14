@@ -189,7 +189,7 @@ server.port=${system.port:8080}
 #### 命名规范
 
 |名称|包名|
-|:-|:-|:-|
+|:-|:-|
 |配置|com.acgist.*.config|
 |过滤器|com.acgist.*.filter|
 |监听器|com.acgist.*.listener|
