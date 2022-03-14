@@ -3,7 +3,7 @@ package com.acgist.dao.neo4j;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.acgist.data.neo4j.BootNode;
+import com.acgist.model.neo4j.BootNode;
 
 /**
  * Neo4j Repository

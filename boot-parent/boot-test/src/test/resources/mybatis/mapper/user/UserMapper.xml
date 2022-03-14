@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.acgist.mysql.mapper.UserMapper">
 
-	<select id="page" resultType="com.acgist.user.data.entity.UserEntity">
+	<select id="page" resultType="com.acgist.user.model.entity.UserEntity">
 		SELECT * FROM t_user
 	</select>
 

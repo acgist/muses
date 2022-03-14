@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.acgist.dao.mapper.BootMapper;
-import com.acgist.user.data.entity.PathEntity;
+import com.acgist.user.model.entity.PathEntity;
 
 /**
  * 权限Mapper

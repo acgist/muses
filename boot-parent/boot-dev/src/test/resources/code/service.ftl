@@ -1,6 +1,6 @@
 package ${modulePackage}${module}.service;
 
-import ${modulePackage}${module}.data.entity.${prefix}Entity;
+import ${modulePackage}${module}.model.entity.${prefix}Entity;
 import com.acgist.service.BootService;
 
 /**

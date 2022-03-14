@@ -3,7 +3,7 @@ package com.acgist.mysql.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.acgist.dao.mapper.BootMapper;
-import com.acgist.user.data.entity.UserEntity;
+import com.acgist.user.model.entity.UserEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 @Mapper

@@ -47,7 +47,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import com.acgist.boot.config.MusesConfig;
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.MessageCodeException;
 
 /**
  * HTTP工具

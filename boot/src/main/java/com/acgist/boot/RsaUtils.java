@@ -35,7 +35,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.MessageCodeException;
 
 /**
  * RSA工具

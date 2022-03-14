@@ -7,7 +7,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import com.acgist.data.neo4j.BootNode;
+import com.acgist.model.neo4j.BootNode;
 
 @Node("person")
 public class PersonNode extends BootNode {

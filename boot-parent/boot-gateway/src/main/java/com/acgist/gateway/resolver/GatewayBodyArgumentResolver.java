@@ -5,7 +5,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.acgist.gateway.GatewaySession;
+import com.acgist.gateway.model.GatewaySession;
 import com.acgist.www.resolver.WwwMethodArgumentResolver;
 
 /**

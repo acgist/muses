@@ -3,7 +3,7 @@ package ${modulePackage}${module}.service.impl;
 import org.springframework.stereotype.Service;
 
 import ${modulePackage}${module}.dao.mapper.${prefix}Mapper;
-import ${modulePackage}${module}.data.entity.${prefix}Entity;
+import ${modulePackage}${module}.model.entity.${prefix}Entity;
 import ${modulePackage}${module}.service.${prefix}Service;
 import com.acgist.service.impl.BootServiceImpl;
 

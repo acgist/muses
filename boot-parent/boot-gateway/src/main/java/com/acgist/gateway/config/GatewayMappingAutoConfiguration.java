@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.gateway.service.GatewayMappingService;
+import com.acgist.gateway.service.impl.GatewayMappingService;
 
 /**
  * 网关映射

@@ -112,7 +112,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-data</artifactId>
+				<artifactId>boot-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

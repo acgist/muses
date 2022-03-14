@@ -9,11 +9,11 @@ import org.springframework.util.StreamUtils;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.config.MusesConfig;
-import com.acgist.boot.data.MessageCode;
-import com.acgist.gateway.GatewaySession;
+import com.acgist.boot.model.MessageCode;
 import com.acgist.gateway.config.GatewayMapping;
-import com.acgist.gateway.request.GatewayRequest;
-import com.acgist.gateway.service.GatewayMappingService;
+import com.acgist.gateway.model.GatewaySession;
+import com.acgist.gateway.model.request.GatewayRequest;
+import com.acgist.gateway.service.impl.GatewayMappingService;
 import com.acgist.www.interceptor.WwwInterceptor;
 
 /**

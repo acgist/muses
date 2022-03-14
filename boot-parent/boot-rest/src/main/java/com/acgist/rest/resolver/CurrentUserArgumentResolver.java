@@ -5,7 +5,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.acgist.boot.data.User;
+import com.acgist.boot.model.User;
 import com.acgist.rest.UserContext;
 import com.acgist.www.resolver.CurrentUser;
 import com.acgist.www.resolver.CurrentUser.Type;

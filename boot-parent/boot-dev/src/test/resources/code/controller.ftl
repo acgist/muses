@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ${modulePackage}${module}.data.entity.${prefix}Entity;
+import ${modulePackage}${module}.model.entity.${prefix}Entity;
 import ${modulePackage}${module}.service.${prefix}Service;
-import com.acgist.boot.data.Message;
-import com.acgist.data.query.FilterQuery;
+import com.acgist.boot.model.Message;
+import com.acgist.model.query.FilterQuery;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 /**

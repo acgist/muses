@@ -3,9 +3,9 @@ package com.acgist.service.impl;
 import java.util.List;
 
 import com.acgist.dao.mapper.BootMapper;
-import com.acgist.data.entity.BootEntity;
-import com.acgist.data.query.FilterQuery;
-import com.acgist.data.query.FilterQuery.Filter;
+import com.acgist.model.entity.BootEntity;
+import com.acgist.model.query.FilterQuery;
+import com.acgist.model.query.FilterQuery.Filter;
 import com.acgist.service.BootService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

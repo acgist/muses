@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.user.data.entity.UserEntity;
+import com.acgist.user.model.entity.UserEntity;
 
 @SpringBootTest(classes = ServiceApplication.class)
 public class ServiceTest {
 	
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 
 	@Test
 	public void testService() {

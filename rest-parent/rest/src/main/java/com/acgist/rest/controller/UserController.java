@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acgist.boot.data.Message;
-import com.acgist.boot.data.User;
+import com.acgist.boot.model.Message;
+import com.acgist.boot.model.User;
 import com.acgist.rest.UserContext;
 
 import io.swagger.v3.oas.annotations.Operation;

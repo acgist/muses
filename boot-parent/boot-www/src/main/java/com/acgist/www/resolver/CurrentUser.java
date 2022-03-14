@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.acgist.boot.data.User;
+import com.acgist.boot.model.User;
 
 /**
  * 获取当前用户

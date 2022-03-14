@@ -12,11 +12,11 @@ import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
-import com.acgist.boot.data.Message;
-import com.acgist.boot.data.MessageCode;
-import com.acgist.boot.data.User;
+import com.acgist.boot.model.Message;
+import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.model.User;
 import com.acgist.gateway.ResponseUtils;
-import com.acgist.user.service.IUserService;
+import com.acgist.user.api.IUserService;
 import com.nimbusds.jose.JWSObject;
 
 /**

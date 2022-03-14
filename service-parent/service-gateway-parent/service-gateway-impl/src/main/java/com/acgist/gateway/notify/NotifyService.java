@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.acgist.gateway.data.entity.GatewayEntity;
+import com.acgist.gateway.model.entity.GatewayEntity;
 
 /**
  * 发送通知

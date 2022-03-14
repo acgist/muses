@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.main.UserApplication;
+import com.acgist.user.api.IUserService;
 import com.acgist.user.dao.mapper.UserMapper;
-import com.acgist.user.data.dto.UserDto;
-import com.acgist.user.data.entity.UserEntity;
+import com.acgist.user.model.dto.UserDto;
+import com.acgist.user.model.entity.UserEntity;
 
 @SpringBootTest(classes = UserApplication.class)
 public class UserServiceTest {

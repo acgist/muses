@@ -2,9 +2,9 @@ package com.acgist.service;
 
 import java.util.List;
 
-import com.acgist.data.entity.BootEntity;
-import com.acgist.data.query.FilterQuery;
-import com.acgist.data.query.FilterQuery.Filter;
+import com.acgist.model.entity.BootEntity;
+import com.acgist.model.query.FilterQuery;
+import com.acgist.model.query.FilterQuery.Filter;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 

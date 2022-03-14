@@ -14,8 +14,8 @@ import org.springframework.security.web.server.authorization.ServerAccessDeniedH
 import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.acgist.boot.data.Message;
-import com.acgist.boot.data.MessageCode;
+import com.acgist.boot.model.Message;
+import com.acgist.boot.model.MessageCode;
 import com.acgist.gateway.ResponseUtils;
 
 import reactor.core.publisher.Mono;

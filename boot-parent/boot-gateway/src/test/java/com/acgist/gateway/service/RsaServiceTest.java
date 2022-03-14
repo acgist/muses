@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.acgist.boot.RsaUtils;
+import com.acgist.gateway.service.impl.RsaService;
 
 public class RsaServiceTest {
 

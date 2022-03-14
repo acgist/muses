@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.gateway.dao.mapper.GatewayMapper;
-import com.acgist.gateway.data.entity.GatewayEntity;
+import com.acgist.gateway.model.entity.GatewayEntity;
 import com.acgist.main.GatewayApplication;
 
 @SpringBootTest(classes = GatewayApplication.class)

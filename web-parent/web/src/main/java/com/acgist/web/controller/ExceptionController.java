@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.acgist.boot.data.MessageCode;
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.model.MessageCodeException;
 
 @Controller
 @RequestMapping("/exception")

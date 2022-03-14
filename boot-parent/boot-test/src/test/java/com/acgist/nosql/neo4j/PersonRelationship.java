@@ -4,7 +4,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
-import com.acgist.data.neo4j.BootRelationship;
+import com.acgist.model.neo4j.BootRelationship;
 
 @RelationshipProperties
 public class PersonRelationship extends BootRelationship {

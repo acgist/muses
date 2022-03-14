@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acgist.boot.data.Message;
-import com.acgist.boot.data.User;
-import com.acgist.gateway.GatewaySession;
-import com.acgist.gateway.request.DeleteRequest;
-import com.acgist.gateway.request.GetMemoRequest;
-import com.acgist.gateway.request.SetMemoRequest;
+import com.acgist.boot.model.Message;
+import com.acgist.boot.model.User;
+import com.acgist.gateway.model.GatewaySession;
+import com.acgist.gateway.model.request.DeleteRequest;
+import com.acgist.gateway.model.request.GetMemoRequest;
+import com.acgist.gateway.model.request.SetMemoRequest;
 import com.acgist.gateway.resolver.GatewayBody;
-import com.acgist.gateway.service.UserService;
+import com.acgist.gateway.service.impl.UserService;
 import com.acgist.www.resolver.CurrentUser;
 
 @Validated

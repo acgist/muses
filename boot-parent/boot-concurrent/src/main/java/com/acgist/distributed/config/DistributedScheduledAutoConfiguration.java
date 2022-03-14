@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.MessageCodeException;
 import com.acgist.distributed.lock.DistributedLock;
 import com.acgist.distributed.scheduled.DistributedScheduled;
 

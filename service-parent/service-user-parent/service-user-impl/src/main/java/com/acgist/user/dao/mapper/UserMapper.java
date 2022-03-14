@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.acgist.dao.mapper.BootMapper;
-import com.acgist.user.data.entity.UserEntity;
+import com.acgist.user.model.entity.UserEntity;
 
 /**
  * 用户Mapper

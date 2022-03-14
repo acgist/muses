@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.gateway.dao.mapper.GatewayMapper;
-import com.acgist.gateway.data.dto.GatewayDto;
-import com.acgist.gateway.data.entity.GatewayEntity;
+import com.acgist.gateway.model.dto.GatewayDto;
+import com.acgist.gateway.model.entity.GatewayEntity;
 import com.acgist.gateway.notify.NotifyService;
 
 @Configuration

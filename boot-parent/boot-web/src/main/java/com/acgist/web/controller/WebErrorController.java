@@ -10,7 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.acgist.boot.data.Message;
+import com.acgist.boot.model.Message;
 import com.acgist.www.ErrorUtils;
 
 /**

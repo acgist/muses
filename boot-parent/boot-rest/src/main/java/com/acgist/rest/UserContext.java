@@ -1,6 +1,6 @@
 package com.acgist.rest;
 
-import com.acgist.boot.data.User;
+import com.acgist.boot.model.User;
 
 /**
  * 用户上下文

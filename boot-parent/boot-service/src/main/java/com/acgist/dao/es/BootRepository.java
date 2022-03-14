@@ -3,7 +3,7 @@ package com.acgist.dao.es;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import com.acgist.data.es.BootDocument;
+import com.acgist.model.es.BootDocument;
 
 /**
  * ES Repository

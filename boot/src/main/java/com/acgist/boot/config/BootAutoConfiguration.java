@@ -23,7 +23,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import com.acgist.boot.FileUtils;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.listener.ShutdownListener;
-import com.acgist.boot.service.IdService;
+import com.acgist.boot.service.impl.IdService;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

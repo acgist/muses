@@ -3,7 +3,7 @@ package com.acgist.gateway.notify.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.acgist.gateway.data.entity.GatewayEntity;
+import com.acgist.gateway.model.entity.GatewayEntity;
 import com.acgist.gateway.notify.Notify;
 
 /**

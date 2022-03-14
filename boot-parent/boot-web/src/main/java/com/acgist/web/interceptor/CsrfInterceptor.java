@@ -9,8 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpMethod;
 
 import com.acgist.boot.StringUtils;
-import com.acgist.boot.data.MessageCode;
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.model.MessageCodeException;
 import com.acgist.www.ErrorUtils;
 import com.acgist.www.interceptor.WwwInterceptor;
 

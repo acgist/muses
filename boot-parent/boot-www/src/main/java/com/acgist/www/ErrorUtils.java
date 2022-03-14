@@ -22,9 +22,9 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
-import com.acgist.boot.data.Message;
-import com.acgist.boot.data.MessageCode;
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.Message;
+import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.model.MessageCodeException;
 
 /**
  * 异常处理工具

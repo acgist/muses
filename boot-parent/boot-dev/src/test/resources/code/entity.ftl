@@ -1,4 +1,4 @@
-package ${modulePackage}${module}.data.entity;
+package ${modulePackage}${module}.model.entity;
 <#if hasOtherType>
 
 <#if hasBigDecimal>
@@ -9,7 +9,7 @@ import java.util.Date;
 </#if>
 </#if>
 
-import com.acgist.data.entity.BootEntity;
+import com.acgist.model.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 

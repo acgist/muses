@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.data.query.FilterQuery;
+import com.acgist.model.query.FilterQuery;
 import com.acgist.mysql.MySQLApplication;
-import com.acgist.user.data.entity.UserEntity;
+import com.acgist.user.model.entity.UserEntity;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 

@@ -31,7 +31,7 @@
 		<module>boot-web</module>
 		<module>boot-www</module>
 		<module>boot-rest</module>
-		<module>boot-data</module>
+		<module>boot-model</module>
 		<module>boot-redis</module>
 		<module>boot-service</module>
 		<module>boot-gateway</module>

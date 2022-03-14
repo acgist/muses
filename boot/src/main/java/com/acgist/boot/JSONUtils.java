@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.acgist.boot.config.MusesConfig;
-import com.acgist.boot.data.MessageCodeException;
+import com.acgist.boot.model.MessageCodeException;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

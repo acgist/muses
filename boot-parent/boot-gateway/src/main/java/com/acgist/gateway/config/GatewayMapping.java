@@ -1,7 +1,7 @@
 package com.acgist.gateway.config;
 
 import com.acgist.boot.JSONUtils;
-import com.acgist.gateway.request.GatewayRequest;
+import com.acgist.gateway.model.request.GatewayRequest;
 
 import lombok.Getter;
 import lombok.Setter;
