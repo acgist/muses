@@ -2,6 +2,10 @@
 
 服务模块Boot：提供基本功能
 
+## 基本功能
+
+`service`和`dao`层增删改查
+
 ## MyBatisPlus
 
 ```
