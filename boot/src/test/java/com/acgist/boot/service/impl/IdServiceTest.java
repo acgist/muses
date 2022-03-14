@@ -1,9 +1,8 @@
-package com.acgist.boot.service;
+package com.acgist.boot.service.impl;
 
 import org.junit.jupiter.api.Test;
 
 import com.acgist.boot.CostUtils;
-import com.acgist.boot.service.impl.IdService;
 
 public class IdServiceTest {
 

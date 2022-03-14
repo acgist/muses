@@ -1,4 +1,4 @@
-package com.acgist.web.service.impl;
+package com.acgist.boot.service.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,6 +35,16 @@ public class FreemarkerService {
 	
 	@Autowired
 	private Configuration configuration;
+	
+	public FreemarkerService() {
+	}
+	
+	public FreemarkerService(String outpath) {
+		this.configuration = new Configuration(Configuration.VERSION_2_3_31);
+		this.configuration.setDefaultEncoding(MusesConfig.CHARSET_VALUE);
+		this.configuration.setClassicCompatible(true);
+		this.configuration.setClassForTemplateLoading(FreemarkerService.class, outpath);
+	}
 
 	/**
 	 * 生成静态文件
@@ -46,7 +56,7 @@ public class FreemarkerService {
 	 * 
 	 * @return 是否成功
 	 */
-	public boolean build(String templatePath, Map<String, Object> data, String htmlPath, String htmlName) {
+	public boolean build(String templatePath, Map<Object, Object> data, String htmlPath, String htmlName) {
 		if (StringUtils.isEmpty(htmlPath)) {
 			LOGGER.warn("生成静态文件路径错误：{}", htmlPath);
 			return false;

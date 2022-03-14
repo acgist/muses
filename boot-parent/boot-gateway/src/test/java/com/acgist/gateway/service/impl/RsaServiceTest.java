@@ -1,4 +1,4 @@
-package com.acgist.gateway.service;
+package com.acgist.gateway.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.acgist.boot.RsaUtils;
-import com.acgist.gateway.service.impl.RsaService;
 
 public class RsaServiceTest {
 

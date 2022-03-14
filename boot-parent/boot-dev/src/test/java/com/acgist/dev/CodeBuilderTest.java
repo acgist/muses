@@ -19,6 +19,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.model.PojoCopy;
+import com.acgist.boot.service.impl.FreemarkerService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -60,7 +61,7 @@ public class CodeBuilderTest {
 	private String user = "root";
 	private String password = "";
 	private String driverClass = "com.mysql.cj.jdbc.Driver";
-	private FreemarkerUtils freemarkerUtils = new FreemarkerUtils();
+	private FreemarkerService freemarkerService = new FreemarkerService(this.target);
 	
 	@Test
 	public void testBuildAll() throws Exception {
@@ -264,7 +265,7 @@ public class CodeBuilderTest {
 	public void buildPojo(Map<Object, Object> map) throws Exception {
 		String path = this.modulePackage + map.get("module") + ".model.entity";
 		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("entity.ftl", map, this.path + path, map.get("prefix") + "Entity.java");
+		this.freemarkerService.build("entity.ftl", map, this.path + path, map.get("prefix") + "Entity.java");
 	}
 	
 	/**
@@ -277,10 +278,10 @@ public class CodeBuilderTest {
 	public void buildDao(Map<Object, Object> map) throws Exception {
 		String path = this.modulePackage + map.get("module") + ".dao.mapper";
 		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("mapper.ftl", map, this.path + path, map.get("prefix") + "Mapper.java");
+		this.freemarkerService.build("mapper.ftl", map, this.path + path, map.get("prefix") + "Mapper.java");
 		path = this.mapperPackage + map.get("module");
 		path = this.targetResources + path.replace('.', '/');
-		this.freemarkerUtils.build("mapper.xml.ftl", map, this.path + path, map.get("prefix") + "Mapper.xml");
+		this.freemarkerService.build("mapper.xml.ftl", map, this.path + path, map.get("prefix") + "Mapper.xml");
 	}
 	
 	/**
@@ -293,10 +294,10 @@ public class CodeBuilderTest {
 	public void buildService(Map<Object, Object> map) throws Exception {
 		String path = this.modulePackage + map.get("module") + ".service";
 		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("service.ftl", map, this.path + path, map.get("prefix") + "Service.java");
+		this.freemarkerService.build("service.ftl", map, this.path + path, map.get("prefix") + "Service.java");
 		path = this.modulePackage + map.get("module") + ".service.impl";
 		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("service.impl.ftl", map, this.path + path, map.get("prefix") + "ServiceImpl.java");
+		this.freemarkerService.build("service.impl.ftl", map, this.path + path, map.get("prefix") + "ServiceImpl.java");
 	}
 
 	/**
@@ -309,7 +310,7 @@ public class CodeBuilderTest {
 	public void buildController(Map<Object, Object> map) throws Exception {
 		String path = this.modulePackage + map.get("module") + ".controller";
 		path = this.targetJava + path.replace('.', '/');
-		this.freemarkerUtils.build("controller.ftl", map, this.path + path, map.get("prefix") + "Controller.java");
+		this.freemarkerService.build("controller.ftl", map, this.path + path, map.get("prefix") + "Controller.java");
 	}
 	
 	/**
