@@ -188,17 +188,14 @@ server.port=${system.port:8080}
 
 #### 命名规范
 
-|名称|包名|
-|:-|:-|
-|配置|com.acgist.*.config|
-|过滤器|com.acgist.*.filter|
-|监听器|com.acgist.*.listener|
-|拦截器|com.acgist.*.inteceptor|
-|控制器|com.acgist.*.controller|
-|微服务|com.acgist.*.api.impl|
-|本地服务|com.acgist.*.service.impl|
-|数据层|com.acgist.*.dao.*|
-|数据模型|com.acgist.*.model.*|
-
-> 数据层：es/neo4j/mapper/repository
-> 数据模型：es/neo4j/entity/vo/dto/enum/request/response/exception
+|名称|包名|描述|
+|:-|:-|:-|
+|配置|com.acgist.**.config||
+|过滤器|com.acgist.**.filter||
+|监听器|com.acgist.**.listener||
+|拦截器|com.acgist.**.inteceptor||
+|控制器|com.acgist.**.controller||
+|微服务|com.acgist.**.api.impl||
+|本地服务|com.acgist.**.service.impl|接口`I`开头，实现接口`Impl`结尾，没有接口本地服务不用`Impl`结尾。|
+|数据层|com.acgist.**.dao.*|es/neo4j/mapper/repository|
+|数据模型|com.acgist.**.model.*|es/neo4j/entity/vo/dto/enum/request/response/exception|
