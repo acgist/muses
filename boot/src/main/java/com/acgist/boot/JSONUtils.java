@@ -2,6 +2,9 @@ package com.acgist.boot;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,6 +21,10 @@ import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 /**
  * JSON工具
@@ -145,7 +152,7 @@ public final class JSONUtils {
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
-			.registerModules(new JavaTimeModule())
+			.registerModules(buildJavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
@@ -157,10 +164,8 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildWebMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		final SimpleModule defaultModule = new SimpleModule();
-		defaultModule.addSerializer(Long.class, ToStringSerializer.instance);
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
-			.registerModules(defaultModule, new JavaTimeModule())
+			.registerModules(buildDefaultModule(), buildJavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			// 如果前台需要先是所有属性删除设置
 			.setSerializationInclusion(Include.NON_NULL);
@@ -178,10 +183,31 @@ public final class JSONUtils {
 			.allowIfBaseType(Object.class)
 			.build();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_FORMAT))
-			.registerModules(new JavaTimeModule())
+			.registerModules(buildDefaultModule(), buildJavaTimeModule())
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
 
+	/**
+	 * @return Java类型转换模块
+	 */
+	private static final com.fasterxml.jackson.databind.Module buildDefaultModule() {
+		final SimpleModule module = new SimpleModule();
+		module.addSerializer(Long.class, ToStringSerializer.instance);
+		return module;
+	}
+	
+	/**
+	 * @return Java时间类型模块
+	 */
+	private static final JavaTimeModule buildJavaTimeModule() {
+		final JavaTimeModule module = new JavaTimeModule();
+		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		module.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		return module;
+	}
+	
 }
