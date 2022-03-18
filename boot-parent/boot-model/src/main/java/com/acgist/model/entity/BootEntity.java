@@ -40,15 +40,15 @@ public abstract class BootEntity extends PojoCopy {
 	 * 创建时间
 	 */
 	@TableField(value = "create_date", fill = FieldFill.INSERT)
-	@JsonFormat(pattern = MusesConfig.DATE_FORMAT)
-	@DateTimeFormat(pattern = MusesConfig.DATE_FORMAT)
+	@JsonFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
+	@DateTimeFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
 	private Date createDate;
 	/**
 	 * 修改时间
 	 */
 	@TableField(value = "modify_date", fill = FieldFill.INSERT_UPDATE)
-	@JsonFormat(pattern = MusesConfig.DATE_FORMAT)
-	@DateTimeFormat(pattern = MusesConfig.DATE_FORMAT)
+	@JsonFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
+	@DateTimeFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
 	private Date modifyDate;
 
 }

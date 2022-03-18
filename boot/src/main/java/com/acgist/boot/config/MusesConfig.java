@@ -41,7 +41,15 @@ public class MusesConfig {
 	/**
 	 * 时间格式
 	 */
-	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	public static final String TIME_FORMAT = "HH:mm:ss";
+	/**
+	 * 日期格式
+	 */
+	public static final String DATE_FORMAT = "yyyy-MM-dd";
+	/**
+	 * 日期时间格式
+	 */
+	public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	/**
 	 * JSON HTTP数据类型
 	 */
