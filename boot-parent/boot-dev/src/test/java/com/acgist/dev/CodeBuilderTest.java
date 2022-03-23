@@ -221,7 +221,11 @@ public class CodeBuilderTest {
 			if(StringUtils.isEmpty(comment)) {
 				comment = name;
 			}
-			comment = comment.replace("\r\n", " ").replace('\r', ' ').replace('\n', ' ');
+			comment = comment
+				.replace("\r\n", " ")
+				.replace('\r', ' ')
+				.replace('\n', ' ')
+				.replace("\"", "\\\"");
 			// 添加类型
 			if("Date".equals(type)) {
 				map.put("hasDate", true);
