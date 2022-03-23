@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.PojoCopy;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -39,13 +40,15 @@ public abstract class BootEntity extends PojoCopy {
 	/**
 	 * 创建时间
 	 */
-	@TableField(value = "create_date", fill = FieldFill.INSERT)
+//	@Column(name = "created_by", updatable = false)
+	@TableField(value = "create_date", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NEVER)
 	@JsonFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
 	@DateTimeFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
 	private Date createDate;
 	/**
 	 * 修改时间
 	 */
+//	@Column(name = "created_by", updatable = false)
 	@TableField(value = "modify_date", fill = FieldFill.INSERT_UPDATE)
 	@JsonFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
 	@DateTimeFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
