@@ -156,7 +156,8 @@ public final class JSONUtils {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
 			.registerModules(buildJavaTimeModule())
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.disable(DeserializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
 	
@@ -169,7 +170,8 @@ public final class JSONUtils {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
 			.registerModules(buildDefaultModule(), buildJavaTimeModule())
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.disable(DeserializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			// 如果前台需要先是所有属性删除设置
 			.setSerializationInclusion(Include.NON_NULL);
 	}
@@ -187,7 +189,8 @@ public final class JSONUtils {
 			.build();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
 			.registerModules(buildDefaultModule(), buildJavaTimeModule())
-			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.disable(DeserializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
