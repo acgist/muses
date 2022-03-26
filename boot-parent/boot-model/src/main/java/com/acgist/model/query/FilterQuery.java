@@ -2,11 +2,11 @@ package com.acgist.model.query;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.dubbo.common.utils.FieldUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 import com.acgist.boot.StringUtils;
@@ -32,8 +32,6 @@ import lombok.Setter;
 @Setter
 public class FilterQuery {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(FilterQuery.class);
-
 	/**
 	 * 通过MyBatis注解获取数据库列名
 	 * 
@@ -90,8 +88,12 @@ public class FilterQuery {
 			GE,
 			// in
 			IN,
+			// not in
+			NOT_IN,
 			// like
 			LIKE,
+			// not like
+			NOT_LIKE,
 			// between
 			BETWEEN,
 			// is null
@@ -134,6 +136,8 @@ public class FilterQuery {
 		 * 
 		 * @param entity entity
 		 * @param wrapper wrapper
+		 * 
+		 * TODO：JDK17
 		 */
 		public <T> void predicate(Class<T> entity, QueryWrapper<T> wrapper) {
 			final String column = column(entity, this.name);
@@ -157,18 +161,39 @@ public class FilterQuery {
 				wrapper.ge(column, this.value);
 				break;
 			case IN:
-				wrapper.in(column, this.value);
+				if(Collection.class.isAssignableFrom(this.value.getClass())) {
+					wrapper.in(column, (Collection<?>) this.value);
+				} else if(this.value.getClass().isArray()) {
+					wrapper.in(column, this.value);
+				} else {
+					throw MessageCodeException.of("不支持的in类型：", this.value);
+				}
+				break;
+			case NOT_IN:
+				if(Collection.class.isAssignableFrom(this.value.getClass())) {
+					wrapper.notIn(column, (Collection<?>) this.value);
+				} else if(this.value.getClass().isArray()) {
+					wrapper.notIn(column, this.value);
+				} else {
+					throw MessageCodeException.of("不支持的notIn类型：", this.value);
+				}
 				break;
 			case LIKE:
 				wrapper.like(column, this.value);
 				break;
+			case NOT_LIKE:
+				wrapper.notLike(column, this.value);
+				break;
 			case BETWEEN:
-				if(this.value instanceof List) {
-					// TODO：JDK17
-					final List<?> list = (List<?>) this.value;
-					wrapper.between(column, list.get(0), list.get(1));
+				if(Collection.class.isAssignableFrom(this.value.getClass())) {
+					final Collection<?> collection = (Collection<?>) this.value;
+					final Iterator<?> iterator = collection.iterator();
+					wrapper.between(column, iterator.hasNext() ? iterator.next() : null, iterator.hasNext() ? iterator.next() : null);
+				} else if(this.value.getClass().isArray()) {
+					final Object[] array = (Object[]) this.value;
+					wrapper.between(column, array[0], array[1]);
 				} else {
-					LOGGER.warn("不支持的between类型：{}", this.value == null ? null : this.value.getClass());
+					throw MessageCodeException.of("不支持的between类型：", this.value);
 				}
 				break;
 			case IS_NULL:
