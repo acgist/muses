@@ -99,7 +99,11 @@ public class FilterQuery {
 			// is null
 			IS_NULL,
 			// is not null
-			IS_NOT_NULL;
+			IS_NOT_NULL,
+			// 包含文本列表：模糊in查询
+			INCLUDE,
+			// 排除文本列表：模糊not in查询
+			EXCLUDE;
 
 			public Filter of(String name, Object value) {
 				return new Filter(name, value, this);
@@ -134,13 +138,13 @@ public class FilterQuery {
 		 * 
 		 * @param <T> 类型
 		 * 
-		 * @param entity entity
+		 * @param entityClazz entityClazz
 		 * @param wrapper wrapper
 		 * 
 		 * TODO：JDK17
 		 */
-		public <T> void predicate(Class<T> entity, QueryWrapper<T> wrapper) {
-			final String column = column(entity, this.name);
+		public <T> void filter(Class<T> entityClazz, QueryWrapper<T> wrapper) {
+			final String column = column(entityClazz, this.name);
 			switch (this.type) {
 			case EQ:
 				wrapper.eq(column, this.value);
@@ -161,18 +165,18 @@ public class FilterQuery {
 				wrapper.ge(column, this.value);
 				break;
 			case IN:
-				if(Collection.class.isAssignableFrom(this.value.getClass())) {
+				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					wrapper.in(column, (Collection<?>) this.value);
-				} else if(this.value.getClass().isArray()) {
+				} else if(this.value != null && this.value.getClass().isArray()) {
 					wrapper.in(column, this.value);
 				} else {
 					throw MessageCodeException.of("不支持的in类型：", this.value);
 				}
 				break;
 			case NOT_IN:
-				if(Collection.class.isAssignableFrom(this.value.getClass())) {
+				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					wrapper.notIn(column, (Collection<?>) this.value);
-				} else if(this.value.getClass().isArray()) {
+				} else if(this.value != null && this.value.getClass().isArray()) {
 					wrapper.notIn(column, this.value);
 				} else {
 					throw MessageCodeException.of("不支持的notIn类型：", this.value);
@@ -185,11 +189,12 @@ public class FilterQuery {
 				wrapper.notLike(column, this.value);
 				break;
 			case BETWEEN:
-				if(Collection.class.isAssignableFrom(this.value.getClass())) {
+				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					final Collection<?> collection = (Collection<?>) this.value;
 					final Iterator<?> iterator = collection.iterator();
 					wrapper.between(column, iterator.hasNext() ? iterator.next() : null, iterator.hasNext() ? iterator.next() : null);
-				} else if(this.value.getClass().isArray()) {
+				} else if(this.value != null && this.value.getClass().isArray()) {
+					// 注意：不支持基本类型数组
 					final Object[] array = (Object[]) this.value;
 					wrapper.between(column, array[0], array[1]);
 				} else {
@@ -201,6 +206,40 @@ public class FilterQuery {
 				break;
 			case IS_NOT_NULL:
 				wrapper.isNotNull(column);
+				break;
+			case INCLUDE:
+				wrapper.and(includeWrapper -> {
+					if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
+						final Collection<?> collection = (Collection<?>) this.value;
+						collection.forEach(value -> {
+							Filter.Type.LIKE.of(column, value).filter(entityClazz, includeWrapper.or());
+						});
+					} else if(this.value != null && this.value.getClass().isArray()) {
+						final Object[] array = (Object[]) this.value;
+						for(Object value : array) {
+							Filter.Type.LIKE.of(column, value).filter(entityClazz, includeWrapper.or());
+						}
+					} else {
+						throw MessageCodeException.of("不支持的include类型：", this.value);
+					}
+				});
+				break;
+			case EXCLUDE:
+				wrapper.not(excludeWrapper -> {
+					if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
+						final Collection<?> collection = (Collection<?>) this.value;
+						collection.forEach(value -> {
+							Filter.Type.LIKE.of(column, value).filter(entityClazz, excludeWrapper.or());
+						});
+					} else if(this.value != null && this.value.getClass().isArray()) {
+						final Object[] array = (Object[]) this.value;
+						for(Object value : array) {
+							Filter.Type.LIKE.of(column, value).filter(entityClazz, excludeWrapper.or());
+						}
+					} else {
+						throw MessageCodeException.of("不支持的exclude类型：", this.value);
+					}
+				});
 				break;
 			default:
 				throw MessageCodeException.of("未知过滤类型：", this.type);
@@ -401,6 +440,19 @@ public class FilterQuery {
 		this.filter.add(new Filter(name, value, Filter.Type.IN));
 		return this;
 	}
+	
+	/**
+	 * @see FilterQuery.Filter.Type#NOT_IN
+	 * 
+	 * @param name 属性名称
+	 * @param value 属性值
+	 * 
+	 * @return this
+	 */
+	public FilterQuery notIn(String name, Object value) {
+		this.filter.add(new Filter(name, value, Filter.Type.NOT_IN));
+		return this;
+	}
 
 	/**
 	 * @see FilterQuery.Filter.Type#LIKE
@@ -412,6 +464,19 @@ public class FilterQuery {
 	 */
 	public FilterQuery like(String name, String value) {
 		this.filter.add(new Filter(name, value, Filter.Type.LIKE));
+		return this;
+	}
+	
+	/**
+	 * @see FilterQuery.Filter.Type#NOT_LIKE
+	 * 
+	 * @param name 属性名称
+	 * @param value 属性值
+	 * 
+	 * @return this
+	 */
+	public FilterQuery notLike(String name, String value) {
+		this.filter.add(new Filter(name, value, Filter.Type.NOT_LIKE));
 		return this;
 	}
 
@@ -449,6 +514,32 @@ public class FilterQuery {
 	 */
 	public FilterQuery isNotNull(String name) {
 		this.filter.add(new Filter(name, null, Filter.Type.IS_NOT_NULL));
+		return this;
+	}
+	
+	/**
+	 * @see FilterQuery.Filter.Type#INCLUDE
+	 * 
+	 * @param name 属性名称
+	 * @param value 属性值
+	 * 
+	 * @return this
+	 */
+	public FilterQuery include(String name, Object value) {
+		this.filter.add(new Filter(name, value, Filter.Type.INCLUDE));
+		return this;
+	}
+	
+	/**
+	 * @see FilterQuery.Filter.Type#EXCLUDE
+	 * 
+	 * @param name 属性名称
+	 * @param value 属性值
+	 * 
+	 * @return this
+	 */
+	public FilterQuery exclude(String name, Object value) {
+		this.filter.add(new Filter(name, value, Filter.Type.EXCLUDE));
 		return this;
 	}
 
@@ -499,7 +590,7 @@ public class FilterQuery {
 		final QueryWrapper<T> wrapper = Wrappers.query();
 		FilterQuery.this.filter.stream()
 			.filter(filter -> FilterQuery.this.nullable || filter.value != null)
-			.forEach(filter -> filter.predicate(entity, wrapper));
+			.forEach(filter -> filter.filter(entity, wrapper));
 		FilterQuery.this.sorted.stream()
 			.forEach(sorted -> sorted.order(wrapper));
 		return wrapper;
