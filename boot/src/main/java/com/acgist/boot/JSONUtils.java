@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -156,7 +157,7 @@ public final class JSONUtils {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
 			.registerModules(buildJavaTimeModule())
-			.disable(DeserializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
@@ -170,7 +171,7 @@ public final class JSONUtils {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
 			.registerModules(buildDefaultModule(), buildJavaTimeModule())
-			.disable(DeserializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			// 如果前台需要先是所有属性删除设置
 			.setSerializationInclusion(Include.NON_NULL);
@@ -189,7 +190,7 @@ public final class JSONUtils {
 			.build();
 		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
 			.registerModules(buildDefaultModule(), buildJavaTimeModule())
-			.disable(DeserializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);
