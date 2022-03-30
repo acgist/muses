@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.acgist.boot.config.MusesConfig;
+import com.acgist.boot.config.FormatStyle;
 import com.acgist.boot.model.PojoCopy;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
@@ -42,16 +42,16 @@ public abstract class BootEntity extends PojoCopy {
 	 */
 //	@Column(name = "created_by", updatable = false)
 	@TableField(value = "create_date", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NEVER)
-	@JsonFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
-	@DateTimeFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
+	@JsonFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
+	@DateTimeFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
 	private Date createDate;
 	/**
 	 * 修改时间
 	 */
 //	@Column(name = "created_by", updatable = false)
 	@TableField(value = "modify_date", fill = FieldFill.INSERT_UPDATE)
-	@JsonFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
-	@DateTimeFormat(pattern = MusesConfig.DATE_TIME_FORMAT)
+	@JsonFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
+	@DateTimeFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
 	private Date modifyDate;
 
 }

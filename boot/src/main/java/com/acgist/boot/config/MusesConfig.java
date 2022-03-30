@@ -39,18 +39,6 @@ public class MusesConfig {
 	 */
 	public static final String MUSES_CONFIG = "muses.json";
 	/**
-	 * 时间格式
-	 */
-	public static final String TIME_FORMAT = "HH:mm:ss";
-	/**
-	 * 日期格式
-	 */
-	public static final String DATE_FORMAT = "yyyy-MM-dd";
-	/**
-	 * 日期时间格式
-	 */
-	public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	/**
 	 * JSON HTTP数据类型
 	 */
 	public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";

@@ -5,12 +5,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.acgist.boot.config.MusesConfig;
+import com.acgist.boot.config.FormatStyle.DateStyle;
+import com.acgist.boot.config.FormatStyle.DateTimeStyle;
+import com.acgist.boot.config.FormatStyle.TimeStyle;
 import com.acgist.boot.model.MessageCodeException;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -155,7 +156,7 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
+		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -169,7 +170,7 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildWebMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
+		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildDefaultModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -188,7 +189,7 @@ public final class JSONUtils {
 		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
 			.allowIfBaseType(Object.class)
 			.build();
-		return mapper.setDateFormat(new SimpleDateFormat(MusesConfig.DATE_TIME_FORMAT))
+		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildDefaultModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -210,12 +211,12 @@ public final class JSONUtils {
 	 */
 	private static final JavaTimeModule buildJavaTimeModule() {
 		final JavaTimeModule module = new JavaTimeModule();
-		module.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(MusesConfig.TIME_FORMAT)));
-		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(MusesConfig.DATE_FORMAT)));
-		module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(MusesConfig.DATE_TIME_FORMAT)));
-		module.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(MusesConfig.TIME_FORMAT)));
-		module.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(MusesConfig.DATE_FORMAT)));
-		module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(MusesConfig.DATE_TIME_FORMAT)));
+		module.addSerializer(LocalTime.class, new LocalTimeSerializer(TimeStyle.HH24_MM_SS.getDateTimeFormatter()));
+		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateStyle.YYYY_MM_DD.getDateTimeFormatter()));
+		module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getDateTimeFormatter()));
+		module.addDeserializer(LocalTime.class, new LocalTimeDeserializer(TimeStyle.HH24_MM_SS.getDateTimeFormatter()));
+		module.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateStyle.YYYY_MM_DD.getDateTimeFormatter()));
+		module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getDateTimeFormatter()));
 		return module;
 	}
 	

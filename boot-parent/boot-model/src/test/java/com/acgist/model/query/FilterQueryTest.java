@@ -1,5 +1,7 @@
 package com.acgist.model.query;
 
+import java.util.Collection;
+
 import org.elasticsearch.core.List;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -26,6 +28,28 @@ public class FilterQueryTest {
 			.asc("name");
 		final Wrapper<NameEntity> build = query.build(NameEntity.class);
 		LOGGER.info("语句：{}", build.getTargetSql());
+	}
+
+	@Test
+	public void testType() {
+		final Object array = new Object[] {1, 2};
+		this.log(array);
+		this.log(new Object[] {1, 2});
+		final Object list = List.of(1, 2);
+		this.log(list);
+		this.log(List.of(1, 2));
+	}
+	
+	public void log(Object array) {
+		LOGGER.info("单值：{}", array);
+	}
+	
+	public void log(Object ... array) {
+		LOGGER.info("数组：{}", array);
+	}
+	
+	public void log(Collection<?> collection) {
+		LOGGER.info("集合：{}", collection);
 	}
 	
 }
