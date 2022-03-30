@@ -185,37 +185,26 @@ public final class DateUtils {
 		if (value == null) {
 			return null;
 		}
+		final boolean hasMinus = value.indexOf('-') > -1;
+		final boolean hasSemicolon = value.indexOf(':') > -1;
+		final boolean hasSpace = value.indexOf(' ') > -1;
+		final boolean hasComma = value.indexOf('.') > -1;
 		final boolean hasT = value.indexOf('T') > -1;
 		final boolean hasZ = value.indexOf('Z') > -1;
-		final boolean hasMinus = value.indexOf('-') > -1;
-		final boolean hasComma = value.indexOf('.') > -1;
-		final boolean hasSpace = value.indexOf(' ') > -1;
-		final boolean hasSemicolon = value.indexOf(':') > -1;
 		int length = value.length();
 		// 特殊字符长度处理
-		if(hasT) {
-			length += 2;
-		}
-		if(hasZ) {
-			length += 2;
-		}
+		length = (hasT && hasZ) ? (length + 4) : (hasT || hasZ) ? (length + 2) : length;
 		final DateTimeStyle[] values = DateTimeStyle.values();
 		for (DateTimeStyle dateTimeStyle : values) {
 			final String format = dateTimeStyle.getFormat();
 			if(length == format.length()) {
-				final boolean hasTFormat = format.indexOf('T') > -1;
-				final boolean hasZFormat = format.indexOf('Z') > -1;
-				final boolean hasMinusFormat = format.indexOf('-') > -1;
-				final boolean hasCommaFormat = format.indexOf('.') > -1;
-				final boolean hasSpaceFormat = format.indexOf(' ') > -1;
-				final boolean hasSemicolonFormat = format.indexOf(':') > -1;
 				if(
-					hasT == hasTFormat &&
-					hasZ == hasZFormat &&
-					hasMinus == hasMinusFormat &&
-					hasComma == hasCommaFormat &&
-					hasSpace == hasSpaceFormat &&
-					hasSemicolon == hasSemicolonFormat
+					hasMinus == format.indexOf('-') > -1 &&
+					hasSemicolon == format.indexOf(':') > -1 &&
+					hasSpace == format.indexOf(' ') > -1 &&
+					hasComma == format.indexOf('.') > -1 &&
+					hasT == format.indexOf('T') > -1 &&
+					hasZ == format.indexOf('Z') > -1
 				) {
 					LocalDateTime localDateTime = LocalDateTime.parse(value, dateTimeStyle.getDateTimeFormatter());
 					if(hasT && hasZ) {
