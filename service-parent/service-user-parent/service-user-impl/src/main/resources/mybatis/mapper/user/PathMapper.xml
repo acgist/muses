@@ -17,5 +17,16 @@
 		LEFT JOIN t_user user ON ur.user_id = user.id
 	WHERE user.name = #{name}
 	</select>
+	
+	<delete id="deleteAllRolePath">
+	DELETE rp FROM t_path path
+		LEFT JOIN t_role_path rp ON path.id = rp.path_id
+		LEFT JOIN t_role role ON rp.role_id = role.id
+	WHERE path.id = #{id} OR path.parent_id_path LIKE #{parentIdPath}
+	</delete>
+	
+	<delete id="deleteAll">
+	DELETE FROM t_path WHERE id = #{id} OR parent_id_path LIKE #{parentIdPath}
+	</delete>
 
 </mapper>

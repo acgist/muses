@@ -20,6 +20,26 @@ import com.acgist.user.model.entity.PathEntity;
 public interface PathMapper extends BootMapper<PathEntity> {
 	
 	/**
+	 * 根据上级ID路径删除所有角色关联
+	 * 
+	 * @param id 当前权限ID
+	 * @param parentIdPath 上级ID路径
+	 * 
+	 * @return 删除数量
+	 */
+	int deleteAllRolePath(Long id, String parentIdPath);
+	
+	/**
+	 * 根据上级ID路径删除所有关联权限
+	 * 
+	 * @param id 当前权限ID
+	 * @param parentIdPath 上级ID路径
+	 * 
+	 * @return 删除数量
+	 */
+	int deleteAll(Long id, String parentIdPath);
+	
+	/**
 	 * 根据角色ID查询权限列表
 	 * 
 	 * @param id 角色ID
@@ -53,6 +73,7 @@ public interface PathMapper extends BootMapper<PathEntity> {
 				if (parent.getChildren() == null) {
 					parent.setChildren(new ArrayList<>());
 				}
+				// 添加重复判断：MyBatisPlus开启事务就会使用缓存，重复查询就会导致权限重复。
 				if(!path.getChildren().contains(path)) {
 					parent.getChildren().add(path);
 				}

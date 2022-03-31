@@ -41,6 +41,11 @@ public class PathEntity extends StateEntity {
 	@TableField(value = "parent_id")
 	private Long parentId;
 	/**
+	 * 上级ID路径（方便删除）：/1/2
+	 */
+	@TableField(value = "parent_id_path")
+	private String parentIdPath;
+	/**
 	 * 下级菜单
 	 */
 	private List<PathEntity> children;

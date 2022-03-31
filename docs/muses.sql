@@ -26,8 +26,8 @@ CREATE TABLE `t_gateway`  (
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
   `query_id` bigint(20) NULL DEFAULT NULL,
-  `request` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `response` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `request` varchar(1024) NOT NULL,
+  `response` varchar(1024) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_gateway_query_id`(`query_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -45,8 +45,8 @@ CREATE TABLE `t_gateway_0`  (
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
   `query_id` bigint(20) NULL DEFAULT NULL,
-  `request` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `response` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `request` varchar(1024) NOT NULL,
+  `response` varchar(1024) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_gateway_query_id`(`query_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -64,8 +64,8 @@ CREATE TABLE `t_gateway_1`  (
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
   `query_id` bigint(20) NULL DEFAULT NULL,
-  `request` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `response` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `request` varchar(1024) NOT NULL,
+  `response` varchar(1024) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_gateway_query_id`(`query_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -82,12 +82,13 @@ CREATE TABLE `t_path`  (
   `id` bigint(20) NOT NULL,
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
-  `memo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `memo` varchar(128) NULL DEFAULT NULL,
+  `name` varchar(32) NOT NULL,
   `enable` bit(1) NULL DEFAULT b'1',
   `sorted` int(11) NULL DEFAULT 0,
-  `path` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `path` varchar(128) NOT NULL,
   `parent_id` bigint(20) NULL DEFAULT NULL,
+  `parent_id_path` varchar(256) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `key_path_parent_id`(`parent_id`) USING BTREE,
   CONSTRAINT `key_path_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `t_path` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -96,9 +97,9 @@ CREATE TABLE `t_path`  (
 -- ----------------------------
 -- Records of t_path
 -- ----------------------------
-INSERT INTO `t_path` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户备注', '查询用户备注', b'1', 0, 'GET:/user/memo', NULL);
-INSERT INTO `t_path` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '修改用户备注', '修改用户备注', b'1', 0, 'POST:/user/memo', NULL);
-INSERT INTO `t_path` VALUES (3, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户信息', '查询用户信息', b'1', 0, 'POST:/user', NULL);
+INSERT INTO `t_path` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户备注', '查询用户备注', b'1', 0, 'GET:/user/memo', NULL, NULL);
+INSERT INTO `t_path` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '修改用户备注', '修改用户备注', b'1', 0, 'POST:/user/memo', NULL, NULL);
+INSERT INTO `t_path` VALUES (3, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户信息', '查询用户信息', b'1', 0, 'POST:/user', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_role
@@ -108,8 +109,8 @@ CREATE TABLE `t_role`  (
   `id` bigint(20) NOT NULL,
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
-  `memo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `memo` varchar(128) NULL DEFAULT NULL,
+  `name` varchar(32) NOT NULL,
   `enable` bit(1) NULL DEFAULT b'1',
   `sorted` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
@@ -148,11 +149,11 @@ CREATE TABLE `t_user`  (
   `id` bigint(20) NOT NULL,
   `create_date` datetime(6) NULL DEFAULT NULL,
   `modify_date` datetime(6) NULL DEFAULT NULL,
-  `memo` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `memo` varchar(128) NULL DEFAULT NULL,
+  `name` varchar(32) NOT NULL,
   `enable` bit(1) NULL DEFAULT b'1',
   `sorted` int(11) NULL DEFAULT 0,
-  `password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(128) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `index_user_name`(`name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
