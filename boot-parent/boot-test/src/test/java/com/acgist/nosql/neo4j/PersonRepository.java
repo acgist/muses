@@ -9,9 +9,9 @@ import com.acgist.dao.neo4j.BootRepository;
 public interface PersonRepository extends BootRepository<PersonNode> {
 
 	@Query("match (n:person {name:$name}) return n")
-	PersonNode findByName(String name);
+	PersonNode selectByName(String name);
 
 	@Query("match r=shortestPath((start:person {name:$start})-[*]-(end:person {name:$end})) return r")
-	List<?> findRelationship(String start, String end);
+	List<?> selectRelationship(String start, String end);
 
 }

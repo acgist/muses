@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.acgist.user.dao.mapper.RoleMapper">
 
-	<select id="findByUser" resultType="com.acgist.user.model.entity.RoleEntity">
+	<select id="selectByUser" resultType="com.acgist.user.model.entity.RoleEntity">
 	SELECT role.* FROM t_role role
 		LEFT JOIN t_user_role ur ON role.id = ur.role_id
 		LEFT JOIN t_user user ON ur.user_id = user.id

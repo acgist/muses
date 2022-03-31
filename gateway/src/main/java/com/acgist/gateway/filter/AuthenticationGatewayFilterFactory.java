@@ -85,7 +85,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 			}
 			// 鉴权
 			final String sub = (String) jws.getPayload().toJSONObject().get("sub");
-			final User user = this.userService.findByName(sub);
+			final User user = this.userService.selectByName(sub);
 			if (user == null || !user.hasPath(method, path.toString())) {
 				final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有权限");
 				return ResponseUtils.response(message, HttpStatus.UNAUTHORIZED, exchange.getResponse());

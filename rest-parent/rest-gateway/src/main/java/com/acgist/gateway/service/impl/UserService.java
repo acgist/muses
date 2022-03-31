@@ -29,7 +29,7 @@ public class UserService {
 	 */
 	public Message<Map<String, Object>> getMemo(User user) {
 		return GatewaySession.getInstance()
-			.putResponse(PROPERTY_MEMO, this.userService.findMemo(user.getName()))
+			.putResponse(PROPERTY_MEMO, this.userService.selectMemo(user.getName()))
 			.buildSuccess();
 	}
 	
@@ -47,7 +47,7 @@ public class UserService {
 		userDto.setMemo(request.getMemo());
 		this.userService.updateMemo(userDto);
 		return GatewaySession.getInstance()
-			.putResponse(PROPERTY_MEMO, this.userService.findMemo(userDto.getMemo()))
+			.putResponse(PROPERTY_MEMO, this.userService.selectMemo(userDto.getMemo()))
 			.buildSuccess();
 	}
 	

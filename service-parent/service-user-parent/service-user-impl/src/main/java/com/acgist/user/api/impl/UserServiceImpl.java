@@ -29,21 +29,21 @@ public class UserServiceImpl implements IUserService {
 	
 	@Override
 	@Cacheable(cacheNames = "user")
-	public User findByName(String name) {
-		final UserEntity entity = this.userMapper.findByName(name);
+	public User selectByName(String name) {
+		final UserEntity entity = this.userMapper.selectByName(name);
 		if(entity == null) {
 			return null;
 		}
 		final User user = new User();
 		user.copy(entity);
-		user.setRoles(this.roleMapper.findByUser(name).stream().map(RoleEntity::getName).collect(Collectors.toSet()));
-		user.setPaths(this.pathMapper.findByUser(name).stream().map(PathEntity::getPath).collect(Collectors.toSet()));
+		user.setRoles(this.roleMapper.selectByUser(name).stream().map(RoleEntity::getName).collect(Collectors.toSet()));
+		user.setPaths(this.pathMapper.selectByUser(name).stream().map(PathEntity::getPath).collect(Collectors.toSet()));
 		return user;
 	}
 
 	@Override
-	public String findMemo(String name) {
-		final UserEntity entity = this.userMapper.findByName(name);
+	public String selectMemo(String name) {
+		final UserEntity entity = this.userMapper.selectByName(name);
 		if(entity == null) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	@CacheEvict(cacheNames = "user", key = "#userDto.name")
 	public void updateMemo(UserDto userDto) {
-		final UserEntity entity = this.userMapper.findByName(userDto.getName());
+		final UserEntity entity = this.userMapper.selectByName(userDto.getName());
 		if(entity == null) {
 			return;
 		}

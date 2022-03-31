@@ -70,9 +70,9 @@ public class Neo4jTest {
 	}
 
 	@Test
-	public void testFind() {
-		LOGGER.info("{}", this.personRepository.findByName("小王"));
-		this.personRepository.findRelationship("小明", "老王").forEach(v -> LOGGER.info("{}", v));
+	public void testSelect() {
+		LOGGER.info("{}", this.personRepository.selectByName("小王"));
+		this.personRepository.selectRelationship("小明", "老王").forEach(v -> LOGGER.info("{}", v));
 	}
 
 }

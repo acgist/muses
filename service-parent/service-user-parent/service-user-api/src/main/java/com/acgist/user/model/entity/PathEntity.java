@@ -1,5 +1,7 @@
 package com.acgist.user.model.entity;
 
+import java.util.List;
+
 import com.acgist.model.entity.StateEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -38,5 +40,9 @@ public class PathEntity extends StateEntity {
 	 */
 	@TableField(value = "parent_id")
 	private Long parentId;
+	/**
+	 * 下级菜单
+	 */
+	private List<PathEntity> children;
 
 }

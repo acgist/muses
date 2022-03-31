@@ -15,6 +15,6 @@ import com.acgist.user.model.entity.UserEntity;
 public interface UserMapper extends BootMapper<UserEntity> {
 	
 	@Select("SELECT * FROM t_user WHERE name = #{name}")
-	UserEntity findByName(String name);
+	UserEntity selectByName(String name);
 	
 }

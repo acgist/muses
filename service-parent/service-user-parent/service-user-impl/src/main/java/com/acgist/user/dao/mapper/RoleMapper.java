@@ -22,6 +22,6 @@ public interface RoleMapper extends BootMapper<RoleEntity> {
 	 * 
 	 * @return 角色列表
 	 */
-	List<RoleEntity> findByUser(String name);
+	List<RoleEntity> selectByUser(String name);
 	
 }

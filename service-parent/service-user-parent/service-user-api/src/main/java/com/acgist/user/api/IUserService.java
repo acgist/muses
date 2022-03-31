@@ -17,7 +17,7 @@ public interface IUserService {
 	 * 
 	 * @return 用户
 	 */
-	User findByName(String name);
+	User selectByName(String name);
 
 	/**
 	 * 根据用户名称查询用户描述
@@ -26,7 +26,7 @@ public interface IUserService {
 	 * 
 	 * @return 用户描述
 	 */
-	String findMemo(String name);
+	String selectMemo(String name);
 	
 	/**
 	 * 更新用户描述

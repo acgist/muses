@@ -37,9 +37,9 @@ public class ESTest {
 	}
 
 	@Test
-	public void testFindByContent() {
-		this.articleRepository.findByQuery("这是一个测试").forEach(v -> LOGGER.info("{}", v));
-		this.articleRepository.findByContent("测试").forEach(v -> LOGGER.info("{}", v));
+	public void testSelectByContent() {
+		this.articleRepository.selectByQuery("这是一个测试").forEach(v -> LOGGER.info("{}", v));
+		this.articleRepository.selectByContent("测试").forEach(v -> LOGGER.info("{}", v));
 	}
 
 }

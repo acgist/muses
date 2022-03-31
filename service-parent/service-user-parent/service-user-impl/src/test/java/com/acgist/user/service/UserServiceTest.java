@@ -23,10 +23,10 @@ public class UserServiceTest {
 	private IUserService userService;
 	
 	@Test
-	public void testFindByName() {
-		LOGGER.info("{}", this.userService.findByName("root"));
-		LOGGER.info("{}", this.userService.findByName("test"));
-		LOGGER.info("{}", this.userService.findByName("acgist"));
+	public void testSelectByName() {
+		LOGGER.info("{}", this.userService.selectByName("root"));
+		LOGGER.info("{}", this.userService.selectByName("test"));
+		LOGGER.info("{}", this.userService.selectByName("acgist"));
 	}
 	
 	@Test
