@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.dubbo.common.utils.FieldUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.util.CollectionUtils;
 
 import com.acgist.boot.StringUtils;
@@ -43,7 +43,7 @@ public class FilterQuery {
 	 * @return 数据库列名
 	 */
 	private static final <T> String column(Class<T> entity, final String name) {
-		final Field field = FieldUtils.findField(entity, name);
+		final Field field = FieldUtils.getField(entity, name, true);
 		if(field == null) {
 			return name;
 		}

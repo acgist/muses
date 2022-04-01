@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  * 
  * @author acgist
  *
+ * @param <M> Mapper
  * @param <T> 类型
  */
 public abstract class BootServiceImpl<M extends BootMapper<T>, T extends BootEntity> extends ServiceImpl<M, T> implements BootService<T> {

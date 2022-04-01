@@ -264,3 +264,22 @@ spring:
 	<artifactId>liquibase-core</artifactId>
 </dependency>
 ```
+
+## Excel导出
+
+参考实现：
+
+```
+ExcelService
+WebExcelService
+ExcelServiceImpl
+```
+
+### 依赖
+
+```
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+</dependency>
+```

@@ -30,12 +30,12 @@ public class ${prefix}Controller {
 	private ${prefix}Service ${prefixLower}Service;
 	
 	@GetMapping
-	public Page<${prefix}Entity> index(@RequestBody FilterQuery query, Page<${prefix}Entity> page) {
+	public Page<${prefix}Entity> page(@RequestBody FilterQuery query, Page<${prefix}Entity> page) {
 		return this.${prefixLower}Service.page(query, page);
 	}
 
 	@PostMapping
-	public Message<${prefix}Entity> save(@RequestBody ${prefix}Entity ${prefixLower}) {
+	public Message<${prefix}Entity> saveOrUpdate(@RequestBody ${prefix}Entity ${prefixLower}) {
 		if (this.${prefixLower}Service.saveOrUpdate(${prefixLower})) {
 			return Message.success(${prefixLower});
 		} else {
@@ -44,7 +44,7 @@ public class ${prefix}Controller {
 	}
 
 	@GetMapping("/{id}")
-	public ${prefix}Entity index(@PathVariable Long id) {
+	public ${prefix}Entity select(@PathVariable Long id) {
 		return this.${prefixLower}Service.getById(id);
 	}
 
@@ -58,7 +58,7 @@ public class ${prefix}Controller {
 	}
 	
 	@DeleteMapping
-	public Message<String> delete(List<Long> ids) {
+	public Message<String> delete(@RequestBody List<Long> ids) {
 		if (this.${prefixLower}Service.removeBatchByIds(ids)) {
 			return Message.success();
 		} else {

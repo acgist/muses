@@ -33,6 +33,7 @@
 		<!-- 版本配置 -->
 		<!-- TODO：JDK17 -->
 		<java.version>11</java.version>
+		<poi.version>5.2.2</poi.version>
 		<ws.rs.version>2.1.1</ws.rs.version>
 		<lombok.version>1.18.22</lombok.version>
 		<springfox.version>3.0.0</springfox.version>
@@ -232,6 +233,12 @@
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>${lombok.version}</version>
+			</dependency>
+			<!-- POI -->
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi-ooxml</artifactId>
+			    <version>${poi.version}</version>
 			</dependency>
 			<!-- 文档 -->
 			<dependency>
