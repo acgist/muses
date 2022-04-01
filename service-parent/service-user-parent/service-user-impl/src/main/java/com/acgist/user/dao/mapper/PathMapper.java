@@ -1,5 +1,6 @@
 package com.acgist.user.dao.mapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,24 +21,22 @@ import com.acgist.user.model.entity.PathEntity;
 public interface PathMapper extends BootMapper<PathEntity> {
 	
 	/**
-	 * 根据上级ID路径删除所有角色关联
+	 * 查询当前权限所有下级权限
 	 * 
-	 * @param id 当前权限ID
 	 * @param parentIdPath 上级ID路径
 	 * 
-	 * @return 删除数量
+	 * @return 当前权限以及下级权限
 	 */
-	int deleteAllRolePath(Long id, String parentIdPath);
+	List<PathEntity> selectByPath(String parentIdPath);
 	
 	/**
-	 * 根据上级ID路径删除所有关联权限
+	 * 删除权限角色关联
 	 * 
-	 * @param id 当前权限ID
-	 * @param parentIdPath 上级ID路径
+	 * @param deleteList 删除权限ID列表
 	 * 
 	 * @return 删除数量
 	 */
-	int deleteAll(Long id, String parentIdPath);
+	int deleteRolePath(List<Serializable> deleteList);
 	
 	/**
 	 * 根据角色ID查询权限列表

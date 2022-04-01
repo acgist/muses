@@ -2,7 +2,10 @@ package com.acgist.user.service.impl;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,7 @@ public class PathServiceImpl extends BootServiceImpl<PathMapper, PathEntity> imp
 	/**
 	 * 上级ID路径生成器
 	 */
-	private BiFunction<String, Long, String> parentIdPathBuilder = (parentIdPath, id) -> parentIdPath + "/" + id;
+	private BiFunction<String, Long, String> parentIdPathBuilder = (parentIdPath, id) -> Objects.toString(parentIdPath, "/") + id + "/";
 	
 	@Override
 	public boolean save(PathEntity entity) {
@@ -40,9 +43,11 @@ public class PathServiceImpl extends BootServiceImpl<PathMapper, PathEntity> imp
 	@Override
 	public boolean removeById(Serializable id) {
 		final PathEntity entity = this.getById(id);
-		final String parentIdPath = this.parentIdPathBuilder.apply(entity.getParentIdPath(), entity.getId()) + "%";
-		this.baseMapper.deleteAllRolePath(entity.getId(), parentIdPath);
-		this.baseMapper.deleteAll(entity.getId(), parentIdPath);
+		final String parentIdPath = this.parentIdPathBuilder.apply(entity.getParentIdPath(), entity.getId());
+		final List<Serializable> deleteList = this.baseMapper.selectByPath(parentIdPath).stream().map(PathEntity::getId).collect(Collectors.toList());
+		deleteList.add(id);
+		this.baseMapper.deleteRolePath(deleteList);
+		this.baseMapper.deleteBatchIds(deleteList);
 		return true;
 	}
 	
