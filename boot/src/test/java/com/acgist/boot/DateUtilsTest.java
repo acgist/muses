@@ -30,7 +30,7 @@ public class DateUtilsTest {
 		final LocalDateTime now = LocalDateTime.now();
 		final DateTimeStyle[] values = DateTimeStyle.values();
 		for (DateTimeStyle dateTimeStyle : values) {
-			log.info("{}    |    {}    |    {}", dateTimeStyle.getDateTimeFormatter().format(now), now, dateTimeStyle.getFormat());
+			log.info("{}	|	{}	|	{}", dateTimeStyle.getDateTimeFormatter().format(now), now, dateTimeStyle.getFormat());
 			assertEquals(
 				dateTimeStyle.getDateTimeFormatter().format(now),
 				dateTimeStyle.getDateTimeFormatter().format(DateUtils.parse(dateTimeStyle.getDateTimeFormatter().format(now)))

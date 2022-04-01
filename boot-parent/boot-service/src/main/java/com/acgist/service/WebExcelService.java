@@ -43,8 +43,8 @@ public interface WebExcelService<T extends BootEntity> extends ExcelService<T> {
 	default void download(FilterQuery query, Map<String, String> header, HttpServletResponse response) {
 		final List<T> list = this.list(query);
 		try {
-            response.setHeader("Content-Type", "application/vnd.ms-excel");
-            response.addHeader("Content-Disposition", "attachment;filename=" + this.getEntityClass().getSimpleName() + ".xlsx");
+			response.setHeader("Content-Type", "application/vnd.ms-excel");
+			response.addHeader("Content-Disposition", "attachment;filename=" + this.getEntityClass().getSimpleName() + ".xlsx");
 			this.download(list, header, response.getOutputStream());
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "下载Excel失败");
