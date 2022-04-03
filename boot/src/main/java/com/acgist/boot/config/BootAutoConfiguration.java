@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import com.acgist.boot.FileUtils;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.listener.ShutdownListener;
+import com.acgist.boot.service.impl.FreemarkerService;
 import com.acgist.boot.service.impl.IdService;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -113,6 +115,13 @@ public class BootAutoConfiguration {
 	@ConditionalOnMissingBean
 	public IdService idService() {
 		return new IdService();
+	}
+	
+	@Bean
+	@ConditionalOnClass(freemarker.template.Configuration.class)
+	@ConditionalOnMissingBean
+	public FreemarkerService freemarkerService() {
+		return new FreemarkerService();
 	}
 
 	@Bean

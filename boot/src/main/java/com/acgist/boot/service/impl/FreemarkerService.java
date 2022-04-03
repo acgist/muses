@@ -13,7 +13,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.acgist.boot.StringUtils;
 import com.acgist.boot.config.MusesConfig;
@@ -23,7 +22,11 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-@Service
+/**
+ * FreeMarker
+ * 
+ * @author acgist
+ */
 public class FreemarkerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerService.class);

@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import com.acgist.boot.RsaUtils;
 
@@ -20,7 +19,6 @@ import com.acgist.boot.RsaUtils;
  * 
  * @author acgist
  */
-@Service
 public class RsaService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RsaService.class);

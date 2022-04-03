@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.gateway.model.dto.GatewayDto;
+import com.acgist.gateway.service.impl.RsaService;
 
 /**
  * 网关配置
@@ -25,6 +26,12 @@ public class GatewayAutoConfiguration {
 	@Autowired
 	private StreamBridge streamBridge;
 
+	@Bean
+	@ConditionalOnMissingBean
+	public RsaService rsaService() {
+		return new RsaService();
+	}
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public Consumer<GatewayDto> gatewayPush() {
