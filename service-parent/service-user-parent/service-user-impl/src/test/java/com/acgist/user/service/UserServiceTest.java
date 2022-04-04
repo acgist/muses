@@ -1,8 +1,6 @@
 package com.acgist.user.service;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,11 +10,12 @@ import com.acgist.user.dao.mapper.UserMapper;
 import com.acgist.user.model.dto.UserDto;
 import com.acgist.user.model.entity.UserEntity;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootTest(classes = UserApplication.class)
 public class UserServiceTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceTest.class);
-	
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
@@ -24,9 +23,9 @@ public class UserServiceTest {
 	
 	@Test
 	public void testSelectByName() {
-		LOGGER.info("{}", this.userService.selectByName("root"));
-		LOGGER.info("{}", this.userService.selectByName("test"));
-		LOGGER.info("{}", this.userService.selectByName("acgist"));
+		log.info("{}", this.userService.selectByName("root"));
+		log.info("{}", this.userService.selectByName("test"));
+		log.info("{}", this.userService.selectByName("acgist"));
 	}
 	
 	@Test

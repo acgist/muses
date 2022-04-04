@@ -4,16 +4,15 @@ import java.util.Collection;
 
 import org.elasticsearch.core.List;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.acgist.model.entity.NameEntity;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FilterQueryTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FilterQueryTest.class);
-	
 	@Test
 	public void testWrapper() {
 		final FilterQuery query = FilterQuery.builder()
@@ -27,7 +26,7 @@ public class FilterQueryTest {
 			.desc("id")
 			.asc("name");
 		final Wrapper<NameEntity> build = query.build(NameEntity.class);
-		LOGGER.info("语句：{}", build.getTargetSql());
+		log.info("语句：{}", build.getTargetSql());
 	}
 
 	@Test
@@ -41,15 +40,15 @@ public class FilterQueryTest {
 	}
 	
 	public void log(Object array) {
-		LOGGER.info("单值：{}", array);
+		log.info("单值：{}", array);
 	}
 	
 	public void log(Object ... array) {
-		LOGGER.info("数组：{}", array);
+		log.info("数组：{}", array);
 	}
 	
 	public void log(Collection<?> collection) {
-		LOGGER.info("集合：{}", collection);
+		log.info("集合：{}", collection);
 	}
 	
 }

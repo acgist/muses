@@ -5,8 +5,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -16,18 +14,19 @@ import com.acgist.boot.model.MessageCodeException;
 import com.acgist.distributed.lock.DistributedLock;
 import com.acgist.distributed.scheduled.DistributedScheduled;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 分布式定时任务
  * 
  * @author acgist
  */
+@Slf4j
 @Aspect
 @Configuration
 @ConditionalOnBean(value = DistributedLock.class)
 @AutoConfigureAfter(value = DistributedLockAutoConfiguration.class)
 public class DistributedScheduledAutoConfiguration {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(DistributedScheduledAutoConfiguration.class);
 
 	@Autowired
 	private DistributedLock distributedLock;
@@ -57,10 +56,10 @@ public class DistributedScheduledAutoConfiguration {
 		final String name = distributedScheduled.name();
 		try {
 			if (this.distributedLock.tryLock(name, distributedScheduled.ttl())) {
-				LOGGER.debug("定时任务加锁成功执行：{}", name);
+				log.debug("定时任务加锁成功执行：{}", name);
 				return proceedingJoinPoint.proceed();
 			} else {
-				LOGGER.debug("定时任务加锁失败执行：{}", name);
+				log.debug("定时任务加锁失败执行：{}", name);
 			}
 		} catch (Throwable e) {
 			throw e;

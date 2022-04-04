@@ -3,35 +3,34 @@ package com.acgist.boot;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.acgist.boot.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JSONUtilsTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtilsTest.class);
-	
 	@Test
 	public void testJSON() {
 		final User user = new User();
 		user.setId(1L);
 		user.setName("acgist");
-		LOGGER.info("{}", user);
+		log.info("{}", user);
 		final String json = JSONUtils.toJSON(user);
-		LOGGER.info("{}", json);
-//		LOGGER.info("{}", JSONUtils.toJava(json));
-		LOGGER.info("{}", JSONUtils.toJava(json, User.class));
+		log.info("{}", json);
+//		log.info("{}", JSONUtils.toJava(json));
+		log.info("{}", JSONUtils.toJava(json, User.class));
 //		final User jsonUser = JSONUtils.toJava(json);
-//		LOGGER.info("{}", jsonUser);
+//		log.info("{}", jsonUser);
 	}
 	
 	@Test
 	public void testDate() {
 		final DateDto dto = new DateDto();
-		LOGGER.info("{}", JSONUtils.toJSON(dto));
+		log.info("{}", JSONUtils.toJSON(dto));
 	}
 	
 	static class DateDto {

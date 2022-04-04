@@ -3,8 +3,6 @@ package com.acgist.gateway.filter;
 import java.text.ParseException;
 
 import org.apache.dubbo.config.annotation.DubboReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -19,15 +17,16 @@ import com.acgist.gateway.ResponseUtils;
 import com.acgist.user.api.IUserService;
 import com.nimbusds.jose.JWSObject;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 鉴权、透传用户信息
  * 
  * @author acgist
  */
+@Slf4j
 @Component
 public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFactory<AuthenticationGatewayFilterFactory.Config> {
-
-	private static Logger LOGGER = LoggerFactory.getLogger(AuthenticationGatewayFilterFactory.class);
 
 	/**
 	 * 权限头部信息
@@ -113,7 +112,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 		try {
 			return JWSObject.parse(token.substring(BEARER_INDEX).strip());
 		} catch (ParseException e) {
-			LOGGER.error("授权信息错误：{}", token, e);
+			log.error("授权信息错误：{}", token, e);
 		}
 		return null;
 	}

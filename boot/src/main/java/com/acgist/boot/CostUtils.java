@@ -1,16 +1,14 @@
 package com.acgist.boot;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 时间消耗统计工具
  * 
  * @author acgist
  */
+@Slf4j
 public final class CostUtils {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(CostUtils.class);
 
 	private CostUtils() {
 	}
@@ -29,7 +27,7 @@ public final class CostUtils {
 			coster.execute();
 		}
 		final long costed = System.currentTimeMillis() - time;
-		LOGGER.info("消耗时间：{}", costed);
+		log.info("消耗时间：{}", costed);
 		return costed;
 	}
 

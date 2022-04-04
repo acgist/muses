@@ -20,8 +20,6 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.acgist.boot.MapUtils;
 import com.acgist.boot.model.MessageCodeException;
@@ -29,6 +27,8 @@ import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
 import com.acgist.service.ExcelService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Excel Service实现
@@ -38,10 +38,9 @@ import com.acgist.service.ExcelService;
  * @param <M> Mapper
  * @param <T> 类型
  */
+@Slf4j
 public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEntity> extends BootServiceImpl<M, T> implements ExcelService<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelServiceImpl.class);
-	
 	@Override
 	public void download(FilterQuery query, OutputStream output) {
 		try {
@@ -86,7 +85,7 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 					try {
 						object = FieldUtils.getField(value.getClass(), field, true).get(value);
 					} catch (IllegalArgumentException | IllegalAccessException e) {
-						LOGGER.error("读取属性异常：{}", field, e);
+						log.error("读取属性异常：{}", field, e);
 					}
 					final XSSFCell cell = dataRow.createCell(col.getAndIncrement());
 					cell.setCellStyle(this.dataCellStyle(workbook));

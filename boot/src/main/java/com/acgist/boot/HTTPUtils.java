@@ -41,22 +41,21 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.MessageCodeException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * HTTP工具
  * 
  * @author acgist
  */
+@Slf4j
 public final class HTTPUtils {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(HTTPUtils.class);
 
 	/**
 	 * 复用连接
@@ -351,7 +350,7 @@ public final class HTTPUtils {
 			response = CLIENT.execute(request);
 			final int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode != HttpStatus.SC_OK) {
-				LOGGER.warn("HTTP返回错误状态：{}-{}-{}", statusCode, request, response);
+				log.warn("HTTP返回错误状态：{}-{}-{}", statusCode, request, response);
 			}
 			return EntityUtils.toString(response.getEntity(), MusesConfig.CHARSET_VALUE);
 		} catch (ParseException | IOException e) {
@@ -372,7 +371,7 @@ public final class HTTPUtils {
 				// 归还连接
 				response.close();
 			} catch (IOException e) {
-				LOGGER.error("关闭响应异常", e);
+				log.error("关闭响应异常", e);
 			}
 		}
 	}
@@ -387,7 +386,7 @@ public final class HTTPUtils {
 			try {
 				CLIENT.close();
 			} catch (IOException e) {
-				LOGGER.error("关闭连接异常", e);
+				log.error("关闭连接异常", e);
 			}
 		}
 	}
@@ -408,7 +407,7 @@ public final class HTTPUtils {
 				}
 			}).build();
 		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
-			LOGGER.error("创建SSL工程异常", e);
+			log.error("创建SSL工程异常", e);
 		}
 		sslFactory = new SSLConnectionSocketFactory(sslContext);
 //		sslFactory = new SSLConnectionSocketFactory(sslContext, new HostnameVerifier() {

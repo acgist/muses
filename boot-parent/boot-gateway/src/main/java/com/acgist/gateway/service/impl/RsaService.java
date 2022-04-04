@@ -8,21 +8,20 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.acgist.boot.RsaUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * RSA
  * 
  * @author acgist
  */
+@Slf4j
 public class RsaService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RsaService.class);
-	
 	/**
 	 * 签名
 	 */
@@ -57,7 +56,7 @@ public class RsaService {
 
 	@PostConstruct
 	public void init() {
-		LOGGER.info("加载公钥私钥");
+		log.info("加载公钥私钥");
 		this.publicKey = RsaUtils.loadPublicKey(this.publicKeyValue);
 		this.privateKey = RsaUtils.loadPrivateKey(this.privateKeyValue);
 	}

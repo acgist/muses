@@ -1,7 +1,5 @@
 package com.acgist.gateway.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +15,7 @@ import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.gateway.ResponseUtils;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 /**
@@ -24,18 +23,17 @@ import reactor.core.publisher.Mono;
  * 
  * @author acgist
  */
+@Slf4j
 @Configuration
 public class GatewayConfig {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayConfig.class);
-	
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public ErrorWebExceptionHandler errorWebExceptionHandler() {
 		return new ErrorWebExceptionHandler() {
 			@Override
 			public Mono<Void> handle(ServerWebExchange exchange, Throwable t) {
-				LOGGER.debug("网关异常", t);
+				log.debug("网关异常", t);
 				final ServerHttpResponse response = exchange.getResponse();
 				if (response.isCommitted()) {
 					return Mono.error(t);

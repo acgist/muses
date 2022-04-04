@@ -5,21 +5,19 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.Message;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 响应工具
  * 
  * @author acgist
  */
+@Slf4j
 public final class ResponseUtils {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtils.class);
-	
 	private ResponseUtils() {
 	}
 
@@ -47,7 +45,7 @@ public final class ResponseUtils {
 		try {
 			response.getWriter().write(message.toString());
 		} catch (IOException e) {
-			LOGGER.error("写出响应数据异常：{}", message, e);
+			log.error("写出响应数据异常：{}", message, e);
 		}
 	}
 	

@@ -8,8 +8,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -24,14 +22,15 @@ import com.alibaba.nacos.common.notify.Event;
 import com.alibaba.nacos.common.notify.NotifyCenter;
 import com.alibaba.nacos.common.notify.listener.Subscriber;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 关机监听
  * 
  * @author acgist
  */
+@Slf4j
 public class ShutdownListener {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(ShutdownListener.class);
 
 	/**
 	 * 服务名称
@@ -65,10 +64,10 @@ public class ShutdownListener {
 	@PostConstruct
 	public void init() {
 		if(!this.shutdownEnable) {
-			LOGGER.info("服务没有配置自动关机：{}", this.serviceName);
+			log.info("服务没有配置自动关机：{}", this.serviceName);
 			return;
 		}
-		LOGGER.info("启动服务关机配置：{}-{}", this.serviceName, this.shutdownGracefully);
+		log.info("启动服务关机配置：{}-{}", this.serviceName, this.shutdownGracefully);
 		NotifyCenter.registerSubscriber(new Subscriber<InstancesChangeEvent>() {
 
 			/**
@@ -98,10 +97,10 @@ public class ShutdownListener {
 			 */
 			private void up() {
 				if(!ShutdownListener.this.shutdown) {
-					LOGGER.debug("实例有效：已经生效：{}", ShutdownListener.this.serviceName);
+					log.debug("实例有效：已经生效：{}", ShutdownListener.this.serviceName);
 					return;
 				}
-				LOGGER.debug("实例有效：重置关闭事件：{}", ShutdownListener.this.serviceName);
+				log.debug("实例有效：重置关闭事件：{}", ShutdownListener.this.serviceName);
 				ShutdownListener.this.shutdown = false;
 				try {
 					this.lock.lock();
@@ -116,17 +115,17 @@ public class ShutdownListener {
 			 */
 			private void down() {
 				if(ShutdownListener.this.shutdown) {
-					LOGGER.debug("实例无效：已经启动关闭事件：{}", ShutdownListener.this.serviceName);
+					log.debug("实例无效：已经启动关闭事件：{}", ShutdownListener.this.serviceName);
 					return;
 				}
-				LOGGER.debug("实例无效：启动关闭事件：{}-{}", ShutdownListener.this.serviceName, ShutdownListener.this.shutdownGracefully);
+				log.debug("实例无效：启动关闭事件：{}-{}", ShutdownListener.this.serviceName, ShutdownListener.this.shutdownGracefully);
 				ShutdownListener.this.shutdown = true;
 				ShutdownListener.this.taskExecutor.execute(() -> {
 					try {
 						this.lock.lock();
 						final long remaing = this.condition.awaitNanos(TimeUnit.SECONDS.toNanos(ShutdownListener.this.shutdownGracefully));
 						if (ShutdownListener.this.shutdown) {
-							LOGGER.info("实例无效：关闭实例：{}", ShutdownListener.this.serviceName);
+							log.info("实例无效：关闭实例：{}", ShutdownListener.this.serviceName);
 							// 关闭NacosServiceManager.nacosServiceShutDown()会出现空指针异常：2021-08以后版本已经修复
 							// 阻塞关闭：不用再次等待
 							ShutdownListener.this.context.close();
@@ -134,10 +133,10 @@ public class ShutdownListener {
 							// 强制关机
 							Runtime.getRuntime().halt(0);
 						} else {
-							LOGGER.debug("实例有效：忽略关闭事件：{}-{}", ShutdownListener.this.serviceName, TimeUnit.NANOSECONDS.toSeconds(remaing));
+							log.debug("实例有效：忽略关闭事件：{}-{}", ShutdownListener.this.serviceName, TimeUnit.NANOSECONDS.toSeconds(remaing));
 						}
 					} catch (InterruptedException e) {
-						LOGGER.error("关闭实例异常", e);
+						log.error("关闭实例异常", e);
 					} finally {
 						this.lock.unlock();
 					}
@@ -184,7 +183,7 @@ public class ShutdownListener {
 				.filter(this::self)
 				.findFirst();
 		} catch (NacosException e) {
-			LOGGER.error("获取服务实例本身异常", e);
+			log.error("获取服务实例本身异常", e);
 		}
 		return Optional.empty();
 	}

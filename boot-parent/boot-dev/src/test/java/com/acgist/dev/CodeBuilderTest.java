@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import com.acgist.boot.StringUtils;
@@ -23,16 +21,16 @@ import com.acgist.boot.service.impl.FreemarkerService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 代码生成
  * 
  * @author acgist
  */
+@Slf4j
 public class CodeBuilderTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CodeBuilderTest.class);
-	
 	private String path;
 	// 输出目录
 	private String target = "/code";
@@ -81,7 +79,7 @@ public class CodeBuilderTest {
 	 */
 	public void buildCode(String author, String table) throws Exception {
 		this.path = new ClassPathResource("./").getFile().getParentFile().getAbsolutePath() + this.target;
-		LOGGER.info("输出目录：{}", this.path);
+		log.info("输出目录：{}", this.path);
 		final Map<Object, Object> map = new HashMap<>();
 		map.put("id", this.id);
 		map.put("modulePackage", this.modulePackage);
@@ -112,7 +110,7 @@ public class CodeBuilderTest {
 		map.put("prefixLower", this.lowerFirstOnly(prefix));
 		// 字段信息
 		map.put("columns", list);
-		LOGGER.info("生成代码变量：{}", map);
+		log.info("生成代码变量：{}", map);
 		this.buildPojo(map);
 		this.buildDao(map);
 		this.buildService(map);

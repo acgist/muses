@@ -2,8 +2,6 @@ package com.acgist.redis.config;
 
 import java.time.Duration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,18 +23,19 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Redis和缓存配置
  * 
  * @author acgist
  */
+@Slf4j
 @Configuration
 @EnableCaching
 @ConditionalOnClass({CacheManager.class, RedisTemplate.class})
 public class RedisAutoConfiguration {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(RedisAutoConfiguration.class);
-
 	/**
 	 * 缓存前缀
 	 */
@@ -49,7 +48,7 @@ public class RedisAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public CacheManager cacheManager(RedisConnectionFactory factory) {
-		LOGGER.info("配置CacheManager");
+		log.info("配置CacheManager");
 		final RedisCacheConfiguration config = RedisCacheConfiguration
 			.defaultCacheConfig()
 			.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(this.buildKeySerializer()))
@@ -69,7 +68,7 @@ public class RedisAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-		LOGGER.info("配置RedisTemplate");
+		log.info("配置RedisTemplate");
 		final RedisTemplate<String, Object> template = new RedisTemplate<>();
 		template.setConnectionFactory(factory);
 		template.setKeySerializer(this.buildKeySerializer());

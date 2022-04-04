@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.slf4j.ILoggerFactory;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,18 +29,18 @@ import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.qos.logback.classic.LoggerContext;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Boot自动配置
  * 
  * @author acgist
  */
+@Slf4j
 @EnableAsync
 @Configuration
 public class BootAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BootAutoConfiguration.class);
-	
 	/**
 	 * 序列化类型
 	 * 
@@ -135,7 +134,7 @@ public class BootAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public SerializerType serializerType() {
-		LOGGER.info("系统序列化类型：{}", this.serializerType);
+		log.info("系统序列化类型：{}", this.serializerType);
 		if (SerializerType.JACKSON.name().equalsIgnoreCase(this.serializerType)) {
 			return SerializerType.JACKSON;
 		} else {
@@ -147,7 +146,7 @@ public class BootAutoConfiguration {
 	@Primary
 	@ConditionalOnMissingBean
 	public TaskExecutor taskExecutor() {
-		LOGGER.info("系统线程池配置：{}-{}-{}-{}", this.min, this.max, this.size, this.live);
+		log.info("系统线程池配置：{}-{}-{}-{}", this.min, this.max, this.size, this.live);
 		final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setDaemon(true);
 		executor.setCorePoolSize(this.min);
@@ -174,28 +173,28 @@ public class BootAutoConfiguration {
 		final String totalMemory = FileUtils.formatSize(runtime.totalMemory());
 		final String maxMemory = FileUtils.formatSize(runtime.maxMemory());
 		final String jvmArgs = bean.getInputArguments().stream().collect(Collectors.joining(" "));
-		LOGGER.info("操作系统名称：{}", System.getProperty("os.name"));
-		LOGGER.info("操作系统架构：{}", System.getProperty("os.arch"));
-		LOGGER.info("操作系统版本：{}", System.getProperty("os.version"));
-		LOGGER.info("操作系统可用处理器数量：{}", runtime.availableProcessors());
-		LOGGER.info("Java版本：{}", System.getProperty("java.version"));
-		LOGGER.info("Java主目录：{}", System.getProperty("java.home"));
-		LOGGER.info("Java库目录：{}", System.getProperty("java.library.path"));
-		LOGGER.info("ClassPath：{}", System.getProperty("java.class.path"));
-		LOGGER.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
-		LOGGER.info("虚拟机空闲内存：{}", freeMemory);
-		LOGGER.info("虚拟机已用内存：{}", totalMemory);
-		LOGGER.info("虚拟机最大内存：{}", maxMemory);
-		LOGGER.info("用户目录：{}", System.getProperty("user.home"));
-		LOGGER.info("工作目录：{}", System.getProperty("user.dir"));
-		LOGGER.info("文件编码：{}", System.getProperty("file.encoding"));
-		LOGGER.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
-		LOGGER.info("JVM启动参数：{}", jvmArgs);
+		log.info("操作系统名称：{}", System.getProperty("os.name"));
+		log.info("操作系统架构：{}", System.getProperty("os.arch"));
+		log.info("操作系统版本：{}", System.getProperty("os.version"));
+		log.info("操作系统可用处理器数量：{}", runtime.availableProcessors());
+		log.info("Java版本：{}", System.getProperty("java.version"));
+		log.info("Java主目录：{}", System.getProperty("java.home"));
+		log.info("Java库目录：{}", System.getProperty("java.library.path"));
+		log.info("ClassPath：{}", System.getProperty("java.class.path"));
+		log.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
+		log.info("虚拟机空闲内存：{}", freeMemory);
+		log.info("虚拟机已用内存：{}", totalMemory);
+		log.info("虚拟机最大内存：{}", maxMemory);
+		log.info("用户目录：{}", System.getProperty("user.home"));
+		log.info("工作目录：{}", System.getProperty("user.dir"));
+		log.info("文件编码：{}", System.getProperty("file.encoding"));
+		log.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
+		log.info("JVM启动参数：{}", jvmArgs);
 	}
 	
 	@PreDestroy
 	public void destroy() {
-		LOGGER.info("系统关闭");
+		log.info("系统关闭");
 		// 刷出日志缓存
 		final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
 		if (factory != null && factory instanceof LoggerContext) {

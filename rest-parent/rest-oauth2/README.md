@@ -19,3 +19,5 @@ keytool -genkeypair -alias jwk -keyalg RSA -keysize 2048 -keystore jwk.jks -vali
 ## 注意事项
 
 公钥和客户端ID不能随机生成，否者重启之后Redis数据就会失效。
+
+不止为何使用`freemarker`登陆页面登陆不了。

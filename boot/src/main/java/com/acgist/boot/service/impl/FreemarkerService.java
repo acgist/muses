@@ -10,8 +10,6 @@ import java.io.Writer;
 import java.nio.file.Paths;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acgist.boot.StringUtils;
@@ -21,15 +19,15 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * FreeMarker
  * 
  * @author acgist
  */
+@Slf4j
 public class FreemarkerService {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerService.class);
 
 	/**
 	 * 缓存模板
@@ -61,7 +59,7 @@ public class FreemarkerService {
 	 */
 	public boolean build(String templatePath, Map<Object, Object> data, String htmlPath, String htmlName) {
 		if (StringUtils.isEmpty(htmlPath)) {
-			LOGGER.warn("生成静态文件路径错误：{}", htmlPath);
+			log.warn("生成静态文件路径错误：{}", htmlPath);
 			return false;
 		}
 		final File htmlFile = Paths.get(htmlPath, htmlName).toFile();
@@ -73,7 +71,7 @@ public class FreemarkerService {
 			template.process(data, writer);
 			writer.flush();
 		} catch (TemplateException | IOException e) {
-			LOGGER.error("freemarker模板异常：{}-{}", templatePath, data, e);
+			log.error("freemarker模板异常：{}-{}", templatePath, data, e);
 		}
 		return true;
 	}
@@ -95,12 +93,12 @@ public class FreemarkerService {
 			template.process(data, writer);
 			content = writer.toString();
 		} catch (TemplateException | IOException e) {
-			LOGGER.error("freemarker模板异常：{}-{}", content, data, e);
+			log.error("freemarker模板异常：{}-{}", content, data, e);
 		} finally {
 			try {
 				this.configuration.removeTemplateFromCache(TEMPLATE);
 			} catch (IOException e) {
-				LOGGER.error("freemarker模板异常", e);
+				log.error("freemarker模板异常", e);
 			}
 		}
 		return content;

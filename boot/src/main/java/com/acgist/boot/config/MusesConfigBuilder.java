@@ -3,9 +3,6 @@ package com.acgist.boot.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.StringUtils;
 import com.alibaba.cloud.nacos.NacosConfigManager;
@@ -13,15 +10,16 @@ import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 系统配置Builder
  * 
  * @author acgist
  */
+@Slf4j
 public final class MusesConfigBuilder {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MusesConfigBuilder.class);
-
 	/**
 	 * 系统配置
 	 */
@@ -65,7 +63,7 @@ public final class MusesConfigBuilder {
 				this.musesConfig = JSONUtils.toJava(oldConfig, MusesConfig.class);
 			}
 		} catch (NacosException e) {
-			LOGGER.error("初始系统配置异常", e);
+			log.error("初始系统配置异常", e);
 		}
 		return this;
 	}
@@ -92,7 +90,7 @@ public final class MusesConfigBuilder {
 		}
 		sns.put(serviceName, sn);
 		this.musesConfig.setSn(sn);
-		LOGGER.info("系统编号：{}", sn);
+		log.info("系统编号：{}", sn);
 		return this;
 	}
 	
@@ -104,7 +102,7 @@ public final class MusesConfigBuilder {
 	public MusesConfigBuilder buildPid() {
 		final long pid = ProcessHandle.current().pid();
 		this.musesConfig.setPid((int) pid);
-		LOGGER.info("系统PID：{}", pid);
+		log.info("系统PID：{}", pid);
 		return this;
 	}
 	
@@ -117,7 +115,7 @@ public final class MusesConfigBuilder {
 	 */
 	public MusesConfigBuilder buildPort(int port) {
 		this.musesConfig.setPort(port);
-		LOGGER.info("系统端口：{}", port);
+		log.info("系统端口：{}", port);
 		return this;
 	}
 	
@@ -133,7 +131,7 @@ public final class MusesConfigBuilder {
 			// 保存配置中心
 			configService.publishConfig(MusesConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), JSONUtils.toJSON(this.musesConfig));
 		} catch (NacosException e) {
-			LOGGER.error("设置系统配置异常", e);
+			log.error("设置系统配置异常", e);
 		}
 		return this.musesConfig;
 	}

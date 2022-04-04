@@ -3,20 +3,19 @@ package com.acgist.boot;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MapUtilsTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MapUtilsTest.class);
-	
 	@Test
 	public void testToUrlQuery() {
-		LOGGER.info("{}", MapUtils.toUrlQuery(null));
-		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of()));
-		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of("", "")));
-		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of("1", "2", "3", "4")));
-		LOGGER.info("{}", MapUtils.toUrlQuery(Map.of("1", "2", "3", "测试")));
+		log.info("{}", MapUtils.toUrlQuery(null));
+		log.info("{}", MapUtils.toUrlQuery(Map.of()));
+		log.info("{}", MapUtils.toUrlQuery(Map.of("", "")));
+		log.info("{}", MapUtils.toUrlQuery(Map.of("1", "2", "3", "4")));
+		log.info("{}", MapUtils.toUrlQuery(Map.of("1", "2", "3", "测试")));
 	}
 	
 }

@@ -3,8 +3,6 @@ package com.acgist.www;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -26,6 +24,8 @@ import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 异常处理工具
  * 
@@ -33,10 +33,9 @@ import com.acgist.boot.model.MessageCodeException;
  * 
  * @author acgist
  */
+@Slf4j
 public final class ErrorUtils {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorUtils.class);
-
 	/**
 	 * 错误地址
 	 */
@@ -108,9 +107,9 @@ public final class ErrorUtils {
 		final String query = request.getQueryString();
 		if(globalErrorMessage instanceof Throwable) {
 			// 有时候dispatcherServlet会打印异常有时候又不会
-			LOGGER.error("系统错误：{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
+			log.error("系统错误：{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
 		} else {
-			LOGGER.warn("系统错误：{}-{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
+			log.warn("系统错误：{}-{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
 		}
 		request.setAttribute(ERROR_MESSAGE, message);
 		return message;

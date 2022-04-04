@@ -12,18 +12,16 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 任务执行器
  * 
  * @author acgist
  */
+@Slf4j
 public class Executors {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Executors.class);
-	
 	/**
 	 * 线程计数器
 	 */
@@ -88,7 +86,7 @@ public class Executors {
 		try {
 			future.get();
 		} catch (InterruptedException | ExecutionException e) {
-			LOGGER.error("任务执行异常", e);
+			log.error("任务执行异常", e);
 		} finally {
 			success = list.stream().map(Executor::success).allMatch(Boolean.TRUE::equals);
 			if(!success) {
@@ -113,7 +111,7 @@ public class Executors {
 		try {
 			future.get();
 		} catch (InterruptedException | ExecutionException e) {
-			LOGGER.error("任务回滚异常", e);
+			log.error("任务回滚异常", e);
 		}
 	}
 	

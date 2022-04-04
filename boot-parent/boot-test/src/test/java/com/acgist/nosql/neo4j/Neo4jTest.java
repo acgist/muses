@@ -3,17 +3,16 @@ package com.acgist.nosql.neo4j;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.nosql.NoSQLApplication;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootTest(classes = NoSQLApplication.class)
 public class Neo4jTest {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(Neo4jTest.class);
 
 	@Autowired
 	private PersonRepository personRepository;
@@ -71,8 +70,8 @@ public class Neo4jTest {
 
 	@Test
 	public void testSelect() {
-		LOGGER.info("{}", this.personRepository.selectByName("小王"));
-		this.personRepository.selectRelationship("小明", "老王").forEach(v -> LOGGER.info("{}", v));
+		log.info("{}", this.personRepository.selectByName("小王"));
+		this.personRepository.selectRelationship("小明", "老王").forEach(v -> log.info("{}", v));
 	}
 
 }

@@ -1,20 +1,18 @@
 package com.acgist.gateway.notify.http;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acgist.gateway.model.entity.GatewayEntity;
 import com.acgist.gateway.notify.Notify;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * HTTP通知
  * 
  * @author acgist
  */
+@Slf4j
 public class HttpNotify extends Notify {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HttpNotify.class);
-	
 //	@Autowired
 //	private HttpNotifyConfig config;
 
@@ -24,7 +22,7 @@ public class HttpNotify extends Notify {
 	
 	@Override
 	public String execute(GatewayEntity gatewayEntity) {
-		LOGGER.debug("发送通知：{}", gatewayEntity);
+		log.debug("发送通知：{}", gatewayEntity);
 		return null;
 	}
 

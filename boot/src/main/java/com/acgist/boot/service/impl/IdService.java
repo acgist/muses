@@ -5,20 +5,19 @@ import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acgist.boot.config.MusesConfig;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ID生成
  * 
  * @author acgist
  */
+@Slf4j
 public class IdService {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(IdService.class);
 
 	/**
 	 * 最大序号
@@ -42,7 +41,7 @@ public class IdService {
 		this.sn = this.musesConfig.getSn();
 		final Random random = new Random();
 		this.index = random.nextInt(MAX_INDEX);
-		LOGGER.info("雪花ID：{}-{}", this.sn, this.index);
+		log.info("雪花ID：{}-{}", this.sn, this.index);
 	}
 
 	/**

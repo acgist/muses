@@ -19,8 +19,6 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -52,18 +50,19 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * OAuth2授权配置
  * 
  * @author acgist
  */
+@Slf4j
 @Configuration
 @EnableConfigurationProperties(OAuth2Config.class)
 @Import(OAuth2AuthorizationServerConfiguration.class)
 public class AuthorizationServerConfig {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationServerConfig.class);
-	
 	@Value("${system.jwk.path:}")
 	private String jwkPath;
 	@Value("${system.jwk.secret:}")
@@ -76,6 +75,7 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(security);
+		// 必须设置表单登陆：可以不用设置登陆页面@SecurityConfig
 		security.formLogin();
 		return security.build();
 	}
@@ -106,7 +106,7 @@ public class AuthorizationServerConfig {
 		final TokenSettings tokenSettings = this.tokenSettings();
 		final List<RegisteredClient> clients = new ArrayList<>();
 		this.oAuth2Config.getClients().forEach((name, secret) -> {
-			LOGGER.info("注册授权客户端：{}", name);
+			log.info("注册授权客户端：{}", name);
 			final RegisteredClient client = RegisteredClient.withId(name)
 				.clientId(name)
 				.clientSecret(passwordEncoder.encode(secret))
@@ -132,20 +132,20 @@ public class AuthorizationServerConfig {
 			String aliase = null;
 			while(aliases.hasMoreElements()) {
 				aliase = aliases.nextElement();
-				LOGGER.info("加载JWT密钥：{}", aliase);
+				log.info("加载JWT密钥：{}", aliase);
 				final PublicKey publicKey = keyStore.getCertificate(aliase).getPublicKey();
 				final PrivateKey privateKey = (PrivateKey) keyStore.getKey(aliase, this.jwkSecret.toCharArray());
 				return new KeyPair(publicKey, privateKey);
 			}
 		} catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableKeyException e) {
-			LOGGER.error("加载JWT密钥异常：{}", this.jwkPath, e);
+			log.error("加载JWT密钥异常：{}", this.jwkPath, e);
 		}
 		try {
 			final KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
 			keyPairGenerator.initialize(2048);
 			return keyPairGenerator.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			LOGGER.error("随机生成JWT密钥异常", e);
+			log.error("随机生成JWT密钥异常", e);
 		}
 		return null;
 	}

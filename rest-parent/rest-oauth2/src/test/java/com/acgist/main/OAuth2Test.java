@@ -3,8 +3,6 @@ package com.acgist.main;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,23 +15,24 @@ import org.springframework.web.client.RestTemplate;
 import com.acgist.boot.HTTPUtils;
 import com.acgist.boot.StringUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class OAuth2Test {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(OAuth2Test.class);
-	
 	public static final String OAUTH2_URL = "http://localhost:9999";
 	public static final String GATEWAY_URL = "http://localhost:8888";
 	
 	@Test
 	public void testPassword() {
-		LOGGER.info("{}", new BCryptPasswordEncoder().encode("123456"));
+		log.info("{}", new BCryptPasswordEncoder().encode("123456"));
 	}
 	
 	@Test
 	public void testTokenKey() {
 		final RestTemplate restTemplate = new RestTemplate();
 		final ResponseEntity<String> body = restTemplate.getForEntity(OAUTH2_URL + "/oauth2/jwks", String.class);
-		LOGGER.info("{}", body.getBody());
+		log.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -45,7 +44,7 @@ public class OAuth2Test {
 			null,
 			1000
 		);
-		LOGGER.info(code);
+		log.info(code);
 	}
 	
 	@Test
@@ -56,13 +55,13 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "psrSpXXFPp0Y2nlQ8QcZNAGe_QG4u1jkYlF4CYCplAxM0F7lHFOnM_72jRTPLA2578Jh08CQmUjxmuMC62ai3qD3Pfe3ch4XT9ZWK8ry0ZJ2HTFytSsZIjjGULlExp_d");
+		params.add("code", "Jj2btQNaf-MCqLY0-Gjd-EAi-b8wOSu0bGBfHUkqRZiEdD1DL3eaXoK80ufeNwc4EEw1Ko-Wywft3wg-Hu6Kto19Ux3v-6qsRxR-U3PjjEt8dwW1v056tZA8erp6GjlG");
 		params.add("grant_type", "authorization_code");
 		// 如果没有指定redirect_uri可以填写也可以不填写
 //		params.add("redirect_uri", "https://www.acgist.com");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/token", requestEntity, String.class);
-		LOGGER.info("{}", body.getBody());
+		log.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -76,7 +75,7 @@ public class OAuth2Test {
 		params.add("refresh_token", "CJqLgBRbrbMSN4_LWHIWITJAv4NfTz8SIkgzVApLcdCYzRKrVauN0zED_94MtM3ajFBEZjrYBsQP_juI-SGrZUrRYPoa-0aDEhXnBEeS1B9vrvBybzbMuqZRxoo_9b5d");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/token", requestEntity, String.class);
-		LOGGER.info("{}", body.getBody());
+		log.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -86,10 +85,10 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQxNzA2OTkwLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjQxNzE0MTkwLCJpYXQiOjE2NDE3MDY5OTB9.TbOOBjT5R-3M7TIV6gm6obzb5CzvWVJW34Ndo6lDki18CLhkDMBvgPSoUyNT29YVbZvBSB2VTcSDWZB1v-uidriJ1kDi2rsVRyCBxCyb1__HY_EDouAX04kwpr1u7gMP1qNKG07-u-TzcUzAV6tEsu9IIxpHTWBtReD3ZerYvWgbVvXgVEbCWoDKCfphTguxKXIZv9CtNljaV0AY8T04vaypQ0xmLqOgIJIl3mfcswwb4szbEGw0aDX7C9BL0cPHptVt67fNHV6Noa44ZXKhVxX-Mu8lqCb9ywZJHQSc8_hbKsuQENieL75nKxBj3cUibq1V-xUsyxpmKadRyTCqIg");
+		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQ5MDc2ODk4LCJzY29wZSI6WyJhbGwiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0Ojk5OTkiLCJleHAiOjE2NDkwODQwOTgsImlhdCI6MTY0OTA3Njg5OH0.cEWJ8u4xUO80qojev6y91W0AXm6PgJeeQUBe0TTph4BPFz7ofrPwL8HEcLPFvYAC-Af6LHuVBF2P8E3md2qBevSlubUti3XoYj6SebzJgsI-f3uXHUePx0Vdh8xbZykwA7x_qwfte7-yB7DczQ3D-eTdzYcAF5MrKq2YTVtTdg4MzpEb7ZGHXErCQht_vJidJld7S14By9pPPXTupr7YPp-t1joDusk2IEEYQhR6cJeZMCeEG4BHRHQd9-ugWLJ59cfuZh07jHfA0Gqq1KN_J73o4VYVqTrHgzAP7koaNiiKxee63WYHRE5QsgbrilJpGk6yNvGAwDh33r_-CPnyJQ");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/introspect", requestEntity, String.class);
-		LOGGER.info("{}", body.getBody());
+		log.info("{}", body.getBody());
 	}
 	
 	@Test
@@ -104,7 +103,7 @@ public class OAuth2Test {
 			),
 			1000
 		);
-		LOGGER.info("{}", body);
+		log.info("{}", body);
 	}
 	
 }

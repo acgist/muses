@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.acgist.boot.CostUtils;
 import com.acgist.boot.HTTPUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UserControllerTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerTest.class);
-	
 	@Test
 	public void testGetMemo() throws IOException {
 		final String response = HTTPUtils.get(
@@ -23,7 +22,7 @@ public class UserControllerTest {
 			Map.of("current-user", "{\"name\":\"acgist\"}"),
 			10000
 		);
-		LOGGER.info("响应：{}", response);
+		log.info("响应：{}", response);
 	}
 	
 	@Test
@@ -35,7 +34,7 @@ public class UserControllerTest {
 			Map.of("current-user", "{\"name\":\"acgist\"}"),
 			10000
 		);
-		LOGGER.info("响应：{}", response);
+		log.info("响应：{}", response);
 	}
 	
 	@Test

@@ -5,13 +5,13 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.acgist.gateway.model.entity.GatewayEntity;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 发送通知
@@ -19,10 +19,9 @@ import com.acgist.gateway.model.entity.GatewayEntity;
  * @author acgist
  *
  */
+@Slf4j
 @Service
 public class NotifyService {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(NotifyService.class);
 	
 	private List<Notify> notifies;
 
@@ -35,7 +34,7 @@ public class NotifyService {
 			.filter(Notify::enable)
 			.sorted()
 			.collect(Collectors.toList());
-		this.notifies.forEach(notify -> LOGGER.info("通知类型：{}", notify.name()));
+		this.notifies.forEach(notify -> log.info("通知类型：{}", notify.name()));
 	}
 	
 	/**
@@ -51,7 +50,7 @@ public class NotifyService {
 			.findFirst().ifPresentOrElse(notify -> {
 				notify.execute(gateway);
 			}, () -> {
-				LOGGER.warn("没有匹配通知类型：{}", gateway);
+				log.warn("没有匹配通知类型：{}", gateway);
 			});
 	}
 	

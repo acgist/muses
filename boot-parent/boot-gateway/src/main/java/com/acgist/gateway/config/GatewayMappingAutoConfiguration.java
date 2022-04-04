@@ -3,8 +3,6 @@ package com.acgist.gateway.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,17 +10,18 @@ import org.springframework.context.annotation.Configuration;
 
 import com.acgist.gateway.service.impl.GatewayMappingService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 网关映射
  * 
  * @author acgist
  */
+@Slf4j
 @Configuration
 @ConfigurationProperties(prefix = "gateway")
 public class GatewayMappingAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GatewayMappingAutoConfiguration.class);
-	
 	/**
 	 * 网关映射
 	 */
@@ -34,7 +33,7 @@ public class GatewayMappingAutoConfiguration {
 	
 	public void setMapping(List<GatewayMapping> mapping) {
 		this.mapping = mapping;
-		this.mapping.forEach(value -> LOGGER.info("网关映射：{}", value));
+		this.mapping.forEach(value -> log.info("网关映射：{}", value));
 	}
 	
 	@Bean

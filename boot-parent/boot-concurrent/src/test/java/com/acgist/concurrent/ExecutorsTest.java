@@ -3,15 +3,14 @@ package com.acgist.concurrent;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.acgist.concurrent.Executor.RollbackType;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ExecutorsTest {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ExecutorsTest.class);
-
 	@Test
 	public void testExecutor() {
 //		final SIExecutor siExecutor = new SIExecutor(RollbackType.ALL);
@@ -41,7 +40,7 @@ public class ExecutorsTest {
 
 		@Override
 		public Integer doExecute() {
-			LOGGER.info("执行任务：{}", this);
+			log.info("执行任务：{}", this);
 			final Integer value = Integer.valueOf("100");
 //			final Integer value = Integer.valueOf("AAA");
 			this.success = true;
@@ -50,7 +49,7 @@ public class ExecutorsTest {
 
 		@Override
 		public boolean doRollback() {
-			LOGGER.info("回滚任务：{}", this);
+			log.info("回滚任务：{}", this);
 			return true;
 		}
 		
@@ -64,7 +63,7 @@ public class ExecutorsTest {
 		
 		@Override
 		public String doExecute() {
-			LOGGER.info("执行任务：{}", this);
+			log.info("执行任务：{}", this);
 //			final String value = String.valueOf(100 / 0);
 			final String value = String.valueOf(100 / 1);
 			this.success = true;
@@ -73,7 +72,7 @@ public class ExecutorsTest {
 		
 		@Override
 		public boolean doRollback() {
-			LOGGER.info("回滚任务：{}", this);
+			log.info("回滚任务：{}", this);
 			return true;
 		}
 		

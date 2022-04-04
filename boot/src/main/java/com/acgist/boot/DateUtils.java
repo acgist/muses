@@ -11,22 +11,20 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.acgist.boot.config.FormatStyle.DateStyle;
 import com.acgist.boot.config.FormatStyle.DateTimeStyle;
 import com.acgist.boot.config.FormatStyle.TimeStyle;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 日期工具
  * 
  * @author acgist
  */
+@Slf4j
 public final class DateUtils {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
-
 	private DateUtils() {
 	}
 	
@@ -71,7 +69,7 @@ public final class DateUtils {
 			final SimpleDateFormat formatter = new SimpleDateFormat(format);
 			return formatter.parse(value);
 		} catch (ParseException e) {
-			LOGGER.error("日期转换异常", e);
+			log.error("日期转换异常", e);
 		}
 		return null;
 	}

@@ -119,6 +119,10 @@ system.shutdown.enable=true
 system.shutdown.gracefully=30
 # 缓存前缀
 system.cache.prefix=cache::
+# 登陆失败最大次数
+system.fail.count=5
+# 登陆失败锁定时长：秒
+system.fail.duration=1800
 ```
 
 ## Maven配置

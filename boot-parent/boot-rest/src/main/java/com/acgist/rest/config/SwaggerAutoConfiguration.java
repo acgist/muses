@@ -1,7 +1,5 @@
 package com.acgist.rest.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +12,7 @@ import com.acgist.boot.StringUtils;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.OpenAPI;
+import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -29,6 +28,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * 
  * @author acgist
  */
+@Slf4j
 @Profile("dev")
 // 如果没有手动启动MVC报错
 @EnableWebMvc
@@ -38,8 +38,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 //@ConditionalOnProperty(value = "spring.profiles.active", matchIfMissing = false, havingValue = "dev")
 public class SwaggerAutoConfiguration {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SwaggerAutoConfiguration.class);
-
 	@Value("${system.name:muses}")
 	private String systemName;
 	@Value("${system.version:1.0.0}")
@@ -49,7 +47,7 @@ public class SwaggerAutoConfiguration {
 	
 	@Bean
 	public Docket createRestApi() {
-		LOGGER.info("配置Swagger文档");
+		log.info("配置Swagger文档");
 		return this.buildDocket("Muses", "/**");
 	}
 	
