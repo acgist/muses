@@ -55,7 +55,7 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "Jj2btQNaf-MCqLY0-Gjd-EAi-b8wOSu0bGBfHUkqRZiEdD1DL3eaXoK80ufeNwc4EEw1Ko-Wywft3wg-Hu6Kto19Ux3v-6qsRxR-U3PjjEt8dwW1v056tZA8erp6GjlG");
+		params.add("code", "lEtrLw3-EvlEM2Q9Ebu5PTfOE_Q6e-s5BxvXA2TEi2z3PoTOOFgCL0Hvs9TTQLF2Z0HiYl0NVyI79APB4VDSJfYHb-qzAGBT_TgqLzMo1yJmr0fGS198HrSCKmbNBUWl");
 		params.add("grant_type", "authorization_code");
 		// 如果没有指定redirect_uri可以填写也可以不填写
 //		params.add("redirect_uri", "https://www.acgist.com");
@@ -85,9 +85,22 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQ5MDc2ODk4LCJzY29wZSI6WyJhbGwiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0Ojk5OTkiLCJleHAiOjE2NDkwODQwOTgsImlhdCI6MTY0OTA3Njg5OH0.cEWJ8u4xUO80qojev6y91W0AXm6PgJeeQUBe0TTph4BPFz7ofrPwL8HEcLPFvYAC-Af6LHuVBF2P8E3md2qBevSlubUti3XoYj6SebzJgsI-f3uXHUePx0Vdh8xbZykwA7x_qwfte7-yB7DczQ3D-eTdzYcAF5MrKq2YTVtTdg4MzpEb7ZGHXErCQht_vJidJld7S14By9pPPXTupr7YPp-t1joDusk2IEEYQhR6cJeZMCeEG4BHRHQd9-ugWLJ59cfuZh07jHfA0Gqq1KN_J73o4VYVqTrHgzAP7koaNiiKxee63WYHRE5QsgbrilJpGk6yNvGAwDh33r_-CPnyJQ");
+		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQ5MDgwNjk2LCJzY29wZSI6WyJhbGwiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0Ojk5OTkiLCJleHAiOjE2NDkwODc4OTYsImlhdCI6MTY0OTA4MDY5Nn0.pA1CwjZGh9pVWf4bX1WVvAfdYpzD0BOXYbC40sNJDHTQ2cffd6jEZcT0s-H0crkO5K4hFTM1YYYbyfaydzQ3uRSzkBnEaQ7SYyabMLGSvCDr6k_6dDZX_NSH-KuUcasuo_NqEwkU3B2-F4jEXnSa_qAIXWHqW9yPznzz-GfPOQt8__BwRqvceIbkH6Uvo1q3JYaJVMzD510tEOSiMZHftqjwIB2Kf8aWS2xK6ZA5YCm6Tg23gIvqpUawuWQJTwP0a3qdpD8ZtuQpFftj1I0ugA_jJfoj_YM2Yp5Jrg2wfs2KZY5-g3_SyF0pEE-o8KIi89e5QTMqdF3jcKucZPmKsw");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/introspect", requestEntity, String.class);
+		log.info("{}", body.getBody());
+	}
+	
+	@Test
+	public void testRevoke() {
+		final RestTemplate restTemplate = new RestTemplate();
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
+		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQ5MDgwNjk2LCJzY29wZSI6WyJhbGwiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0Ojk5OTkiLCJleHAiOjE2NDkwODc4OTYsImlhdCI6MTY0OTA4MDY5Nn0.pA1CwjZGh9pVWf4bX1WVvAfdYpzD0BOXYbC40sNJDHTQ2cffd6jEZcT0s-H0crkO5K4hFTM1YYYbyfaydzQ3uRSzkBnEaQ7SYyabMLGSvCDr6k_6dDZX_NSH-KuUcasuo_NqEwkU3B2-F4jEXnSa_qAIXWHqW9yPznzz-GfPOQt8__BwRqvceIbkH6Uvo1q3JYaJVMzD510tEOSiMZHftqjwIB2Kf8aWS2xK6ZA5YCm6Tg23gIvqpUawuWQJTwP0a3qdpD8ZtuQpFftj1I0ugA_jJfoj_YM2Yp5Jrg2wfs2KZY5-g3_SyF0pEE-o8KIi89e5QTMqdF3jcKucZPmKsw");
+		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/revoke", requestEntity, String.class);
 		log.info("{}", body.getBody());
 	}
 	

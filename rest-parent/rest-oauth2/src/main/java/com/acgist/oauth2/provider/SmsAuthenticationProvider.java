@@ -8,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.acgist.boot.StringUtils;
+import com.acgist.oauth2.service.SmsService;
 import com.acgist.oauth2.token.SmsToken;
 
 /**
@@ -19,6 +19,8 @@ import com.acgist.oauth2.token.SmsToken;
 public class SmsAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
+	private SmsService smsService;
+	@Autowired
 	private UserDetailsService userDetailsService;
 	
 	@Override
@@ -26,8 +28,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
 		final SmsToken token = (SmsToken) authentication;
 		final String mobile = (String) token.getPrincipal();
 		final String smsCode = (String) token.getCredentials();
-		if(StringUtils.isEmpty(smsCode) || smsCode.length() != 6) {
-			// TODO：自己实现验证逻辑
+		if(!this.smsService.verify(mobile, smsCode)) {
 			throw new AuthenticationServiceException("短信验证码错误");
 		}
 		final UserDetails user = this.userDetailsService.loadUserByUsername(mobile);

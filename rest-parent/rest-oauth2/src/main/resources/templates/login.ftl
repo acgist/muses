@@ -22,7 +22,7 @@
 			</#if>
 			<p>
 				<label for="type" class="sr-only">登陆方式</label>
-				<select id="type" name="type" class="form-control" onChange="change()">
+				<select id="type" name="type" class="form-control" onchange="change()">
 					<option value="sms">短信</option>
 					<option value="password" selected="selected">密码</option>
 				</select>
@@ -38,16 +38,21 @@
 			<p>
 				<label for="code" class="sr-only">图形验证码</label>
 				<input type="text" id="code" name="code" class="form-control" placeholder="图形验证码" />
-				<img id="image" class="image" alt="图形验证码" src="/code.jpeg" />
+				<img id="image" class="image" alt="图形验证码" src="/oauth2/code.jpg" />
 			</p>
 			<p>
 				<label for="smsCode" class="sr-only">短信验证码</label>
-				<input type="text" id="smsCode" name="smsCode" class="form-control" placeholder="短信验证码" />
+				<input type="text" id="smsCode" name="smsCode" class="form-control" placeholder="短信验证码" onfocus="sms()" />
 			</p>
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
 		</form>
 		<script type="text/javascript">
+		function sms() {
+			var ajax = new XMLHttpRequest();
+			ajax.open('get', '/oauth2/code.sms?mobile=' + document.getElementById('username').value);
+			ajax.send();
+		}
 		function change() {
 			const type = document.getElementById("type").value;
 			console.log(type)

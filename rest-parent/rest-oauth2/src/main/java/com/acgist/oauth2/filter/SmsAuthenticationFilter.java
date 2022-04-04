@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.acgist.oauth2.service.SmsService;
 import com.acgist.oauth2.token.SmsToken;
 
 /**
@@ -33,7 +34,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 		final String mobile = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
 		final String smsCode = request.getParameter("smsCode");
-		if(StringUtils.isEmpty(smsCode) || smsCode.length() != 6) {
+		if(StringUtils.isEmpty(smsCode) || smsCode.length() != SmsService.SMS_CODE_LENGTH) {
 			throw new AuthenticationServiceException("短信验证码错误");
 		}
 		final SmsToken smsToken = new SmsToken(mobile, smsCode);

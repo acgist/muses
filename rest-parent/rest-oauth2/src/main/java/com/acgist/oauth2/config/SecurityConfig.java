@@ -33,6 +33,8 @@ import com.acgist.oauth2.filter.CodeAuthenticationFilter;
 import com.acgist.oauth2.filter.FailCountAuthenticationFilter;
 import com.acgist.oauth2.filter.SmsAuthenticationFilter;
 import com.acgist.oauth2.provider.SmsAuthenticationProvider;
+import com.acgist.oauth2.service.SmsService;
+import com.acgist.oauth2.service.impl.SmsServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,14 +78,16 @@ public class SecurityConfig {
 		// 图形验证码过滤器
 		final CodeAuthenticationFilter codeAuthenticationFilter = new CodeAuthenticationFilter();
 		codeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-		// 短信验证码过v领取
+		// 短信验证码过滤器
 		final SmsAuthenticationFilter smsAuthenticationFilter = new SmsAuthenticationFilter();
 		smsAuthenticationFilter.setAuthenticationManager(providerManager);
 		smsAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+		smsAuthenticationFilter.afterPropertiesSet();
 		security
 			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
 			.and()
-			.authorizeRequests().antMatchers(HttpMethod.GET, "/code", "/login", "/code.jpeg").permitAll()
+			.authorizeRequests()
+			.antMatchers(HttpMethod.GET, "/login").permitAll()
 //			.anyRequest().permitAll()
 			.anyRequest().authenticated()
 			.and()
@@ -91,6 +95,8 @@ public class SecurityConfig {
 //			.userDetailsService(this.userDetailsService)
 			.formLogin()
 			.loginPage("/login")
+			// 如果没有设置默认使用登陆页面：POST
+//			.loginProcessingUrl("/login")
 			.failureHandler(authenticationFailureHandler)
 			.successHandler(authenticationSuccessHandler)
 			.and()
@@ -130,6 +136,12 @@ public class SecurityConfig {
 		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder);
 		daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
 		return daoAuthenticationProvider;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public SmsService smsService() {
+		return new SmsServiceImpl();
 	}
 	
 	/**
