@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,7 +103,6 @@ public class AuthorizationServerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-		// TODO：密码模式
 		final TokenSettings tokenSettings = this.tokenSettings();
 		final List<RegisteredClient> clients = new ArrayList<>();
 		this.oAuth2Config.getClients().forEach((name, secret) -> {
@@ -113,7 +113,7 @@ public class AuthorizationServerConfig {
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.redirectUri(this.oAuth2Config.getRedirectUri())
+				.redirectUri(this.redirectUrl(name))
 				.tokenSettings(tokenSettings)
 				.scope("all")
 				.build();
@@ -182,4 +182,17 @@ public class AuthorizationServerConfig {
 			.build();
 	}
 
+	/**
+	 * @param name 客户端名称
+	 * 
+	 * @return 重定向地址
+	 */
+	private String redirectUrl(String name) {
+		final Map<String, String> redirectUris = this.oAuth2Config.getRedirectUris();
+		if(redirectUris == null) {
+			return this.oAuth2Config.getRedirectUri();
+		}
+		return redirectUris.getOrDefault(name, this.oAuth2Config.getRedirectUri());
+	}
+	
 }

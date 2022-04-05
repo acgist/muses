@@ -22,6 +22,10 @@ public class OAuth2Config {
 	 */
 	private Map<String, String> clients;
 	/**
+	 * 跳转地址
+	 */
+	private Map<String, String> redirectUris;
+	/**
 	 * Code刷新时间
 	 */
 	private int code;
