@@ -101,6 +101,7 @@ public final class HTTPUtils {
 //			.setProxy(null)
 //			.setRetryHandler(null)
 			.setDefaultHeaders(headers)
+//			.setRedirectStrategy(LaxRedirectStrategy.INSTANCE)
 //			.setRedirectStrategy(DefaultRedirectStrategy.INSTANCE)
 //			.setKeepAliveStrategy(null)
 			.setConnectionManager(connectionManager)

@@ -7,14 +7,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * 短信验证码Token
+ * 密码认证Token：认证完成直接返回Code
+ * 
+ * 请求跳转参数放到details
  * 
  * @author acgist
  */
-public class SmsToken extends AbstractAuthenticationToken {
+public class AuthorizeToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * 帐号信息：用户名称、用户信息
 	 */
@@ -23,21 +25,21 @@ public class SmsToken extends AbstractAuthenticationToken {
 	 * 登陆凭证：密码、验证码等等
 	 */
 	private Object credentials;
-
-	public SmsToken(String mobile, String smsCode) {
+	
+	public AuthorizeToken(String username, String password) {
 		super(null);
-		this.principal = mobile;
-		this.credentials = smsCode;
+		this.principal = username;
+		this.credentials = password;
 		super.setAuthenticated(false);
 	}
 
-	public SmsToken(UserDetails user, String smsCode, Collection<? extends GrantedAuthority> authorities) {
+	public AuthorizeToken(UserDetails user, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = user;
-		this.credentials = smsCode;
+		this.credentials = password;
 		super.setAuthenticated(true);
 	}
-
+	
 	@Override
 	public Object getPrincipal() {
 		return this.principal;
@@ -47,5 +49,5 @@ public class SmsToken extends AbstractAuthenticationToken {
 	public Object getCredentials() {
 		return this.credentials;
 	}
-
+	
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -14,6 +15,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.acgist.oauth2.config.LoginType;
 import com.acgist.oauth2.service.SmsService;
 import com.acgist.oauth2.token.SmsToken;
 
@@ -24,7 +26,10 @@ import com.acgist.oauth2.token.SmsToken;
  */
 public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/sms", "POST");
+	/**
+	 * 地址匹配
+	 */
+	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/sms", HttpMethod.POST.name());
 	
 	public SmsAuthenticationFilter() {
 		super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
@@ -32,8 +37,12 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+		LoginType.set(LoginType.SMS);
 		final String mobile = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
 		final String smsCode = request.getParameter("smsCode");
+		if(StringUtils.isEmpty(mobile)) {
+			throw new AuthenticationServiceException("手机号码错误");
+		}
 		if(StringUtils.isEmpty(smsCode) || smsCode.length() != SmsService.SMS_CODE_LENGTH) {
 			throw new AuthenticationServiceException("短信验证码错误");
 		}
@@ -42,6 +51,9 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		return this.getAuthenticationManager().authenticate(smsToken);
 	}
 
+	/**
+	 * 设置请求附加信息
+	 */
 	protected void setDetails(HttpServletRequest request, SmsToken smsToken) {
 		smsToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
 	}

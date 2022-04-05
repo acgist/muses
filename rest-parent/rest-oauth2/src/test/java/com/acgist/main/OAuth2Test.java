@@ -38,12 +38,11 @@ public class OAuth2Test {
 	@Test
 	public void testCode() {
 		final String code = HTTPUtils.get(
-			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state",
+			"http://localhost:9999/login/token?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&username=root&password=123456",
+//			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state",
 //			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&redirect_uri=https://www.acgist.com",
-			null,
-			null,
 			1000
-		);
+			);
 		log.info(code);
 	}
 	
@@ -55,7 +54,7 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "lEtrLw3-EvlEM2Q9Ebu5PTfOE_Q6e-s5BxvXA2TEi2z3PoTOOFgCL0Hvs9TTQLF2Z0HiYl0NVyI79APB4VDSJfYHb-qzAGBT_TgqLzMo1yJmr0fGS198HrSCKmbNBUWl");
+		params.add("code", "a9-kcs--_xZCpmfSk1QHir3xw93fkbcyfi1rLRbM9l5hJi5357eAwX8vGlivJHxHAKoXwwAmSZsra2atHegNFcQGcrFGVzJTtd92uiFn80g7FMsamRGIq3zKBw7FGdQx");
 		params.add("grant_type", "authorization_code");
 		// 如果没有指定redirect_uri可以填写也可以不填写
 //		params.add("redirect_uri", "https://www.acgist.com");
@@ -85,7 +84,7 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQ5MDgwNjk2LCJzY29wZSI6WyJhbGwiXSwiaXNzIjoiaHR0cDpcL1wvbG9jYWxob3N0Ojk5OTkiLCJleHAiOjE2NDkwODc4OTYsImlhdCI6MTY0OTA4MDY5Nn0.pA1CwjZGh9pVWf4bX1WVvAfdYpzD0BOXYbC40sNJDHTQ2cffd6jEZcT0s-H0crkO5K4hFTM1YYYbyfaydzQ3uRSzkBnEaQ7SYyabMLGSvCDr6k_6dDZX_NSH-KuUcasuo_NqEwkU3B2-F4jEXnSa_qAIXWHqW9yPznzz-GfPOQt8__BwRqvceIbkH6Uvo1q3JYaJVMzD510tEOSiMZHftqjwIB2Kf8aWS2xK6ZA5YCm6Tg23gIvqpUawuWQJTwP0a3qdpD8ZtuQpFftj1I0ugA_jJfoj_YM2Yp5Jrg2wfs2KZY5-g3_SyF0pEE-o8KIi89e5QTMqdF3jcKucZPmKsw");
+		params.add("token", "eyJraWQiOiI2NzE5MTg1NzYiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJyb290IiwiYXVkIjoid2ViIiwibmJmIjoxNjQ5MTIwNDEyLCJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6OTk5OSIsImV4cCI6MTY0OTEyNzYxMiwiaWF0IjoxNjQ5MTIwNDEyfQ.ltQPiXI0BLcn0crn6sGXBANzaXX3-D48wkxHHTeErHWU5e0vRsdzOFCipT3XPgW0pJE0kL0Zb_mK35umAXWcotUrHxxqgXrQiqhLfsY-IHRJec-V42gEuQdo_h5_-AMlFzrVK0uv6tO68FYsZt8snwUAzsKnXmQYhReG_IFGee0ilXL3hYXSUnYeFIVmYOkEWK8EFkDdSMCDAO0KbVL_xywEnK6zBEAUWsLg4pTACe4N_XbyyFknYEZzPG13_0WLAin4yS91IMXASb-toPbvPc8dMVZiloyouSnBOYXQkTH9hhgucsHVn-d7ZQ95MWu8ngKiMRD--H5qZmX4nvLU3w");
 		final HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
 		final ResponseEntity<String> body = restTemplate.postForEntity("http://localhost:9999/oauth2/introspect", requestEntity, String.class);
 		log.info("{}", body.getBody());
