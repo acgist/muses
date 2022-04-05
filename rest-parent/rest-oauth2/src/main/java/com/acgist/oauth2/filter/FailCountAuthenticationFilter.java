@@ -34,12 +34,12 @@ public class FailCountAuthenticationFilter extends OncePerRequestFilter {
 	/**
 	 * 最大次数
 	 */
-	@Value("${system.fail.count:5}")
+	@Value("${system.login.fail.count:5}")
 	private int count;
 	/**
 	 * 锁定时长：秒
 	 */
-	@Value("${system.fail.duration:1800}")
+	@Value("${system.login.fail.duration:1800}")
 	private int duration;
 	
 	@Autowired
