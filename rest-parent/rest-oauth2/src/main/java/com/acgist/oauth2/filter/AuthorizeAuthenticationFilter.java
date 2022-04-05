@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,6 +20,10 @@ import com.acgist.oauth2.token.AuthorizeToken;
 /**
  * 密码认证过滤器
  * 
+ * 如果使用HttpClient需要注意重定向问题：
+ * GET：正常重定向
+ * POST：需要配置重定向策略
+ * 
  * @author acgist
  */
 public class AuthorizeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -28,7 +31,7 @@ public class AuthorizeAuthenticationFilter extends AbstractAuthenticationProcess
 	/**
 	 * 匹配地址
 	 */
-	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/token", HttpMethod.GET.name());
+	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/token");
 	
 	public AuthorizeAuthenticationFilter() {
 		super(DEFAULT_ANT_PATH_REQUEST_MATCHER);

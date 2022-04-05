@@ -38,11 +38,13 @@ public class OAuth2Test {
 	@Test
 	public void testCode() {
 		final String code = HTTPUtils.get(
+			// POST需要设置重定向测量
 			"http://localhost:9999/login/token?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&username=root&password=123456",
 //			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state",
 //			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&redirect_uri=https://www.acgist.com",
+//			Map.of()
 			1000
-			);
+		);
 		log.info(code);
 	}
 	
