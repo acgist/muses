@@ -2,7 +2,6 @@ package com.acgist.www.transfer;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.WeakHashMap;
 
 import com.acgist.boot.SpringUtils;
@@ -20,7 +19,7 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
  * 
  * @author acgist
  */
-public class TransferSerializer extends JsonSerializer<String> implements ContextualSerializer {
+public class TransferSerializer extends JsonSerializer<Object> implements ContextualSerializer {
 	
 	/**
 	 * 枚举分组
@@ -33,7 +32,7 @@ public class TransferSerializer extends JsonSerializer<String> implements Contex
 	/**
 	 * 弱引用缓存
 	 */
-	private final Map<String, Map<String, String>> cache = new WeakHashMap<>();
+	private static final Map<String, Map<String, String>> CACHE = new WeakHashMap<>();
 	
 	public TransferSerializer() {
 		this(null, null);
@@ -45,39 +44,38 @@ public class TransferSerializer extends JsonSerializer<String> implements Contex
 	}
 
 	@Override
-	public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
+	public JsonSerializer<Object> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
 		if(property == null) {
 			return provider.findNullValueSerializer(property);
 		}
-		// 支持String类型
-		if(Objects.equals(property.getType().getRawClass(), String.class)) {
-			Transfer transfer = property.getAnnotation(Transfer.class);
-			if(transfer == null) {
-				transfer = property.getContextAnnotation(Transfer.class);
-			}
-			if(transfer != null) {
-				return new TransferSerializer(transfer.group(), SpringUtils.getBean(TransferService.class));
-			}
+		// 支持String类型：Objects.equals(property.getType().getRawClass(), String.class)
+		Transfer transfer = property.getAnnotation(Transfer.class);
+		if(transfer == null) {
+			transfer = property.getContextAnnotation(Transfer.class);
+		}
+		if(transfer != null) {
+			return new TransferSerializer(transfer.group(), SpringUtils.getBean(TransferService.class));
 		}
 		return provider.findValueSerializer(property.getType(), property);
 	}
 
 	@Override
-	public void serialize(String value, JsonGenerator generator, SerializerProvider provider) throws IOException {
+	public void serialize(final Object object, JsonGenerator generator, SerializerProvider provider) throws IOException {
+		final String value = String.valueOf(object);
 		// 原始字段输出
 		generator.writeString(value);
 		// 翻译字段输出
 		final String fieldName = generator.getOutputContext().getCurrentName() + "Value";
 		String fieldValue = value;
-		synchronized (this.cache) {
-			Map<String, String> transferMap = this.cache.get(this.group);
+		synchronized (CACHE) {
+			Map<String, String> transferMap = CACHE.get(this.group);
 			if(transferMap != null) {
 				fieldValue = transferMap.getOrDefault(value, value);
 			} else if(this.transferService != null) {
 				final Map<String, String> map = this.transferService.select(this.group);
 				transferMap = map == null ? Map.of() : map;
 				// 注意：必须new一个String
-				this.cache.put(new String(this.group), transferMap);
+				CACHE.put(new String(this.group), transferMap);
 				fieldValue = transferMap.getOrDefault(value, value);
 			}
 		}
