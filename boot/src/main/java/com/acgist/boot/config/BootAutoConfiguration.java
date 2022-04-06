@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -22,6 +23,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.acgist.boot.FileUtils;
 import com.acgist.boot.JSONUtils;
+import com.acgist.boot.SpringUtils;
 import com.acgist.boot.listener.ShutdownListener;
 import com.acgist.boot.service.impl.FreemarkerService;
 import com.acgist.boot.service.impl.IdService;
@@ -98,8 +100,10 @@ public class BootAutoConfiguration {
 	private String serializerType;
 	
 	@Autowired
+	private ApplicationContext context;
+	@Autowired
 	private NacosConfigManager nacosConfigManager;
-
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public MusesConfig musesConfig() {
@@ -167,6 +171,7 @@ public class BootAutoConfiguration {
 
 	@PostConstruct
 	public void init() {
+		SpringUtils.setContext(this.context);
 		final var runtime = Runtime.getRuntime();
 		final var bean = ManagementFactory.getRuntimeMXBean();
 		final String freeMemory = FileUtils.formatSize(runtime.freeMemory());
