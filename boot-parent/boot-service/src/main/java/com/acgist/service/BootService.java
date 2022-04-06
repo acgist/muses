@@ -1,6 +1,7 @@
 package com.acgist.service;
 
 import java.util.List;
+import java.util.function.Function;
 
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
@@ -56,5 +57,22 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * @return 分页
 	 */
 	Page<T> page(FilterQuery filterQuery, Page<T> page);
+	
+	/**
+	 * Entity分页结果转为Vo分页结果
+	 * 
+	 * @param <E> Entity类型
+	 * @param <V> Vo类型
+	 * 
+	 * @param page Entity分页结果
+	 * @param converter 转换器（推荐使用Mapstruct）
+	 * 
+	 * @return Vo分页结果
+	 */
+	default <E, V> Page<V> toVo(Page<E> page, Function<List<E>, List<V>> converter) {
+		final Page<V> voPage = new Page<V>(page.getCurrent(), page.getSize(), page.getTotal());
+		voPage.setRecords(converter.apply(page.getRecords()));
+		return voPage;
+	}
 	
 }
