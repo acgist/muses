@@ -5,6 +5,7 @@ import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.entity.StringEntity;
@@ -43,6 +45,9 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.MessageCodeException;
@@ -68,6 +73,7 @@ public final class HTTPUtils {
 		final List<Header> headers = new ArrayList<>();
 		headers.add(new BasicHeader(HttpHeaders.USER_AGENT, "ACGIST/1.0.0 +(https://www.acgist.com)"));
 		headers.add(new BasicHeader(HttpHeaders.CONTENT_TYPE, MusesConfig.APPLICATION_JSON_UTF8));
+		// SSL只能这里配置，后面HTTPClient配置无效
 		final Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
 			.register("http", PlainConnectionSocketFactory.getSocketFactory())
 			.register("https", createSSLConnSocketFactory())
@@ -391,6 +397,19 @@ public final class HTTPUtils {
 			}
 		}
 	}
+	
+	/**
+	 * 创建RestTemplate
+	 * 
+	 * @return RestTemplate
+	 */
+	public static final RestTemplate buildRestTemplate() {
+		final HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setHttpClient(CLIENT);
+		final BufferingClientHttpRequestFactory bufferingRequestFactory = new BufferingClientHttpRequestFactory(requestFactory);
+		final RestTemplate restTemplate = new RestTemplate(bufferingRequestFactory);
+		return restTemplate;
+	}
 
 	/**
 	 * 创建SSL工厂
@@ -400,17 +419,23 @@ public final class HTTPUtils {
 	private static final SSLConnectionSocketFactory createSSLConnSocketFactory() {
 		SSLContext sslContext = null;
 		SSLConnectionSocketFactory sslFactory = null;
+		final TrustStrategy trustStrategy = new TrustStrategy() {
+			// 信任所有证书
+			public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+				return true;
+			}
+		};
 		try {
-			sslContext = SSLContextBuilder.create().setProtocol("TLSv1.2").loadTrustMaterial(null, new TrustStrategy() {
-				// 信任所有证书
-				public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-					return true;
-				}
-			}).build();
+			sslContext = SSLContextBuilder
+				.create()
+				.setProtocol("TLSv1.2")
+				.setSecureRandom(new SecureRandom())
+				.loadTrustMaterial(null, trustStrategy)
+				.build();
 		} catch (KeyManagementException | NoSuchAlgorithmException | KeyStoreException e) {
 			log.error("创建SSL工程异常", e);
 		}
-		sslFactory = new SSLConnectionSocketFactory(sslContext);
+		sslFactory = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());
 //		sslFactory = new SSLConnectionSocketFactory(sslContext, new HostnameVerifier() {
 //		sslFactory = new SSLConnectionSocketFactory(sslContext, new String[] {"TLSv1.2", "TLSv1.3"}, new String[] {
 //			"TLS_AES_128_GCM_SHA256",

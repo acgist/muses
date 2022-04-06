@@ -30,7 +30,7 @@ public class OAuth2Test {
 	
 	@Test
 	public void testTokenKey() {
-		final RestTemplate restTemplate = new RestTemplate();
+		final RestTemplate restTemplate = HTTPUtils.buildRestTemplate();
 		final ResponseEntity<String> body = restTemplate.getForEntity(OAUTH2_URL + "/oauth2/jwks", String.class);
 		log.info("{}", body.getBody());
 	}
@@ -51,7 +51,7 @@ public class OAuth2Test {
 	@Test
 	public void getTokenAuthorizationCode() {
 		// 通过code获取token
-		final RestTemplate restTemplate = new RestTemplate();
+		final RestTemplate restTemplate = HTTPUtils.buildRestTemplate();
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
@@ -67,7 +67,7 @@ public class OAuth2Test {
 	
 	@Test
 	public void testRefreshToken() {
-		final RestTemplate restTemplate = new RestTemplate();
+		final RestTemplate restTemplate = HTTPUtils.buildRestTemplate();
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
@@ -81,7 +81,7 @@ public class OAuth2Test {
 	
 	@Test
 	public void testIntrospect() {
-		final RestTemplate restTemplate = new RestTemplate();
+		final RestTemplate restTemplate = HTTPUtils.buildRestTemplate();
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
@@ -94,7 +94,7 @@ public class OAuth2Test {
 	
 	@Test
 	public void testRevoke() {
-		final RestTemplate restTemplate = new RestTemplate();
+		final RestTemplate restTemplate = HTTPUtils.buildRestTemplate();
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
