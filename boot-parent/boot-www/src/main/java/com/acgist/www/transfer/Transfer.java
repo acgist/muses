@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@JsonSerialize(using = TransferSerializer.class)
+@JsonSerialize(using = TransferSerializer.class, nullsUsing = TransferSerializer.class)
 @JacksonAnnotationsInside
 public @interface Transfer {
 

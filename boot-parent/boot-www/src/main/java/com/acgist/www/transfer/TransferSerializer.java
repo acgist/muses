@@ -61,7 +61,7 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 
 	@Override
 	public void serialize(final Object object, JsonGenerator generator, SerializerProvider provider) throws IOException {
-		final String value = String.valueOf(object);
+		final String value = object == null ? null : object.toString();
 		// 原始字段输出
 		generator.writeString(value);
 		// 翻译字段输出
