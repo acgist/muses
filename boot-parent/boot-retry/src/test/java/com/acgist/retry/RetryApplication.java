@@ -20,7 +20,7 @@ public class RetryApplication {
 		
 		@Retryable(value = Exception.class, maxAttempts = 10, backoff = @Backoff(delay = 1000, maxDelay = 5000, multiplier = 2))
 		public void retry() {
-			log.info("{}", 1/0);
+			log.info("{}", 1 / 0);
 		}
 		
 	}

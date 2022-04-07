@@ -2,6 +2,8 @@
 
 基于`SpringCloudAlibaba`技术栈微服务模板项目
 
+> `SpringBoot`配置：[https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
+
 ## 模块
 
 |模块|描述|
