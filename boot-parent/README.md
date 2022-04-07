@@ -17,21 +17,6 @@ Boot模块：各种模块自动配置
 
 ## 更多模块
 
-#### retry
-
-```
-<dependency>
-	<groupId>org.springframework.retry</groupId>
-	<artifactId>spring-retry</artifactId>
-</dependency>
-
-@EnableRetry
-
-@Retryable(value = NumberFormatException.class, maxAttempts = 10, backoff = @Backoff(delay = 1000, maxDelay = 5000, multiplier = 2))
-public void retry() {
-}
-```
-
 #### actuator
 
 ```
@@ -45,14 +30,12 @@ public void retry() {
 
 ```
 <dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-actuator</artifactId>
-</dependency>
-<dependency>
 	<groupId>io.micrometer</groupId>
 	<artifactId>micrometer-registry-prometheus</artifactId>
 </dependency>
 ```
+
+> 需要配合`actuator`
 
 #### sentinel dashboard
 

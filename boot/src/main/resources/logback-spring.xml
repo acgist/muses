@@ -39,7 +39,7 @@
 	</appender>
 
 	<appender name="fileDebug" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${system.path}/debug.${system.name}.log</file>
+		<file>${system.path}/${system.name}.debug.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>${system.history}</maxHistory>
 			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/debug.${system.name}%d{yyyy-MM-dd}.log.gz</fileNamePattern>
@@ -62,7 +62,7 @@
 	</appender>
 
 	<appender name="fileInfo" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${system.path}/info.${system.name}.log</file>
+		<file>${system.path}/${system.name}.info.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>${system.history}</maxHistory>
 			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/info.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
@@ -85,7 +85,7 @@
 	</appender>
 
 	<appender name="fileError" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${system.path}/error.${system.name}.log</file>
+		<file>${system.path}/${system.name}.error.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>${system.history}</maxHistory>
 			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/error.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>

@@ -3,14 +3,19 @@ package com.acgist.config;
 import java.util.Date;
 
 import org.apache.ibatis.reflection.MetaObject;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.acgist.boot.service.impl.IdService;
 import com.acgist.model.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
@@ -21,7 +26,11 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
  * 
  * @author acgist
  */
+@EntityScan("com.acgist.**.entity")
+@MapperScan("com.acgist.**.mapper")
 @Configuration
+@ConditionalOnClass(MybatisPlusAutoConfiguration.class)
+@EnableTransactionManagement
 public class MyBatisAutoConfiguration {
 
 	@Bean

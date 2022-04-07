@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>boot-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>boot-retry</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-retry</name>
+	<description>Retry模块Boot：重试模块</description>
+
+	<properties>
+		<system.maven.module>com.acgist.boot.retry</system.maven.module>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-dev</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
