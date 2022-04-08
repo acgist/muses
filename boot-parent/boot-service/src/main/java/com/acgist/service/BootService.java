@@ -6,6 +6,7 @@ import java.util.function.Function;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
 import com.acgist.model.query.FilterQuery.Filter;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,6 +21,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BootService<T extends BootEntity> extends IService<T> {
 
+	/**
+	 * @return 所有实体
+	 */
+	default List<T> findAll() {
+		return this.list(Wrappers.emptyWrapper());
+	}
 
 	/**
 	 * 列表查询
