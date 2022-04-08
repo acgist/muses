@@ -323,7 +323,15 @@ public class FilterQuery {
 	 * 排序条件
 	 */
 	private List<Sorted> sorted = new ArrayList<>();
-
+	/**
+	 * 每页条数
+	 */
+	private Integer size;
+	/**
+	 * 当前页码
+	 */
+	private Integer current;
+	
 	public static final FilterQuery builder() {
 		return new FilterQuery();
 	}

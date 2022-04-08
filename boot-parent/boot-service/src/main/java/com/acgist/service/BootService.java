@@ -35,7 +35,9 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * 
 	 * @return 列表
 	 */
-	List<T> list(Filter ... filters);
+	default List<T> list(Filter ... filters) {
+		return this.list(List.of(filters));
+	}
 
 	/**
 	 * 列表查询
@@ -44,7 +46,9 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * 
 	 * @return 列表
 	 */
-	List<T> list(List<Filter> filters);
+	default List<T> list(List<Filter> filters) {
+		return this.list(FilterQuery.builder().merge(filters));
+	}
 	
 	/**
 	 * 列表查询
@@ -53,7 +57,23 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * 
 	 * @return 列表
 	 */
-	List<T> list(FilterQuery filterQuery);
+	default List<T> list(FilterQuery filterQuery) {
+		if(filterQuery == null) {
+			return this.getBaseMapper().selectList(Wrappers.emptyWrapper());
+		}
+		return this.getBaseMapper().selectList(filterQuery.build(this.getEntityClass()));
+	}
+	
+	/**
+	 * 分页查询
+	 * 
+	 * @param filterQuery 过滤条件
+	 * 
+	 * @return 分页
+	 */
+	default Page<T> page(FilterQuery filterQuery) {
+		return this.page(filterQuery, new Page<T>(filterQuery.getCurrent(), filterQuery.getSize()));
+	}
 	
 	/**
 	 * 分页查询
@@ -63,7 +83,12 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * 
 	 * @return 分页
 	 */
-	Page<T> page(FilterQuery filterQuery, Page<T> page);
+	default Page<T> page(FilterQuery filterQuery, Page<T> page) {
+		if(filterQuery == null) {
+			return this.getBaseMapper().selectPage(page, Wrappers.emptyWrapper());
+		}
+		return this.getBaseMapper().selectPage(page, filterQuery.build(this.getEntityClass()));
+	}
 	
 	/**
 	 * Entity分页结果转为Vo分页结果
