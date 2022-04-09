@@ -37,6 +37,7 @@ spring:
 
 ```
 # JPA
+
 @EntityListeners(AuditingEntityListener.class)
 
 @CreatedBy
@@ -53,20 +54,31 @@ public AuditorAware<Long> auditorAware() {
 		return id;
 	};
 }
+
+# JPA
+
+@PreUpdate
+@PrePersist
+public void persistent() {
+...
+}
+
 # MyBatisPlus
+
 @Bean
 @ConditionalOnMissingBean
 public MetaObjectHandler metaObjectHandler(@Autowired IdService idService) {
 	return new MetaObjectHandler() {
 		@Override
 		public void insertFill(MetaObject metaObject) {
-			final Date date = new Date();
-			this.setFieldValByName(BootEntity.PROPERTY_CREATE_DATE, date, metaObject);
-			this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, date, metaObject);
+			final LocalDateTime now = LocalDateTime.now();
+			this.setFieldValByName(BootEntity.PROPERTY_CREATE_DATE, now, metaObject);
+			this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, now, metaObject);
 		}
 		@Override
 		public void updateFill(MetaObject metaObject) {
-			this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, new Date(), metaObject);
+			final LocalDateTime now = LocalDateTime.now();
+			this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, now, metaObject);
 		}
 	};
 }

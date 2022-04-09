@@ -1,6 +1,6 @@
 package com.acgist.model.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -44,7 +44,7 @@ public abstract class BootEntity extends ModelCopy {
 	@TableField(value = "create_date", fill = FieldFill.INSERT, updateStrategy = FieldStrategy.NEVER)
 	@JsonFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
 	@DateTimeFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
-	private Date createDate;
+	private LocalDateTime createDate;
 	/**
 	 * 修改时间
 	 */
@@ -52,6 +52,6 @@ public abstract class BootEntity extends ModelCopy {
 	@TableField(value = "modify_date", fill = FieldFill.INSERT_UPDATE)
 	@JsonFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
 	@DateTimeFormat(pattern = FormatStyle.YYYY_MM_DD_HH24_MM_SS)
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 
 }

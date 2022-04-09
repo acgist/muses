@@ -1,6 +1,6 @@
 package com.acgist.model.neo4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.TargetNode;
@@ -31,11 +31,11 @@ public abstract class BootRelationship<T extends BootNode> extends ModelCopy {
 	/**
 	 * 创建时间
 	 */
-	private Date createDate;
+	private LocalDateTime createDate;
 	/**
 	 * 修改时间
 	 */
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 	/**
 	 * 关系节点
 	 */

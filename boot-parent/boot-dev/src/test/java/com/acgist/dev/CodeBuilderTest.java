@@ -48,6 +48,15 @@ public class CodeBuilderTest {
 	private String targetJava = "/java/";
 	// 资源目录
 	private String targetResources = "/resources/";
+	// 类型转换
+	private Map<String, String> typeConverter = Map.of(
+		"Timestamp", "LocalDateTime"
+	);
+	// 类型转换
+	private Map<String, String> typeImporter = Map.of(
+		"BigDecimal", "java.math.BigDecimal",
+		"LocalDateTime", "java.time.LocalDateTime"
+		);
 	// 跳过字段
 //	private String[] skipColumns = new String[] {};
 	private String[] skipColumns = new String[] { "id", "create_date", "modify_date" };
@@ -196,10 +205,12 @@ public class CodeBuilderTest {
 		}
 		map.put("name", tableComment);
 		final List<Column> list = new ArrayList<>();
+		final List<String> typeImport = new ArrayList<>();
 		final ResultSetMetaData tableMetaData = table.getMetaData();
 		final int columnCount = tableMetaData.getColumnCount();
+		map.put("typeImport", typeImport);
 		for (int index = 1; index <= columnCount; index++) {
-		final String name = tableMetaData.getColumnName(index);
+			final String name = tableMetaData.getColumnName(index);
 			// 去掉通用
 			if(Arrays.asList(this.skipColumns).indexOf(name) >= 0) {
 				continue;
@@ -207,9 +218,7 @@ public class CodeBuilderTest {
 			String type = tableMetaData.getColumnClassName(index);
 			type = type.substring(type.lastIndexOf('.') + 1);
 			// 类型转换
-			if("Timestamp".equals(type)) {
-				type = "Date";
-			}
+			type = this.typeConverter.getOrDefault(type, type);
 			// 字段描述
 			String comment = null;
 			final ResultSet column = databaseMetaData.getColumns(null, null, tableName, name);
@@ -225,12 +234,9 @@ public class CodeBuilderTest {
 				.replace('\n', ' ')
 				.replace("\"", "\\\"");
 			// 添加类型
-			if("Date".equals(type)) {
-				map.put("hasDate", true);
-				map.put("hasOtherType", true);
-			} else if("BigDecimal".equals(type)) {
-				map.put("hasBigDecimal", true);
-				map.put("hasOtherType", true);
+			final String typeValue = this.typeImporter.get(type);
+			if(typeValue != null && !typeImport.contains(typeValue)) {
+				typeImport.add(typeValue);
 			}
 			// 字段前缀
 			list.add(new Column(name, type, this.hump(this.removePrefix(name)), comment));

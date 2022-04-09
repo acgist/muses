@@ -1,5 +1,6 @@
 package com.acgist.mysql.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.acgist.boot.JSONUtils;
 import com.acgist.model.query.FilterQuery;
 import com.acgist.mysql.MySQLApplication;
 import com.acgist.user.model.entity.UserEntity;
@@ -25,6 +27,7 @@ public class MyBatisTest {
 		final Page<UserEntity> page = this.userMapper.selectPage(new Page<UserEntity>(0, 10), Wrappers.lambdaQuery());
 		assertNotNull(page);
 		assertFalse(page.getRecords().isEmpty());
+		assertDoesNotThrow(() -> JSONUtils.toJSON(page));
 	}
 	
 	@Test

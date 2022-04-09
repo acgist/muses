@@ -1,6 +1,6 @@
 package com.acgist.model.neo4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.data.neo4j.core.schema.Id;
 
@@ -30,9 +30,9 @@ public abstract class BootNode extends ModelCopy {
 	/**
 	 * 创建时间
 	 */
-	private Date createDate;
+	private LocalDateTime createDate;
 	/**
 	 * 修改时间
 	 */
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 }

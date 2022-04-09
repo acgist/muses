@@ -1,6 +1,6 @@
 package com.acgist.model.es;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 
@@ -30,10 +30,10 @@ public abstract class BootDocument extends ModelCopy {
 	/**
 	 * 创建时间
 	 */
-	private Date createDate;
+	private LocalDateTime createDate;
 	/**
 	 * 修改时间
 	 */
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 	
 }

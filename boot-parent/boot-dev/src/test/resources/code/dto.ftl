@@ -1,12 +1,9 @@
 package ${modulePackage}${module}.model.dto;
-<#if hasOtherType>
+<#if typeImport?has_content>
 
-<#if hasBigDecimal>
-import java.math.BigDecimal;
-</#if>
-<#if hasDate>
-import java.util.Date;
-</#if>
+<#list typeImport as typeValue>
+import ${typeValue};
+</#list>
 </#if>
 
 import com.acgist.boot.model.BootDto;

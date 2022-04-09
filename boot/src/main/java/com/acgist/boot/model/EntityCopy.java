@@ -1,6 +1,6 @@
 package com.acgist.boot.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,10 +25,10 @@ public abstract class EntityCopy extends ModelCopy {
 	/**
 	 * 创建时间
 	 */
-	private Date createDate;
+	private LocalDateTime createDate;
 	/**
 	 * 修改时间
 	 */
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 
 }

@@ -1,6 +1,6 @@
 package com.acgist.config;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
@@ -58,13 +58,14 @@ public class MyBatisAutoConfiguration {
 		return new MetaObjectHandler() {
 			@Override
 			public void insertFill(MetaObject metaObject) {
-				final Date date = new Date();
-				this.setFieldValByName(BootEntity.PROPERTY_CREATE_DATE, date, metaObject);
-				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, date, metaObject);
+				final LocalDateTime now = LocalDateTime.now();
+				this.setFieldValByName(BootEntity.PROPERTY_CREATE_DATE, now, metaObject);
+				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, now, metaObject);
 			}
 			@Override
 			public void updateFill(MetaObject metaObject) {
-				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, new Date(), metaObject);
+				final LocalDateTime now = LocalDateTime.now();
+				this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, now, metaObject);
 			}
 		};
 	}
