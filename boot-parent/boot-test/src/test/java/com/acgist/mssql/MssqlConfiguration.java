@@ -27,28 +27,28 @@ import com.zaxxer.hikari.HikariDataSource;
  * @author acgist
  */
 @Configuration
-@EnableConfigurationProperties(MssqlServiceProperties.class)
+@EnableConfigurationProperties(MssqlProperties.class)
 @ConditionalOnExpression(value = "${acgist.mssql.enabled:true}")
 // 保证默认配置
 @Import({DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, MybatisPlusAutoConfiguration.class})
 // 配置template不用配置factory
 @MapperScan(basePackages = "com.acgist.mssql.mapper", sqlSessionTemplateRef = "mssqlSqlSessionTemplate")
-public class MssqlApplicationConfiguration {
+public class MssqlConfiguration {
 
 	@Resource
-	private MssqlServiceProperties mssqlServiceProperties;
+	private MssqlProperties mssqlProperties;
 
 	@Bean("mssqlDataSource")
 	public DataSource mssqlDataSource() {
 		final HikariDataSource dataSource;
-		if(this.mssqlServiceProperties.getDatasource() == null) {
+		if(this.mssqlProperties.getDatasource() == null) {
 			dataSource = new HikariDataSource();
-			dataSource.setJdbcUrl(this.mssqlServiceProperties.getUrl());
-			dataSource.setDriverClassName(this.mssqlServiceProperties.getDriverClassName());
-			dataSource.setUsername(this.mssqlServiceProperties.getUsername());
-			dataSource.setPassword(this.mssqlServiceProperties.getPassword());
+			dataSource.setJdbcUrl(this.mssqlProperties.getUrl());
+			dataSource.setDriverClassName(this.mssqlProperties.getDriverClassName());
+			dataSource.setUsername(this.mssqlProperties.getUsername());
+			dataSource.setPassword(this.mssqlProperties.getPassword());
 		} else {
-			dataSource = new HikariDataSource(this.mssqlServiceProperties.getDatasource());
+			dataSource = new HikariDataSource(this.mssqlProperties.getDatasource());
 		}
 		return dataSource;
 	}
@@ -67,7 +67,7 @@ public class MssqlApplicationConfiguration {
 	}
 	
     @Bean(name = "mssqlSqlSessionTemplate")
-    public SqlSessionTemplate hyxtSqlSessionTemplate(@Qualifier("mssqlSqlSessionFactory") SqlSessionFactory mssqlSqlSessionFactory) {
+    public SqlSessionTemplate mssqlSqlSessionTemplate(@Qualifier("mssqlSqlSessionFactory") SqlSessionFactory mssqlSqlSessionFactory) {
     	return new SqlSessionTemplate(mssqlSqlSessionFactory);
     }
 

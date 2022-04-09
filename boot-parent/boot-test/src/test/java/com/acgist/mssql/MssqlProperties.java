@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "acgist.mssql")
-public class MssqlServiceProperties {
+public class MssqlProperties {
 
 	private String driverClassName;
 	private String url;
