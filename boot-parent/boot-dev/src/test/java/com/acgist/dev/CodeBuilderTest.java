@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import com.acgist.boot.StringUtils;
-import com.acgist.boot.model.PojoCopy;
+import com.acgist.boot.model.ModelCopy;
 import com.acgist.boot.service.impl.FreemarkerService;
 
 import lombok.Getter;
@@ -111,7 +111,7 @@ public class CodeBuilderTest {
 		// 字段信息
 		map.put("columns", list);
 		log.info("生成代码变量：{}", map);
-		this.buildPojo(map);
+		this.buildModel(map);
 		this.buildDao(map);
 		this.buildService(map);
 		this.buildController(map);
@@ -258,16 +258,25 @@ public class CodeBuilderTest {
 	}
 	
 	/**
-	 * 生成Pojo
+	 * 生成Model
 	 * 
 	 * @param map 参数
 	 * 
 	 * @throws Exception 异常
 	 */
-	public void buildPojo(Map<Object, Object> map) throws Exception {
-		String path = this.modulePackage + map.get("module") + ".model.entity";
+	public void buildModel(Map<Object, Object> map) throws Exception {
+		String path = this.modulePackage + map.get("module") + ".model.vo";
+		path = this.targetJava + path.replace('.', '/');
+		this.freemarkerService.build("vo.ftl", map, this.path + path, map.get("prefix") + "Vo.java");
+		path = this.modulePackage + map.get("module") + ".model.dto";
+		path = this.targetJava + path.replace('.', '/');
+		this.freemarkerService.build("dto.ftl", map, this.path + path, map.get("prefix") + "Dto.java");
+		path = this.modulePackage + map.get("module") + ".model.entity";
 		path = this.targetJava + path.replace('.', '/');
 		this.freemarkerService.build("entity.ftl", map, this.path + path, map.get("prefix") + "Entity.java");
+		path = this.modulePackage + map.get("module") + ".model.mapstruct";
+		path = this.targetJava + path.replace('.', '/');
+		this.freemarkerService.build("mapstruct.ftl", map, this.path + path, map.get("prefix") + "Mapstruct.java");
 	}
 	
 	/**
@@ -322,7 +331,7 @@ public class CodeBuilderTest {
 	 */
 	@Getter
 	@Setter
-	public static class Column extends PojoCopy {
+	public static class Column extends ModelCopy {
 		
 		private static final long serialVersionUID = 1L;
 		

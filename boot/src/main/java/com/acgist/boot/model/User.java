@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public class User extends PojoCopy {
+public class User extends ModelCopy {
 
 	private static final long serialVersionUID = 1L;
 

@@ -14,14 +14,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public abstract class EntityCopy extends PojoCopy {
+public abstract class EntityCopy extends ModelCopy {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * ID
 	 */
-	private String id;
+	private Long id;
 	/**
 	 * 创建时间
 	 */

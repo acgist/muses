@@ -11,7 +11,7 @@ import com.acgist.boot.JSONUtils;
  * 
  * @author acgist
  */
-public abstract class PojoCopy implements Cloneable, Serializable {
+public abstract class ModelCopy implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public abstract class PojoCopy implements Cloneable, Serializable {
 	 * 
 	 * @return this
 	 */
-	public PojoCopy copy(Object object) {
+	public final ModelCopy copy(Object object) {
 		BeanUtils.copyProperties(object, this);
 		return this;
 	}

@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.acgist.boot.config.FormatStyle;
-import com.acgist.boot.model.PojoCopy;
+import com.acgist.boot.model.ModelCopy;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public abstract class BootEntity extends PojoCopy {
+public abstract class BootEntity extends ModelCopy {
 
 	private static final long serialVersionUID = 1L;
 

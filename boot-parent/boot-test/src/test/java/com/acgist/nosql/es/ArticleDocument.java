@@ -1,46 +1,26 @@
 package com.acgist.nosql.es;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.acgist.model.es.BootDocument;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 @Document(indexName = "index_article")
 public class ArticleDocument extends BootDocument {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private Long id;
 	@Field(analyzer = "ik_smart", type = FieldType.Text)
 	private String title;
 	@Field(analyzer = "ik_smart", type = FieldType.Text)
 	private String content;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 }
