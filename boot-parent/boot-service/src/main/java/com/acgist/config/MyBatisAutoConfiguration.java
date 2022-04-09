@@ -26,8 +26,8 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
  * 
  * @author acgist
  */
-@EntityScan("com.acgist.**.entity")
-@MapperScan("com.acgist.**.mapper")
+@MapperScan("com.acgist.**.dao.mapper")
+@EntityScan("com.acgist.**.model.entity")
 @Configuration
 @ConditionalOnClass(MybatisPlusAutoConfiguration.class)
 @EnableTransactionManagement
