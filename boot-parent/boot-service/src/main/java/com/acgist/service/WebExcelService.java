@@ -29,7 +29,7 @@ public interface WebExcelService<T extends BootEntity> extends ExcelService<T> {
 	 * @param response 响应
 	 */
 	default void download(FilterQuery query, HttpServletResponse response) {
-		final Map<String, String> header = this.header();
+		final Map<String, ExcelHeaderValue> header = this.header();
 		this.download(query, header, response);
 	}
 	
@@ -40,7 +40,7 @@ public interface WebExcelService<T extends BootEntity> extends ExcelService<T> {
 	 * @param header 表头
 	 * @param response 响应
 	 */
-	default void download(FilterQuery query, Map<String, String> header, HttpServletResponse response) {
+	default void download(FilterQuery query, Map<String, ExcelHeaderValue> header, HttpServletResponse response) {
 		final List<T> list = this.list(query);
 		try {
 			response.setHeader("Content-Type", "application/vnd.ms-excel");

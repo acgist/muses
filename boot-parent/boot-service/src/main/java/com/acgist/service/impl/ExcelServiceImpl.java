@@ -2,7 +2,7 @@ package com.acgist.service.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +51,7 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 	}
 	
 	@Override
-	public void download(FilterQuery query, Map<String, String> header, OutputStream output) {
+	public void download(FilterQuery query, Map<String, ExcelHeaderValue> header, OutputStream output) {
 		try {
 			this.download(this.list(query), header, output);
 		} catch (IOException e) {
@@ -60,7 +60,7 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 	}
 	
 	@Override
-	public void download(List<T> list, Map<String, String> header, OutputStream output) throws IOException {
+	public void download(List<T> list, Map<String, ExcelHeaderValue> header, OutputStream output) throws IOException {
 		try (
 			output;
 			final XSSFWorkbook workbook = new XSSFWorkbook();
@@ -71,12 +71,13 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 			// 设置列头
 			final XSSFRow headerRow = sheet.createRow(row.getAndIncrement());
 			final Set<String> keys = header.keySet();
-			final Collection<String> values = header.values();
-			values.forEach(value -> {
+			final List<ExcelHeaderValue> headers = new ArrayList<>(header.values());
+			headers.forEach(value -> {
 				final XSSFCell cell = headerRow.createCell(col.getAndIncrement());
 				cell.setCellStyle(this.headerCellStyle(workbook));
-				cell.setCellValue(value);
+				cell.setCellValue(value.getName());
 			});
+			// 设置数据
 			list.forEach(value -> {
 				col.set(0);
 				final XSSFRow dataRow = sheet.createRow(row.getAndIncrement());
@@ -87,9 +88,10 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 					} catch (IllegalArgumentException | IllegalAccessException e) {
 						log.error("读取属性异常：{}", field, e);
 					}
+					final ExcelHeaderValue excelHeaderValue = headers.get(col.get());
 					final XSSFCell cell = dataRow.createCell(col.getAndIncrement());
 					cell.setCellStyle(this.dataCellStyle(workbook));
-					cell.setCellValue(Objects.toString(object, ""));
+					cell.setCellValue(excelHeaderValue.getFormatter().format(object));
 				});
 			});
 			workbook.write(output);
@@ -125,15 +127,15 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 	}
 
 	@Override
-	public Map<String, String> header() {
+	public Map<String, ExcelHeaderValue> header() {
 		// 注解
-		final Map<String, String> map = FieldUtils.getAllFieldsList(this.entityClass).stream()
+		final Map<String, ExcelHeaderValue> map = FieldUtils.getAllFieldsList(this.entityClass).stream()
 			.map(field -> {
 				final ExcelHeader header = field.getAnnotation(ExcelHeader.class);
 				if(header == null) {
 					return null;
 				}
-				return Map.entry(field.getName(), header.name());
+				return Map.entry(field.getName(), new ExcelHeaderValue(header.name(), this.formatter(header.formatter())));
 			})
 			.filter(Objects::nonNull)
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> v, LinkedHashMap::new));
@@ -142,7 +144,7 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 		}
 		// 属性
 		return FieldUtils.getAllFieldsList(this.entityClass).stream()
-			.map(field -> Map.entry(field.getName(), field.getName()))
+			.map(field -> Map.entry(field.getName(), new ExcelHeaderValue(field.getName(), this.formatter(StringFormatter.class))))
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> v, LinkedHashMap::new));
 	}
 	

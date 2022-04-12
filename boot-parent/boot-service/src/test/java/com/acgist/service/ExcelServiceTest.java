@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.ExcelService.ExcelHeader;
+import com.acgist.service.ExcelService.ExcelHeaderValue;
 import com.acgist.service.impl.ExcelServiceImpl;
 
 import lombok.Getter;
@@ -42,7 +43,7 @@ public class ExcelServiceTest {
 		final ExcelEntity entity = new ExcelEntity();
 		entity.setAge(11);
 		entity.setName("acgist");
-		final Map<String, String> header = service.header();
+		final Map<String, ExcelHeaderValue> header = service.header();
 		final OutputStream output = Files.newOutputStream(Paths.get("D:/tmp/excel.xlsx"));
 		service.download(List.of(entity), header, output);
 		output.close();
