@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.acgist.www.resolver.RequestJsonArgumentResolver;
+
 /**
  * Www MVC配置
  * 
@@ -19,6 +21,13 @@ public class WwwMvcAutoConfiguration {
 	@ConditionalOnMissingBean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(value = "system.mvc", matchIfMissing = true, havingValue = "true")
+	public RequestJsonArgumentResolver requestJsonArgumentResolver() {
+		return new RequestJsonArgumentResolver();
 	}
 	
 	@Bean

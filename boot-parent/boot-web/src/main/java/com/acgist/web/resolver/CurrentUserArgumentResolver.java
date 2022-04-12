@@ -29,10 +29,14 @@ public class CurrentUserArgumentResolver implements WwwMethodArgumentResolver {
 		if(currentUser == null) {
 			return null;
 		}
-		final Type type = parameter.getParameterAnnotation(CurrentUser.class).value();
-		if(type == Type.ID) {
-			return null;
-		} else if(type == Type.NAME) {
+		final Type value = parameter.getParameterAnnotation(CurrentUser.class).value();
+		if(value == Type.NAME) {
+			return currentUser.getUsername();
+		} else if(value == Type.USER) {
+			return currentUser;
+		}
+		final Class<?> type = parameter.getParameterType();
+		if(String.class.equals(type)) {
 			return currentUser.getUsername();
 		} else {
 			return currentUser;

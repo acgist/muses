@@ -1,6 +1,8 @@
 package com.acgist.www.resolver;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -14,10 +16,12 @@ import com.acgist.boot.model.User;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
 public @interface CurrentUser {
 
 	/**
-	 * 获取注解类型
+	 * 获取参数类型
 	 * 
 	 * @author acgist
 	 */
@@ -34,13 +38,19 @@ public @interface CurrentUser {
 		/**
 		 * @see User
 		 */
-		USER;
+		USER,
+		/**
+		 * 根据参数类型获取
+		 */
+		AUTO;
 		
 	}
 	
 	/**
-	 * @return 注入类型
+	 * 如果ID和Name类型相同不能通过类型获取参数
+	 * 
+	 * @return 参数类型
 	 */
-	Type value() default Type.USER;
+	Type value() default Type.AUTO;
 	
 }
