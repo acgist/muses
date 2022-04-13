@@ -1,6 +1,9 @@
 package com.acgist.service.impl;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.cglib.beans.BeanMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.acgist.boot.BeanUtils;
 import com.acgist.boot.CollectionUtils;
@@ -175,14 +179,30 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	
 	@Override
 	public List<List<Object>> load(String path) {
-		return this.load(path, 0);
+		try {
+			return this.load(new FileInputStream(path), 0);
+		} catch (FileNotFoundException e) {
+			log.error("读取Excel文件异常", e);
+		}
+		return List.of();
 	}
 	
 	@Override
-	public List<List<Object>> load(String path, int sheet) {
+	public List<List<Object>> load(MultipartFile file) {
+		try {
+			return this.load(file.getInputStream(), 0);
+		} catch (IOException e) {
+			log.error("读取Excel文件异常", e);
+		}
+		return List.of();
+	}
+	
+	@Override
+	public List<List<Object>> load(InputStream input, int sheet) {
 		final List<List<Object>> list = new ArrayList<>();
 		try (
-			final XSSFWorkbook workbook = new XSSFWorkbook(path);
+			input;
+			final XSSFWorkbook workbook = new XSSFWorkbook(input);
 		) {
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
 			sheetValue.forEach(row -> {
@@ -209,12 +229,12 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 
 	@Override
 	public <K> List<K> load(String path, Class<K> clazz) {
-		return this.load(path, clazz, this.header());
+		return this.load(this.load(path), clazz, this.header());
 	}
 	
 	@Override
-	public <K> List<K> load(String path, Class<K> clazz, Map<String, ExcelHeaderValue> header) {
-		return this.load(this.load(path), clazz, header);
+	public <K> List<K> load(MultipartFile file, Class<K> clazz) {
+		return this.load(this.load(file), clazz, this.header());
 	}
 	
 	@Override

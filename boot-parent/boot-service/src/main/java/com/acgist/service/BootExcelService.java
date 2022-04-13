@@ -1,6 +1,7 @@
 package com.acgist.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -15,6 +16,7 @@ import java.util.Objects;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.acgist.boot.StringUtils;
 import com.acgist.model.entity.BootEntity;
@@ -208,12 +210,21 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	/**
 	 * 加载Excel
 	 * 
-	 * @param path 路径
+	 * @param file 文件
+	 * 
+	 * @return 数据
+	 */
+	List<List<Object>> load(MultipartFile file);
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param input 输入流
 	 * @param sheet sheet
 	 * 
 	 * @return 数据
 	 */
-	List<List<Object>> load(String path, int sheet);
+	List<List<Object>> load(InputStream input, int sheet);
 	
 	/**
 	 * 加载Excel
@@ -232,13 +243,12 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @param <K> 类型
 	 * 
-	 * @param path 路径
+	 * @param file 文件
 	 * @param clazz 返回类型
-	 * @param header 表头
 	 * 
 	 * @return 数据
 	 */
-	<K> List<K> load(String path, Class<K> clazz, Map<String, ExcelHeaderValue> header);
+	<K> List<K> load(MultipartFile file, Class<K> clazz);
 	
 	/**
 	 * 加载Excel

@@ -56,7 +56,7 @@ public class CodeBuilderTest {
 	private Map<String, String> typeImporter = Map.of(
 		"BigDecimal", "java.math.BigDecimal",
 		"LocalDateTime", "java.time.LocalDateTime"
-		);
+	);
 	// 跳过字段
 //	private String[] skipColumns = new String[] {};
 	private String[] skipColumns = new String[] { "id", "create_date", "modify_date" };

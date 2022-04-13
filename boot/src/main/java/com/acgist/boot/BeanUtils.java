@@ -16,6 +16,15 @@ public final class BeanUtils {
 	private BeanUtils() {
 	}
 	
+	/**
+	 * 获取类型实例
+	 * 
+	 * @param <T> 类型
+	 * 
+	 * @param clazz 类型
+	 * 
+	 * @return 实例
+	 */
 	public static final <T> T newInstance(Class<T> clazz) {
 		Objects.requireNonNull(clazz, "无效类型");
 		try {
