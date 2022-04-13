@@ -4,20 +4,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
-import org.elasticsearch.core.List;
 import org.junit.jupiter.api.Test;
 
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
-import com.acgist.service.ExcelService.ExcelHeader;
-import com.acgist.service.ExcelService.ExcelHeaderValue;
-import com.acgist.service.impl.ExcelServiceImpl;
+import com.acgist.service.BootExcelService.ExcelHeader;
+import com.acgist.service.BootExcelService.ExcelHeaderValue;
+import com.acgist.service.excel.IntegerFormatter;
+import com.acgist.service.impl.BootExcelServiceImpl;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ExcelServiceTest {
 
 	@Getter
@@ -26,7 +29,7 @@ public class ExcelServiceTest {
 
 		private static final long serialVersionUID = 1L;
 
-		@ExcelHeader(name = "年龄")
+		@ExcelHeader(name = "年龄", formatter = IntegerFormatter.class)
 		private Integer age;
 		@ExcelHeader(name = "名称")
 		private String name;
@@ -38,7 +41,7 @@ public class ExcelServiceTest {
 	
 	@Test
 	public void testDownload() throws IOException {
-		final ExcelService<ExcelEntity> service = new ExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
+		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
 		};
 		final ExcelEntity entity = new ExcelEntity();
 		entity.setAge(11);
@@ -47,6 +50,14 @@ public class ExcelServiceTest {
 		final OutputStream output = Files.newOutputStream(Paths.get("D:/tmp/excel.xlsx"));
 		service.download(List.of(entity), header, output);
 		output.close();
+	}
+	
+	@Test
+	public void testLoad() {
+		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
+		};
+		final List<ExcelEntity> load = service.load("D:/tmp/excel.xlsx", ExcelEntity.class);
+		log.info("{}", load);
 	}
 	
 }

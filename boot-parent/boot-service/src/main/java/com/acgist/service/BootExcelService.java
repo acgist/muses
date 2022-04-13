@@ -8,8 +8,6 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.InvocationTargetException;
-import java.time.temporal.TemporalAccessor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +16,10 @@ import java.util.Objects;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.acgist.boot.config.FormatStyle.DateStyle;
+import com.acgist.boot.StringUtils;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
+import com.acgist.service.excel.StringFormatter;
 
 import lombok.Getter;
 
@@ -31,7 +30,7 @@ import lombok.Getter;
  *
  * @param <T> 类型
  */
-public interface ExcelService<T extends BootEntity> extends BootService<T> {
+public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 
 	/**
 	 * 格式化工具Map
@@ -52,39 +51,19 @@ public interface ExcelService<T extends BootEntity> extends BootService<T> {
 		 * 
 		 * @return 输出文本
 		 */
-		String format(Object object);
-		
-	}
-	
-	/**
-	 * 字符串格式化工具
-	 * 
-	 * @author acgist
-	 */
-	public class StringFormatter implements Formatter {
-
-		@Override
-		public String format(Object object) {
+		default String format(Object object) {
 			return Objects.toString(object, "");
 		}
 		
-	}
-
-	/**
-	 * 日期格式化工具
-	 * 
-	 * @author acgist
-	 */
-	public class LocalDateTimeFormatter implements Formatter {
-
-		@Override
-		public String format(Object object) {
-			if(object instanceof TemporalAccessor) {
-				// TODO：JDK17
-				return DateStyle.YYYY_MM_DD.getDateTimeFormatter().format((TemporalAccessor) object);
-			} else {
-				return Objects.toString(object, "");
-			}
+		/**
+		 * 加载数据
+		 * 
+		 * @param object 原始数据
+		 * 
+		 * @return 输入数据
+		 */
+		default Object parse(Object object) {
+			return Objects.toString(object, null);
 		}
 		
 	}
@@ -104,7 +83,10 @@ public interface ExcelService<T extends BootEntity> extends BootService<T> {
 		 * @return 表头名称
 		 */
 		String name();
-		
+		/**
+		 * @return 导入表头名称
+		 */
+		String loadName() default "";
 		/**
 		 * @return 格式化工具类型
 		 */
@@ -121,16 +103,32 @@ public interface ExcelService<T extends BootEntity> extends BootService<T> {
 	public class ExcelHeaderValue {
 		
 		/**
+		 * 字段名称
+		 */
+		private final String field;
+		/**
 		 * 表头名称
 		 */
 		private final String name;
+		/**
+		 * 导入表头名称
+		 */
+		private final String loadName;
 		/**
 		 * 格式化工具
 		 */
 		private final Formatter formatter;
 		
-		public ExcelHeaderValue(String name, Formatter formatter) {
-			this.name = name;
+		/**
+		 * @param field 字段名称
+		 * @param name 表头名称：name > loadName > field
+		 * @param loadName 导入表头名称：loadName > name > field
+		 * @param formatter
+		 */
+		public ExcelHeaderValue(String field, String name, String loadName, Formatter formatter) {
+			this.field = field;
+			this.name = StringUtils.isNotEmpty(name) ? name : StringUtils.isNotEmpty(loadName) ? loadName : field;
+			this.loadName = StringUtils.isNotEmpty(loadName) ? loadName : StringUtils.isNotEmpty(name) ? name : field;
 			this.formatter = formatter;
 		}
 		
@@ -196,15 +194,63 @@ public interface ExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @return 格式化工具
 	 */
-	default Formatter formatter(Class<? extends Formatter> formatter) {
-		return FORMATTER.computeIfAbsent(formatter, key -> {
-			try {
-				return formatter.getConstructor().newInstance();
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				// 忽略
-			}
-			return null;
-		});
-	}
+	Formatter formatter(Class<? extends Formatter> formatter);
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param path 路径
+	 * 
+	 * @return 数据
+	 */
+	List<List<Object>> load(String path);
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param path 路径
+	 * @param sheet sheet
+	 * 
+	 * @return 数据
+	 */
+	List<List<Object>> load(String path, int sheet);
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param <K> 类型
+	 * 
+	 * @param path 路径
+	 * @param clazz 返回类型
+	 * 
+	 * @return 数据
+	 */
+	<K> List<K> load(String path, Class<K> clazz);
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param <K> 类型
+	 * 
+	 * @param path 路径
+	 * @param clazz 返回类型
+	 * @param header 表头
+	 * 
+	 * @return 数据
+	 */
+	<K> List<K> load(String path, Class<K> clazz, Map<String, ExcelHeaderValue> header);
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param <K> 类型
+	 * 
+	 * @param list 数据：必须包含头部
+	 * @param clazz 返回类型
+	 * @param header 表头
+	 * 
+	 * @return 数据
+	 */
+	<K> List<K> load(List<List<Object>> list, Class<K> clazz, Map<String, ExcelHeaderValue> header);
 	
 }

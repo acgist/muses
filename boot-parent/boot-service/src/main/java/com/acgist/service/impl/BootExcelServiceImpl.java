@@ -3,6 +3,7 @@ package com.acgist.service.impl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -20,13 +22,17 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.cglib.beans.BeanMap;
 
+import com.acgist.boot.BeanUtils;
+import com.acgist.boot.CollectionUtils;
 import com.acgist.boot.MapUtils;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
-import com.acgist.service.ExcelService;
+import com.acgist.service.BootExcelService;
+import com.acgist.service.excel.StringFormatter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,8 +45,13 @@ import lombok.extern.slf4j.Slf4j;
  * @param <T> 类型
  */
 @Slf4j
-public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEntity> extends BootServiceImpl<M, T> implements ExcelService<T> {
+public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends BootEntity> extends BootServiceImpl<M, T> implements BootExcelService<T> {
 
+	/**
+	 * Header缓存
+	 */
+	private Map<String, ExcelHeaderValue> header;
+	
 	@Override
 	public void download(FilterQuery query, OutputStream output) {
 		try {
@@ -128,24 +139,122 @@ public abstract class ExcelServiceImpl<M extends BootMapper<T>, T extends BootEn
 
 	@Override
 	public Map<String, ExcelHeaderValue> header() {
+		if(this.header != null) {
+			return this.header;
+		}
 		// 注解
-		final Map<String, ExcelHeaderValue> map = FieldUtils.getAllFieldsList(this.entityClass).stream()
+		this.header = FieldUtils.getAllFieldsList(this.entityClass).stream()
 			.map(field -> {
 				final ExcelHeader header = field.getAnnotation(ExcelHeader.class);
 				if(header == null) {
 					return null;
 				}
-				return Map.entry(field.getName(), new ExcelHeaderValue(header.name(), this.formatter(header.formatter())));
+				return Map.entry(
+					field.getName(),
+					new ExcelHeaderValue(field.getName(), header.name(), header.loadName(), this.formatter(header.formatter()))
+				);
 			})
 			.filter(Objects::nonNull)
 			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> v, LinkedHashMap::new));
-		if(MapUtils.isNotEmpty(map)) {
-			return map;
-		}
 		// 属性
-		return FieldUtils.getAllFieldsList(this.entityClass).stream()
-			.map(field -> Map.entry(field.getName(), new ExcelHeaderValue(field.getName(), this.formatter(StringFormatter.class))))
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> v, LinkedHashMap::new));
+		if(MapUtils.isEmpty(this.header)) {
+			this.header = FieldUtils.getAllFieldsList(this.entityClass).stream()
+				.map(field -> Map.entry(
+					field.getName(),
+					new ExcelHeaderValue(field.getName(), field.getName(), field.getName(), this.formatter(StringFormatter.class)))
+				)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k, v) -> v, LinkedHashMap::new));
+		}
+		return this.header;
+	}
+	
+	@Override
+	public Formatter formatter(Class<? extends Formatter> formatter) {
+		return FORMATTER.computeIfAbsent(formatter, key -> BeanUtils.newInstance(formatter));
+	}
+	
+	@Override
+	public List<List<Object>> load(String path) {
+		return this.load(path, 0);
+	}
+	
+	@Override
+	public List<List<Object>> load(String path, int sheet) {
+		final List<List<Object>> list = new ArrayList<>();
+		try (
+			final XSSFWorkbook workbook = new XSSFWorkbook(path);
+		) {
+			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
+			sheetValue.forEach(row -> {
+				final List<Object> data = new ArrayList<>();
+				row.forEach(cell -> {
+					final CellType cellType = cell.getCellType();
+					if(cellType == CellType.STRING) {
+						data.add(cell.getStringCellValue());
+					} else if(cellType == CellType.BOOLEAN) {
+						data.add(cell.getBooleanCellValue());
+					} else if(cellType == CellType.NUMERIC) {
+						data.add(cell.getNumericCellValue());
+					} else {
+						data.add(cell.getStringCellValue());
+					}
+				});
+				list.add(data);
+			});
+		} catch (IOException e) {
+			log.error("加载Excel异常", e);
+		}
+		return list;
+	}
+
+	@Override
+	public <K> List<K> load(String path, Class<K> clazz) {
+		return this.load(path, clazz, this.header());
+	}
+	
+	@Override
+	public <K> List<K> load(String path, Class<K> clazz, Map<String, ExcelHeaderValue> header) {
+		return this.load(this.load(path), clazz, header);
+	}
+	
+	@Override
+	public <K> List<K> load(List<List<Object>> list, Class<K> clazz, Map<String, ExcelHeaderValue> header) {
+		if(CollectionUtils.isEmpty(list)) {
+			return List.of();
+		}
+		// 表头
+		final List<Object> excelHeader = list.get(0);
+		// 表头 = 字段信息
+		final Map<String, ExcelHeaderValue> mapping = header.entrySet().stream()
+			.collect(Collectors.toMap(entry -> entry.getValue().getLoadName(), entry -> entry.getValue()));
+		// 索引 = 字段信息
+		final Map<Integer, ExcelHeaderValue> headerMapping = new HashMap<>();
+		for (int index = 0; index < excelHeader.size(); index++) {
+			headerMapping.put(index, mapping.get(excelHeader.get(index).toString()));
+		}
+		return list.stream()
+			// 跳过表头
+			.skip(1)
+			// 表头字段转换
+			.map(data -> {
+				final Map<String, Object> map = new HashMap<>();
+				for (int index = 0; index < data.size(); index++) {
+					final ExcelHeaderValue headerValue = headerMapping.get(index);
+					map.put(headerValue.getField(), headerValue.getFormatter().parse(data.get(index)));
+				}
+				return map;
+			})
+			// 数据类型转换
+			.map(data -> {
+				final K newInstance = BeanUtils.newInstance(clazz);
+				if(newInstance == null) {
+					return null;
+				}
+				BeanMap.create(newInstance).putAll(data);
+				return newInstance;
+			})
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
 	}
 	
 }
