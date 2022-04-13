@@ -239,7 +239,7 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		try {
 			return this.load(new FileInputStream(path), 0);
 		} catch (FileNotFoundException e) {
-			throw MessageCodeException.of("读取Excel文件异常", e);
+			throw MessageCodeException.of(e, "读取Excel文件异常");
 		}
 	}
 	

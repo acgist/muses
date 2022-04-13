@@ -89,7 +89,7 @@ public interface BootWebExcelService<T extends BootEntity> extends BootExcelServ
 		try {
 			return this.load(file.getInputStream(), 0);
 		} catch (IOException e) {
-			throw MessageCodeException.of("读取Excel文件异常", e);
+			throw MessageCodeException.of(e, "读取Excel文件异常");
 		}
 	}
 	

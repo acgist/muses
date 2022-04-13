@@ -176,7 +176,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				list.add(data);
 			});
 		} catch (IOException e) {
-			throw MessageCodeException.of("读取Excel文件异常", e);
+			throw MessageCodeException.of(e, "读取Excel文件异常");
 		}
 		return list;
 	}
