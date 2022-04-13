@@ -137,6 +137,13 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	}
 	
 	/**
+	 * 下载Excel模板
+	 * 
+	 * @param output 输出
+	 */
+	void downloadTemplate(OutputStream output);
+	
+	/**
 	 * 下载Excel
 	 * 
 	 * @param query 条件

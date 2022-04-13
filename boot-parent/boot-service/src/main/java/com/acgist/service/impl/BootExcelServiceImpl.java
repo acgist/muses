@@ -57,6 +57,15 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	private Map<String, ExcelHeaderValue> header;
 	
 	@Override
+	public void downloadTemplate(OutputStream output) {
+		try {
+			this.download(List.of(), this.header(), output);
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "下载Excel失败");
+		}
+	}
+	
+	@Override
 	public void download(FilterQuery query, OutputStream output) {
 		try {
 			this.download(this.list(query), this.header(), output);
