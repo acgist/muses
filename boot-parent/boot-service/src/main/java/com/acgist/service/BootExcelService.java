@@ -1,5 +1,7 @@
 package com.acgist.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,9 +18,10 @@ import java.util.Objects;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.acgist.boot.BeanUtils;
 import com.acgist.boot.StringUtils;
+import com.acgist.boot.model.MessageCodeException;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
 import com.acgist.service.excel.StringFormatter;
@@ -141,7 +144,13 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @param output 输出
 	 */
-	void downloadTemplate(OutputStream output);
+	default void downloadTemplate(OutputStream output) {
+		try {
+			this.download(List.of(), this.header(), output);
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "下载Excel失败");
+		}
+	}
 	
 	/**
 	 * 下载Excel
@@ -149,7 +158,13 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @param query 条件
 	 * @param output 输出
 	 */
-	void download(FilterQuery query, OutputStream output);
+	default void download(FilterQuery query, OutputStream output) {
+		try {
+			this.download(this.list(query), this.header(), output);
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "下载Excel失败");
+		}
+	}
 	
 	/**
 	 * 下载Excel
@@ -158,7 +173,13 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @param header 表头
 	 * @param output 输出
 	 */
-	void download(FilterQuery query, Map<String, ExcelHeaderValue> header, OutputStream output);
+	default void download(FilterQuery query, Map<String, ExcelHeaderValue> header, OutputStream output) {
+		try {
+			this.download(this.list(query), header, output);
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "下载Excel失败");
+		}
+	}
 	
 	/**
 	 * 下载Excel
@@ -203,7 +224,9 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @return 格式化工具
 	 */
-	Formatter formatter(Class<? extends Formatter> formatter);
+	default Formatter formatter(Class<? extends Formatter> formatter) {
+		return FORMATTER.computeIfAbsent(formatter, key -> BeanUtils.newInstance(formatter));
+	}
 	
 	/**
 	 * 加载Excel
@@ -212,16 +235,13 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @return 数据
 	 */
-	List<List<Object>> load(String path);
-	
-	/**
-	 * 加载Excel
-	 * 
-	 * @param file 文件
-	 * 
-	 * @return 数据
-	 */
-	List<List<Object>> load(MultipartFile file);
+	default List<List<Object>> load(String path) {
+		try {
+			return this.load(new FileInputStream(path), 0);
+		} catch (FileNotFoundException e) {
+			throw MessageCodeException.of("读取Excel文件异常", e);
+		}
+	}
 	
 	/**
 	 * 加载Excel
@@ -232,6 +252,17 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @return 数据
 	 */
 	List<List<Object>> load(InputStream input, int sheet);
+
+	/**
+	 * 加载Excel
+	 * 
+	 * @param path 路径
+	 * 
+	 * @return 数据
+	 */
+	default List<T> loadEntity(String path) {
+		return this.load(this.load(path), this.getEntityClass(), this.header());
+	}
 	
 	/**
 	 * 加载Excel
@@ -243,19 +274,9 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @return 数据
 	 */
-	<K> List<K> load(String path, Class<K> clazz);
-	
-	/**
-	 * 加载Excel
-	 * 
-	 * @param <K> 类型
-	 * 
-	 * @param file 文件
-	 * @param clazz 返回类型
-	 * 
-	 * @return 数据
-	 */
-	<K> List<K> load(MultipartFile file, Class<K> clazz);
+	default <K> List<K> load(String path, Class<K> clazz) {
+		return this.load(this.load(path), clazz, this.header());
+	}
 	
 	/**
 	 * 加载Excel

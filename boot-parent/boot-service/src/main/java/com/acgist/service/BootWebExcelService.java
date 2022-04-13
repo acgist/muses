@@ -7,6 +7,8 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.acgist.boot.UrlUtils;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.model.entity.BootEntity;
@@ -74,6 +76,46 @@ public interface BootWebExcelService<T extends BootEntity> extends BootExcelServ
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "下载Excel失败");
 		}
+	}
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param file 文件
+	 * 
+	 * @return 数据
+	 */
+	default List<List<Object>> load(MultipartFile file) {
+		try {
+			return this.load(file.getInputStream(), 0);
+		} catch (IOException e) {
+			throw MessageCodeException.of("读取Excel文件异常", e);
+		}
+	}
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param file 文件
+	 * 
+	 * @return 数据
+	 */
+	default List<T> loadEntity(MultipartFile file) {
+		return this.load(this.load(file), this.getEntityClass(), this.header());
+	}
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param <K> 类型
+	 * 
+	 * @param file 文件
+	 * @param clazz 返回类型
+	 * 
+	 * @return 数据
+	 */
+	default <K> List<K> load(MultipartFile file, Class<K> clazz) {
+		return this.load(this.load(file), clazz, this.header());
 	}
 	
 }

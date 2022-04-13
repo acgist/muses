@@ -1,7 +1,5 @@
 package com.acgist.service.impl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,7 +24,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.cglib.beans.BeanMap;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.acgist.boot.BeanUtils;
 import com.acgist.boot.CollectionUtils;
@@ -34,7 +31,6 @@ import com.acgist.boot.MapUtils;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
-import com.acgist.model.query.FilterQuery;
 import com.acgist.service.BootExcelService;
 import com.acgist.service.excel.StringFormatter;
 
@@ -55,33 +51,6 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	 * Header缓存
 	 */
 	private Map<String, ExcelHeaderValue> header;
-	
-	@Override
-	public void downloadTemplate(OutputStream output) {
-		try {
-			this.download(List.of(), this.header(), output);
-		} catch (IOException e) {
-			throw MessageCodeException.of(e, "下载Excel失败");
-		}
-	}
-	
-	@Override
-	public void download(FilterQuery query, OutputStream output) {
-		try {
-			this.download(this.list(query), this.header(), output);
-		} catch (IOException e) {
-			throw MessageCodeException.of(e, "下载Excel失败");
-		}
-	}
-	
-	@Override
-	public void download(FilterQuery query, Map<String, ExcelHeaderValue> header, OutputStream output) {
-		try {
-			this.download(this.list(query), header, output);
-		} catch (IOException e) {
-			throw MessageCodeException.of(e, "下载Excel失败");
-		}
-	}
 	
 	@Override
 	public void download(List<T> list, Map<String, ExcelHeaderValue> header, OutputStream output) throws IOException {
@@ -181,30 +150,6 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		return this.header;
 	}
 	
-	@Override
-	public Formatter formatter(Class<? extends Formatter> formatter) {
-		return FORMATTER.computeIfAbsent(formatter, key -> BeanUtils.newInstance(formatter));
-	}
-	
-	@Override
-	public List<List<Object>> load(String path) {
-		try {
-			return this.load(new FileInputStream(path), 0);
-		} catch (FileNotFoundException e) {
-			log.error("读取Excel文件异常", e);
-		}
-		return List.of();
-	}
-	
-	@Override
-	public List<List<Object>> load(MultipartFile file) {
-		try {
-			return this.load(file.getInputStream(), 0);
-		} catch (IOException e) {
-			log.error("读取Excel文件异常", e);
-		}
-		return List.of();
-	}
 	
 	@Override
 	public List<List<Object>> load(InputStream input, int sheet) {
@@ -231,21 +176,11 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				list.add(data);
 			});
 		} catch (IOException e) {
-			log.error("加载Excel异常", e);
+			throw MessageCodeException.of("读取Excel文件异常", e);
 		}
 		return list;
 	}
 
-	@Override
-	public <K> List<K> load(String path, Class<K> clazz) {
-		return this.load(this.load(path), clazz, this.header());
-	}
-	
-	@Override
-	public <K> List<K> load(MultipartFile file, Class<K> clazz) {
-		return this.load(this.load(file), clazz, this.header());
-	}
-	
 	@Override
 	public <K> List<K> load(List<List<Object>> list, Class<K> clazz, Map<String, ExcelHeaderValue> header) {
 		if(CollectionUtils.isEmpty(list)) {
