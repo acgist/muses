@@ -1,7 +1,8 @@
 package com.acgist.service.excel;
 
-import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 
+import com.acgist.boot.DateUtils;
 import com.acgist.boot.config.FormatStyle.DateStyle;
 import com.acgist.service.BootExcelService.Formatter;
 
@@ -10,13 +11,13 @@ import com.acgist.service.BootExcelService.Formatter;
  * 
  * @author acgist
  */
-public class LocalDateTimeFormatter implements Formatter {
+public class DateFormatter implements Formatter {
 
 	@Override
 	public String format(Object object) {
-		if(object instanceof TemporalAccessor) {
+		if(object instanceof Date) {
 			// TODO：JDK17
-			return DateStyle.YYYY_MM_DD.getDateTimeFormatter().format((TemporalAccessor) object);
+			return DateUtils.format((Date) object, DateStyle.YYYY_MM_DD.getFormat());
 		} else {
 			return Formatter.super.format(object);
 		}
@@ -27,7 +28,7 @@ public class LocalDateTimeFormatter implements Formatter {
 		if(object == null) {
 			return null;
 		}
-		return DateStyle.YYYY_MM_DD.getDateTimeFormatter().parse(object.toString());
+		return DateUtils.parse(object.toString(), DateStyle.YYYY_MM_DD.getFormat());
 	}
 	
 }
