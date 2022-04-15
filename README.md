@@ -2,8 +2,6 @@
 
 基于`SpringCloudAlibaba`技术栈微服务模板项目
 
-> `SpringBoot`配置：[https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
-
 ## 模块
 
 |模块|描述|
@@ -216,3 +214,7 @@ server.port=${system.port:8080}
 * 本地`Service`接口不要使用`I`开头：`UserService`
 * 实现接口使用`Impl`结尾：`UserServiceImpl`
 * 不要使用继承`BootService`提供远程服务
+
+## 其他链接
+
+> `SpringBoot`配置：[https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
