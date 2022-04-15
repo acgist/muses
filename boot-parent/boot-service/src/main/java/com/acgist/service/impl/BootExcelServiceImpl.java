@@ -23,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.beans.BeanMap;
 
 import com.acgist.boot.BeanUtils;
@@ -47,6 +48,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends BootEntity> extends BootServiceImpl<M, T> implements BootExcelService<T> {
 
+	@Value("${system.excel.header.font:宋体}")
+	private String headerFont;
+	@Value("${system.excel.header.size:16}")
+	private Short headerSize;
+	@Value("${system.excel.header.font:宋体}")
+	private String cellFont;
+	@Value("${system.excel.header.size:12}")
+	private Short cellSize;
+	@Value("${system.excel.font.width:256}")
+	private Integer fontWidth;
+	
 	/**
 	 * Header缓存
 	 */
@@ -61,6 +73,8 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			final AtomicInteger col = new AtomicInteger(0);
 			final AtomicInteger row = new AtomicInteger(0);
 			final XSSFSheet sheet = workbook.createSheet(this.entityClass.getSimpleName());
+			// 列宽
+			final List<Integer> colWidth = new ArrayList<>();
 			// 设置列头
 			final XSSFRow headerRow = sheet.createRow(row.getAndIncrement());
 			final Set<String> keys = header.keySet();
@@ -68,7 +82,9 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			headers.forEach(value -> {
 				final XSSFCell cell = headerRow.createCell(col.getAndIncrement());
 				cell.setCellStyle(this.headerCellStyle(workbook));
-				cell.setCellValue(value.getName());
+				final String data = value.getName();
+				cell.setCellValue(data);
+				colWidth.add(data.getBytes().length);
 			});
 			// 设置数据
 			list.forEach(value -> {
@@ -82,11 +98,17 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 						log.error("读取属性异常：{}", field, e);
 					}
 					final ExcelHeaderValue excelHeaderValue = headers.get(col.get());
-					final XSSFCell cell = dataRow.createCell(col.getAndIncrement());
+					final XSSFCell cell = dataRow.createCell(col.get());
 					cell.setCellStyle(this.dataCellStyle(workbook));
-					cell.setCellValue(excelHeaderValue.getFormatter().format(object));
+					final String data = excelHeaderValue.getFormatter().format(object);
+					cell.setCellValue(data);
+					colWidth.set(col.get(), Math.max(colWidth.get(col.get()), data.getBytes().length));
+					col.incrementAndGet();
 				});
 			});
+			// 设置宽度
+			col.set(0);
+			colWidth.forEach(value -> sheet.setColumnWidth(col.getAndIncrement(), this.fontWidth * value));
 			workbook.write(output);
 		} finally {
 			output.flush();
@@ -96,8 +118,8 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	@Override
 	public CellStyle headerCellStyle(XSSFWorkbook workbook) {
 		final Font font = workbook.createFont();
-		font.setFontName("宋体");
-		font.setFontHeightInPoints((short) 18);
+		font.setFontName(this.headerFont);
+		font.setFontHeightInPoints(this.headerSize);
 		final CellStyle headerCellStyle = workbook.createCellStyle();
 		headerCellStyle.setFont(font);
 		headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -108,10 +130,11 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	@Override
 	public CellStyle dataCellStyle(XSSFWorkbook workbook) {
 		final Font font = workbook.createFont();
-		font.setFontName("宋体");
-		font.setFontHeightInPoints((short) 12);
+		font.setFontName(this.cellFont);
+		font.setFontHeightInPoints(this.cellSize);
 		final CellStyle dataCellStyle = workbook.createCellStyle();
 		dataCellStyle.setFont(font);
+		// 设置边框
 //		dataCellStyle.setBorderBottom(BorderStyle.THIN);
 //		dataCellStyle.setBorderLeft(BorderStyle.THIN);
 //		dataCellStyle.setBorderTop(BorderStyle.THIN);

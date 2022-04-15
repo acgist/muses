@@ -125,6 +125,12 @@ system.cache.prefix=cache::
 system.login.fail.count=5
 # 登陆失败锁定时长：秒
 system.login.fail.duration=1800
+# Excel
+system.excel.header.font=宋体
+system.excel.header.size=16
+system.excel.cell.font=宋体
+system.excel.cell.size=12
+system.excel.font.width=256
 ```
 
 ## Maven配置

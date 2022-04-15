@@ -5,6 +5,11 @@ base=${bin_abs_path%/*}
 
 cd $base
 
+# 图形
+# -Djava.awt.headless=true
+# 优先使用IPv4
+# -Djava.net.preferIPv4Stack=true
+
 JAVA_OPTS_MEM="-server -Xms${system.maven.xms} -Xmx${system.maven.xmx}"
 JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding}"
 JAVA_OPTS_APP="-Dspring.profiles.active=${profile}"

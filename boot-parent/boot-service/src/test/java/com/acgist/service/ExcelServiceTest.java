@@ -43,12 +43,15 @@ public class ExcelServiceTest {
 	public void testDownload() throws IOException {
 		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
 		};
-		final ExcelEntity entity = new ExcelEntity();
-		entity.setAge(11);
-		entity.setName("acgist");
+		final ExcelEntity a = new ExcelEntity();
+		a.setAge(11);
+		a.setName("acgist");
+		final ExcelEntity b = new ExcelEntity();
+		b.setAge(11);
+		b.setName("这是一个测试长度问题");
 		final Map<String, ExcelHeaderValue> header = service.header();
 		final OutputStream output = Files.newOutputStream(Paths.get("D:/tmp/excel.xlsx"));
-		service.download(List.of(entity), header, output);
+		service.download(List.of(a, b), header, output);
 		output.close();
 	}
 	
@@ -56,7 +59,8 @@ public class ExcelServiceTest {
 	public void testLoad() {
 		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
 		};
-		final List<ExcelEntity> load = service.load("D:/tmp/excel.xlsx", ExcelEntity.class);
+		final List<ExcelEntity> load = service.loadEntity("D:/tmp/excel.xlsx");
+//		final List<ExcelEntity> load = service.load("D:/tmp/excel.xlsx", ExcelEntity.class);
 		log.info("{}", load);
 	}
 	
