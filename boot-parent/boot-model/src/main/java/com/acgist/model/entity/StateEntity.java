@@ -19,7 +19,7 @@ public abstract class StateEntity extends NameEntity {
 	private static final long serialVersionUID = 1L;
 
 	public static final String PROPERTY_SORTED = "sorted";
-	public static final String PROPERTY_ENABLE = "enable";
+	public static final String PROPERTY_ENABLED = "enabled";
 	
 	/**
 	 * 排序
@@ -29,7 +29,7 @@ public abstract class StateEntity extends NameEntity {
 	/**
 	 * 是否可用
 	 */
-	@TableField(value = "enable")
-	private Boolean enable;
+	@TableField(value = "enabled")
+	private Boolean enabled;
 
 }

@@ -40,6 +40,10 @@ public class User extends ModelCopy {
 	 */
 	private String password;
 	/**
+	 * 是否可用
+	 */
+	private boolean enabled;
+	/**
 	 * 角色
 	 */
 	private Set<String> roles;

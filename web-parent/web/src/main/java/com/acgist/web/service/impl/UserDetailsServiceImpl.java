@@ -27,7 +27,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if(user == null) {
 			throw new UsernameNotFoundException("用户无效");
 		}
-		return new WebUser(user.getId(), user.getName(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getPaths().toArray(String[]::new)));
+		return new WebUser(
+			user.getId(), user.getName(), user.getPassword(), user.isEnabled(),
+			true, true, true,
+			AuthorityUtils.createAuthorityList(user.getPaths().toArray(String[]::new))
+		);
 	}
 
 }
