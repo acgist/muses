@@ -72,8 +72,9 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>gateway</artifactId>
+				<artifactId>boot-dev</artifactId>
 				<version>${project.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
@@ -82,13 +83,17 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-dev</artifactId>
+				<artifactId>boot-concurrent</artifactId>
 				<version>${project.version}</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-test</artifactId>
+				<artifactId>boot-gateway</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>boot-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -98,12 +103,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-web</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.acgist</groupId>
-				<artifactId>boot-www</artifactId>
+				<artifactId>boot-redis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -118,12 +118,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-model</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.acgist</groupId>
-				<artifactId>boot-redis</artifactId>
+				<artifactId>boot-sentinel</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -133,17 +128,22 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-gateway</artifactId>
+				<artifactId>boot-test</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-sentinel</artifactId>
+				<artifactId>boot-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>boot-concurrent</artifactId>
+				<artifactId>boot-www</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
+				<artifactId>gateway</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

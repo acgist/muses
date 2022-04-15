@@ -25,10 +25,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-dev</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.acgist</groupId>
 			<artifactId>boot-www</artifactId>
 		</dependency>
 		<dependency>

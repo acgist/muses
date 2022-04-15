@@ -37,6 +37,11 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisAutoConfiguration {
 	
 	/**
+	 * 缓存时间：分钟
+	 */
+	@Value("${system.cache.ttl:30}")
+	private int cacheTtl;
+	/**
 	 * 缓存前缀
 	 */
 	@Value("${system.cache.prefix:cache::}")
@@ -58,9 +63,13 @@ public class RedisAutoConfiguration {
 			// 设置缓存前缀
 			.prefixCacheNameWith(this.cachePrefix)
 			// 设置过期时间：不同时间通过缓存名称配置
-			.entryTtl(Duration.ofMinutes(30));
+			.entryTtl(Duration.ofMinutes(this.cacheTtl));
 		final RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
 			.cacheDefaults(config)
+			// 配置初始缓存
+//			.initialCacheNames(null)
+			// 不同缓存配置
+//			.withInitialCacheConfigurations(null)
 			.build();
 		return cacheManager;
 	}

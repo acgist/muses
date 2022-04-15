@@ -2,10 +2,6 @@
 
 Boot模块：各种模块自动配置
 
-## boot-dev
-
-开发模块建议不要打包依赖：`<optional>true</optional>`
-
 ## Www模块继承
 
 ```

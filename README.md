@@ -8,13 +8,14 @@
 
 |模块|描述|
 |:-|:-|
-|boot|启动|
-|gateway|网关|
+|docs|配置文档|
+|boot|启动模块|
+|boot-dev|开发模块|
+|boot-parent|依赖启动模块|
+|gateway|网关服务模块|
 |web-parent|Web服务模块|
 |rest-parent|Rest服务模块|
-|boot-parent|Boot模块|
 |service-parent|内部服务模块|
-|docs|配置文档|
 
 ## 规范
 
@@ -119,6 +120,8 @@ system.topic.gateway=topic-gateway
 system.shutdown.enable=true
 # 自动关机等待时间：秒
 system.shutdown.gracefully=30
+# 缓存时间：分钟
+system.cache.ttl=30
 # 缓存前缀
 system.cache.prefix=cache::
 # 登陆失败最大次数

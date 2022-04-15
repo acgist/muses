@@ -15,7 +15,7 @@
 	<artifactId>boot-test</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-dev</name>
+	<name>boot-test</name>
 	<description>测试模块Boot</description>
 
 	<properties>
@@ -23,10 +23,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.acgist</groupId>
-			<artifactId>boot-dev</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
 			<artifactId>boot-service</artifactId>
