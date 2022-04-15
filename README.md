@@ -203,7 +203,9 @@ server.port=${system.port:8080}
 |微服务|com.acgist.**.api.impl||
 |本地服务|com.acgist.**.service.impl||
 |数据层|com.acgist.**.dao.*|es/neo4j/mapper/repository|
-|数据模型|com.acgist.**.model.*|es/neo4j/entity/vo/dto/enum/request/response/exception|
+|数据模型|com.acgist.**.model.*|es/neo4j/entity/vo/dto/type/request/response/exception|
+
+> `model.type`存放实体枚举
 
 #### Service规范
 
