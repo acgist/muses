@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  * @author acgist
  */
 @EnableConfigurationProperties(MailNotifyConfig.class)
-@ConditionalOnProperty(value = "notify.mail.enable", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(value = "notify.mail.enabled", matchIfMissing = true, havingValue = "true")
 public class MailNotifyConfiguration {
 
 	@Bean

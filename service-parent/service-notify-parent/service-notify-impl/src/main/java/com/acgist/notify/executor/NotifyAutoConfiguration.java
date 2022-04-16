@@ -1,4 +1,4 @@
-package com.acgist.notify.config;
+package com.acgist.notify.executor;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

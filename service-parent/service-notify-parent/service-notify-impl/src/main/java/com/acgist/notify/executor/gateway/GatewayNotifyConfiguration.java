@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  * @author acgist
  */
 @EnableConfigurationProperties(GatewayNotifyConfig.class)
-@ConditionalOnProperty(value = "notify.gateway.enable", matchIfMissing = true, havingValue = "true")
+@ConditionalOnProperty(value = "notify.gateway.enabled", matchIfMissing = true, havingValue = "true")
 public class GatewayNotifyConfiguration {
 
 	@Bean
