@@ -1,18 +1,11 @@
 package com.acgist.boot.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * VO
+ * BootVo
  * 
  * @author acgist
  */
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-public class BootVo extends EntityCopy {
+public class BootVo extends ModelCopy {
 
 	private static final long serialVersionUID = 1L;
 

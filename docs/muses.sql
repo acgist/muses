@@ -84,7 +84,7 @@ CREATE TABLE `t_path`  (
   `modify_date` datetime(6) NULL DEFAULT NULL,
   `memo` varchar(128) NULL DEFAULT NULL,
   `name` varchar(32) NOT NULL,
-  `enable` bit(1) NULL DEFAULT b'1',
+  `enabled` bit(1) NULL DEFAULT b'1',
   `sorted` int(11) NULL DEFAULT 0,
   `path` varchar(128) NOT NULL,
   `parent_id` bigint(20) NULL DEFAULT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE `t_role`  (
   `modify_date` datetime(6) NULL DEFAULT NULL,
   `memo` varchar(128) NULL DEFAULT NULL,
   `name` varchar(32) NOT NULL,
-  `enable` bit(1) NULL DEFAULT b'1',
+  `enabled` bit(1) NULL DEFAULT b'1',
   `sorted` int(11) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
@@ -151,7 +151,7 @@ CREATE TABLE `t_user`  (
   `modify_date` datetime(6) NULL DEFAULT NULL,
   `memo` varchar(128) NULL DEFAULT NULL,
   `name` varchar(32) NOT NULL,
-  `enable` bit(1) NULL DEFAULT b'1',
+  `enabled` bit(1) NULL DEFAULT b'1',
   `sorted` int(11) NULL DEFAULT 0,
   `password` varchar(128) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,

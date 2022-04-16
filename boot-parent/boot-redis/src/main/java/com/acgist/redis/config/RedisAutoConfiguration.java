@@ -22,6 +22,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.acgist.boot.JSONUtils;
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
+import com.acgist.redis.service.impl.CacheService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,6 +85,12 @@ public class RedisAutoConfiguration {
 		template.setValueSerializer(this.buildValueSerializer());
 		template.afterPropertiesSet();
 		return template;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public CacheService cacheService() {
+		return new CacheService();
 	}
 	
 	/**

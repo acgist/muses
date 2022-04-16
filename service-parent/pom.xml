@@ -24,7 +24,7 @@
 
 	<modules>
 		<module>service-user-parent</module>
-		<module>service-gateway-parent</module>
+		<module>service-notify-parent</module>
 	</modules>
 
 	<dependencies>

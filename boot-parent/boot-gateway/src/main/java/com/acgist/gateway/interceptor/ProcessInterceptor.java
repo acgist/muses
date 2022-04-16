@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.service.impl.IdService;
 import com.acgist.gateway.model.GatewaySession;
-import com.acgist.gateway.model.dto.GatewayDto;
+import com.acgist.notify.gateway.model.dto.GatewayDto;
 import com.acgist.www.ErrorUtils;
 import com.acgist.www.interceptor.WwwInterceptor;
 

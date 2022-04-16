@@ -9,8 +9,8 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.gateway.model.dto.GatewayDto;
 import com.acgist.gateway.service.impl.RsaService;
+import com.acgist.notify.gateway.model.dto.GatewayDto;
 
 /**
  * 网关配置

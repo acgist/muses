@@ -48,10 +48,11 @@
 
 	<modules>
 		<module>boot</module>
+		<module>boot-dev</module>
+		<module>boot-parent</module>
 		<module>gateway</module>
 		<module>web-parent</module>
 		<module>rest-parent</module>
-		<module>boot-parent</module>
 		<module>service-parent</module>
 	</modules>
 
@@ -168,17 +169,17 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>service-gateway-parent</artifactId>
+				<artifactId>service-notify-parent</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>service-gateway-api</artifactId>
+				<artifactId>service-notify-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
-				<artifactId>service-gateway-impl</artifactId>
+				<artifactId>service-notify-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

@@ -2,7 +2,7 @@ package com.acgist.user.model.dto;
 
 import java.math.BigInteger;
 
-import com.acgist.boot.model.BootDto;
+import com.acgist.boot.model.EntityDto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class UserDto extends BootDto {
+public class UserDto extends EntityDto {
 
 	private static final long serialVersionUID = 1L;
 

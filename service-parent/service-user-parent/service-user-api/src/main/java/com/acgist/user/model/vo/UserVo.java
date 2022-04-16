@@ -1,6 +1,6 @@
 package com.acgist.user.model.vo;
 
-import com.acgist.boot.model.BootVo;
+import com.acgist.boot.model.EntityVo;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class UserVo extends BootVo {
+public class UserVo extends EntityVo {
 
 	private static final long serialVersionUID = 1L;
 

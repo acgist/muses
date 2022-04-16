@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: service-notify
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  profiles:
+    active: @profile@
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        namespace: ${spring.profiles.active}
+        server-addr: @nacos@
+      config:
+        namespace: ${spring.profiles.active}
+        file-extension: yml
+        refreshable-dataids: main.yml, mq.yml, dubbo.yml, data-sharding.yml

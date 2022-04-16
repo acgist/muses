@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>service-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>service-notify-parent</artifactId>
+	<packaging>pom</packaging>
+
+	<name>service-notify-parent</name>
+	<description>通知内部服务模块</description>
+
+	<properties>
+		<system.maven.module>com.acgist.service.notify.parent</system.maven.module>
+	</properties>
+
+	<modules>
+		<module>service-notify-api</module>
+		<module>service-notify-impl</module>
+	</modules>
+
+	<dependencies>
+	</dependencies>
+
+</project>

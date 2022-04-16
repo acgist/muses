@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>service-gateway-api</artifactId>
+			<artifactId>service-notify-api</artifactId>
 		</dependency>
 	</dependencies>
 
