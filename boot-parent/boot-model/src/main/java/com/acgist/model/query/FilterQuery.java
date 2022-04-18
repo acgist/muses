@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +35,11 @@ import lombok.Setter;
 public class FilterQuery {
 	
 	/**
+	 * 缓存
+	 */
+	private static final Map<Class<?>, Map<String, String>> COLUMN_CACHE = new ConcurrentHashMap<>();
+	
+	/**
 	 * 通过MyBatis注解获取数据库列名
 	 * 
 	 * @param <T> 类型
@@ -43,19 +50,22 @@ public class FilterQuery {
 	 * @return 数据库列名
 	 */
 	private static final <T> String column(Class<T> entity, final String name) {
-		final Field field = FieldUtils.getField(entity, name, true);
-		if(field == null) {
+		final Map<String, String> map = COLUMN_CACHE.computeIfAbsent(entity, key -> new ConcurrentHashMap<>());
+		return map.computeIfAbsent(name, key -> {
+			final Field field = FieldUtils.getField(entity, name, true);
+			if(field == null) {
+				return name;
+			}
+			final TableField tableField = field.getAnnotation(TableField.class);
+			if(tableField != null && StringUtils.isNotEmpty(tableField.value())) {
+				return tableField.value();
+			}
+			final TableId tableId = field.getAnnotation(TableId.class);
+			if(tableId != null && StringUtils.isNotEmpty(tableId.value())) {
+				return tableId.value();
+			}
 			return name;
-		}
-		final TableField tableField = field.getAnnotation(TableField.class);
-		if(tableField != null && StringUtils.isNotEmpty(tableField.value())) {
-			return tableField.value();
-		}
-		final TableId tableId = field.getAnnotation(TableId.class);
-		if(tableId != null && StringUtils.isNotEmpty(tableId.value())) {
-			return tableId.value();
-		}
-		return name;
+		});
 	}
 	
 	/**
