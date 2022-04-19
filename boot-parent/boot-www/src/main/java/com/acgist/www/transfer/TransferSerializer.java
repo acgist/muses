@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.acgist.boot.SpringUtils;
+import com.acgist.service.CacheService;
 import com.acgist.service.TransferService;
-import com.acgist.service.impl.CacheService;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -76,8 +76,7 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 		final String fieldName = generator.getOutputContext().getCurrentName() + "Value";
 		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, this.group);
 		if(transferMap == null) {
-			final Map<String, String> map = this.transferService.select(this.group);
-			transferMap = map == null ? Map.of() : map;
+			transferMap = this.transferService.select(this.group);
 			this.cacheService.cache(CacheService.CACHE_TRANSFER, this.group, transferMap);
 		}
 		generator.writeStringField(fieldName, transferMap.getOrDefault(value, value));

@@ -1,11 +1,13 @@
 package com.acgist.service.excel;
 
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 import com.acgist.boot.SpringUtils;
 import com.acgist.service.BootExcelService.Formatter;
+import com.acgist.service.CacheService;
 import com.acgist.service.TransferService;
-import com.acgist.service.impl.CacheService;
 
 /**
  * 枚举格式化工具
@@ -40,18 +42,35 @@ public class TransferFormatter implements Formatter {
 	}
 
 	@Override
+	public String format(Object object) {
+		if(object == null) {
+			return Formatter.super.format(object);
+		}
+		final String key = object.toString();
+		return this.transferMap().getOrDefault(key, key);
+	}
+	
+	@Override
 	public Object parse(Object object) {
 		if(object == null) {
 			return Formatter.super.parse(object);
 		}
+		return this.transferMap().entrySet().stream()
+			.filter(entry -> Objects.equals(entry.getValue(), Objects.toString(object, null)))
+			.map(Entry::getKey);
+	}
+	
+	/**
+	 * @return 分组翻译
+	 */
+	private Map<String, String> transferMap() {
 		final String groupName = this.group.get();
 		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, groupName);
 		if(transferMap == null) {
-			final Map<String, String> map = this.transferService.select(groupName);
-			transferMap = map == null ? Map.of() : map;
+			transferMap = this.transferService.select(groupName);
 			this.cacheService.cache(CacheService.CACHE_TRANSFER, groupName, transferMap);
 		}
-		return transferMap.getOrDefault(object.toString(), object.toString());
+		return transferMap;
 	}
 	
 }

@@ -14,7 +14,7 @@ public interface TransferService {
 	 * 
 	 * @param group 枚举分组
 	 * 
-	 * @return 枚举数据
+	 * @return 枚举数据（不能为空）
 	 */
 	Map<String, String> select(String group);
 	

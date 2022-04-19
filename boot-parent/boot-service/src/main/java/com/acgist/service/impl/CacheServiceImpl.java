@@ -6,31 +6,19 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.service.CacheService;
 
 /**
  * 缓存管理
  * 
  * @author acgist
  */
-public class CacheService {
+public class CacheServiceImpl implements CacheService {
 
-	/**
-	 * 枚举缓存
-	 */
-	public static final String CACHE_TRANSFER = "transfer";
-	
 	@Autowired
 	private CacheManager cacheManager;
 	
-	/**
-	 * 存放缓存
-	 * 
-	 * @param name 缓存名称
-	 * @param key 缓存键
-	 * @param value 缓存值
-	 * 
-	 * @return 是否成功
-	 */
+	@Override
 	public boolean cache(String name, String key, Object value) {
 		final Cache cache = this.cacheManager.getCache(name);
 		if(cache == null) {
@@ -40,16 +28,7 @@ public class CacheService {
 		return true;
 	}
 	
-	/**
-	 * 获取缓存
-	 * 
-	 * @param <T> 缓存类型
-	 * 
-	 * @param name 缓存名称
-	 * @param key 缓存键
-	 * 
-	 * @return 缓存值
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T cache(String name, String key) {
 		final Cache cache = this.cacheManager.getCache(name);
@@ -63,14 +42,7 @@ public class CacheService {
 		return (T) valueWrapper.get();
 	}
 	
-	/**
-	 * 删除缓存
-	 * 
-	 * @param name 缓存名称
-	 * @param key 缓存键
-	 * 
-	 * @return 是否成功
-	 */
+	@Override
 	public boolean remove(String name, String key) {
 		final Cache cache = this.cacheManager.getCache(name);
 		if(cache == null) {
