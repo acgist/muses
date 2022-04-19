@@ -1,4 +1,4 @@
-package com.acgist.redis.service.impl;
+package com.acgist.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -14,6 +14,11 @@ import com.acgist.boot.model.MessageCodeException;
  */
 public class CacheService {
 
+	/**
+	 * 枚举缓存
+	 */
+	public static final String CACHE_TRANSFER = "transfer";
+	
 	@Autowired
 	private CacheManager cacheManager;
 	
@@ -46,7 +51,7 @@ public class CacheService {
 	 * @return 缓存值
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T cahce(String name, String key) {
+	public <T> T cache(String name, String key) {
 		final Cache cache = this.cacheManager.getCache(name);
 		if(cache == null) {
 			throw MessageCodeException.of("缓存不存在：" + name);

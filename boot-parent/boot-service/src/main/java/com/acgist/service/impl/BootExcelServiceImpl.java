@@ -101,8 +101,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 					final XSSFCell cell = dataRow.createCell(col.get());
 					cell.setCellStyle(this.dataCellStyle(workbook));
 					final String data = excelHeaderValue.getFormatter().format(object);
-					cell.setCellValue(data);
-					colWidth.set(col.get(), Math.max(colWidth.get(col.get()), data.getBytes().length));
+					if(data != null) {
+						cell.setCellValue(data);
+						colWidth.set(col.get(), Math.max(colWidth.get(col.get()), data.getBytes().length));
+					}
 					col.incrementAndGet();
 				});
 			});

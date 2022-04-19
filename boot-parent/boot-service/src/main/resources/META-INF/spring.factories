@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.config.MyBatisAutoConfiguration
+com.acgist.config.MyBatisAutoConfiguration,\
+com.acgist.config.ServiceAutoConfiguration

@@ -1,4 +1,4 @@
-package com.acgist.www.transfer;
+package com.acgist.service;
 
 import java.util.Map;
 
