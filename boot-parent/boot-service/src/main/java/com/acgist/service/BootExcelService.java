@@ -68,7 +68,7 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		 * @return 输入数据
 		 */
 		default Object parse(Object object) {
-			return Objects.toString(object, null);
+			return object;
 		}
 		
 	}

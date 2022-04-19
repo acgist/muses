@@ -12,7 +12,7 @@ public class DoubleFormatter implements Formatter {
 	@Override
 	public Object parse(Object object) {
 		if(object == null) {
-			return null;
+			return Formatter.super.parse(object);
 		}
 		return Double.valueOf(object.toString());
 	}

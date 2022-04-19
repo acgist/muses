@@ -12,7 +12,7 @@ public class LongFormatter implements Formatter {
 	@Override
 	public Object parse(Object object) {
 		if(object == null) {
-			return null;
+			return Formatter.super.parse(object);
 		}
 		return Long.valueOf(object.toString());
 	}

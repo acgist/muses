@@ -26,7 +26,7 @@ public class DateFormatter implements Formatter {
 	@Override
 	public Object parse(Object object) {
 		if(object == null) {
-			return null;
+			return Formatter.super.parse(object);
 		}
 		return DateUtils.parse(object.toString(), DateStyle.YYYY_MM_DD.getFormat());
 	}

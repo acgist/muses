@@ -3,6 +3,8 @@ package com.acgist.boot;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,6 +33,23 @@ public final class BeanUtils {
 			return clazz.getDeclaredConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			log.error("通过反射生成实例异常：{}", clazz, e);
+		}
+		return null;
+	}
+	
+	/**
+	 * 读取对象字段属性
+	 * 
+	 * @param field 字段
+	 * @param value 对象
+	 * 
+	 * @return 字段属性
+	 */
+	public static final Object read(String field, Object value) {
+		try {
+			return FieldUtils.getField(value.getClass(), field, true).get(value);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			log.error("读取属性异常", e);
 		}
 		return null;
 	}

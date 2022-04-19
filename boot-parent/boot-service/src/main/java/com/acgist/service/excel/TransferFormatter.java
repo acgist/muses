@@ -42,7 +42,7 @@ public class TransferFormatter implements Formatter {
 	@Override
 	public Object parse(Object object) {
 		if(object == null) {
-			return null;
+			return Formatter.super.parse(object);
 		}
 		final String groupName = this.group.get();
 		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, groupName);

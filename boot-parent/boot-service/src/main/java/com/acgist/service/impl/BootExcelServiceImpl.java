@@ -35,8 +35,6 @@ import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService;
 import com.acgist.service.excel.StringFormatter;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Excel Service实现
  * 
@@ -45,7 +43,6 @@ import lombok.extern.slf4j.Slf4j;
  * @param <M> Mapper
  * @param <T> 类型
  */
-@Slf4j
 public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends BootEntity> extends BootServiceImpl<M, T> implements BootExcelService<T> {
 
 	@Value("${system.excel.header.font:宋体}")
@@ -91,16 +88,11 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				col.set(0);
 				final XSSFRow dataRow = sheet.createRow(row.getAndIncrement());
 				keys.forEach(field -> {
-					Object object = null;
-					try {
-						object = FieldUtils.getField(value.getClass(), field, true).get(value);
-					} catch (IllegalArgumentException | IllegalAccessException e) {
-						log.error("读取属性异常：{}", field, e);
-					}
+					final Object fieldValue = BeanUtils.read(field, value);
 					final ExcelHeaderValue excelHeaderValue = headers.get(col.get());
 					final XSSFCell cell = dataRow.createCell(col.get());
 					cell.setCellStyle(this.dataCellStyle(workbook));
-					final String data = excelHeaderValue.getFormatter().format(object);
+					final String data = excelHeaderValue.getFormatter().format(fieldValue);
 					if(data != null) {
 						cell.setCellValue(data);
 						colWidth.set(col.get(), Math.max(colWidth.get(col.get()), data.getBytes().length));

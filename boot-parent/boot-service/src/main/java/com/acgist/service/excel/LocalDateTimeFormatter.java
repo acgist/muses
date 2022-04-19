@@ -25,7 +25,7 @@ public class LocalDateTimeFormatter implements Formatter {
 	@Override
 	public Object parse(Object object) {
 		if(object == null) {
-			return null;
+			return Formatter.super.parse(object);
 		}
 		return DateStyle.YYYY_MM_DD.getDateTimeFormatter().parse(object.toString());
 	}
