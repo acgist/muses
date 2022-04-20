@@ -24,6 +24,7 @@ import com.acgist.boot.StringUtils;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
+import com.acgist.service.excel.ExcelSession;
 import com.acgist.service.excel.StringFormatter;
 
 import lombok.Getter;
@@ -46,6 +47,8 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 格式化工具
 	 * 
 	 * @author acgist
+	 * 
+	 * @see ExcelSession
 	 */
 	public interface Formatter {
 		
@@ -177,6 +180,29 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		}
 		
 	}
+	
+	/**
+	 * 开始记录Excel错误：开始导入调用
+	 * 
+	 * @param index 索引
+	 */
+	void logError(String index);
+	
+	/**
+	 * 删除Excel错误并且返回：导入完成调用
+	 * 
+	 * @return Excel错误
+	 */
+	ExcelSession removeError();
+	
+	/**
+	 * 获取导入进度
+	 * 
+	 * @param index 索引
+	 * 
+	 * @return 进度
+	 */
+	Double process(String index);
 	
 	/**
 	 * 下载Excel模板

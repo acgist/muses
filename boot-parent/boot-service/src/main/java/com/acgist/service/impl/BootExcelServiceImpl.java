@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ import com.acgist.boot.model.MessageCodeException;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService;
+import com.acgist.service.excel.ExcelSession;
 import com.acgist.service.excel.StringFormatter;
 
 /**
@@ -60,6 +62,34 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	 * Header缓存
 	 */
 	private Map<String, ExcelHeaderValue> header;
+	/**
+	 * 索引
+	 */
+	private final ThreadLocal<String> sessionIndex = new ThreadLocal<String>();
+	/**
+	 * Excel导入状态
+	 */
+	private final Map<String, ExcelSession> session = new ConcurrentHashMap<>();
+	
+	@Override
+	public void logError(String index) {
+		this.sessionIndex.set(index);
+		this.session.put(index, new ExcelSession());
+	}
+	
+	@Override
+	public ExcelSession removeError() {
+		final String index = this.sessionIndex.get();
+		this.sessionIndex.remove();
+		return this.session.remove(index);
+	}
+	
+	@Override
+	public Double process(String index) {
+		final ExcelSession excelSession = this.session.get(index);
+		// 为空导入完成
+		return excelSession == null ? 100D : excelSession.process();
+	}
 	
 	@Override
 	public void download(List<T> list, Map<String, ExcelHeaderValue> header, OutputStream output) throws IOException {
@@ -213,18 +243,30 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		for (int index = 0; index < excelHeader.size(); index++) {
 			headerMapping.put(index, mapping.get(excelHeader.get(index).toString()));
 		}
+		final AtomicInteger row = new AtomicInteger();
+		final ExcelSession excelSession = this.session.get(this.sessionIndex.get());
+		excelSession.setTotal(list.size());
 		return list.stream()
 			// 跳过表头
 			.skip(1)
 			// 表头字段转换
 			.map(data -> {
+				excelSession.setFinish(row.incrementAndGet());
+				boolean hasException = false;
 				final Map<String, Object> map = new HashMap<>();
 				for (int index = 0; index < data.size(); index++) {
 					final ExcelHeaderValue headerValue = headerMapping.get(index);
-					map.put(headerValue.getField(), headerValue.getFormatter().parse(data.get(index)));
+					try {
+						map.put(headerValue.getField(), headerValue.getFormatter().parse(data.get(index)));
+					} catch (Exception e) {
+						hasException = true;
+						// 记录错误信息
+						excelSession.error(row.get(), index, e.getMessage());
+					}
 				}
-				return map;
+				return hasException ? null : map;
 			})
+			.filter(Objects::nonNull)
 			// 数据类型转换
 			.map(data -> {
 				final K newInstance = BeanUtils.newInstance(clazz);
