@@ -25,6 +25,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
+			<artifactId>boot-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
 			<artifactId>boot-service</artifactId>
 			<optional>true</optional>
 		</dependency>

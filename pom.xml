@@ -84,6 +84,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>boot-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>boot-concurrent</artifactId>
 				<version>${project.version}</version>
 			</dependency>

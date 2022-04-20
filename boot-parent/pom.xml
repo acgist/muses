@@ -27,6 +27,7 @@
 		<module>boot-test</module>
 		<!-- 打包模块 -->
 		<module>boot-mq</module>
+		<module>boot-api</module>
 		<module>boot-web</module>
 		<module>boot-www</module>
 		<module>boot-rest</module>

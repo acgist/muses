@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>boot-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>boot-api</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-api</name>
+	<description>服务接口Boot</description>
+
+	<properties>
+		<system.maven.module>com.acgist.boot.api</system.maven.module>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-dubbo</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
