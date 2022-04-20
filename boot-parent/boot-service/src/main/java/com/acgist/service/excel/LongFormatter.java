@@ -10,10 +10,7 @@ import com.acgist.service.BootExcelService.Formatter;
 public class LongFormatter implements Formatter {
 
 	@Override
-	public Object parse(Object object) {
-		if(object == null) {
-			return Formatter.super.parse(object);
-		}
+	public Object parseProxy(Object object) {
 		return Long.valueOf(object.toString());
 	}
 

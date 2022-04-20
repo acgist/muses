@@ -50,6 +50,17 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	public interface Formatter {
 		
 		/**
+		 * 判断空值
+		 * 
+		 * @param object 对象
+		 * 
+		 * @return 是否空值
+		 */
+		default boolean empty(Object object) {
+			return object == null || object.toString().isEmpty();
+		}
+		
+		/**
 		 * 格式化数据
 		 * 
 		 * @param object 原始数据
@@ -57,6 +68,20 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		 * @return 输出文本
 		 */
 		default String format(Object object) {
+			if(object == null) {
+				return "";
+			}
+			return this.formatProxy(object);
+		}
+		
+		/**
+		 * 格式化数据代理
+		 * 
+		 * @param object 原始数据
+		 * 
+		 * @return 输出文本
+		 */
+		default String formatProxy(Object object) {
 			return Objects.toString(object, "");
 		}
 		
@@ -68,6 +93,20 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		 * @return 输入数据
 		 */
 		default Object parse(Object object) {
+			if(this.empty(object)) {
+				return null;
+			}
+			return this.parseProxy(object);
+		}
+		
+		/**
+		 * 加载数据代理
+		 * 
+		 * @param object 原始数据
+		 * 
+		 * @return 输入数据
+		 */
+		default Object parseProxy(Object object) {
 			return object;
 		}
 		

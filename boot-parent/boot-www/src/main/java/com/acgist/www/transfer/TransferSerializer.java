@@ -74,12 +74,22 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 		generator.writeString(value);
 		// 翻译字段输出
 		final String fieldName = generator.getOutputContext().getCurrentName() + "Value";
+		generator.writeStringField(fieldName, this.transferMap().getOrDefault(value, value));
+	}
+	
+	/**
+	 * @return 分组翻译
+	 */
+	private Map<String, String> transferMap() {
+		if(this.cacheService == null || this.transferService == null) {
+			return Map.of();
+		}
 		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, this.group);
 		if(transferMap == null) {
 			transferMap = this.transferService.select(this.group);
 			this.cacheService.cache(CacheService.CACHE_TRANSFER, this.group, transferMap);
 		}
-		generator.writeStringField(fieldName, transferMap.getOrDefault(value, value));
+		return transferMap;
 	}
 
 }

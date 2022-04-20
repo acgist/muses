@@ -42,19 +42,13 @@ public class TransferFormatter implements Formatter {
 	}
 
 	@Override
-	public String format(Object object) {
-		if(object == null) {
-			return Formatter.super.format(object);
-		}
+	public String formatProxy(Object object) {
 		final String key = object.toString();
 		return this.transferMap().getOrDefault(key, key);
 	}
 	
 	@Override
-	public Object parse(Object object) {
-		if(object == null) {
-			return Formatter.super.parse(object);
-		}
+	public Object parseProxy(Object object) {
 		return this.transferMap().entrySet().stream()
 			.filter(entry -> Objects.equals(entry.getValue(), Objects.toString(object, null)))
 			.map(Entry::getKey);
@@ -64,6 +58,9 @@ public class TransferFormatter implements Formatter {
 	 * @return 分组翻译
 	 */
 	private Map<String, String> transferMap() {
+		if(this.cacheService == null || this.transferService == null) {
+			return Map.of();
+		}
 		final String groupName = this.group.get();
 		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, groupName);
 		if(transferMap == null) {

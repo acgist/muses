@@ -13,20 +13,13 @@ import com.acgist.service.BootExcelService.Formatter;
 public class LocalDateTimeFormatter implements Formatter {
 
 	@Override
-	public String format(Object object) {
-		if(object instanceof TemporalAccessor) {
-			// TODO：JDK17
-			return DateStyle.YYYY_MM_DD.getDateTimeFormatter().format((TemporalAccessor) object);
-		} else {
-			return Formatter.super.format(object);
-		}
+	public String formatProxy(Object object) {
+		// TODO：JDK17
+		return DateStyle.YYYY_MM_DD.getDateTimeFormatter().format((TemporalAccessor) object);
 	}
 	
 	@Override
-	public Object parse(Object object) {
-		if(object == null) {
-			return Formatter.super.parse(object);
-		}
+	public Object parseProxy(Object object) {
 		return DateStyle.YYYY_MM_DD.getDateTimeFormatter().parse(object.toString());
 	}
 	

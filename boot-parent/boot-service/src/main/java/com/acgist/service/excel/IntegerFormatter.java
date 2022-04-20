@@ -10,10 +10,9 @@ import com.acgist.service.BootExcelService.Formatter;
 public class IntegerFormatter implements Formatter {
 
 	@Override
-	public Object parse(Object object) {
-		if(object == null) {
-			return Formatter.super.parse(object);
-		}
+	public Object parseProxy(Object object) {
+//		Double.valueOf(object.toString()).intValue();
+//		new BigDecimal(object.toString()).intValue();
 		return Integer.valueOf(object.toString());
 	}
 	

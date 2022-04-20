@@ -4,11 +4,14 @@ import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Spring工具
  * 
  * @author acgist
  */
+@Slf4j
 public final class SpringUtils {
 
 	private SpringUtils() {
@@ -39,7 +42,12 @@ public final class SpringUtils {
 		while(SpringUtils.context == null) {
 			Thread.yield();
 		}
-		return SpringUtils.context.getBean(clazz);
+		try {
+			return SpringUtils.context.getBean(clazz);
+		} catch (Exception e) {
+			log.info("根据类型获取实例失败：{}", clazz);
+		}
+		return null;
 	}
 	
 	/**

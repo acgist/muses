@@ -14,20 +14,12 @@ import com.acgist.service.BootExcelService.Formatter;
 public class DateFormatter implements Formatter {
 
 	@Override
-	public String format(Object object) {
-		if(object instanceof Date) {
-			// TODO：JDK17
-			return DateUtils.format((Date) object, DateStyle.YYYY_MM_DD.getFormat());
-		} else {
-			return Formatter.super.format(object);
-		}
+	public String formatProxy(Object object) {
+		return DateUtils.format((Date) object, DateStyle.YYYY_MM_DD.getFormat());
 	}
 	
 	@Override
-	public Object parse(Object object) {
-		if(object == null) {
-			return Formatter.super.parse(object);
-		}
+	public Object parseProxy(Object object) {
 		return DateUtils.parse(object.toString(), DateStyle.YYYY_MM_DD.getFormat());
 	}
 	
