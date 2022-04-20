@@ -10,23 +10,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Excel导入状态
+ * Excel导入标记
  * 
  * @author acgist
  */
 @Getter
 @Setter
-public class ExcelSession {
+public class ExcelMark {
 	
 	/**
-	 * Excel导入状态信息
+	 * Excel导入标记信息
 	 * 
 	 * @author acgist
 	 */
 	@Getter
 	@Setter
 	@AllArgsConstructor
-	public static class ExcelMessage {
+	public static class MarkMessage {
 		
 		/**
 		 * 行数
@@ -37,7 +37,7 @@ public class ExcelSession {
 		 */
 		private Integer col;
 		/**
-		 * 错误信息
+		 * 标记信息
 		 */
 		private String message;
 		
@@ -52,19 +52,19 @@ public class ExcelSession {
 	 */
 	private Integer finish;
 	/**
-	 * 错误信息
+	 * 标记信息
 	 */
-	private final List<ExcelMessage> error = new ArrayList<>();
+	private final List<MarkMessage> marks = new ArrayList<>();
 	
 	/**
-	 * 添加错误信息
+	 * 添加标记信息
 	 * 
 	 * @param row 行数
 	 * @param col 列数
-	 * @param message 错误信息
+	 * @param message 标记信息
 	 */
-	public void error(int row, int col, String message) {
-		this.error.add(new ExcelMessage(row, col, message));
+	public void mark(int row, int col, String message) {
+		this.marks.add(new MarkMessage(row, col, message));
 	}
 	
 	/**
@@ -78,6 +78,13 @@ public class ExcelSession {
 	 */
 	public Double process() {
 		return BigDecimal.valueOf(0.25 + (0.5D * finish / total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+	}
+	
+	/**
+	 * @return 是否含有错误
+	 */
+	public boolean hasException() {
+		return !this.marks.isEmpty();
 	}
 	
 }

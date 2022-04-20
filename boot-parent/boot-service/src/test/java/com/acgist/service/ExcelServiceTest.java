@@ -1,5 +1,9 @@
 package com.acgist.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -13,6 +17,7 @@ import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService.ExcelHeader;
 import com.acgist.service.BootExcelService.ExcelHeaderValue;
+import com.acgist.service.excel.ExcelMark;
 import com.acgist.service.excel.IntegerFormatter;
 import com.acgist.service.impl.BootExcelServiceImpl;
 
@@ -62,6 +67,19 @@ public class ExcelServiceTest {
 		final List<ExcelEntity> load = service.loadEntity("D:/tmp/excel.xlsx");
 //		final List<ExcelEntity> load = service.load("D:/tmp/excel.xlsx", ExcelEntity.class);
 		log.info("{}", load);
+	}
+
+	@Test
+	public void testExcelSession() throws FileNotFoundException {
+		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
+		};
+		service.mark("1234");
+//		service.loadEntity("D:/tmp/excel.xlsx").forEach(entity -> log.info("{}", entity));
+		service.loadEntity("D:/tmp/excelMark.xlsx").forEach(entity -> log.info("{}", entity));
+		final ExcelMark mark = service.removeMark();
+		if(mark.hasException()) {
+			service.mark(new FileInputStream(new File("D:/tmp/excelMark.xlsx")), new FileOutputStream(new File("D:/tmp/excelException.xlsx")), mark);
+		}
 	}
 	
 }

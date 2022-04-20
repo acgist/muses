@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.acgist.boot.BeanUtils;
@@ -24,7 +26,7 @@ import com.acgist.boot.StringUtils;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
-import com.acgist.service.excel.ExcelSession;
+import com.acgist.service.excel.ExcelMark;
 import com.acgist.service.excel.StringFormatter;
 
 import lombok.Getter;
@@ -48,7 +50,7 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 
 	 * @author acgist
 	 * 
-	 * @see ExcelSession
+	 * @see ExcelMark
 	 */
 	public interface Formatter {
 		
@@ -182,18 +184,18 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	}
 	
 	/**
-	 * 开始记录Excel错误：开始导入调用
+	 * 开始记录Excel标记：开始导入调用
 	 * 
 	 * @param index 索引
 	 */
-	void logError(String index);
+	void mark(String index);
 	
 	/**
-	 * 删除Excel错误并且返回：导入完成调用
+	 * 删除Excel标记并且返回：导入完成调用
 	 * 
-	 * @return Excel错误
+	 * @return Excel标记
 	 */
-	ExcelSession removeError();
+	ExcelMark removeMark();
 	
 	/**
 	 * 获取导入进度
@@ -203,6 +205,37 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @return 进度
 	 */
 	Double process(String index);
+	
+	/**
+	 * 标记输出
+	 * 
+	 * @param input 输入流
+	 * @param output 输出流
+	 * @param mark Excel导入标记
+	 */
+	default void mark(InputStream input, OutputStream output, ExcelMark mark) {
+		this.mark(0, input, output, mark);
+	}
+	
+	/**
+	 * 标记输出
+	 * 
+	 * @param sheet sheet
+	 * @param input 输入流
+	 * @param output 输出流
+	 * @param mark Excel导入标记
+	 */
+	void mark(int sheet, InputStream input, OutputStream output, ExcelMark mark);
+	
+	/**
+	 * 标记单元格
+	 * 
+	 * @param workbook 表格
+	 * @param sheet sheet
+	 * @param cell 单元格
+	 * @param message 批注信息
+	 */
+	void markCell(XSSFWorkbook workbook, XSSFSheet sheet, Cell cell, String message);
 	
 	/**
 	 * 下载Excel模板
@@ -258,6 +291,13 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	void download(List<T> list, Map<String, ExcelHeaderValue> header, OutputStream output) throws IOException;
 	
 	/**
+	 * 获取表头信息，默认使用注解获取，如果注解为空获取全部属性，可以重写方法自定义表头。
+	 * 
+	 * @return 表头
+	 */
+	Map<String, ExcelHeaderValue> header();
+	
+	/**
 	 * 表头表格样式
 	 * 
 	 * @param workbook 表格
@@ -274,13 +314,6 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @return 数据表格样式
 	 */
 	CellStyle dataCellStyle(XSSFWorkbook workbook);
-	
-	/**
-	 * 获取表头信息，默认使用注解获取，如果注解为空获取全部属性，可以重写方法自定义表头。
-	 * 
-	 * @return 表头
-	 */
-	Map<String, ExcelHeaderValue> header();
 	
 	/**
 	 * 获取格式化工具
@@ -312,6 +345,17 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * 加载Excel
 	 * 
 	 * @param input 输入流
+	 * 
+	 * @return 数据
+	 */
+	default List<List<Object>> load(InputStream input) {
+		return this.load(input, 0);
+	}
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param input 输入流
 	 * @param sheet sheet
 	 * 
 	 * @return 数据
@@ -332,6 +376,17 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	/**
 	 * 加载Excel
 	 * 
+	 * @param input 输入流
+	 * 
+	 * @return 数据
+	 */
+	default List<T> loadEntity(InputStream input) {
+		return this.load(this.load(input), this.getEntityClass(), this.header());
+	}
+	
+	/**
+	 * 加载Excel
+	 * 
 	 * @param <K> 类型
 	 * 
 	 * @param path 路径
@@ -341,6 +396,20 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 */
 	default <K> List<K> load(String path, Class<K> clazz) {
 		return this.load(this.load(path), clazz, this.header());
+	}
+	
+	/**
+	 * 加载Excel
+	 * 
+	 * @param <K> 类型
+	 * 
+	 * @param input 输入流
+	 * @param clazz 返回类型
+	 * 
+	 * @return 数据
+	 */
+	default <K> List<K> load(InputStream input, Class<K> clazz) {
+		return this.load(this.load(input), clazz, this.header());
 	}
 	
 	/**

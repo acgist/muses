@@ -15,12 +15,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFComment;
+import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -34,7 +40,7 @@ import com.acgist.boot.model.MessageCodeException;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService;
-import com.acgist.service.excel.ExcelSession;
+import com.acgist.service.excel.ExcelMark;
 import com.acgist.service.excel.StringFormatter;
 
 /**
@@ -63,32 +69,66 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	 */
 	private Map<String, ExcelHeaderValue> header;
 	/**
-	 * 索引
+	 * Excel导入标记索引
 	 */
-	private final ThreadLocal<String> sessionIndex = new ThreadLocal<String>();
+	private final ThreadLocal<String> markIndex = new ThreadLocal<String>();
 	/**
-	 * Excel导入状态
+	 * Excel导入标记集合
 	 */
-	private final Map<String, ExcelSession> session = new ConcurrentHashMap<>();
+	private final Map<String, ExcelMark> marks = new ConcurrentHashMap<>();
 	
 	@Override
-	public void logError(String index) {
-		this.sessionIndex.set(index);
-		this.session.put(index, new ExcelSession());
+	public void mark(String index) {
+		this.markIndex.set(index);
+		this.marks.put(index, new ExcelMark());
 	}
 	
 	@Override
-	public ExcelSession removeError() {
-		final String index = this.sessionIndex.get();
-		this.sessionIndex.remove();
-		return this.session.remove(index);
+	public ExcelMark removeMark() {
+		final String index = this.markIndex.get();
+		if(index == null) {
+			return null;
+		}
+		this.markIndex.remove();
+		return this.marks.remove(index);
 	}
 	
 	@Override
 	public Double process(String index) {
-		final ExcelSession excelSession = this.session.get(index);
+		final ExcelMark excelMark = this.marks.get(index);
 		// 为空导入完成
-		return excelSession == null ? 100D : excelSession.process();
+		return excelMark == null ? 100D : excelMark.process();
+	}
+	
+	@Override
+	public void mark(int sheet, InputStream input, OutputStream output, ExcelMark mark) {
+		try (
+			input;
+			final XSSFWorkbook workbook = new XSSFWorkbook(input);
+		) {
+			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
+			mark.getMarks().forEach(message -> {
+				final XSSFCell cell = sheetValue.getRow(message.getRow()).getCell(message.getCol());
+				this.markCell(workbook, sheetValue, cell, message.getMessage());
+			});
+			workbook.write(output);
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "读取Excel文件异常");
+		}
+	}
+	
+	@Override
+	public void markCell(XSSFWorkbook workbook, XSSFSheet sheet, Cell cell, String message) {
+		final CellStyle cellStyle = workbook.createCellStyle();
+//		cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+//		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		cellStyle.setFillBackgroundColor(IndexedColors.RED.index);
+		cellStyle.setFillPattern(FillPatternType.THIN_BACKWARD_DIAG);
+		cell.setCellStyle(cellStyle);
+		final XSSFDrawing drawing = sheet.createDrawingPatriarch();
+		final XSSFComment comment = drawing.createCellComment(new XSSFClientAnchor());
+		comment.setString(message);
+		cell.setCellComment(comment);
 	}
 	
 	@Override
@@ -140,33 +180,6 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	}
 	
 	@Override
-	public CellStyle headerCellStyle(XSSFWorkbook workbook) {
-		final Font font = workbook.createFont();
-		font.setFontName(this.headerFont);
-		font.setFontHeightInPoints(this.headerSize);
-		final CellStyle headerCellStyle = workbook.createCellStyle();
-		headerCellStyle.setFont(font);
-		headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
-		headerCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-		return headerCellStyle;
-	}
-	
-	@Override
-	public CellStyle dataCellStyle(XSSFWorkbook workbook) {
-		final Font font = workbook.createFont();
-		font.setFontName(this.cellFont);
-		font.setFontHeightInPoints(this.cellSize);
-		final CellStyle dataCellStyle = workbook.createCellStyle();
-		dataCellStyle.setFont(font);
-		// 设置边框
-//		dataCellStyle.setBorderBottom(BorderStyle.THIN);
-//		dataCellStyle.setBorderLeft(BorderStyle.THIN);
-//		dataCellStyle.setBorderTop(BorderStyle.THIN);
-//		dataCellStyle.setBorderRight(BorderStyle.THIN);
-		return dataCellStyle;
-	}
-
-	@Override
 	public Map<String, ExcelHeaderValue> header() {
 		if(this.header != null) {
 			return this.header;
@@ -197,7 +210,33 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		return this.header;
 	}
 	
+	@Override
+	public CellStyle headerCellStyle(XSSFWorkbook workbook) {
+		final Font font = workbook.createFont();
+		font.setFontName(this.headerFont);
+		font.setFontHeightInPoints(this.headerSize);
+		final CellStyle headerCellStyle = workbook.createCellStyle();
+		headerCellStyle.setFont(font);
+		headerCellStyle.setAlignment(HorizontalAlignment.CENTER);
+		headerCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		return headerCellStyle;
+	}
 	
+	@Override
+	public CellStyle dataCellStyle(XSSFWorkbook workbook) {
+		final Font font = workbook.createFont();
+		font.setFontName(this.cellFont);
+		font.setFontHeightInPoints(this.cellSize);
+		final CellStyle dataCellStyle = workbook.createCellStyle();
+		dataCellStyle.setFont(font);
+		// 设置边框
+//		dataCellStyle.setBorderBottom(BorderStyle.THIN);
+//		dataCellStyle.setBorderLeft(BorderStyle.THIN);
+//		dataCellStyle.setBorderTop(BorderStyle.THIN);
+//		dataCellStyle.setBorderRight(BorderStyle.THIN);
+		return dataCellStyle;
+	}
+
 	@Override
 	public List<List<Object>> load(InputStream input, int sheet) {
 		final List<List<Object>> list = new ArrayList<>();
@@ -244,14 +283,18 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			headerMapping.put(index, mapping.get(excelHeader.get(index).toString()));
 		}
 		final AtomicInteger row = new AtomicInteger();
-		final ExcelSession excelSession = this.session.get(this.sessionIndex.get());
-		excelSession.setTotal(list.size());
+		final ExcelMark excelMark = this.marks.get(this.markIndex.get());
+		if(excelMark != null) {
+			excelMark.setTotal(list.size());
+		}
 		return list.stream()
 			// 跳过表头
 			.skip(1)
 			// 表头字段转换
 			.map(data -> {
-				excelSession.setFinish(row.incrementAndGet());
+				if(excelMark != null) {
+					excelMark.setFinish(row.incrementAndGet());
+				}
 				boolean hasException = false;
 				final Map<String, Object> map = new HashMap<>();
 				for (int index = 0; index < data.size(); index++) {
@@ -260,8 +303,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 						map.put(headerValue.getField(), headerValue.getFormatter().parse(data.get(index)));
 					} catch (Exception e) {
 						hasException = true;
-						// 记录错误信息
-						excelSession.error(row.get(), index, e.getMessage());
+						if(excelMark != null) {
+							// 记录异常信息
+							excelMark.mark(row.get(), index, e.getMessage());
+						}
 					}
 				}
 				return hasException ? null : map;
