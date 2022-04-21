@@ -29,6 +29,7 @@ import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
 import com.acgist.service.excel.ExcelMark;
 import com.acgist.service.excel.StringFormatter;
+import com.acgist.service.excel.TransferFormatter;
 
 import lombok.Getter;
 
@@ -130,9 +131,9 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	public @interface ExcelHeader {
 
 		/**
-		 * @return 表头名称
+		 * @return 导出表头名称
 		 */
-		String name();
+		String outName();
 		/**
 		 * @return 导入表头名称
 		 */
@@ -157,9 +158,9 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		 */
 		private final String field;
 		/**
-		 * 表头名称
+		 * 导出表头名称
 		 */
-		private final String name;
+		private final String outName;
 		/**
 		 * 导入表头名称
 		 */
@@ -168,18 +169,47 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 		 * 格式化工具
 		 */
 		private final Formatter formatter;
+		/**
+		 * 翻译分组
+		 */
+		private final String transferGroup;
 		
 		/**
 		 * @param field 字段名称
-		 * @param name 表头名称：name > loadName > field
-		 * @param loadName 导入表头名称：loadName > name > field
-		 * @param formatter
+		 * @param outName 表头名称：outName > loadName > field
+		 * @param loadName 导入表头名称：loadName > outName > field
+		 * @param formatter 格式化工具
 		 */
-		public ExcelHeaderValue(String field, String name, String loadName, Formatter formatter) {
+		public ExcelHeaderValue(String field, String outName, String loadName, Formatter formatter) {
+			this(field, outName, loadName, formatter, null);
+		}
+		
+		/**
+		 * @param field 字段名称
+		 * @param outName 表头名称：outName > loadName > field
+		 * @param loadName 导入表头名称：loadName > outName > field
+		 * @param formatter 格式化工具
+		 * @param transferGroup 翻译分组
+		 */
+		public ExcelHeaderValue(String field, String outName, String loadName, Formatter formatter, String transferGroup) {
 			this.field = field;
-			this.name = StringUtils.isNotEmpty(name) ? name : StringUtils.isNotEmpty(loadName) ? loadName : field;
-			this.loadName = StringUtils.isNotEmpty(loadName) ? loadName : StringUtils.isNotEmpty(name) ? name : field;
+			this.outName = StringUtils.isNotEmpty(outName) ? outName : StringUtils.isNotEmpty(loadName) ? loadName : field;
+			this.loadName = StringUtils.isNotEmpty(loadName) ? loadName : StringUtils.isNotEmpty(outName) ? outName : field;
 			this.formatter = formatter;
+			this.transferGroup = transferGroup;
+		}
+		
+		/**
+		 * 获取格式化工具
+		 * 
+		 * @return 格式化工具
+		 */
+		public Formatter getFormatter() {
+			if(this.formatter instanceof TransferFormatter) {
+				// 设置枚举分组
+				((TransferFormatter) this.formatter).group(this.transferGroup);
+			}
+			return this.formatter;
 		}
 		
 	}

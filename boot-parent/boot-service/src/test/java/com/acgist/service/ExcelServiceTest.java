@@ -32,9 +32,9 @@ public class ExcelServiceTest {
 
 		private static final long serialVersionUID = 1L;
 
-		@ExcelHeader(name = "年龄", formatter = IntegerFormatter.class)
+		@ExcelHeader(outName = "年龄", formatter = IntegerFormatter.class)
 		private Integer age;
-		@ExcelHeader(name = "名称")
+		@ExcelHeader(outName = "名称")
 		private String name;
 		
 	}

@@ -117,7 +117,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			headers.forEach(value -> {
 				final XSSFCell cell = headerRow.createCell(col.getAndIncrement());
 				cell.setCellStyle(this.headerCellStyle(workbook));
-				final String data = value.getName();
+				final String data = value.getOutName();
 				cell.setCellValue(data);
 				colWidth.add(data.getBytes().length);
 			});
@@ -147,6 +147,58 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		}
 	}
 	
+	/**
+	 * 新建字段信息
+	 * 
+	 * @param field 字段
+	 * @param name 表头
+	 * @param clazz 格式化工具类型
+	 * 
+	 * @return 字段信息
+	 */
+	protected ExcelHeaderValue buildExcelHeader(String field, String name, Class<? extends Formatter> clazz) {
+		return new ExcelHeaderValue(field, name, name, this.formatter(clazz));
+	}
+	
+	/**
+	 * 新建字段信息
+	 * 
+	 * @param field 字段
+	 * @param name 表头
+	 * @param clazz 格式化工具类型
+	 * @param transferGroup 枚举分组
+	 * 
+	 * @return 字段信息
+	 */
+	protected ExcelHeaderValue buildExcelHeader(String field, String name, Class<? extends Formatter> clazz, String transferGroup) {
+		return new ExcelHeaderValue(field, name, name, this.formatter(clazz), transferGroup);
+	}
+	
+	/**
+	 * 设置字段信息
+	 * 
+	 * @param map 字段集合
+	 * @param field 字段
+	 * @param name 表头
+	 * @param clazz 格式化工具类型
+	 */
+	protected void putExcelHeader(Map<String, ExcelHeaderValue> map, String field, String name, Class<? extends Formatter> clazz) {
+		map.put(field, this.buildExcelHeader(field, name, clazz));
+	}
+	
+	/**
+	 * 设置字段信息
+	 * 
+	 * @param map 字段集合
+	 * @param field 字段
+	 * @param name 表头
+	 * @param clazz 格式化工具类型
+	 * @param transferGroup 枚举分组
+	 */
+	protected void putExcelHeader(Map<String, ExcelHeaderValue> map, String field, String name, Class<? extends Formatter> clazz, String transferGroup) {
+		map.put(field, this.buildExcelHeader(field, name, clazz, transferGroup));
+	}
+	
 	@Override
 	public Map<String, ExcelHeaderValue> header() {
 		if(this.header != null) {
@@ -161,7 +213,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				}
 				return Map.entry(
 					field.getName(),
-					new ExcelHeaderValue(field.getName(), header.name(), header.loadName(), this.formatter(header.formatter()))
+					new ExcelHeaderValue(field.getName(), header.outName(), header.loadName(), this.formatter(header.formatter()))
 				);
 			})
 			.filter(Objects::nonNull)
