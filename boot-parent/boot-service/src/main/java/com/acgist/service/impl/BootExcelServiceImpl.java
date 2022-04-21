@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -41,6 +40,7 @@ import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService;
 import com.acgist.service.excel.ExcelMark;
+import com.acgist.service.excel.ExcelMarkContext;
 import com.acgist.service.excel.StringFormatter;
 
 /**
@@ -68,43 +68,11 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	 * Header缓存
 	 */
 	private Map<String, ExcelHeaderValue> header;
-	/**
-	 * Excel导入标记索引
-	 */
-	private final ThreadLocal<String> markIndex = new ThreadLocal<String>();
-	/**
-	 * Excel导入标记集合
-	 */
-	private final Map<String, ExcelMark> marks = new ConcurrentHashMap<>();
 	
 	@Override
-	public void mark(String index) {
-		this.markIndex.set(index);
-		this.marks.put(index, new ExcelMark());
-	}
-	
-	@Override
-	public ExcelMark removeMark() {
-		final String index = this.markIndex.get();
-		if(index == null) {
-			return null;
-		}
-		this.markIndex.remove();
-		return this.marks.remove(index);
-	}
-	
-	@Override
-	public Double process(String index) {
-		final ExcelMark excelMark = this.marks.get(index);
-		// 为空导入完成
-		return excelMark == null ? 100D : excelMark.process();
-	}
-	
-	@Override
-	public void mark(int sheet, InputStream input, OutputStream output, ExcelMark mark) {
+	public void mark(int sheet, OutputStream output, ExcelMark mark) {
 		try (
-			input;
-			final XSSFWorkbook workbook = new XSSFWorkbook(input);
+			final XSSFWorkbook workbook = mark.getWorkbook();
 		) {
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
 			mark.getMarks().forEach(message -> {
@@ -261,6 +229,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				});
 				list.add(data);
 			});
+			ExcelMarkContext.copy(workbook);
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "读取Excel文件异常");
 		}
@@ -283,18 +252,13 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			headerMapping.put(index, mapping.get(excelHeader.get(index).toString()));
 		}
 		final AtomicInteger row = new AtomicInteger();
-		final ExcelMark excelMark = this.marks.get(this.markIndex.get());
-		if(excelMark != null) {
-			excelMark.setTotal(list.size());
-		}
+		ExcelMarkContext.setTotal(list.size());
 		return list.stream()
 			// 跳过表头
 			.skip(1)
 			// 表头字段转换
 			.map(data -> {
-				if(excelMark != null) {
-					excelMark.setFinish(row.incrementAndGet());
-				}
+				ExcelMarkContext.setComplete(row.incrementAndGet());
 				boolean hasException = false;
 				final Map<String, Object> map = new HashMap<>();
 				for (int index = 0; index < data.size(); index++) {
@@ -303,10 +267,8 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 						map.put(headerValue.getField(), headerValue.getFormatter().parse(data.get(index)));
 					} catch (Exception e) {
 						hasException = true;
-						if(excelMark != null) {
-							// 记录异常信息
-							excelMark.mark(row.get(), index, e.getMessage());
-						}
+						// 记录异常信息
+						ExcelMarkContext.mark(row.get(), index, e.getMessage());
 					}
 				}
 				return hasException ? null : map;

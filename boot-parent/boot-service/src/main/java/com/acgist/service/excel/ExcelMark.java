@@ -1,9 +1,16 @@
 package com.acgist.service.excel;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.acgist.boot.model.MessageCodeException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,11 +38,11 @@ public class ExcelMark {
 		/**
 		 * 行数
 		 */
-		private Integer row;
+		private int row;
 		/**
 		 * 列数
 		 */
-		private Integer col;
+		private int col;
 		/**
 		 * 标记信息
 		 */
@@ -46,11 +53,19 @@ public class ExcelMark {
 	/**
 	 * 总条数
 	 */
-	private Integer total;
+	private int total;
 	/**
 	 * 处理完成条数
 	 */
-	private Integer finish;
+	private int complete;
+	/**
+	 * 是否完成
+	 */
+	private boolean finish;
+	/**
+	 * Excel
+	 */
+	private XSSFWorkbook workbook;
 	/**
 	 * 标记信息
 	 */
@@ -76,8 +91,14 @@ public class ExcelMark {
 	 * 
 	 * @return 进度
 	 */
-	public Double process() {
-		return BigDecimal.valueOf(0.25 + (0.5D * finish / total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+	public double process() {
+		if(this.total == 0) {
+			return 0.75D;
+		}
+		if(this.finish) {
+			return 1.00D;
+		}
+		return BigDecimal.valueOf(0.25 + (0.50D * this.complete / this.total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 	
 	/**
@@ -85,6 +106,23 @@ public class ExcelMark {
 	 */
 	public boolean hasException() {
 		return !this.marks.isEmpty();
+	}
+	
+	/**
+	 * 拷贝文档
+	 * 
+	 * @param source 原始文档
+	 */
+	public void copy(XSSFWorkbook source) {
+		try (
+			final ByteArrayOutputStream output = new ByteArrayOutputStream();
+		) {
+			source.write(output);
+			// 不用关闭
+			this.workbook = new XSSFWorkbook(new ByteArrayInputStream(output.toByteArray()));
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "拷贝文档异常");
+		}
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.acgist.service;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -184,48 +185,37 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	}
 	
 	/**
-	 * 开始记录Excel标记：开始导入调用
+	 * 标记输出
 	 * 
-	 * @param index 索引
+	 * @param path 路径
+	 * @param mark Excel导入标记
 	 */
-	void mark(String index);
-	
-	/**
-	 * 删除Excel标记并且返回：导入完成调用
-	 * 
-	 * @return Excel标记
-	 */
-	ExcelMark removeMark();
-	
-	/**
-	 * 获取导入进度
-	 * 
-	 * @param index 索引
-	 * 
-	 * @return 进度
-	 */
-	Double process(String index);
+	default void mark(String path, ExcelMark mark) {
+		try {
+			this.mark(0, new FileOutputStream(path), mark);
+		} catch (FileNotFoundException e) {
+			throw MessageCodeException.of(e, "标记输出异常");
+		}
+	}
 	
 	/**
 	 * 标记输出
 	 * 
-	 * @param input 输入流
 	 * @param output 输出流
 	 * @param mark Excel导入标记
 	 */
-	default void mark(InputStream input, OutputStream output, ExcelMark mark) {
-		this.mark(0, input, output, mark);
+	default void mark(OutputStream output, ExcelMark mark) {
+		this.mark(0, output, mark);
 	}
 	
 	/**
 	 * 标记输出
 	 * 
 	 * @param sheet sheet
-	 * @param input 输入流
 	 * @param output 输出流
 	 * @param mark Excel导入标记
 	 */
-	void mark(int sheet, InputStream input, OutputStream output, ExcelMark mark);
+	void mark(int sheet, OutputStream output, ExcelMark mark);
 	
 	/**
 	 * 标记单元格
