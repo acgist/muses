@@ -126,7 +126,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				col.set(0);
 				final XSSFRow dataRow = sheet.createRow(row.getAndIncrement());
 				keys.forEach(field -> {
-					final Object fieldValue = BeanUtils.read(field, value);
+					final Object fieldValue = BeanUtils.fieldValue(field, value);
 					final ExcelHeaderValue excelHeaderValue = headers.get(col.get());
 					final XSSFCell cell = dataRow.createCell(col.get());
 					cell.setCellStyle(this.dataCellStyle(workbook));

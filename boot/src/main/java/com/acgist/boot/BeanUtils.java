@@ -45,7 +45,7 @@ public final class BeanUtils {
 	 * 
 	 * @return 字段属性
 	 */
-	public static final Object read(String field, Object value) {
+	public static final Object fieldValue(String field, Object value) {
 		try {
 			return FieldUtils.getField(value.getClass(), field, true).get(value);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
