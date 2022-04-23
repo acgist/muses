@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.acgist.user.api.IUserService;
-import com.acgist.web.WebUser;
+import com.acgist.web.model.WebUser;
 
 /**
  * 查询用户

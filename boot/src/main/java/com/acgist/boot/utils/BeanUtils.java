@@ -1,9 +1,14 @@
-package com.acgist.boot;
+package com.acgist.boot.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.reflect.MethodSignature;
+
+import com.acgist.boot.model.MessageCodeException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,6 +57,28 @@ public final class BeanUtils {
 			log.error("读取属性异常", e);
 		}
 		return null;
+	}
+	
+	/**
+	 * 获取切点注解
+	 * 
+	 * @param <T> 注解类型
+	 * 
+	 * @param proceedingJoinPoint 切点
+	 * @param clazz 注解类型
+	 * 
+	 * @return 注解
+	 */
+	public static final <T extends Annotation> T getAnnotation(ProceedingJoinPoint proceedingJoinPoint, Class<T> clazz) {
+		if (proceedingJoinPoint.getSignature() instanceof MethodSignature) {
+			// TODO：JDK17
+			final T t = ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod().getAnnotation(clazz);
+			if (t == null) {
+				throw MessageCodeException.of("获取注解失败：", clazz);
+			}
+			return t;
+		}
+		throw MessageCodeException.of("注解错误");
 	}
 	
 }

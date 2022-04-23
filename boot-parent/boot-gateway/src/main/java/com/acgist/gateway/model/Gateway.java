@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Size;
 
-import com.acgist.boot.JSONUtils;
+import com.acgist.boot.utils.JSONUtils;
 
 import lombok.Getter;
 import lombok.Setter;

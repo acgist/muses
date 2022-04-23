@@ -1,4 +1,4 @@
-package com.acgist.boot;
+package com.acgist.boot.utils;
 
 /**
  * 数组工具

@@ -3,7 +3,7 @@ package com.acgist;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.acgist.distributed.scheduled.DistributedScheduled;
+import com.acgist.distributed.config.DistributedScheduled;
 
 import lombok.extern.slf4j.Slf4j;
 

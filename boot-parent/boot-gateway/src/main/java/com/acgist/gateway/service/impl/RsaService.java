@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import com.acgist.boot.RsaUtils;
+import com.acgist.boot.utils.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
 

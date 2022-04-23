@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: boot
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  shardingsphere:
+    enabled: false

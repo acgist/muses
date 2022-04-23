@@ -2,7 +2,7 @@ package com.acgist.gateway.service.impl;
 
 import java.util.List;
 
-import com.acgist.boot.UrlUtils;
+import com.acgist.boot.utils.UrlUtils;
 import com.acgist.gateway.config.GatewayMapping;
 
 /**

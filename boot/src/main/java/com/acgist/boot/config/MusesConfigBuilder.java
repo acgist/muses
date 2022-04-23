@@ -3,8 +3,8 @@ package com.acgist.boot.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.acgist.boot.JSONUtils;
-import com.acgist.boot.StringUtils;
+import com.acgist.boot.utils.JSONUtils;
+import com.acgist.boot.utils.StringUtils;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.nacos.api.config.ConfigService;

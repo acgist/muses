@@ -20,8 +20,8 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.acgist.boot.JSONUtils;
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
+import com.acgist.boot.utils.JSONUtils;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -6,7 +6,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.acgist.web.UserContext;
-import com.acgist.web.WebUser;
+import com.acgist.web.model.WebUser;
 import com.acgist.www.resolver.CurrentUser;
 import com.acgist.www.resolver.CurrentUser.Type;
 import com.acgist.www.resolver.WwwMethodArgumentResolver;

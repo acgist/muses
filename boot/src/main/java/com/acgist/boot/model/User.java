@@ -3,8 +3,8 @@ package com.acgist.boot.model;
 import java.util.Objects;
 import java.util.Set;
 
-import com.acgist.boot.CollectionUtils;
-import com.acgist.boot.UrlUtils;
+import com.acgist.boot.utils.CollectionUtils;
+import com.acgist.boot.utils.UrlUtils;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

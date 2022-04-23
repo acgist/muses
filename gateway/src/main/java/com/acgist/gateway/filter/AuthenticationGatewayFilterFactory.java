@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.User;
-import com.acgist.gateway.ResponseUtils;
+import com.acgist.gateway.utils.ResponseUtils;
 import com.acgist.user.api.IUserService;
 import com.nimbusds.jose.JWSObject;
 

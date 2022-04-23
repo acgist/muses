@@ -1,6 +1,6 @@
 package com.acgist.boot.model;
 
-import com.acgist.boot.StringUtils;
+import com.acgist.boot.utils.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;

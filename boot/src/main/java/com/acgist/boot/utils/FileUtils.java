@@ -1,4 +1,4 @@
-package com.acgist.boot;
+package com.acgist.boot.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

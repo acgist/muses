@@ -12,8 +12,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.acgist.boot.HTTPUtils;
-import com.acgist.boot.StringUtils;
+import com.acgist.boot.utils.HTTPUtils;
+import com.acgist.boot.utils.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 

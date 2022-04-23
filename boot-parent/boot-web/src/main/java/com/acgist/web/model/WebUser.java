@@ -1,4 +1,4 @@
-package com.acgist.web;
+package com.acgist.web.model;
 
 import java.util.Collection;
 import java.util.Collections;

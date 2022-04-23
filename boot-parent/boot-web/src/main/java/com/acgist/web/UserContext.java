@@ -3,6 +3,8 @@ package com.acgist.web;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.acgist.web.model.WebUser;
+
 /**
  * 用户上下文
  * 

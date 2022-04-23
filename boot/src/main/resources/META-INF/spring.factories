@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.acgist.boot.config.BootAutoConfiguration
+com.acgist.boot.config.BootAutoConfiguration,\
+com.acgist.boot.config.FallbackAutoConfiguration

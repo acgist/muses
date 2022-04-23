@@ -5,7 +5,7 @@ import java.util.WeakHashMap;
 
 import org.junit.jupiter.api.Test;
 
-import com.acgist.boot.JSONUtils;
+import com.acgist.boot.utils.JSONUtils;
 
 import lombok.Getter;
 import lombok.Setter;

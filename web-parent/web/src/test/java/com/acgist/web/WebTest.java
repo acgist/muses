@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.acgist.boot.HTTPUtils;
+import com.acgist.boot.utils.HTTPUtils;
 
 import lombok.extern.slf4j.Slf4j;
 

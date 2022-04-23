@@ -12,8 +12,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.acgist.boot.StringUtils;
 import com.acgist.boot.config.MusesConfig;
+import com.acgist.boot.utils.StringUtils;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;

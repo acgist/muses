@@ -15,9 +15,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import com.acgist.boot.StringUtils;
 import com.acgist.boot.model.ModelCopy;
 import com.acgist.boot.service.impl.FreemarkerService;
+import com.acgist.boot.utils.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;

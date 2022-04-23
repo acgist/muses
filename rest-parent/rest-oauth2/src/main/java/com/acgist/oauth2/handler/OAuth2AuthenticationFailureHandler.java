@@ -11,10 +11,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.acgist.boot.UrlUtils;
 import com.acgist.boot.model.Message;
+import com.acgist.boot.utils.UrlUtils;
 import com.acgist.oauth2.config.LoginType;
-import com.acgist.www.ResponseUtils;
+import com.acgist.www.utils.ResponseUtils;
 
 import lombok.extern.slf4j.Slf4j;
 

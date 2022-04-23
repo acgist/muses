@@ -4,15 +4,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.utils.BeanUtils;
 import com.acgist.distributed.lock.DistributedLock;
-import com.acgist.distributed.scheduled.DistributedScheduled;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +32,7 @@ public class DistributedScheduledAutoConfiguration {
 	/**
 	 * 注解切点
 	 */
-	@Pointcut("@annotation(com.acgist.distributed.scheduled.DistributedScheduled)")
+	@Pointcut("@annotation(com.acgist.distributed.config.DistributedScheduled)")
 	public void scheduled() {
 	}
 
@@ -49,10 +47,7 @@ public class DistributedScheduledAutoConfiguration {
 	 */
 	@Around("scheduled()")
 	public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		final DistributedScheduled distributedScheduled = this.getAnnotation(proceedingJoinPoint);
-		if (distributedScheduled == null) {
-			throw MessageCodeException.of("获取注解失败");
-		}
+		final DistributedScheduled distributedScheduled = BeanUtils.getAnnotation(proceedingJoinPoint, DistributedScheduled.class);
 		final String name = distributedScheduled.name();
 		try {
 			if (this.distributedLock.tryLock(name, distributedScheduled.ttl())) {
@@ -69,21 +64,6 @@ public class DistributedScheduledAutoConfiguration {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * 获取切点注解
-	 * 
-	 * @param proceedingJoinPoint 切点
-	 * 
-	 * @return 注解
-	 */
-	private DistributedScheduled getAnnotation(ProceedingJoinPoint proceedingJoinPoint) {
-		if (proceedingJoinPoint.getSignature() instanceof MethodSignature) {
-			// TODO：JDK17
-			return ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod().getAnnotation(DistributedScheduled.class);
-		}
-		throw MessageCodeException.of("注解错误");
 	}
 
 }

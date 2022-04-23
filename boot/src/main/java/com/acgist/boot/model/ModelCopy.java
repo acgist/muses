@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.beans.BeanUtils;
 
-import com.acgist.boot.JSONUtils;
+import com.acgist.boot.utils.JSONUtils;
 
 /**
  * 对象属性复制

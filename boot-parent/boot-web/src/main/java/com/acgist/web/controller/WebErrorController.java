@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acgist.boot.model.Message;
-import com.acgist.www.ErrorUtils;
+import com.acgist.www.utils.ErrorUtils;
 
 /**
  * 统一错误页面

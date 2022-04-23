@@ -2,8 +2,8 @@ package com.acgist.boot.model;
 
 import java.util.Objects;
 
-import com.acgist.boot.ArrayUtils;
-import com.acgist.boot.StringUtils;
+import com.acgist.boot.utils.ArrayUtils;
+import com.acgist.boot.utils.StringUtils;
 
 /**
  * 状态编码异常

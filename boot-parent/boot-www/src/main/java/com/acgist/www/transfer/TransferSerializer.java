@@ -3,7 +3,7 @@ package com.acgist.www.transfer;
 import java.io.IOException;
 import java.util.Map;
 
-import com.acgist.boot.SpringUtils;
+import com.acgist.boot.utils.SpringUtils;
 import com.acgist.service.CacheService;
 import com.acgist.service.TransferService;
 import com.fasterxml.jackson.core.JsonGenerator;

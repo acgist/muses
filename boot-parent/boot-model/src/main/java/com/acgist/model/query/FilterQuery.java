@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.util.CollectionUtils;
 
-import com.acgist.boot.StringUtils;
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.utils.StringUtils;
 import com.acgist.model.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
