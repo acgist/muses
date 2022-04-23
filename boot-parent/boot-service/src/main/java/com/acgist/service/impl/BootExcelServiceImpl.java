@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -268,6 +269,12 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			sheetValue.forEach(row -> {
 				final List<Object> data = new ArrayList<>();
 				row.forEach(cell -> {
+					// 索引填充：默认返回有值数据
+					final int size = data.size();
+					final int index = cell.getColumnIndex();
+					if(size <= index) {
+						IntStream.range(index, size).forEach(i -> data.add(null));
+					}
 					final CellType cellType = cell.getCellType();
 					if(cellType == CellType.STRING) {
 						data.add(cell.getStringCellValue());

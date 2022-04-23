@@ -43,6 +43,15 @@ public class ExcelMarkContext {
 	}
 	
 	/**
+	 * 线程绑定
+	 * 
+	 * @param index 索引
+	 */
+	public static final void rebind(String index) {
+		INSTANCE.markIndex.set(index);
+	}
+	
+	/**
 	 * 获取Excel标记
 	 * 
 	 * @return Excel标记
