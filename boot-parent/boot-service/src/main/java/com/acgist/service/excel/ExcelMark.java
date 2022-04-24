@@ -7,10 +7,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.model.WebSocketMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -66,6 +68,10 @@ public class ExcelMark {
 	 * Excel
 	 */
 	private XSSFWorkbook workbook;
+	/**
+	 * 消息消费者：处理
+	 */
+	private Consumer<WebSocketMessage> consumer;
 	/**
 	 * 标记信息
 	 */

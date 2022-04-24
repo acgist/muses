@@ -2,8 +2,11 @@ package com.acgist.service.excel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.acgist.boot.model.WebSocketMessage;
 
 /**
  * Excel导入标记管理
@@ -175,14 +178,36 @@ public class ExcelMarkContext {
 	/**
 	 * 记录标记
 	 * 
-	 * @param row
-	 * @param col
-	 * @param message
+	 * @param row 行数
+	 * @param col 列数
+	 * @param message 标记信息
 	 */
 	public static final void mark(int row, int col, String message) {
 		final ExcelMark excelMark = get();
 		if(excelMark != null) {
 			excelMark.mark(row, col, message);
+		}
+	}
+	
+	/**
+	 * 设置消息消费者
+	 * 
+	 * @param consumer 消费者
+	 */
+	public static final void bindConsumer(Consumer<WebSocketMessage> consumer) {
+		bindConsumer(index(), consumer);
+	}
+	
+	/**
+	 * 设置消息消费者
+	 * 
+	 * @param index 索引
+	 * @param consumer 消费者
+	 */
+	public static final void bindConsumer(String index, Consumer<WebSocketMessage> consumer) {
+		final ExcelMark excelMark = get();
+		if(excelMark != null) {
+			excelMark.setConsumer(consumer);
 		}
 	}
 	
