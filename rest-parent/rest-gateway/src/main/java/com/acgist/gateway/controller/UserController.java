@@ -19,7 +19,7 @@ import com.acgist.gateway.model.request.DeleteRequest;
 import com.acgist.gateway.model.request.GetMemoRequest;
 import com.acgist.gateway.model.request.SetMemoRequest;
 import com.acgist.gateway.resolver.GatewayBody;
-import com.acgist.gateway.service.impl.UserService;
+import com.acgist.gateway.service.UserService;
 import com.acgist.www.resolver.CurrentUser;
 
 @Validated

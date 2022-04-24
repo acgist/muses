@@ -4,14 +4,11 @@ import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Spring工具
  * 
  * @author acgist
  */
-@Slf4j
 public final class SpringUtils {
 
 	private SpringUtils() {
@@ -42,12 +39,20 @@ public final class SpringUtils {
 		while(SpringUtils.context == null) {
 			Thread.yield();
 		}
-		try {
-			return SpringUtils.context.getBean(clazz);
-		} catch (Exception e) {
-			log.info("根据类型获取实例失败：{}", clazz);
-		}
-		return null;
+		return SpringUtils.context.getBean(clazz);
+	}
+	
+	/**
+	 * 根据类型获取实例（可以为空）
+	 * 
+	 * @param <T> 类型
+	 * 
+	 * @param clazz 类型
+	 * 
+	 * @return 实例
+	 */
+	public static final <T> T getBeanNullable(Class<T> clazz) {
+		return getBeanByType(clazz).values().stream().findFirst().orElse(null);
 	}
 	
 	/**

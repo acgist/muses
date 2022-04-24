@@ -24,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.boot.utils.BeanUtils;
+import com.acgist.boot.utils.SpringUtils;
 import com.acgist.boot.utils.StringUtils;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
@@ -343,7 +344,10 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @return 格式化工具
 	 */
 	default Formatter formatter(Class<? extends Formatter> formatter) {
-		return FORMATTER.computeIfAbsent(formatter, key -> BeanUtils.newInstance(formatter));
+		return FORMATTER.computeIfAbsent(formatter, key -> {
+			final Formatter instance = SpringUtils.getBeanNullable(formatter);
+			return instance == null ? BeanUtils.newInstance(formatter) : instance;
+		});
 	}
 	
 	/**

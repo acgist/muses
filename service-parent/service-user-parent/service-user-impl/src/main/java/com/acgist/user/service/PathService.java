@@ -8,6 +8,6 @@ import com.acgist.user.model.entity.PathEntity;
  * 
  * @author acgist
  */
-public interface IPathService extends BootService<PathEntity> {
+public interface PathService extends BootService<PathEntity> {
 	
 }

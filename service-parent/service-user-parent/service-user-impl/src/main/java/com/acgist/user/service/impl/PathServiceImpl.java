@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import com.acgist.service.impl.BootServiceImpl;
 import com.acgist.user.dao.mapper.PathMapper;
 import com.acgist.user.model.entity.PathEntity;
-import com.acgist.user.service.IPathService;
+import com.acgist.user.service.PathService;
 
 @Service
-public class PathServiceImpl extends BootServiceImpl<PathMapper, PathEntity> implements IPathService {
+public class PathServiceImpl extends BootServiceImpl<PathMapper, PathEntity> implements PathService {
 
 	/**
 	 * 上级ID路径生成器

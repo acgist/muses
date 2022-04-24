@@ -60,8 +60,8 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 		if(transfer != null) {
 			return new TransferSerializer(
 				transfer.group(),
-				SpringUtils.getBean(CacheService.class),
-				SpringUtils.getBean(TransferService.class)
+				SpringUtils.getBeanNullable(CacheService.class),
+				SpringUtils.getBeanNullable(TransferService.class)
 			);
 		}
 		return provider.findValueSerializer(property.getType(), property);

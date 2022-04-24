@@ -30,8 +30,8 @@ public class TransferFormatter implements Formatter {
 	private final TransferService transferService;
 	
 	public TransferFormatter() {
-		this.cacheService = SpringUtils.getBean(CacheService.class);
-		this.transferService = SpringUtils.getBean(TransferService.class);
+		this.cacheService = SpringUtils.getBeanNullable(CacheService.class);
+		this.transferService = SpringUtils.getBeanNullable(TransferService.class);
 	}
 	
 	/**
