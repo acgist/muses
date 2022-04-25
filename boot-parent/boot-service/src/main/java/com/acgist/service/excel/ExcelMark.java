@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.acgist.boot.model.MessageCodeException;
-import com.acgist.boot.model.WebSocketMessage;
+import com.acgist.boot.utils.JSONUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,6 +57,10 @@ public class ExcelMark {
 	 */
 	private int total;
 	/**
+	 * 用户绑定
+	 */
+	private final String user;
+	/**
 	 * 处理完成条数
 	 */
 	private int complete;
@@ -65,17 +69,21 @@ public class ExcelMark {
 	 */
 	private boolean finish;
 	/**
-	 * Excel
+	 * Excel输入流：不直接保存Excel对象（不能多次输出）
 	 */
-	private XSSFWorkbook workbook;
+	private ByteArrayInputStream stream;
 	/**
 	 * 消息消费者：处理
 	 */
-	private Consumer<WebSocketMessage> consumer;
+	private BiConsumer<String, Object> consumer;
 	/**
 	 * 标记信息
 	 */
 	private final List<MarkMessage> marks = new ArrayList<>();
+	
+	public ExcelMark(String user) {
+		this.user = user;
+	}
 	
 	/**
 	 * 添加标记信息
@@ -115,6 +123,14 @@ public class ExcelMark {
 	}
 	
 	/**
+	 * @return Excel输出流
+	 */
+	public ByteArrayInputStream stream() {
+		this.stream.reset();
+		return this.stream;
+	}
+	
+	/**
 	 * 拷贝文档
 	 * 
 	 * @param source 原始文档
@@ -125,10 +141,19 @@ public class ExcelMark {
 		) {
 			source.write(output);
 			// 不用关闭
-			this.workbook = new XSSFWorkbook(new ByteArrayInputStream(output.toByteArray()));
+			this.stream = new ByteArrayInputStream(output.toByteArray());
 		} catch (IOException e) {
 			throw MessageCodeException.of(e, "拷贝文档异常");
 		}
+	}
+	
+	/**
+	 * 发送通知消息
+	 * 
+	 * @param message 通知消息
+	 */
+	public void sendMessage(Object message) {
+		this.consumer.accept(this.user, JSONUtils.toJSON(message));
 	}
 	
 }

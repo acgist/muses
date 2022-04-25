@@ -73,7 +73,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	@Override
 	public void mark(int sheet, OutputStream output, ExcelMark mark) {
 		try (
-			final XSSFWorkbook workbook = mark.getWorkbook();
+			final XSSFWorkbook workbook = new XSSFWorkbook(mark.stream());
 		) {
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
 			mark.getMarks().forEach(message -> {

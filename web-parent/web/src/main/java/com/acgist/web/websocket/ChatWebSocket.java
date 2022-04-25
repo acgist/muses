@@ -25,20 +25,22 @@ public class ChatWebSocket {
 	 * 聊天室
 	 */
 	private static final Map<String, Session> SESSIONS = new ConcurrentHashMap<>();
-
-	@OnMessage
-	public void message(String message, Session session) {
-		for (Session client : SESSIONS.values()) {
-			if (client.getId().equals(session.getId())) {
-				continue;
-			}
-			client.getAsyncRemote().sendText(message);
-		}
-	}
-
+	
 	@OnOpen
 	public void open(Session session) {
+		// 长连接
+		session.setMaxIdleTimeout(0);
 		SESSIONS.put(session.getId(), session);
+	}
+
+	@OnMessage
+	public void message(Session session, String message) {
+		SESSIONS.values().forEach(client -> {
+			if (client.getId().equals(session.getId())) {
+				return;
+			}
+			client.getAsyncRemote().sendText(message);
+		});
 	}
 
 	@OnClose

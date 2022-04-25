@@ -71,7 +71,7 @@ public class ExcelServiceTest {
 	public void testExcelSession() throws FileNotFoundException {
 		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
 		};
-		ExcelMarkContext.build("1234");
+		ExcelMarkContext.build("1234", "user");
 //		service.loadEntity("D:/tmp/excel.xlsx").forEach(entity -> log.info("{}", entity));
 		service.loadEntity("D:/tmp/excelMark.xlsx").forEach(entity -> log.info("{}", entity));
 		final ExcelMark mark = ExcelMarkContext.remove();

@@ -2,11 +2,9 @@ package com.acgist.service.excel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.acgist.boot.model.WebSocketMessage;
 
 /**
  * Excel导入标记管理
@@ -30,10 +28,11 @@ public class ExcelMarkContext {
 	 * 开始记录Excel标记：开始导入调用
 	 * 
 	 * @param index 索引：区别每次导入
+	 * @param user 用户
 	 */
-	public static final void build(String index) {
+	public static final void build(String index, String user) {
 		INSTANCE.markIndex.set(index);
-		INSTANCE.markMapping.put(index, new ExcelMark());
+		INSTANCE.markMapping.put(index, new ExcelMark(user));
 	}
 	
 	/**
@@ -194,7 +193,7 @@ public class ExcelMarkContext {
 	 * 
 	 * @param consumer 消费者
 	 */
-	public static final void bindConsumer(Consumer<WebSocketMessage> consumer) {
+	public static final void bindConsumer(BiConsumer<String, Object> consumer) {
 		bindConsumer(index(), consumer);
 	}
 	
@@ -204,10 +203,32 @@ public class ExcelMarkContext {
 	 * @param index 索引
 	 * @param consumer 消费者
 	 */
-	public static final void bindConsumer(String index, Consumer<WebSocketMessage> consumer) {
-		final ExcelMark excelMark = get();
+	public static final void bindConsumer(String index, BiConsumer<String, Object> consumer) {
+		final ExcelMark excelMark = get(index);
 		if(excelMark != null) {
 			excelMark.setConsumer(consumer);
+		}
+	}
+	
+	/**
+	 * 发送消息
+	 * 
+	 * @param message 消息
+	 */
+	public static final void sendMessage(Object message) {
+		sendMessage(index(), message);
+	}
+	
+	/**
+	 * 发送消息
+	 * 
+	 * @param index 索引
+	 * @param message 消息
+	 */
+	public static final void sendMessage(String index, Object message) {
+		final ExcelMark excelMark = get(index);
+		if(excelMark != null) {
+			excelMark.sendMessage(message);
 		}
 	}
 	
