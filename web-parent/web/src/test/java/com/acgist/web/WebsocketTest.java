@@ -35,6 +35,7 @@ public class WebsocketTest {
 				@Override
 				public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
 					// 注意：即是处理也要调用上级方法
+					// 异步处理
 					return Listener.super.onText(webSocket, data, last);
 				}
 			}).join();

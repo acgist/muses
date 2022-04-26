@@ -65,6 +65,10 @@ public class ExcelMark {
 	 */
 	private int complete;
 	/**
+	 * 进度
+	 */
+	private double process = 0D;
+	/**
 	 * 是否完成
 	 */
 	private boolean finish;
@@ -106,11 +110,14 @@ public class ExcelMark {
 	 * @return 进度
 	 */
 	public double process() {
-		if(this.total == 0) {
-			return 0.75D;
-		}
 		if(this.finish) {
 			return 1.00D;
+		}
+		if(this.process > 0D) {
+			return this.process;
+		}
+		if(this.total == 0) {
+			return 0.75D;
 		}
 		return BigDecimal.valueOf(0.25 + (0.50D * this.complete / this.total)).setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}

@@ -102,7 +102,7 @@ public class ExcelMarkContext {
 	 * 
 	 * @return 进度
 	 */
-	public static final Double process() {
+	public static final double process() {
 		return process(index());
 	}
 	
@@ -117,6 +117,28 @@ public class ExcelMarkContext {
 		final ExcelMark excelMark = get(index);
 		// 如果导入标记为空返回100%
 		return excelMark == null ? 1.00D : excelMark.process();
+	}
+	
+	/**
+	 * 设置进度
+	 * 
+	 * @param process 进度
+	 */
+	public static final void process(double process) {
+		process(index(), process);
+	}
+	
+	/**
+	 * 设置进度
+	 * 
+	 * @param index 索引
+	 * @param process 进度
+	 */
+	public static final void process(String index, double process) {
+		final ExcelMark excelMark = get(index);
+		if(excelMark != null) {
+			excelMark.setProcess(process);
+		}
 	}
 	
 	/**
