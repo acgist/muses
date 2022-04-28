@@ -386,6 +386,21 @@
 		</pluginManagement>
 	</build>
 
+	<!-- 注意：如果使用SpringBoot打包插件不能排除provided依赖需要手工配置 -->
+	<!--
+	建议生产环境排除swagger
+	<plugin>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-maven-plugin</artifactId>
+		<configuration>
+			<excludeGroupIds>
+				org.mapstruct,
+				org.projectlombok
+			</excludeGroupIds>
+		</configuration>
+	</plugin>
+	-->
+	
 	<profiles>
 		<profile>
 			<id>dev</id>
