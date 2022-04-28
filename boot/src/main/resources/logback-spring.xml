@@ -117,6 +117,23 @@
 	<!-- 引入文件：文件可以不存在 -->
 	<include resource="logback-gateway.xml" />
 
+	<!-- Redis连接 -->
+	<logger name="io.lettuce.core" level="INFO" additivity="false">
+		<appender-ref ref="file" />
+	</logger>
+	<!-- MyBatis -->
+	<logger name="org.mybatis.spring.SqlSessionUtils" level="INFO" additivity="false">
+		<appender-ref ref="file" />
+	</logger>
+	<!-- 数据库事务 -->
+	<logger name="o.m.spring.transaction.SpringManagedTransaction" level="INFO" additivity="false">
+		<appender-ref ref="file" />
+	</logger>
+	<!-- 数据库连接 -->
+	<logger name="o.springframework.jdbc.datasource.DataSourceUtils" level="INFO" additivity="false">
+		<appender-ref ref="file" />
+	</logger>
+	
 	<springProfile name="dev">
 		<root level="INFO">
 			<appender-ref ref="file" />

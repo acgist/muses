@@ -28,9 +28,8 @@
 			<artifactId>boot-www</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-boot-starter</artifactId>
-		    <optional>true</optional>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
 		</dependency>
 	</dependencies>
 

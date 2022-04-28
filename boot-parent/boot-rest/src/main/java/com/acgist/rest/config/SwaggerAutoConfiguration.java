@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.acgist.boot.utils.StringUtils;
 
@@ -24,14 +23,14 @@ import springfox.documentation.spring.web.plugins.Docket;
 /**
  * Swagger文档自动配置
  * 
+ * 如果启动保存尝试添加：@EnableWebMvc
+ * 
  * 注意：OpenAPI不好配置
  * 
  * @author acgist
  */
 @Slf4j
 @Profile("dev")
-// 如果没有手动启动MVC报错
-@EnableWebMvc
 @Configuration
 @EnableOpenApi
 @ConditionalOnClass(OpenAPI.class)

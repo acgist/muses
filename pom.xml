@@ -449,6 +449,16 @@
 					</plugin>
 				</plugins>
 			</build>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>io.springfox</groupId>
+						<artifactId>springfox-boot-starter</artifactId>
+						<version>${springfox.version}</version>
+						<scope>provided</scope>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
 		</profile>
 	</profiles>
 

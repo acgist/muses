@@ -35,7 +35,6 @@ public class WebsocketTest {
 				@Override
 				public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
 					// 注意：即是处理也要调用上级方法
-					// 异步处理
 					return Listener.super.onText(webSocket, data, last);
 				}
 			}).join();
@@ -73,8 +72,13 @@ public class WebsocketTest {
 		}
 		
 		public void send(String message) {
-			this.session.getAsyncRemote().sendText(message);
-//			this.session.getBasicRemote().sendText(message);
+			// 需要考虑粘包问题
+			try {
+				this.session.getBasicRemote().sendText(message, true);
+			} catch (IOException e) {
+				log.error("WebSocket异常", e);
+			}
+//			this.session.getAsyncRemote().sendText(message).get();
 		}
 		
 	}
