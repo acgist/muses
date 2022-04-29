@@ -8,12 +8,13 @@ spring:
     active: @profile@
   cloud:
     nacos:
-      username: nacos
-      password: nacos
+      username: @nacosUser@
+      password: @nacosPassword@
       discovery:
         namespace: ${spring.profiles.active}
         server-addr: @nacos@
       config:
         namespace: ${spring.profiles.active}
+        server-addr: @nacos@
         file-extension: yml
         refreshable-dataids: main.yml, mq.yml, dubbo.yml, data-sharding.yml

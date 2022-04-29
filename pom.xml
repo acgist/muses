@@ -410,6 +410,8 @@
 			<properties>
 				<nacos>localhost:8848</nacos>
 				<profile>dev</profile>
+				<nacosUser>nacos</nacosUser>
+				<nacosPassword>nacos</nacosPassword>
 			</properties>
 			<build>
 				<plugins>
@@ -430,6 +432,8 @@
 			<properties>
 				<nacos>localhost:8848</nacos>
 				<profile>test</profile>
+				<nacosUser>nacos</nacosUser>
+				<nacosPassword>nacos</nacosPassword>
 			</properties>
 			<build>
 				<plugins>
@@ -450,6 +454,8 @@
 			<properties>
 				<nacos>localhost:8848</nacos>
 				<profile>release</profile>
+				<nacosUser>nacos</nacosUser>
+				<nacosPassword>nacos</nacosPassword>
 			</properties>
 			<build>
 				<plugins>
