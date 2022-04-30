@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public class User extends ModelCopy {
+public class User extends Model {
 
 	private static final long serialVersionUID = 1L;
 

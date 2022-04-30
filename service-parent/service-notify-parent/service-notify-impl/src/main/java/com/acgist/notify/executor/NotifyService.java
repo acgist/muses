@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.acgist.boot.model.ModelCopy;
+import com.acgist.boot.model.Model;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +32,7 @@ public class NotifyService {
 	/**
 	 * 通知类型
 	 */
-	private Collection<Notify<? extends ModelCopy, ? extends NotifyConfig>> notifies;
+	private Collection<Notify<? extends Model, ? extends NotifyConfig>> notifies;
 	
 	@PostConstruct
 	public void init() {
@@ -42,7 +42,7 @@ public class NotifyService {
 			.sorted(Comparator.comparing(notify -> Objects.requireNonNullElseGet(notify.sorted(), () -> 0)))
 			.forEach(this.notifies::add);
 //			// 指定类型防止泛型推断错误
-//			.collect(Collectors.toCollection(ArrayList<Notify<? extends ModelCopy, ? extends NotifyConfig>>::new));
+//			.collect(Collectors.toCollection(ArrayList<Notify<? extends Model, ? extends NotifyConfig>>::new));
 		this.notifies.forEach(notify -> log.info("通知类型：{}", notify.name()));
 	}
 	

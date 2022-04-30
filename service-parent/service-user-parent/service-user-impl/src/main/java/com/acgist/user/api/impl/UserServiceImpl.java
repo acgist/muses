@@ -16,6 +16,7 @@ import com.acgist.user.model.dto.UserDto;
 import com.acgist.user.model.entity.PathEntity;
 import com.acgist.user.model.entity.RoleEntity;
 import com.acgist.user.model.entity.UserEntity;
+import com.acgist.user.model.mapstruct.UserMapstruct;
 
 @DubboService(protocol = "dubbo", retries = 0, timeout = 10000)
 public class UserServiceImpl implements IUserService {
@@ -26,6 +27,8 @@ public class UserServiceImpl implements IUserService {
 	private RoleMapper roleMapper;
 	@Autowired
 	private PathMapper pathMapper;
+	@Autowired
+	private UserMapstruct userMapstruct;
 	
 	@Override
 	@Cacheable(cacheNames = "user")
@@ -34,8 +37,7 @@ public class UserServiceImpl implements IUserService {
 		if(entity == null) {
 			return null;
 		}
-		final User user = new User();
-		user.copy(entity);
+		final User user = this.userMapstruct.toUser(entity);
 		user.setRoles(this.roleMapper.selectByUser(name).stream().map(RoleEntity::getName).collect(Collectors.toSet()));
 		user.setPaths(this.pathMapper.selectByUser(name).stream().map(PathEntity::getPath).collect(Collectors.toSet()));
 		return user;

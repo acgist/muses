@@ -1,4 +1,4 @@
-package com.acgist.boot.config;
+package com.acgist.boot.utils;
 
 import java.time.format.DateTimeFormatter;
 

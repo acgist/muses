@@ -15,7 +15,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import com.acgist.boot.model.ModelCopy;
+import com.acgist.boot.model.Model;
 import com.acgist.boot.service.FreemarkerService;
 import com.acgist.boot.service.impl.FreemarkerServiceImpl;
 import com.acgist.boot.utils.StringUtils;
@@ -338,7 +338,7 @@ public class CodeBuilderTest {
 	 */
 	@Getter
 	@Setter
-	public static class Column extends ModelCopy {
+	public static class Column extends Model {
 		
 		private static final long serialVersionUID = 1L;
 		

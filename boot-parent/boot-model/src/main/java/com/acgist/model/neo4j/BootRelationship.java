@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
-import com.acgist.boot.model.ModelCopy;
+import com.acgist.boot.model.Model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public abstract class BootRelationship<T extends BootNode> extends ModelCopy {
+public abstract class BootRelationship<T extends BootNode> extends Model {
 
 	private static final long serialVersionUID = 1L;
 

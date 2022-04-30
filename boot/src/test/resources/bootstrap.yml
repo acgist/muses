@@ -8,3 +8,6 @@ spring:
     active: dev
   shardingsphere:
     enabled: false
+system:
+  encrypt: 123456
+  value: acgist

@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Message<T> extends ModelCopy {
+public class Message<T> extends Model {
 
 	private static final long serialVersionUID = 1L;
 

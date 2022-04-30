@@ -1,6 +1,6 @@
 package com.acgist.notify.executor;
 
-import com.acgist.boot.model.ModelCopy;
+import com.acgist.boot.model.Model;
 
 /**
  * 通知
@@ -10,7 +10,7 @@ import com.acgist.boot.model.ModelCopy;
  * 
  * @author acgist
  */
-public abstract class Notify<T extends ModelCopy, C extends NotifyConfig> {
+public abstract class Notify<T extends Model, C extends NotifyConfig> {
 
 	/**
 	 * 通知类型

@@ -10,6 +10,7 @@ import com.acgist.notify.executor.NotifyService;
 import com.acgist.notify.gateway.dao.mapper.GatewayMapper;
 import com.acgist.notify.gateway.model.dto.GatewayDto;
 import com.acgist.notify.gateway.model.entity.GatewayEntity;
+import com.acgist.notify.gateway.model.mapstruct.GatewayMapstruct;
 
 @Configuration
 public class GatewayListener {
@@ -18,12 +19,13 @@ public class GatewayListener {
 	private GatewayMapper gatewayMapper;
 	@Autowired
 	private NotifyService notifyService;
+	@Autowired
+	private GatewayMapstruct gatewayMapstruct;
 	
 	@Bean
 	public Consumer<GatewayDto> gatewayRecord() {
 		return gatewayDto -> {
-			final GatewayEntity gatewayEntity = new GatewayEntity();
-			gatewayEntity.copy(gatewayDto);
+			final GatewayEntity gatewayEntity = this.gatewayMapstruct.toEntity(gatewayDto);
 			this.gatewayMapper.insert(gatewayEntity);
 			this.notifyService.notify(gatewayEntity);
 		};

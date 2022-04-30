@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.acgist.boot.config.FormatStyle;
-import com.acgist.boot.model.ModelCopy;
+import com.acgist.boot.model.Model;
+import com.acgist.boot.utils.FormatStyle;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public abstract class BootEntity extends ModelCopy {
+public abstract class BootEntity extends Model {
 
 	private static final long serialVersionUID = 1L;
 

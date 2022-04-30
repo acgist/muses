@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-import com.acgist.boot.config.FormatStyle.DateTimeStyle;
+import com.acgist.boot.utils.FormatStyle.DateTimeStyle;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class EntityDto extends EntityCopy {
+public class EntityDto extends Entity {
 
 	private static final long serialVersionUID = 1L;
 

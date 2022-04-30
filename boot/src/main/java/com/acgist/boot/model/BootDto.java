@@ -5,7 +5,7 @@ package com.acgist.boot.model;
  * 
  * @author acgist
  */
-public class BootDto extends ModelCopy {
+public class BootDto extends Model {
 
 	private static final long serialVersionUID = 1L;
 

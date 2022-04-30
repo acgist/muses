@@ -7,14 +7,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * EntityCopy
+ * Entity
  * 
  * @author acgist
  */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false, of = "id")
-public abstract class EntityCopy extends ModelCopy {
+public abstract class Entity extends Model {
 
 	private static final long serialVersionUID = 1L;
 

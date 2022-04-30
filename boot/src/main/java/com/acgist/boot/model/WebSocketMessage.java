@@ -1,8 +1,7 @@
 package com.acgist.boot.model;
 
-import lombok.Setter;
-
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * WebSocket消息
