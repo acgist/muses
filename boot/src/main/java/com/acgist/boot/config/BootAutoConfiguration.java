@@ -21,7 +21,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.acgist.boot.service.impl.FreemarkerService;
+import com.acgist.boot.service.FreemarkerService;
+import com.acgist.boot.service.impl.FreemarkerServiceImpl;
 import com.acgist.boot.utils.FileUtils;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.boot.utils.SpringUtils;
@@ -91,7 +92,7 @@ public class BootAutoConfiguration {
 	@ConditionalOnClass(freemarker.template.Configuration.class)
 	@ConditionalOnMissingBean
 	public FreemarkerService freemarkerService() {
-		return new FreemarkerService();
+		return new FreemarkerServiceImpl();
 	}
 
 	@Bean

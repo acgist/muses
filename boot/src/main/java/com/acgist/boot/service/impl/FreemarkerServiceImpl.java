@@ -13,6 +13,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acgist.boot.config.MusesConfig;
+import com.acgist.boot.service.FreemarkerService;
 import com.acgist.boot.utils.StringUtils;
 
 import freemarker.cache.StringTemplateLoader;
@@ -27,36 +28,22 @@ import lombok.extern.slf4j.Slf4j;
  * @author acgist
  */
 @Slf4j
-public class FreemarkerService {
+public class FreemarkerServiceImpl implements FreemarkerService {
 
-	/**
-	 * 缓存模板
-	 */
-	private static final String TEMPLATE = "template";
-	
 	@Autowired
 	private Configuration configuration;
 	
-	public FreemarkerService() {
+	public FreemarkerServiceImpl() {
 	}
 	
-	public FreemarkerService(String outpath) {
+	public FreemarkerServiceImpl(String outpath) {
 		this.configuration = new Configuration(Configuration.VERSION_2_3_31);
 		this.configuration.setDefaultEncoding(MusesConfig.CHARSET_VALUE);
 		this.configuration.setClassicCompatible(true);
-		this.configuration.setClassForTemplateLoading(FreemarkerService.class, outpath);
+		this.configuration.setClassForTemplateLoading(FreemarkerServiceImpl.class, outpath);
 	}
 
-	/**
-	 * 生成静态文件
-	 * 
-	 * @param templatePath 模板路径
-	 * @param data 数据
-	 * @param htmlPath 生成HTML路径：/article/
-	 * @param htmlName 生成HTML文件名称：index.html
-	 * 
-	 * @return 是否成功
-	 */
+	@Override
 	public boolean build(String templatePath, Map<Object, Object> data, String htmlPath, String htmlName) {
 		if (StringUtils.isEmpty(htmlPath)) {
 			log.warn("生成静态文件路径错误：{}", htmlPath);
@@ -75,33 +62,24 @@ public class FreemarkerService {
 		}
 		return true;
 	}
-
-	/**
-	 * 根据文本模板生产文本
-	 * 
-	 * @param content 模板文本
-	 * @param data 数据
-	 * 
-	 * @return 文本
-	 */
-	public String templateConvert(String content, Map<String, Object> data) {
+	
+	@Override
+	public void buildTemplate(String name, String content) {
 		final StringTemplateLoader loader = new StringTemplateLoader();
-		loader.putTemplate(TEMPLATE, content);
+		loader.putTemplate(name, content);
 		this.configuration.setTemplateLoader(loader);
+	}
+
+	@Override
+	public String buildTemplate(String name, Map<String, Object> data) {
 		try (final Writer writer = new StringWriter()) {
-			final Template template = this.configuration.getTemplate(TEMPLATE, MusesConfig.CHARSET_VALUE);
+			final Template template = this.configuration.getTemplate(name, MusesConfig.CHARSET_VALUE);
 			template.process(data, writer);
-			content = writer.toString();
+			return writer.toString();
 		} catch (TemplateException | IOException e) {
-			log.error("freemarker模板异常：{}-{}", content, data, e);
-		} finally {
-			try {
-				this.configuration.removeTemplateFromCache(TEMPLATE);
-			} catch (IOException e) {
-				log.error("freemarker模板异常", e);
-			}
+			log.error("freemarker模板异常：{}-{}", name, data, e);
 		}
-		return content;
+		return null;
 	}
 
 }

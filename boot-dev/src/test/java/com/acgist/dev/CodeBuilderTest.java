@@ -16,7 +16,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import com.acgist.boot.model.ModelCopy;
-import com.acgist.boot.service.impl.FreemarkerService;
+import com.acgist.boot.service.FreemarkerService;
+import com.acgist.boot.service.impl.FreemarkerServiceImpl;
 import com.acgist.boot.utils.StringUtils;
 
 import lombok.Getter;
@@ -68,7 +69,7 @@ public class CodeBuilderTest {
 	private String user = "root";
 	private String password = "";
 	private String driverClass = "com.mysql.cj.jdbc.Driver";
-	private FreemarkerService freemarkerService = new FreemarkerService(this.target);
+	private FreemarkerService freemarkerService = new FreemarkerServiceImpl(this.target);
 	
 	@Test
 	public void testBuildAll() throws Exception {

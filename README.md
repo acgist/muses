@@ -210,8 +210,8 @@ server.port=${system.port:8080}
 
 #### Service规范
 
-* 远程`Service`接口需要使用`I`开头：`IUserService`
 * 本地`Service`接口不要使用`I`开头：`UserService`
+* 远程`Service`接口需要使用`I`开头：`IUserService`
 * 实现接口使用`Impl`结尾：`UserServiceImpl`
 * 不要使用继承`BootService`提供远程服务
 
