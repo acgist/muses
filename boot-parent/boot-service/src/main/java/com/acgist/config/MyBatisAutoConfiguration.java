@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.acgist.boot.service.impl.IdService;
+import com.acgist.boot.service.IdService;
 import com.acgist.model.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;

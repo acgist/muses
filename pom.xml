@@ -89,6 +89,11 @@
 			</dependency>
 			<dependency>
 				<groupId>com.acgist</groupId>
+				<artifactId>boot-cloud</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.acgist</groupId>
 				<artifactId>boot-concurrent</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -388,12 +393,12 @@
 
 	<!-- 注意：如果使用SpringBoot打包插件不能排除provided依赖需要手工配置 -->
 	<!--
-	建议生产环境排除swagger
 	<plugin>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-maven-plugin</artifactId>
 		<configuration>
 			<excludeGroupIds>
+				io.springfox,
 				org.mapstruct,
 				org.projectlombok
 			</excludeGroupIds>
@@ -448,6 +453,16 @@
 					</plugin>
 				</plugins>
 			</build>
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>io.springfox</groupId>
+						<artifactId>springfox-boot-starter</artifactId>
+						<version>${springfox.version}</version>
+						<scope>provided</scope>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
 		</profile>
 		<profile>
 			<id>release</id>

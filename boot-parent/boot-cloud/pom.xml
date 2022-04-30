@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>boot-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>boot-cloud</artifactId>
+	<packaging>jar</packaging>
+
+	<name>boot-cloud</name>
+	<description>服务注册发现配置模块Boot</description>
+
+	<properties>
+		<system.maven.module>com.acgist.boot.cloud</system.maven.module>
+	</properties>
+
+	<dependencies>
+		<!--
+		IDEA不能解析yml配置@@
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

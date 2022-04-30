@@ -1,4 +1,4 @@
-package com.acgist.boot.service.impl;
+package com.acgist.cloud.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -7,17 +7,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.acgist.boot.config.MusesConfig;
+import com.acgist.boot.service.IdService;
+import com.acgist.cloud.config.CloudConfig;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * ID生成
- * 
- * @author acgist
- */
 @Slf4j
-public class IdService {
+public class IdServiceImpl implements IdService {
 
 	/**
 	 * 最大序号
@@ -34,21 +30,17 @@ public class IdService {
 	private int index;
 	
 	@Autowired
-	private MusesConfig musesConfig;
+	private CloudConfig cloudConfig;
 	
 	@PostConstruct
 	public void init() {
-		this.sn = this.musesConfig.getSn();
+		this.sn = this.cloudConfig.getSn();
 		final Random random = new Random();
 		this.index = random.nextInt(MAX_INDEX);
 		log.info("雪花ID：{}-{}", this.sn, this.index);
 	}
 
-	/**
-	 * 生成十八位的ID：YYMMddHHmmss + sn + xxxx
-	 * 
-	 * @return ID
-	 */
+	@Override
 	public Long id() {
 		synchronized (this) {
 			if (++this.index > MAX_INDEX) {

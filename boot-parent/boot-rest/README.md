@@ -40,3 +40,10 @@ UserContext.get()
 @ApiParam → @Parameter
 @ApiResponse(code = 404, message = "foo") → @ApiResponse(responseCode = "404", description = "foo")
 ```
+
+## 空指针错误
+
+如果启动报空指针错误选择以下任意一种解决方式：
+
+1. 在启动类添加注解：`@EnableWebMvc`
+2. 添加配置：`spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER`

@@ -23,7 +23,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 /**
  * Swagger文档自动配置
  * 
- * 如果启动保存尝试添加：@EnableWebMvc
+ * 如果启动报空指针错误选择以下任意一种解决方式：
+ * 
+ * 1. 在启动类添加注解：`@EnableWebMvc`
+ * 2. 添加配置：`spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER`
  * 
  * 注意：OpenAPI不好配置
  * 

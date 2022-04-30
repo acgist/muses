@@ -21,13 +21,10 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.acgist.boot.listener.ShutdownListener;
 import com.acgist.boot.service.impl.FreemarkerService;
-import com.acgist.boot.service.impl.IdService;
 import com.acgist.boot.utils.FileUtils;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.boot.utils.SpringUtils;
-import com.alibaba.cloud.nacos.NacosConfigManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.qos.logback.classic.LoggerContext;
@@ -55,22 +52,10 @@ public class BootAutoConfiguration {
 	}
 
 	/**
-	 * 系统编号：01~99
-	 * 
-	 * 可以配置负数：自动生成
-	 */
-	@Value("${system.sn:-1}")
-	private int sn;
-	/**
 	 * 服务名称
 	 */
 	@Value("${spring.application.name:}")
 	private String name;
-	/**
-	 * 服务端口
-	 */
-	@Value("${server.port:0}")
-	private int port;
 	/**
 	 * 最小线程数量
 	 */
@@ -101,24 +86,6 @@ public class BootAutoConfiguration {
 	
 	@Autowired
 	private ApplicationContext context;
-	@Autowired
-	private NacosConfigManager nacosConfigManager;
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public MusesConfig musesConfig() {
-		return MusesConfigBuilder.builder(this.nacosConfigManager)
-			.buildSn(this.sn, this.name)
-			.buildPid()
-			.buildPort(this.port)
-			.build();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public IdService idService() {
-		return new IdService();
-	}
 	
 	@Bean
 	@ConditionalOnClass(freemarker.template.Configuration.class)
@@ -163,12 +130,6 @@ public class BootAutoConfiguration {
 		return executor;
 	}
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public ShutdownListener shutdownListener() {
-		return new ShutdownListener();
-	}
-
 	@PostConstruct
 	public void init() {
 		SpringUtils.setContext(this.context);

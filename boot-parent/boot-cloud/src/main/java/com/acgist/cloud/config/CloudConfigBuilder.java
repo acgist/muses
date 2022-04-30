@@ -1,8 +1,9 @@
-package com.acgist.boot.config;
+package com.acgist.cloud.config;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.boot.utils.StringUtils;
 import com.alibaba.cloud.nacos.NacosConfigManager;
@@ -18,18 +19,18 @@ import lombok.extern.slf4j.Slf4j;
  * @author acgist
  */
 @Slf4j
-public final class MusesConfigBuilder {
+public final class CloudConfigBuilder {
 	
 	/**
 	 * 系统配置
 	 */
-	private MusesConfig musesConfig;
+	private CloudConfig cloudConfig;
 	/**
 	 * NacosConfigManager
 	 */
 	private final NacosConfigManager nacosConfigManager;
 	
-	private MusesConfigBuilder(NacosConfigManager nacosConfigManager) {
+	private CloudConfigBuilder(NacosConfigManager nacosConfigManager) {
 		this.nacosConfigManager = nacosConfigManager;
 	}
 	
@@ -40,8 +41,8 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return 系统配置Builder
 	 */
-	public static final MusesConfigBuilder builder(NacosConfigManager nacosConfigManager) {
-		final MusesConfigBuilder builder = new MusesConfigBuilder(nacosConfigManager);
+	public static final CloudConfigBuilder builder(NacosConfigManager nacosConfigManager) {
+		final CloudConfigBuilder builder = new CloudConfigBuilder(nacosConfigManager);
 		return builder.init();
 	}
 	
@@ -52,15 +53,15 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return this
 	 */
-	private MusesConfigBuilder init() {
+	private CloudConfigBuilder init() {
 		final ConfigService configService = this.nacosConfigManager.getConfigService();
 		final NacosConfigProperties nacosConfigProperties = this.nacosConfigManager.getNacosConfigProperties();
 		try {
-			final String oldConfig = configService.getConfig(MusesConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), MusesConfig.TIMEOUT);
+			final String oldConfig = configService.getConfig(CloudConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), MusesConfig.TIMEOUT);
 			if(StringUtils.isEmpty(oldConfig)) {
-				this.musesConfig = new MusesConfig();
+				this.cloudConfig = new CloudConfig();
 			} else {
-				this.musesConfig = JSONUtils.toJava(oldConfig, MusesConfig.class);
+				this.cloudConfig = JSONUtils.toJava(oldConfig, CloudConfig.class);
 			}
 		} catch (NacosException e) {
 			log.error("初始系统配置异常", e);
@@ -76,20 +77,20 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return this
 	 */
-	public MusesConfigBuilder buildSn(int sn, String serviceName) {
-		Map<String, Integer> sns = this.musesConfig.getSns();
+	public CloudConfigBuilder buildSn(int sn, String serviceName) {
+		Map<String, Integer> sns = this.cloudConfig.getSns();
 		if(sns == null) {
 			sns = new HashMap<>();
-			this.musesConfig.setSns(sns);
+			this.cloudConfig.setSns(sns);
 		}
 		if(sn < 0) {
 			sn = sns.getOrDefault(serviceName, 0);
-			if (++sn >= MusesConfig.MAX_SN) {
+			if (++sn >= CloudConfig.MAX_SN) {
 				sn = 0;
 			}
 		}
 		sns.put(serviceName, sn);
-		this.musesConfig.setSn(sn);
+		this.cloudConfig.setSn(sn);
 		log.info("系统编号：{}", sn);
 		return this;
 	}
@@ -99,9 +100,9 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return this
 	 */
-	public MusesConfigBuilder buildPid() {
+	public CloudConfigBuilder buildPid() {
 		final long pid = ProcessHandle.current().pid();
-		this.musesConfig.setPid((int) pid);
+		this.cloudConfig.setPid((int) pid);
 		log.info("系统PID：{}", pid);
 		return this;
 	}
@@ -113,8 +114,8 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return this
 	 */
-	public MusesConfigBuilder buildPort(int port) {
-		this.musesConfig.setPort(port);
+	public CloudConfigBuilder buildPort(int port) {
+		this.cloudConfig.setPort(port);
 		log.info("系统端口：{}", port);
 		return this;
 	}
@@ -124,16 +125,16 @@ public final class MusesConfigBuilder {
 	 * 
 	 * @return
 	 */
-	public MusesConfig build() {
+	public CloudConfig build() {
 		final ConfigService configService = this.nacosConfigManager.getConfigService();
 		final NacosConfigProperties nacosConfigProperties = this.nacosConfigManager.getNacosConfigProperties();
 		try {
 			// 保存配置中心
-			configService.publishConfig(MusesConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), JSONUtils.toJSON(this.musesConfig));
+			configService.publishConfig(CloudConfig.MUSES_CONFIG, nacosConfigProperties.getGroup(), JSONUtils.toJSON(this.cloudConfig));
 		} catch (NacosException e) {
 			log.error("设置系统配置异常", e);
 		}
-		return this.musesConfig;
+		return this.cloudConfig;
 	}
 	
 }

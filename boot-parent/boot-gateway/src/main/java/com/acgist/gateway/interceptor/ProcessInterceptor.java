@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.acgist.boot.model.MessageCode;
-import com.acgist.boot.service.impl.IdService;
+import com.acgist.boot.service.IdService;
 import com.acgist.gateway.model.GatewaySession;
 import com.acgist.notify.gateway.model.dto.GatewayDto;
 import com.acgist.www.interceptor.WwwInterceptor;

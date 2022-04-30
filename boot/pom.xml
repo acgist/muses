@@ -67,6 +67,17 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
+		<!-- AOP -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<!-- Web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<!-- 自动配置、日志框架 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,24 +92,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<!-- 服务注册、服务发现、服务调用、配置中心 -->
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-dubbo</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 	</dependencies>
 

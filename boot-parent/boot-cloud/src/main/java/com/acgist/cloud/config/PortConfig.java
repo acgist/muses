@@ -1,4 +1,4 @@
-package com.acgist.boot.config;
+package com.acgist.cloud.config;
 
 import java.util.List;
 import java.util.Objects;
