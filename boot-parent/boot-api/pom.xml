@@ -23,6 +23,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- 服务调用 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-dubbo</artifactId>

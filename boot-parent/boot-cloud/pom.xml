@@ -30,6 +30,7 @@
 			<artifactId>snakeyaml</artifactId>
 		</dependency>
 		-->
+		<!-- 服务注册、服务发现、配置中心 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bootstrap</artifactId>
