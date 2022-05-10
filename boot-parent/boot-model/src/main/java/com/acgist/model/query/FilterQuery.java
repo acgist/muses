@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -326,6 +327,14 @@ public class FilterQuery {
 	 */
 	private boolean nullable = true;
 	/**
+	 * 查询列
+	 */
+	private List<String> selectCloumn = new ArrayList<>();
+	/**
+	 * 忽略列
+	 */
+	private List<String> ignoreCloumn = new ArrayList<>();
+	/**
 	 * 过滤条件
 	 */
 	private List<Filter> filter = new ArrayList<>();
@@ -445,6 +454,19 @@ public class FilterQuery {
 		this.filter.add(new Filter(name, value, Filter.Type.LE));
 		return this;
 	}
+	
+	/**
+	 * @see FilterQuery.Filter.Type#GE
+	 * 
+	 * @param name 属性名称
+	 * @param value 属性值
+	 * 
+	 * @return this
+	 */
+	public FilterQuery ge(String name, Object value) {
+		this.filter.add(new Filter(name, value, Filter.Type.GE));
+		return this;
+	}
 
 	/**
 	 * @see FilterQuery.Filter.Type#IN
@@ -560,7 +582,41 @@ public class FilterQuery {
 		this.filter.add(new Filter(name, value, Filter.Type.EXCLUDE));
 		return this;
 	}
+	
+	/**
+	 * 获取过滤条件
+	 * 
+	 * @param name 属性名称
+	 * 
+	 * @return 过滤条件
+	 */
+	public Filter get(String name) {
+		return this.filter.stream()
+			.filter(filter -> StringUtils.equals(filter.name, name))
+			.findFirst()
+			.orElse(null);
+	}
 
+	/**
+	 * 删除过滤条件
+	 * 
+	 * @param name 属性名称
+	 * 
+	 * @return 过滤条件
+	 */
+	public Filter remove(String name) {
+		final Iterator<Filter> iterator = this.filter.iterator();
+		Filter filter = null;
+		while(iterator.hasNext()) {
+			filter = iterator.next();
+			if(StringUtils.equals(filter.name, name)) {
+				iterator.remove();
+				break;
+			}
+		}
+		return filter;
+	}
+	
 	/**
 	 * @see FilterQuery.Sorted.Type#ASC
 	 * 
@@ -606,12 +662,31 @@ public class FilterQuery {
 	 */
 	public <T extends BootEntity> Wrapper<T> build(Class<T> entity) {
 		final QueryWrapper<T> wrapper = Wrappers.query();
-		FilterQuery.this.filter.stream()
-			.filter(filter -> FilterQuery.this.nullable || filter.value != null)
+//		final LambdaQueryWrapper<T> wrapper = Wrappers.lambdaQuery(entity);
+		if(CollectionUtils.isEmpty(this.selectCloumn)) {
+//			wrapper.select(this.selectCloumn.toArray(String[]::new));
+			wrapper.select(field -> this.selectCloumn.contains(field.getField().getName()));
+		}
+		if(CollectionUtils.isEmpty(this.ignoreCloumn)) {
+			wrapper.select(field -> !this.ignoreCloumn.contains(field.getField().getName()));
+		}
+		this.filter.stream()
+			.filter(filter -> this.nullable || filter.value != null)
 			.forEach(filter -> filter.filter(entity, wrapper));
-		FilterQuery.this.sorted.stream()
+		this.sorted.stream()
 			.forEach(sorted -> sorted.order(wrapper));
 		return wrapper;
+	}
+	
+	/**
+	 * 创建分页信息
+	 * 
+	 * @param <T> 实体类型
+	 * 
+	 * @return 分页信息
+	 */
+	public <T extends BootEntity> Page<T> buildPage() {
+		return Page.of(this.current, this.size);
 	}
 	
 }

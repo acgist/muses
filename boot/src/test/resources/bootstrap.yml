@@ -8,6 +8,7 @@ spring:
     active: dev
   shardingsphere:
     enabled: false
+# TODO：实现加密
 system:
   encrypt: 123456
   value: acgist

@@ -29,9 +29,15 @@
 			<outputDirectory>config</outputDirectory>
 			<filtered>true</filtered>
 			<includes>
-				<include>*.jks</include>
 				<include>*.yml</include>
 				<include>*.properties</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/resources</directory>
+			<outputDirectory>config</outputDirectory>
+			<includes>
+				<include>*.jks</include>
 			</includes>
 		</fileSet>
 		<fileSet>

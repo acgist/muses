@@ -64,6 +64,15 @@ public class FreemarkerServiceImpl implements FreemarkerService {
 	}
 	
 	@Override
+	public boolean delete(String htmlPath, String htmlName) {
+		final File htmlFile = Paths.get(htmlPath, htmlName).toFile();
+		if(htmlFile.exists()) {
+			return htmlFile.delete();
+		}
+		return true;
+	}
+	
+	@Override
 	public void buildTemplate(String name, String content) {
 		final StringTemplateLoader loader = new StringTemplateLoader();
 		loader.putTemplate(name, content);
