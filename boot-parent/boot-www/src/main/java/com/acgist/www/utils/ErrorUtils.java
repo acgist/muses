@@ -1,5 +1,7 @@
 package com.acgist.www.utils;
 
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,17 +47,21 @@ public final class ErrorUtils {
 	 */
 	public static final String ERROR_MESSAGE = "system.error.message";
 	/**
+	 * 错误地址
+	 */
+	public static final String SERVLET_REQUEST_URI = "javax.servlet.error.request_uri";
+	/**
 	 * 错误响应
 	 */
-	public static final String STATUS_SERVLET = "javax.servlet.error.status_code";
+	public static final String SERVLET_STATUS_CODE = "javax.servlet.error.status_code";
 	/**
 	 * 异常
 	 */
-	public static final String THROWABLE_SERVLET = "javax.servlet.error.exception";
+	public static final String SERVLET_THROWABLE = "javax.servlet.error.exception";
 	/**
 	 * 异常
 	 */
-	public static final String THROWABLE_SPRINTBOOT = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
+	public static final String SPRINTBOOT_THROWABLE = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
 
 	private ErrorUtils() {
 	}
@@ -103,7 +109,7 @@ public final class ErrorUtils {
 		}
 		response.setStatus(status);
 		final String method = request.getMethod();
-		final String path = request.getServletPath();
+		final String path = Objects.toString(request.getAttribute(SERVLET_REQUEST_URI), request.getServletPath());
 		final String query = request.getQueryString();
 		if(globalErrorMessage instanceof Throwable) {
 			// 有时候dispatcherServlet会打印异常有时候又不会
@@ -123,11 +129,11 @@ public final class ErrorUtils {
 	 * @return 异常
 	 */
 	public static final Object globalErrorMessage(HttpServletRequest request) {
-		Object throwable = request.getAttribute(THROWABLE_SERVLET);
+		Object throwable = request.getAttribute(SERVLET_THROWABLE);
 		if(throwable != null) {
 			return throwable;
 		}
-		throwable = request.getAttribute(THROWABLE_SPRINTBOOT);
+		throwable = request.getAttribute(SPRINTBOOT_THROWABLE);
 		if(throwable != null) {
 			return throwable;
 		}
@@ -157,7 +163,7 @@ public final class ErrorUtils {
 	 * @return 响应状态
 	 */
 	public static final int status(HttpServletRequest request, HttpServletResponse response) {
-		final Object status = request.getAttribute(STATUS_SERVLET);
+		final Object status = request.getAttribute(SERVLET_STATUS_CODE);
 		if(status instanceof Integer) {
 			return (int) status;
 		}

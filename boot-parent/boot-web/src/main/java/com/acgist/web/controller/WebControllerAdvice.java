@@ -18,7 +18,7 @@ public class WebControllerAdvice {
 
 	@ExceptionHandler(Exception.class)
 	public String exception(Exception e, HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute(ErrorUtils.THROWABLE_SPRINTBOOT, e);
+		request.setAttribute(ErrorUtils.SPRINTBOOT_THROWABLE, e);
 		return "forward:" + ErrorUtils.ERROR_PATH;
 	}
 	
