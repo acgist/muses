@@ -112,10 +112,15 @@ public final class ErrorUtils {
 		final String path = Objects.toString(request.getAttribute(SERVLET_REQUEST_URI), request.getServletPath());
 		final String query = request.getQueryString();
 		if(globalErrorMessage instanceof Throwable) {
-			// 有时候dispatcherServlet会打印异常有时候又不会
-			log.error("系统错误：{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
+			log.error("""
+				系统错误：{}-{}-{}
+				错误信息：{}
+				""", method, path, query, message, globalErrorMessage);
 		} else {
-			log.warn("系统错误：{}-{}-{}-{}-{}", message, method, path, query, globalErrorMessage);
+			log.warn("""
+				系统错误：{}-{}-{}
+				错误信息：{}-{}
+				""", method, path, query, message, globalErrorMessage);
 		}
 		request.setAttribute(ERROR_MESSAGE, message);
 		return message;
