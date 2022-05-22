@@ -606,15 +606,14 @@ public class FilterQuery {
 	 */
 	public Filter remove(String name) {
 		final Iterator<Filter> iterator = this.filter.iterator();
-		Filter filter = null;
 		while(iterator.hasNext()) {
-			filter = iterator.next();
+			final Filter filter = iterator.next();
 			if(StringUtils.equals(filter.name, name)) {
 				iterator.remove();
-				break;
+				return filter;
 			}
 		}
-		return filter;
+		return null;
 	}
 	
 	/**

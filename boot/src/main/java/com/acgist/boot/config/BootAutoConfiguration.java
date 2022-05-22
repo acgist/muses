@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.acgist.boot.service.FreemarkerService;
 import com.acgist.boot.service.impl.FreemarkerServiceImpl;
@@ -127,8 +128,24 @@ public class BootAutoConfiguration {
 		executor.setKeepAliveSeconds(this.live);
 		executor.setThreadNamePrefix(this.name + "-");
 		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+		executor.setAwaitTerminationSeconds(this.live);
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		return executor;
+	}
+	
+	@Bean
+	@Primary
+	@ConditionalOnMissingBean
+	public ThreadPoolTaskScheduler taskScheduler() {
+		log.info("系统定时线程池配置：{}-{}", this.min, this.live);
+		final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+		scheduler.setDaemon(true);
+		scheduler.setPoolSize(this.min);
+		scheduler.setThreadNamePrefix(this.name + "-scheduling-");
+		scheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+		scheduler.setAwaitTerminationSeconds(this.live);
+		scheduler.setWaitForTasksToCompleteOnShutdown(true);
+		return scheduler;
 	}
 	
 	@PostConstruct
