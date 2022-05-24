@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.springframework.util.CollectionUtils;
 
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.boot.utils.StringUtils;
@@ -70,6 +70,23 @@ public class FilterQuery {
 	}
 	
 	/**
+	 * 获取别名列名
+	 * 
+	 * @param thisAlias 优先别名
+	 * @param thatAlias 次要别名
+	 * @param cloumn 列名
+	 * 
+	 * @return 列名
+	 */
+	private static final String aliasCloumn(String thisAlias, String thatAlias, String cloumn) {
+		return StringUtils.isNotEmpty(thisAlias) ?
+			thisAlias + "." + cloumn :
+			StringUtils.isNotEmpty(thatAlias) ?
+			thatAlias + "." + cloumn :
+			cloumn;
+	}
+	
+	/**
 	 * 过滤条件
 	 * 
 	 * @author acgist
@@ -123,6 +140,10 @@ public class FilterQuery {
 		}
 
 		/**
+		 * 别名
+		 */
+		private String alias;
+		/**
 		 * 属性名称
 		 */
 		private String name;
@@ -144,18 +165,33 @@ public class FilterQuery {
 			this.type = type;
 		}
 		
+		public Filter(String alias, String name, Object value, Type type) {
+			this.alias = alias;
+			this.name = name;
+			this.value = value;
+			this.type = type;
+		}
+		
+		/**
+		 * @see #filter(String, Class, QueryWrapper)
+		 */
+		public <T> void filter(Class<T> entityClazz, QueryWrapper<T> wrapper) {
+			this.filter(null, entityClazz, wrapper);
+		}
+		
 		/**
 		 * MyBatis查询条件
 		 * 
 		 * @param <T> 类型
 		 * 
+		 * @param alias 别名
 		 * @param entityClazz entityClazz
 		 * @param wrapper wrapper
 		 * 
 		 * TODO：JDK17
 		 */
-		public <T> void filter(Class<T> entityClazz, QueryWrapper<T> wrapper) {
-			final String column = column(entityClazz, this.name);
+		public <T> void filter(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper) {
+			final String column = aliasCloumn(this.alias, alias, column(entityClazz, this.name));
 			switch (this.type) {
 			case EQ:
 				wrapper.eq(column, this.value);
@@ -287,6 +323,10 @@ public class FilterQuery {
 		}
 
 		/**
+		 * 别名
+		 */
+		private String alias;
+		/**
 		 * 排序字段
 		 */
 		private final String name;
@@ -299,7 +339,20 @@ public class FilterQuery {
 			this.name = name;
 			this.type = type;
 		}
+		
+		public Sorted(String alias, String name, Type type) {
+			this.alias = alias;
+			this.name = name;
+			this.type = type;
+		}
 
+		/**
+		 * @see #order(String, QueryWrapper)
+		 */
+		public <T> void order(QueryWrapper<T> wrapper) {
+			this.order(null, wrapper);
+		}
+		
 		/**
 		 * MyBatis排序
 		 * 
@@ -307,13 +360,14 @@ public class FilterQuery {
 		 * 
 		 * @param wrapper wrapper
 		 */
-		public <T> void order(QueryWrapper<T> wrapper) {
+		public <T> void order(String alias, QueryWrapper<T> wrapper) {
+			final String cloumn = aliasCloumn(this.alias, alias, this.name);
 			switch (this.type) {
 			case ASC:
-				wrapper.orderByAsc(this.name);
+				wrapper.orderByAsc(cloumn);
 				break;
 			case DESC:
-				wrapper.orderByDesc(this.name);
+				wrapper.orderByDesc(cloumn);
 				break;
 			default:
 				throw MessageCodeException.of("未知排序类型：", this.type);
@@ -653,27 +707,32 @@ public class FilterQuery {
 	}
 	
 	/**
+	 * @see #build(String, Class)
+	 */
+	public <T extends BootEntity> Wrapper<T> build(Class<T> entity) {
+		return this.build(null, entity);
+	}
+	
+	/**
 	 * 创建MyBatis查询条件
 	 * 
 	 * @param entity entity
 	 * 
 	 * @return MyBatis查询条件
 	 */
-	public <T extends BootEntity> Wrapper<T> build(Class<T> entity) {
+	public <T extends BootEntity> Wrapper<T> build(String alias, Class<T> entity) {
 		final QueryWrapper<T> wrapper = Wrappers.query();
-//		final LambdaQueryWrapper<T> wrapper = Wrappers.lambdaQuery(entity);
-		if(CollectionUtils.isEmpty(this.selectCloumn)) {
-//			wrapper.select(this.selectCloumn.toArray(String[]::new));
+		if(CollectionUtils.isNotEmpty(this.selectCloumn)) {
 			wrapper.select(field -> this.selectCloumn.contains(field.getField().getName()));
 		}
-		if(CollectionUtils.isEmpty(this.ignoreCloumn)) {
+		if(CollectionUtils.isNotEmpty(this.ignoreCloumn)) {
 			wrapper.select(field -> !this.ignoreCloumn.contains(field.getField().getName()));
 		}
 		this.filter.stream()
 			.filter(filter -> this.nullable || filter.value != null)
-			.forEach(filter -> filter.filter(entity, wrapper));
+			.forEach(filter -> filter.filter(alias, entity, wrapper));
 		this.sorted.stream()
-			.forEach(sorted -> sorted.order(wrapper));
+			.forEach(sorted -> sorted.order(alias, wrapper));
 		return wrapper;
 	}
 	
