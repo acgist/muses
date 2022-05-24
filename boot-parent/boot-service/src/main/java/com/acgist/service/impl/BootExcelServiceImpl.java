@@ -58,9 +58,9 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	private String headerFont;
 	@Value("${system.excel.header.size:16}")
 	private Short headerSize;
-	@Value("${system.excel.header.font:宋体}")
+	@Value("${system.excel.cell.font:宋体}")
 	private String cellFont;
-	@Value("${system.excel.header.size:12}")
+	@Value("${system.excel.cell.size:12}")
 	private Short cellSize;
 	@Value("${system.excel.font.width:256}")
 	private Integer fontWidth;
@@ -88,6 +88,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	
 	@Override
 	public void markCell(XSSFWorkbook workbook, XSSFSheet sheet, Cell cell, String message) {
+		if(cell == null) {
+			// 为空：Excel拷贝最后一行为空行时可能导致复制文件最后一行不存在
+			return;
+		}
 		final CellStyle cellStyle = workbook.createCellStyle();
 //		cellStyle.setFillForegroundColor(IndexedColors.RED.index);
 //		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);

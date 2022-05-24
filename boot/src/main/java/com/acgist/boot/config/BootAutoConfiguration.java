@@ -114,6 +114,20 @@ public class BootAutoConfiguration {
 			return SerializerType.JDK;
 		}
 	}
+	
+//	@Bean
+//	@Primary
+//	@ConditionalOnMissingBean
+//	public TaskExecutor taskExecutor(TaskExecutorBuilder builder) {
+//		return builder.build();
+//	}
+//	
+//	@Bean
+//	@Primary
+//	@ConditionalOnMissingBean
+//	public TaskScheduler taskScheduler(TaskSchedulerBuilder builder) {
+//		return builder.build();
+//	}
 
 	@Bean
 	@Primary
@@ -136,7 +150,7 @@ public class BootAutoConfiguration {
 	@Bean
 	@Primary
 	@ConditionalOnMissingBean
-	public ThreadPoolTaskScheduler taskScheduler() {
+	public TaskScheduler taskScheduler() {
 		log.info("系统定时线程池配置：{}-{}", this.min, this.live);
 		final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
 		scheduler.setDaemon(true);
