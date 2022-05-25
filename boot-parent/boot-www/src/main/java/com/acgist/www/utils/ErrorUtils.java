@@ -111,16 +111,17 @@ public final class ErrorUtils {
 		final String method = request.getMethod();
 		final String path = Objects.toString(request.getAttribute(SERVLET_REQUEST_URI), request.getServletPath());
 		final String query = request.getQueryString();
+		log.warn("系统错误：{}-{}-{}", method, path, query);
 		if(globalErrorMessage instanceof Throwable) {
-			log.error("""
-				系统错误：{}-{}-{}
-				错误信息：{}
-				""", method, path, query, message, globalErrorMessage);
+//			log.error("""
+//				系统错误：{}-{}-{}
+//				错误信息：{}
+//				""", method, path, query, message, globalErrorMessage);
 		} else {
-			log.warn("""
-				系统错误：{}-{}-{}
-				错误信息：{}-{}
-				""", method, path, query, message, globalErrorMessage);
+//			log.warn("""
+//				系统错误：{}-{}-{}
+//				错误信息：{}-{}
+//				""", method, path, query, message, globalErrorMessage);
 		}
 		request.setAttribute(ERROR_MESSAGE, message);
 		return message;

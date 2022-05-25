@@ -1,23 +1,35 @@
 package com.acgist.rest.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.acgist.boot.model.User;
 import com.acgist.boot.utils.StringUtils;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.OpenAPI;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.OAuth2SchemeBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
@@ -30,6 +42,8 @@ import springfox.documentation.spring.web.plugins.Docket;
  * 
  * 注意：OpenAPI不好配置
  * 
+ * 授权配置：https://swagger.io/docs/specification/authentication/oauth2/
+ * 
  * @author acgist
  */
 @Slf4j
@@ -37,6 +51,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 @EnableOpenApi
 @ConditionalOnClass(OpenAPI.class)
+@EnableConfigurationProperties(value = SwaggerConfig.class)
 //@ConditionalOnProperty(value = "spring.profiles.active", matchIfMissing = false, havingValue = "dev")
 public class SwaggerAutoConfiguration {
 	
@@ -46,6 +61,9 @@ public class SwaggerAutoConfiguration {
 	private String systemVersion;
 	@Value("${spring.application.name:}")
 	private String applicationName;
+	
+	@Autowired
+	private SwaggerConfig swaggerConfig;
 	
 	@Bean
 	public Docket createRestApi() {
@@ -85,7 +103,52 @@ public class SwaggerAutoConfiguration {
 //			.genericModelSubstitutes(Message.class)
 			.genericModelSubstitutes(DeferredResult.class)
 //			.useDefaultResponseMessages(false)
-			.apiInfo(this.buildApiInfo());
+			.apiInfo(this.buildApiInfo())
+			.securitySchemes(this.securitySchemes())
+			.securityContexts(this.securityContexts());
+	}
+
+	private AuthorizationScope[] allScope() {
+		final AuthorizationScope allScope = new AuthorizationScope("all", "all");
+		return new AuthorizationScope[] {
+			allScope
+		};
 	}
 	
+	private List<SecurityScheme> securitySchemes() {
+		final List<SecurityScheme> securitySchemes = new ArrayList<>();
+		// Header透传
+		securitySchemes.add(new ApiKey(User.HEADER_CURRENT_USER, User.HEADER_CURRENT_USER, "header"));
+		// OAuth2授权：password、implicit、authorizationCode
+		securitySchemes.add(
+//			new OAuth2SchemeBuilder("password")
+//			new OAuth2SchemeBuilder("implicit")
+			new OAuth2SchemeBuilder("authorizationCode")
+			.name("OAuth2")
+			.scopes(List.of(this.allScope()))
+			.tokenUrl(this.swaggerConfig.getServer() + "/oauth2/token")
+			.refreshUrl(this.swaggerConfig.getServer() + "/oauth2/token")
+			.authorizationUrl(this.swaggerConfig.getServer() + "/oauth2/authorize")
+			.build()
+		);
+		return securitySchemes;
+	}
+
+	private List<SecurityContext> securityContexts() {
+		final List<SecurityContext> securityContexts = new ArrayList<>();
+		securityContexts.add(
+			SecurityContext.builder()
+			.operationSelector(context -> true)
+			.securityReferences(List.of(new SecurityReference(User.HEADER_CURRENT_USER, this.allScope())))
+			.build()
+		);
+		securityContexts.add(
+			SecurityContext.builder()
+			.operationSelector(context -> true)
+			.securityReferences(List.of(new SecurityReference("OAuth2", this.allScope())))
+			.build()
+		);
+		return securityContexts;
+	}
+
 }

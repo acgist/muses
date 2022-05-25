@@ -94,14 +94,6 @@ system.version=1.0.0
 system.sn=-1
 # 系统端口：随机生成
 system.port=8080
-# 线程初始数量
-system.thread.min=2
-# 线程最大数量
-system.thread.max=10
-# 线程队列最大长度
-system.thread.size=100000
-# 线程活跃时间：秒
-system.thread.live=30
 # 系统序列化类型
 system.serializer.type=jdk|jackson
 # 是否自动配置MVC：请求拦截器、参数解析器

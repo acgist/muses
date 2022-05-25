@@ -1,7 +1,6 @@
 package com.acgist.boot.config;
 
 import java.lang.management.ManagementFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -13,15 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.task.TaskExecutorBuilder;
+import org.springframework.boot.task.TaskSchedulerBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import com.acgist.boot.service.FreemarkerService;
 import com.acgist.boot.service.impl.FreemarkerServiceImpl;
@@ -39,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author acgist
  */
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @EnableAsync
 @Configuration
 public class BootAutoConfiguration {
@@ -59,26 +61,6 @@ public class BootAutoConfiguration {
 	 */
 	@Value("${spring.application.name:}")
 	private String name;
-	/**
-	 * 最小线程数量
-	 */
-	@Value("${system.thread.min:2}")
-	private int min;
-	/**
-	 * 最大线程数量
-	 */
-	@Value("${system.thread.max:10}")
-	private int max;
-	/**
-	 * 线程队列长度
-	 */
-	@Value("${system.thread.size:100000}")
-	private int size;
-	/**
-	 * 线程存活时间
-	 */
-	@Value("${system.thread.live:30}")
-	private int live;
 	/**
 	 * 默认使用JDK序列化
 	 * 
@@ -116,53 +98,22 @@ public class BootAutoConfiguration {
 		}
 	}
 	
-//	@Bean
-//	@Primary
+	@Bean
+	@Primary
 //	@ConditionalOnMissingBean
-//	public TaskExecutor taskExecutor(TaskExecutorBuilder builder) {
-//		return builder.build();
-//	}
-//	
-//	@Bean
-//	@Primary
+	public TaskExecutor taskExecutor(TaskExecutorBuilder builder) {
+		log.info("创建系统任务线程池");
+		return builder.build();
+	}
+	
+	@Bean
+	@Primary
 //	@ConditionalOnMissingBean
-//	public TaskScheduler taskScheduler(TaskSchedulerBuilder builder) {
-//		return builder.build();
-//	}
+	public TaskScheduler taskScheduler(TaskSchedulerBuilder builder) {
+		log.info("创建系统定时任务线程池");
+		return builder.build();
+	}
 
-	@Bean
-	@Primary
-	@ConditionalOnMissingBean
-	public TaskExecutor taskExecutor() {
-		log.info("系统线程池配置：{}-{}-{}-{}", this.min, this.max, this.size, this.live);
-		final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setDaemon(true);
-		executor.setCorePoolSize(this.min);
-		executor.setMaxPoolSize(this.max);
-		executor.setQueueCapacity(this.size);
-		executor.setKeepAliveSeconds(this.live);
-		executor.setThreadNamePrefix(this.name + "-");
-		executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-		executor.setAwaitTerminationSeconds(this.live);
-		executor.setWaitForTasksToCompleteOnShutdown(true);
-		return executor;
-	}
-	
-	@Bean
-	@Primary
-	@ConditionalOnMissingBean
-	public TaskScheduler taskScheduler() {
-		log.info("系统定时线程池配置：{}-{}", this.min, this.live);
-		final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-		scheduler.setDaemon(true);
-		scheduler.setPoolSize(this.min);
-		scheduler.setThreadNamePrefix(this.name + "-scheduling-");
-		scheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
-		scheduler.setAwaitTerminationSeconds(this.live);
-		scheduler.setWaitForTasksToCompleteOnShutdown(true);
-		return scheduler;
-	}
-	
 	@PostConstruct
 	public void init() {
 		SpringUtils.setContext(this.context);

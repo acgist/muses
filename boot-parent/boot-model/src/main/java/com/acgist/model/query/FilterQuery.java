@@ -695,6 +695,24 @@ public class FilterQuery {
 	}
 	
 	/**
+	 * 根据ID排序
+	 * 
+	 * @return this
+	 */
+	public FilterQuery ascById() {
+		return this.asc(BootEntity.PROPERTY_ID);
+	}
+	
+	/**
+	 * 根据ID倒序
+	 * 
+	 * @return this
+	 */
+	public FilterQuery descById() {
+		return this.desc(BootEntity.PROPERTY_ID);
+	}
+	
+	/**
 	 * 重置数据
 	 * 
 	 * @return this

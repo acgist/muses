@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.task.TaskExecutor;
@@ -53,6 +54,7 @@ public class ShutdownListener {
 	private volatile boolean shutdown = false;
 
 	@Autowired
+	@Qualifier("taskExecutor")
 	private TaskExecutor taskExecutor;
 	@Autowired
 	private ConfigurableApplicationContext context;
