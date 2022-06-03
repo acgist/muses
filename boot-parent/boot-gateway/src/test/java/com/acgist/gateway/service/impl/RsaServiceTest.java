@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import com.acgist.boot.utils.RsaUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RsaServiceTest {
 
 	private static RsaService rsaService;
@@ -26,11 +29,11 @@ public class RsaServiceTest {
 	public void testEncrypt() {
 		String content = "acgist";
 		String value = rsaService.encrypt(content);
-		System.out.println(value);
+		log.info(value);
 		assertEquals(content, rsaService.decrypt(value));
 		content = content.repeat(100);
 		value = rsaService.encrypt(content);
-		System.out.println(value);
+		log.info(value);
 		assertEquals(content, rsaService.decrypt(value));
 	}
 	

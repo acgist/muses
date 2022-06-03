@@ -99,10 +99,13 @@ public class SwaggerAutoConfiguration {
 			.apis(RequestHandlerSelectors.withClassAnnotation(Tag.class))
 			.paths(PathSelectors.ant(path))
 			.build()
+			// 统一前缀
+//			.pathMapping("/")
 //			.forCodeGeneration(true)
+			// 消息模型
 //			.genericModelSubstitutes(Message.class)
-			.genericModelSubstitutes(DeferredResult.class)
 //			.useDefaultResponseMessages(false)
+			.genericModelSubstitutes(DeferredResult.class)
 			.apiInfo(this.buildApiInfo())
 			.securitySchemes(this.securitySchemes())
 			.securityContexts(this.securityContexts());

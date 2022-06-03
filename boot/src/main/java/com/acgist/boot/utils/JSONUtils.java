@@ -148,6 +148,28 @@ public final class JSONUtils {
 			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
 	}
+	
+	/**
+	 * JSON转List
+	 * 
+	 * @param <T> 元素类型
+	 * 
+	 * @param json JSON
+	 * @param clazz 类型
+	 * 
+	 * @return List
+	 */
+	public static final <T> List<T> toList(String json, Class<T> clazz) {
+		if (Objects.isNull(json)) {
+			return List.of();
+		}
+		try {
+			return MAPPER.readValue(json, new TypeReference<List<T>>() {
+			});
+		} catch (IOException e) {
+			throw MessageCodeException.of(e, "JSON格式错误：", json);
+		}
+	}
 
 	/**
 	 * 创建Mapper

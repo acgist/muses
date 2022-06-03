@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan("com.acgist.notify")
+@ComponentScan({"com.acgist.rule", "com.acgist.notify"})
 @EnableDiscoveryClient
 @SpringBootApplication
 public class NotifyApplication {
