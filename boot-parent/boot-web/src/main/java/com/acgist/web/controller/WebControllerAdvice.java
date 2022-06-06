@@ -32,7 +32,10 @@ public class WebControllerAdvice {
 	@ExceptionHandler(Exception.class)
 	public String exception(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		final AtomicLong index = this.index.get();
-		if(index == null) {
+		if(
+			index == null ||
+			System.currentTimeMillis() - index.get() > RESET_FORWARD_TIME
+		) {
 			this.index.set(new AtomicLong(System.currentTimeMillis()));
 		} else if(System.currentTimeMillis() - index.get() > MAX_FORWARD_TIME) {
 			this.index.remove();
