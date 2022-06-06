@@ -57,11 +57,11 @@ public final class ErrorUtils {
 	/**
 	 * 异常
 	 */
-	public static final String SERVLET_THROWABLE = "javax.servlet.error.exception";
+	public static final String SERVLET_EXCEPTION = "javax.servlet.error.exception";
 	/**
 	 * 异常
 	 */
-	public static final String SPRINTBOOT_THROWABLE = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
+	public static final String SPRINGBOOT_EXCEPTION = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
 
 	private ErrorUtils() {
 	}
@@ -135,11 +135,11 @@ public final class ErrorUtils {
 	 * @return 异常
 	 */
 	public static final Object globalErrorMessage(HttpServletRequest request) {
-		Object throwable = request.getAttribute(SERVLET_THROWABLE);
+		Object throwable = request.getAttribute(SERVLET_EXCEPTION);
 		if(throwable != null) {
 			return throwable;
 		}
-		throwable = request.getAttribute(SPRINTBOOT_THROWABLE);
+		throwable = request.getAttribute(SPRINGBOOT_EXCEPTION);
 		if(throwable != null) {
 			return throwable;
 		}
