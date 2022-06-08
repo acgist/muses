@@ -23,6 +23,10 @@ public class WebControllerAdvice {
 	 * 最大循环时间
 	 */
 	private static final int MAX_FORWARD_TIME = 50;
+	/**
+	 * 重置时间
+	 */
+	private static final int RESET_FORWARD_TIME = 1000;
 	
 	/**
 	 * 当前循环时间

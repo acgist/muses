@@ -1,5 +1,8 @@
 package com.acgist.rule.condition.impl;
 
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import com.acgist.model.query.FilterQuery.Filter;
@@ -21,13 +24,21 @@ public class NotInCondition extends Condition {
 	
 	@Override
 	public boolean filter(String fieldValue, Class<?> fieldClazz, Object fieldValueRt) {
-		return this.getList(fieldClazz, fieldValue).stream()
+		final List<?> list = this.getList(fieldClazz, fieldValue);
+		if(CollectionUtils.isEmpty(list)) {
+			return true;
+		}
+		return list.stream()
 			.noneMatch(value -> this.equals(fieldValueRt, value));
 	}
 
 	@Override
 	protected <T> void buildWrapper(Class<T> entityClazz, String field, Class<?> fieldClazz, String fieldValue, QueryWrapper<T> wrapper) {
-		Filter.Type.NOT_IN.of(field, this.getList(fieldClazz, fieldValue)).filter(entityClazz, wrapper);
+		final List<?> list = this.getList(fieldClazz, fieldValue);
+		if(CollectionUtils.isEmpty(list)) {
+			return;
+		}
+		Filter.Type.NOT_IN.of(field, list).filter(entityClazz, wrapper);
 	}
 	
 }
