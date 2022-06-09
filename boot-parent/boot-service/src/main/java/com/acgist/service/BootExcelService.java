@@ -251,12 +251,12 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	/**
 	 * 标记单元格
 	 * 
-	 * @param workbook 表格
+	 * @param cellStyle 表格样式
 	 * @param sheet sheet
 	 * @param cell 单元格
 	 * @param message 批注信息
 	 */
-	void markCell(XSSFWorkbook workbook, XSSFSheet sheet, Cell cell, String message);
+	void markCell(CellStyle cellStyle, XSSFSheet sheet, Cell cell, String message);
 	
 	/**
 	 * 下载Excel模板
@@ -335,6 +335,15 @@ public interface BootExcelService<T extends BootEntity> extends BootService<T> {
 	 * @return 数据表格样式
 	 */
 	CellStyle dataCellStyle(XSSFWorkbook workbook);
+	
+	/**
+	 * 错误数据表格样式
+	 * 
+	 * @param workbook 表格
+	 * 
+	 * @return 数据表格样式
+	 */
+	CellStyle failCellStyle(XSSFWorkbook workbook);
 	
 	/**
 	 * 获取格式化工具

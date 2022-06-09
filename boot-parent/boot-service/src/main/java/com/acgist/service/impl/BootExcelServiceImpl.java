@@ -75,10 +75,11 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		try (
 			final XSSFWorkbook workbook = new XSSFWorkbook(mark.stream());
 		) {
+			final CellStyle cellStyle = this.failCellStyle(workbook);
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
 			mark.getMarks().forEach(message -> {
 				final XSSFCell cell = sheetValue.getRow(message.getRow()).getCell(message.getCol());
-				this.markCell(workbook, sheetValue, cell, message.getMessage());
+				this.markCell(cellStyle, sheetValue, cell, message.getMessage());
 			});
 			workbook.write(output);
 		} catch (IOException e) {
@@ -87,16 +88,11 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 	}
 	
 	@Override
-	public void markCell(XSSFWorkbook workbook, XSSFSheet sheet, Cell cell, String message) {
+	public void markCell(CellStyle cellStyle, XSSFSheet sheet, Cell cell, String message) {
 		if(cell == null) {
 			// 为空：Excel拷贝最后一行为空行时可能导致复制文件最后一行不存在
 			return;
 		}
-		final CellStyle cellStyle = workbook.createCellStyle();
-//		cellStyle.setFillForegroundColor(IndexedColors.RED.index);
-//		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		cellStyle.setFillBackgroundColor(IndexedColors.RED.index);
-		cellStyle.setFillPattern(FillPatternType.THIN_BACKWARD_DIAG);
 		cell.setCellStyle(cellStyle);
 		final XSSFDrawing drawing = sheet.createDrawingPatriarch();
 		final XSSFComment comment = drawing.createCellComment(new XSSFClientAnchor());
@@ -119,14 +115,16 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			final XSSFRow headerRow = sheet.createRow(row.getAndIncrement());
 			final Set<String> keys = header.keySet();
 			final List<ExcelHeaderValue> headers = new ArrayList<>(header.values());
+			final CellStyle headerCellStyle = this.headerCellStyle(workbook);
 			headers.forEach(value -> {
 				final XSSFCell cell = headerRow.createCell(col.getAndIncrement());
-				cell.setCellStyle(this.headerCellStyle(workbook));
+				cell.setCellStyle(headerCellStyle);
 				final String data = value.getOutName();
 				cell.setCellValue(data);
 				colWidth.add(data.getBytes().length);
 			});
 			// 设置数据
+			final CellStyle dataCellStyle = this.dataCellStyle(workbook);
 			list.forEach(value -> {
 				col.set(0);
 				final XSSFRow dataRow = sheet.createRow(row.getAndIncrement());
@@ -134,7 +132,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 					final Object fieldValue = BeanUtils.fieldValue(field, value);
 					final ExcelHeaderValue excelHeaderValue = headers.get(col.get());
 					final XSSFCell cell = dataRow.createCell(col.get());
-					cell.setCellStyle(this.dataCellStyle(workbook));
+					cell.setCellStyle(dataCellStyle);
 					final String data = excelHeaderValue.getFormatter().format(fieldValue);
 					if(data != null) {
 						cell.setCellValue(data);
@@ -260,6 +258,16 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 //		dataCellStyle.setBorderTop(BorderStyle.THIN);
 //		dataCellStyle.setBorderRight(BorderStyle.THIN);
 		return dataCellStyle;
+	}
+	
+	@Override
+	public CellStyle failCellStyle(XSSFWorkbook workbook) {
+		final CellStyle cellStyle = workbook.createCellStyle();
+//		cellStyle.setFillForegroundColor(IndexedColors.RED.index);
+//		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		cellStyle.setFillBackgroundColor(IndexedColors.RED.index);
+		cellStyle.setFillPattern(FillPatternType.THIN_BACKWARD_DIAG);
+		return cellStyle;
 	}
 
 	@Override
