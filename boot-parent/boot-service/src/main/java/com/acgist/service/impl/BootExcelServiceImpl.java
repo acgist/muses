@@ -123,7 +123,6 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				cell.setCellValue(data);
 				colWidth.add(data.getBytes().length);
 			});
-			final int colLength = headers.size();
 			// 设置数据
 			final CellStyle dataCellStyle = this.dataCellStyle(workbook);
 			list.forEach(value -> {
@@ -140,10 +139,6 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 						colWidth.set(col.get(), Math.max(colWidth.get(col.get()), data.getBytes().length));
 					}
 					col.incrementAndGet();
-					if(col.get() > colLength) {
-						// 列宽超过头部退出循环
-						return;
-					}
 				});
 			});
 			// 设置宽度
@@ -283,6 +278,8 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			final XSSFWorkbook workbook = new XSSFWorkbook(input);
 		) {
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
+			// 默认最长列宽128
+			final AtomicInteger colLength = new AtomicInteger(128);
 			sheetValue.forEach(row -> {
 				final List<Object> data = new ArrayList<>();
 				row.forEach(cell -> {
@@ -291,6 +288,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 					final int index = cell.getColumnIndex();
 					if(size <= index) {
 						IntStream.range(index, size).forEach(i -> data.add(null));
+					}
+					if(colLength.get() <= index) {
+						// 列宽超过头部退出循环
+						return;
 					}
 					final CellType cellType = cell.getCellType();
 					if(cellType == CellType.STRING) {
@@ -304,6 +305,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 					}
 				});
 				list.add(data);
+				// 设置头部长度
+				if(row.getRowNum() == 0) {
+					colLength.set(data.size());
+				}
 			});
 			ExcelMarkContext.copy(workbook);
 		} catch (IOException e) {
