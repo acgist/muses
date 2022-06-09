@@ -123,6 +123,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				cell.setCellValue(data);
 				colWidth.add(data.getBytes().length);
 			});
+			final int colLength = headers.size();
 			// 设置数据
 			final CellStyle dataCellStyle = this.dataCellStyle(workbook);
 			list.forEach(value -> {
@@ -139,6 +140,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 						colWidth.set(col.get(), Math.max(colWidth.get(col.get()), data.getBytes().length));
 					}
 					col.incrementAndGet();
+					if(col.get() > colLength) {
+						// 列宽超过头部退出循环
+						return;
+					}
 				});
 			});
 			// 设置宽度
