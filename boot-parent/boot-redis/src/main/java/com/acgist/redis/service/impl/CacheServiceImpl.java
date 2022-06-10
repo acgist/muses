@@ -1,4 +1,4 @@
-package com.acgist.service.impl;
+package com.acgist.redis.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -6,7 +6,7 @@ import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 
 import com.acgist.boot.model.MessageCodeException;
-import com.acgist.service.CacheService;
+import com.acgist.boot.service.CacheService;
 
 /**
  * 缓存管理

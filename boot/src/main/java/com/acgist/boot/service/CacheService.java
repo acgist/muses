@@ -1,4 +1,4 @@
-package com.acgist.service;
+package com.acgist.boot.service;
 
 /**
  * 缓存

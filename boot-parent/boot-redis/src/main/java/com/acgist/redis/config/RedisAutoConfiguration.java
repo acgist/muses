@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
@@ -21,7 +22,9 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
+import com.acgist.boot.service.CacheService;
 import com.acgist.boot.utils.JSONUtils;
+import com.acgist.redis.service.impl.CacheServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,6 +87,13 @@ public class RedisAutoConfiguration {
 		template.setValueSerializer(this.buildValueSerializer());
 		template.afterPropertiesSet();
 		return template;
+	}
+	
+	@Bean
+	@ConditionalOnBean(CacheManager.class)
+	@ConditionalOnMissingBean
+	public CacheService cacheService() {
+		return new CacheServiceImpl();
 	}
 	
 	/**
