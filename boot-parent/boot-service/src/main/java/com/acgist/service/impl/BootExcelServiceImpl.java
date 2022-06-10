@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,12 +124,18 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				cell.setCellValue(data);
 				colWidth.add(data.getBytes().length);
 			});
+			// 列宽
+			final int colLength = headers.size();
 			// 设置数据
 			final CellStyle dataCellStyle = this.dataCellStyle(workbook);
 			list.forEach(value -> {
 				col.set(0);
 				final XSSFRow dataRow = sheet.createRow(row.getAndIncrement());
 				keys.forEach(field -> {
+					if(colLength <= col.get()) {
+						// 列宽超过头部退出循环
+						return;
+					}
 					final Object fieldValue = BeanUtils.fieldValue(field, value);
 					final ExcelHeaderValue excelHeaderValue = headers.get(col.get());
 					final XSSFCell cell = dataRow.createCell(col.get());
@@ -282,16 +289,19 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			final AtomicInteger colLength = new AtomicInteger(128);
 			sheetValue.forEach(row -> {
 				final List<Object> data = new ArrayList<>();
-				row.forEach(cell -> {
+				final Iterator<Cell> iterator = row.cellIterator();
+				iterator.forEachRemaining(cell -> {
 					// 索引填充：默认返回有值数据
 					final int size = data.size();
 					final int index = cell.getColumnIndex();
-					if(size <= index) {
-						IntStream.range(index, size).forEach(i -> data.add(null));
-					}
 					if(colLength.get() <= index) {
+						// 删除无效单元
+						iterator.remove();
 						// 列宽超过头部退出循环
 						return;
+					}
+					if(size <= index) {
+						IntStream.range(index, size).forEach(i -> data.add(null));
 					}
 					final CellType cellType = cell.getCellType();
 					if(cellType == CellType.STRING) {

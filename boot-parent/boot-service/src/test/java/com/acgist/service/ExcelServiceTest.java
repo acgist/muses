@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import com.acgist.boot.utils.SpringUtils;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService.ExcelHeader;
@@ -44,6 +45,7 @@ public class ExcelServiceTest {
 	
 	@Test
 	public void testDownload() throws IOException {
+		SpringUtils.noneSpring = true;
 		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
 		};
 		final ExcelEntity a = new ExcelEntity();
@@ -60,6 +62,7 @@ public class ExcelServiceTest {
 	
 	@Test
 	public void testLoad() {
+		SpringUtils.noneSpring = true;
 		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
 		};
 		final List<ExcelEntity> load = service.loadEntity("D:/tmp/excel.xlsx");

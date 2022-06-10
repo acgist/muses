@@ -15,6 +15,10 @@ public final class SpringUtils {
 	}
 
 	/**
+	 * 是否不用Spring启动
+	 */
+	public static boolean noneSpring = false;
+	/**
 	 * ApplicationContext
 	 */
 	private static ApplicationContext context;
@@ -36,6 +40,9 @@ public final class SpringUtils {
 	 * @return 实例
 	 */
 	public static final <T> T getBean(Class<T> clazz) {
+		if(SpringUtils.noneSpring) {
+			return null;
+		}
 		while(SpringUtils.context == null) {
 			Thread.yield();
 		}
@@ -65,6 +72,9 @@ public final class SpringUtils {
 	 * @return 实例
 	 */
 	public static final <T> Map<String, T> getBeanByType(Class<T> clazz) {
+		if(SpringUtils.noneSpring) {
+			return Map.of();
+		}
 		while(SpringUtils.context == null) {
 			Thread.yield();
 		}
