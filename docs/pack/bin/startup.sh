@@ -14,7 +14,7 @@ if [ $runType != "docker" ]; then
   sh bin/stop.sh
 fi
 
-# 启动应用
+# 启动参数
 # -verbose:gc=-XX:+PrintGC
 JAVA_OPTS_GC="-XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
 JAVA_OPTS_MEM="-server ${system.maven.jvm.mem}"
@@ -22,6 +22,8 @@ JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding} -Djava.awt.headless=true
 JAVA_OPTS_APP="-Dspring.profiles.active=${profile}"
 JAVA_OPTS="$JAVA_OPTS_MEM $JAVA_OPTS_EXT $JAVA_OPTS_APP ${system.maven.jvm.arg}"
 echo "启动参数：$JAVA_OPTS"
+
+# 启动应用
 if [ $runType != "docker" ]; then
   # 其他启动
   nohup java $JAVA_OPTS -jar $base/lib/${project.artifactId}-${project.version}.jar > /dev/null 2>&1 &

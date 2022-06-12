@@ -353,10 +353,8 @@
 						</excludes>
 						<archive>
 							<manifestEntries>
-								<!--
-								添加配置：默认SpringBoot扫描
+								<!-- 配置文件 -->
 								<Class-Path>../config/</Class-Path>
-								-->
 								<Built-By>${system.maven.vendor}</Built-By>
 								<Automatic-Module-Name>${system.maven.module}</Automatic-Module-Name>
 								<Specification-Title>${project.artifactId}</Specification-Title>

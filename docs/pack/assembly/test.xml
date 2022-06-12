@@ -25,6 +25,10 @@
 			<filtered>true</filtered>
 		</fileSet>
 		<fileSet>
+			<directory>${system.maven.basedir}/docs/pack/config</directory>
+			<outputDirectory>config</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>src/main/resources</directory>
 			<outputDirectory>config</outputDirectory>
 			<filtered>true</filtered>
