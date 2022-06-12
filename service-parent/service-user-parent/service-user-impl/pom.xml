@@ -19,9 +19,9 @@
 	<description>用户内部服务实现</description>
 
 	<properties>
-		<system.maven.unpack>false</system.maven.unpack>
 		<system.maven.module>com.acgist.service.user.impl</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.parent.basedir}</system.maven.basedir>
+		<system.maven.skip.assembly>false</system.maven.skip.assembly>
 	</properties>
 
 	<dependencies>

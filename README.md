@@ -135,8 +135,6 @@ system.maven.jvm=
 system.maven.xms=256M
 # 应用启动JVM参数：xmx
 system.maven.xmx=512M
-# 是否忽略打包
-system.maven.unpack=true
 # 作者
 system.maven.vendor=acgist
 # 模块
@@ -145,6 +143,12 @@ system.maven.module=com.acgist.muses
 system.maven.basedir=${project.basedir}
 # 编码
 system.maven.encoding=UTF-8
+# 应用输出目录
+system.maven.run.path=/data/project/
+# 应用输运行环境
+system.maven.run.type=system|docker
+# 是否跳过打包
+system.maven.skip.assembly=true
 ```
 
 ## 端口

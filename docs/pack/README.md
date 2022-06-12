@@ -1,17 +1,28 @@
 # 自动打包
 
-通过配置Maven属性`acgist.basedir`统一设置打包脚本
+通过配置Maven属性`system.maven.basedir`统一设置打包脚本
+
+## 部署
+
+#### 单个应用
+
+```
+sh deploy.sh
+```
+
+#### 多个应用
+
+修改单个应用脚本名称，然后编辑`deployAll.sh`进行启动。
 
 ## 启动
 
 ```
-./bin/startup.sh
-./bin/startup.bat
+sh startup.sh
 ```
 
 #### Linux
 
-Linux脚本需要设置：`:set ff=unix`
+如果使用Windows打包然后使用Linux运行，脚本需要设置：`:set ff=unix`
 
 ## 配置
 

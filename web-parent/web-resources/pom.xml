@@ -19,9 +19,9 @@
 	<description>静态资源Web服务</description>
 
 	<properties>
-		<system.maven.unpack>false</system.maven.unpack>
 		<system.maven.module>com.acgist.web.resources</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>
+		<system.maven.skip.assembly>false</system.maven.skip.assembly>
 	</properties>
 
 	<dependencies>

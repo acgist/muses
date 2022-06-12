@@ -22,14 +22,11 @@
 
 	<properties>
 		<!-- 系统配置 -->
-		<system.maven.jvm></system.maven.jvm>
-		<system.maven.xms>256M</system.maven.xms>
-		<system.maven.xmx>512M</system.maven.xmx>
-		<system.maven.unpack>true</system.maven.unpack>
 		<system.maven.vendor>acgist</system.maven.vendor>
 		<system.maven.module>com.acgist.muses</system.maven.module>
 		<system.maven.basedir>${project.basedir}</system.maven.basedir>
 		<system.maven.encoding>UTF-8</system.maven.encoding>
+		<system.maven.skip.assembly>true</system.maven.skip.assembly>
 		<!-- 版本配置 -->
 		<!-- TODO：JDK17 -->
 		<java.version>11</java.version>
@@ -356,6 +353,10 @@
 						</excludes>
 						<archive>
 							<manifestEntries>
+								<!--
+								添加配置：默认SpringBoot扫描
+								<Class-Path>../config/</Class-Path>
+								-->
 								<Built-By>${system.maven.vendor}</Built-By>
 								<Automatic-Module-Name>${system.maven.module}</Automatic-Module-Name>
 								<Specification-Title>${project.artifactId}</Specification-Title>
@@ -381,7 +382,7 @@
 							</goals>
 							<configuration>
 								<attach>false</attach>
-								<skipAssembly>${system.maven.unpack}</skipAssembly>
+								<skipAssembly>${system.maven.skip.assembly}</skipAssembly>
 								<appendAssemblyId>false</appendAssemblyId>
 							</configuration>
 						</execution>
@@ -417,6 +418,11 @@
 				<profile>dev</profile>
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
+				<system.maven.jvm></system.maven.jvm>
+				<system.maven.xms>256M</system.maven.xms>
+				<system.maven.xmx>512M</system.maven.xmx>
+				<system.maven.run.type>system</system.maven.run.type>
+				<system.maven.run.path>/data/project/</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -439,6 +445,11 @@
 				<profile>test</profile>
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
+				<system.maven.jvm></system.maven.jvm>
+				<system.maven.xms>512M</system.maven.xms>
+				<system.maven.xmx>1024M</system.maven.xmx>
+				<system.maven.run.type>system</system.maven.run.type>
+				<system.maven.run.path>/data/project/</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -471,6 +482,11 @@
 				<profile>release</profile>
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
+				<system.maven.jvm></system.maven.jvm>
+				<system.maven.xms>2048M</system.maven.xms>
+				<system.maven.xmx>4096M</system.maven.xmx>
+				<system.maven.run.type>docker</system.maven.run.type>
+				<system.maven.run.path>/data/project/</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>

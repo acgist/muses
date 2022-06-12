@@ -20,6 +20,8 @@
 
 	<properties>
 		<system.maven.module>com.acgist.boot.service</system.maven.module>
+		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>
+		<system.maven.skip.assembly>true</system.maven.skip.assembly>
 	</properties>
 
 	<dependencies>

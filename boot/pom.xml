@@ -20,6 +20,8 @@
 
 	<properties>
 		<system.maven.module>com.acgist.boot</system.maven.module>
+		<system.maven.basedir>${project.parent.basedir}</system.maven.basedir>
+		<system.maven.skip.assembly>false</system.maven.skip.assembly>
 	</properties>
 
 	<dependencies>

@@ -19,9 +19,9 @@
 	<description>Rest服务</description>
 
 	<properties>
-		<system.maven.unpack>false</system.maven.unpack>
 		<system.maven.module>com.acgist.rest.rest</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>
+		<system.maven.skip.assembly>false</system.maven.skip.assembly>
 	</properties>
 
 	<dependencies>
