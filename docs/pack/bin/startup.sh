@@ -7,8 +7,8 @@ cd $base
 echo "启动目录：$base"
 
 # 结束任务
-if [ "${system.maven.run.type}" -ne "docker" ]; then
-  sh stop.sh
+if [ "${system.maven.run.type}" != "docker" ]; then
+  sh bin/stop.sh
 fi
 
 # 启动应用
@@ -19,17 +19,17 @@ JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding} -Djava.awt.headless=true
 JAVA_OPTS_APP="-Dspring.profiles.active=${profile}"
 JAVA_OPTS="$JAVA_OPTS_MEM $JAVA_OPTS_EXT $JAVA_OPTS_APP ${system.maven.jvm}"
 echo "启动参数：$JAVA_OPTS"
-if [ "${system.maven.run.type}" -eq "docker" ]; then
-  # 使用docker启动
-  java $JAVA_OPTS -jar $base/lib/${project.artifactId}-${project.version}.jar
-else
+if [ "${system.maven.run.type}" != "docker" ]; then
   # 其他启动
   nohup java $JAVA_OPTS -jar $base/lib/${project.artifactId}-${project.version}.jar > /dev/null 2>&1 &
+else
+  # 使用docker启动
+  java $JAVA_OPTS -jar $base/lib/${project.artifactId}-${project.version}.jar
 fi
 
 # 等待任务
-if [ "${system.maven.run.type}" -ne "docker" ]; then
-  sh wait.sh
+if [ "${system.maven.run.type}" != "docker" ]; then
+  sh bin/wait.sh
 fi
 
-echo '启动成功：${project.artifactId}-${project.version}'
+echo "启动成功：${project.artifactId}-${project.version}"
