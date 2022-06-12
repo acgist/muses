@@ -22,7 +22,7 @@ if [ $processPortNumber -lt 1 ]; then
   exit 0
 else
   finishTime=$(date +%s)
-  processTime=$((startTime - finishTime))
+  processTime=$((finishTime-startTime))
   echo "启动成功：${project.artifactId}-${project.version}"
   echo "启动耗时：$processTime S"
 fi

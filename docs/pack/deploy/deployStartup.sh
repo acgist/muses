@@ -16,13 +16,13 @@ if [ -z $mvnbuild ]; then
   #mvn -q clean package install -D skipTests -P ${profile}
 fi
 
+# 删除文件
+rm -rf ${system.maven.run.path}/${project.artifactId}
 # 运行目录
 echo "拷贝文件：${project.artifactId}-${project.version}"
 if [ ! -d "${system.maven.run.path}/${project.artifactId}" ]; then
   mkdir -p ${system.maven.run.path}/${project.artifactId}
 fi
-# 删除文件
-rm -rf ${system.maven.run.path}/${project.artifactId}
 # 拷贝文件
 cp -rf ${project.basedir}/target/${project.artifactId}-${project.version}/* ${system.maven.run.path}/${project.artifactId}
 # 如果使用SpringBoot-repackage打包覆盖文件
