@@ -30,6 +30,6 @@ fi
 # 等待任务
 if [ "${system.maven.run.type}" != "docker" ]; then
   sh bin/wait.sh
+else
+  echo "启动成功：${project.artifactId}-${project.version}"
 fi
-
-echo "启动成功：${project.artifactId}-${project.version}"
