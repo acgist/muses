@@ -10,7 +10,8 @@ declare -x gitpull=true
 
 # 编译代码
 echo '编译代码'
-mvn clean packge install -D skipTests -P ${profile}
+mvn clean package install -D skipTests -P ${profile}
+#mvn -q clean package install -D skipTests -P ${profile}
 declare -x mvnbuild=true
 
 # 启动应用
