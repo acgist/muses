@@ -7,7 +7,10 @@
 #### 单个应用
 
 ```
-sh deploy.sh
+# 打包安装不用启动
+sh deployApp.sh
+# 打包安装同时启动
+sh deployStartup.sh
 ```
 
 #### 多个应用

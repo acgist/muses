@@ -418,9 +418,8 @@
 				<profile>dev</profile>
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
-				<system.maven.jvm></system.maven.jvm>
-				<system.maven.xms>256M</system.maven.xms>
-				<system.maven.xmx>512M</system.maven.xmx>
+				<system.maven.jvm.arg></system.maven.jvm.arg>
+				<system.maven.jmv.mem>-Xms256M -Xmx512M -XX:SurvivorRatio=2</system.maven.jmv.mem>
 				<system.maven.run.type>system</system.maven.run.type>
 				<system.maven.run.path>/data/project/</system.maven.run.path>
 			</properties>
@@ -445,9 +444,8 @@
 				<profile>test</profile>
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
-				<system.maven.jvm></system.maven.jvm>
-				<system.maven.xms>512M</system.maven.xms>
-				<system.maven.xmx>1024M</system.maven.xmx>
+				<system.maven.jvm.arg></system.maven.jvm.arg>
+				<system.maven.jmv.mem>-Xms512M -Xmx1024M -XX:SurvivorRatio=2</system.maven.jmv.mem>
 				<system.maven.run.type>system</system.maven.run.type>
 				<system.maven.run.path>/data/project/</system.maven.run.path>
 			</properties>
@@ -483,8 +481,8 @@
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
 				<system.maven.jvm></system.maven.jvm>
-				<system.maven.xms>2048M</system.maven.xms>
-				<system.maven.xmx>4096M</system.maven.xmx>
+				<system.maven.jvm.arg></system.maven.jvm.arg>
+				<system.maven.jmv.mem>-Xms2048M -Xmx4096M -XX:SurvivorRatio=2</system.maven.jmv.mem>
 				<system.maven.run.type>docker</system.maven.run.type>
 				<system.maven.run.path>/data/project/</system.maven.run.path>
 			</properties>
