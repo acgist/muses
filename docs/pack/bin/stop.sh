@@ -2,17 +2,17 @@
 
 # 结束任务
 index=0
-processNumber=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}" | wc -l`
-while [ $processNumber -ge 1 ]
+processId=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}"`
+while [ ! -z "$processId" ]
 do
   if [ $index -le 10 ]; then
     # 优雅关机
-    ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}" | xargs kill -15
+    kill -15 $processId
   else
     # 强制关机
-    ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}" | xargs kill -9
+    kill -9 $processId
   fi
   sleep 1
   index=$((index+1))
-  processNumber=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}" | wc -l`
+  processId=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}"`
 done

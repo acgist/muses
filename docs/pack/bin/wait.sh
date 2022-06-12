@@ -2,17 +2,19 @@
 
 # 等待任务
 startTime=$(date +%s)
-processNumber=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}" | wc -l`
-processPortNumber=`netstat -anop | grep $(ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}") | grep LISTEN | wc -l`
-while [ $processNumber -ge 1 && $processPortNumber -lt 1 ]
-do
-  sleep 1
-  processNumber=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}" | wc -l`
-  processPortNumber=`netstat -anop | grep $(ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}") | grep LISTEN | wc -l`
-  echo -n "."
-done
+processId=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}"`
+if [ ! -z "$processId" ]; then
+  processPortNumber=`netstat -anop | grep $processId | grep LISTEN | wc -l`
+  while [ ! -z "$processId" ] && [ $processPortNumber -lt 1 ]
+  do
+    sleep 1
+    processId=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk "{print $2}"`
+    processPortNumber=`netstat -anop | grep $processId | grep LISTEN | wc -l`
+    echo -n "."
+  done
   echo ""
-if [ $processNumber -lt 1 ]; then
+fi
+if [ -z "$processId" ]; then
   echo "启动失败：${project.artifactId}-${project.version}"
   exit 0
 else
