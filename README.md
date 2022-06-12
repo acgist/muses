@@ -144,7 +144,7 @@ system.maven.basedir=${project.basedir}
 # 编码
 system.maven.encoding=UTF-8
 # 应用输出目录
-system.maven.run.path=/data/project/
+system.maven.run.path=/data/project
 # 应用输运行环境
 system.maven.run.type=system|docker
 # 是否跳过打包

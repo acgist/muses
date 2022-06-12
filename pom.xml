@@ -419,7 +419,7 @@
 				<system.maven.jvm.arg></system.maven.jvm.arg>
 				<system.maven.jmv.mem>-Xms256M -Xmx512M -XX:SurvivorRatio=2</system.maven.jmv.mem>
 				<system.maven.run.type>system</system.maven.run.type>
-				<system.maven.run.path>/data/project/</system.maven.run.path>
+				<system.maven.run.path>/data/project</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -445,7 +445,7 @@
 				<system.maven.jvm.arg></system.maven.jvm.arg>
 				<system.maven.jmv.mem>-Xms512M -Xmx1024M -XX:SurvivorRatio=2</system.maven.jmv.mem>
 				<system.maven.run.type>system</system.maven.run.type>
-				<system.maven.run.path>/data/project/</system.maven.run.path>
+				<system.maven.run.path>/data/project</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -482,7 +482,7 @@
 				<system.maven.jvm.arg></system.maven.jvm.arg>
 				<system.maven.jmv.mem>-Xms2048M -Xmx4096M -XX:SurvivorRatio=2</system.maven.jmv.mem>
 				<system.maven.run.type>docker</system.maven.run.type>
-				<system.maven.run.path>/data/project/</system.maven.run.path>
+				<system.maven.run.path>/data/project</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
