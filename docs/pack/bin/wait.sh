@@ -2,16 +2,16 @@
 
 # 等待任务
 startTime=$(date +%s)
-processId=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk '{print $2}'`
+processId=$(ps -aux | grep "${project.artifactId}" | grep -v grep | awk '{print $2}')
 if [ ! -z "$processId" ]; then
   waitIndex=0
-  processPortNumber=`netstat -anop | grep $processId | grep LISTEN | wc -l`
+  processPortNumber=$(netstat -anop | grep $processId | grep LISTEN | wc -l)
   while [ $waitIndex -le 120 ] && [ ! -z "$processId" ] && [ $processPortNumber -lt 1 ]
   do
     sleep 1
     waitIndex=$((waitIndex+1))
-    processId=`ps -aux | grep "${project.artifactId}" | grep -v grep | awk '{print $2}'`
-    processPortNumber=`netstat -anop | grep $processId | grep LISTEN | wc -l`
+    processId=$(ps -aux | grep "${project.artifactId}" | grep -v grep | awk '{print $2}')
+    processPortNumber=$(netstat -anop | grep $processId | grep LISTEN | wc -l)
     echo -n "."
   done
   echo ""
