@@ -15,8 +15,7 @@ if [ $runType != "docker" ]; then
 fi
 
 # 启动参数
-# -verbose:gc=-XX:+PrintGC
-JAVA_OPTS_GC="-XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps"
+JAVA_OPTS_GC="-XX:+UseG1GC -Xlog:gc:./logs/gc.log:time,level"
 JAVA_OPTS_MEM="-server ${system.maven.jvm.mem}"
 JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding} -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true"
 JAVA_OPTS_APP="-Dspring.profiles.active=${profile}"
