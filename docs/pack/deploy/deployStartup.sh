@@ -16,8 +16,10 @@ if [ -z $mvnbuild ]; then
   #mvn -q clean package install -D skipTests -P ${profile}
 fi
 
-# 删除文件
-rm -rf ${system.maven.run.path}/${project.artifactId}
+# 删除文件：注意不要删除日志
+rm -rf ${system.maven.run.path}/${project.artifactId}/bin
+rm -rf ${system.maven.run.path}/${project.artifactId}/lib
+rm -rf ${system.maven.run.path}/${project.artifactId}/config
 # 运行目录
 echo "拷贝文件：${project.artifactId}-${project.version}"
 if [ ! -d "${system.maven.run.path}/${project.artifactId}" ]; then
