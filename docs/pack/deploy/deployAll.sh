@@ -15,6 +15,7 @@ mvn clean package install -D skipTests -P ${profile}
 declare -x mvnbuild=true
 
 # 启动应用
+cd ${project.basedir}
 echo "启动应用"
 #sh deployBoot.sh
 #sh deployGateway.sh
