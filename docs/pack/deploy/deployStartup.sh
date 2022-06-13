@@ -29,6 +29,5 @@ cp -rf ${project.basedir}/target/${project.artifactId}-${project.version}/* ${sy
 #cp -rf ${project.basedir}/target/${project.artifactId}-${project.version}.jar ${system.maven.run.path}/${project.artifactId}
 
 # 启动服务
-echo "启动应用：${project.artifactId}-${project.version}"
 cd ${system.maven.run.path}/${project.artifactId}
 sh bin/startup.sh

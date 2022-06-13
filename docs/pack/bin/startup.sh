@@ -23,6 +23,7 @@ JAVA_OPTS="$JAVA_OPTS_MEM $JAVA_OPTS_EXT $JAVA_OPTS_APP ${system.maven.jvm.arg}"
 echo "启动参数：$JAVA_OPTS"
 
 # 启动应用
+echo "启动应用：${project.artifactId}-${project.version}"
 if [ $runType != "docker" ]; then
   # 其他启动
   nohup java $JAVA_OPTS -jar $base/lib/${project.artifactId}-${project.version}.jar > /dev/null 2>&1 &
