@@ -1,16 +1,20 @@
 package com.acgist.www.utils;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -94,14 +98,14 @@ public final class ErrorUtils {
 		final Object rootErrorMessage = rootErrorMessage(globalErrorMessage);
 		if(rootErrorMessage instanceof MessageCodeException) {
 			final MessageCodeException messageCodeException = (MessageCodeException) rootErrorMessage;
-			status = messageCodeException.getCode().getStatus(status);
-			message = Message.fail(messageCodeException.getCode(), messageCodeException.getMessage());
+			final MessageCode messageCode = messageCodeException.getCode();
+			status = messageCode.getStatus();
+			message = Message.fail(messageCode, messageCodeException.getMessage());
 		} else if(rootErrorMessage instanceof Throwable) {
 			final Throwable throwable = (Throwable) rootErrorMessage;
-			status = status(status, throwable);
-			final MessageCode messageCode = MessageCode.of(status);
-			message = Message.fail(messageCode);
-//			message = Message.fail(messageCode, throwable.getMessage());
+			final MessageCode messageCode = messageCode(status, throwable);
+			status = messageCode.getStatus();
+			message = Message.fail(messageCode, message(throwable));
 		} else {
 			final MessageCode messageCode = MessageCode.of(status);
 			message = Message.fail(messageCode);
@@ -188,57 +192,84 @@ public final class ErrorUtils {
 	 * 
 	 * @see DefaultHandlerExceptionResolver
 	 */
-	public static final int status(int status, Throwable t) {
+	public static final MessageCode messageCode(int status, Throwable t) {
 		if (t instanceof BindException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		if (t instanceof TypeMismatchException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		if (t instanceof NoHandlerFoundException) {
-			return HttpServletResponse.SC_NOT_FOUND;
+			return MessageCode.CODE_3404;
 		}
+//		if (t instanceof AuthenticationException) {
+//			return MessageCode.CODE_3401;
+//		}
 		if (t instanceof AsyncRequestTimeoutException) {
-			return HttpServletResponse.SC_SERVICE_UNAVAILABLE;
+			return MessageCode.CODE_3503;
 		}
 		if (t instanceof MissingPathVariableException) {
-			return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+			return MessageCode.CODE_3500;
 		}
 		if (t instanceof ServletRequestBindingException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		if (t instanceof HttpMessageNotReadableException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		if (t instanceof MethodArgumentNotValidException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		if (t instanceof ConversionNotSupportedException) {
-			return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+			return MessageCode.CODE_3500;
 		}
 		if (t instanceof HttpMessageNotWritableException) {
-			return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+			return MessageCode.CODE_3500;
 		}
 		if (t instanceof HttpMediaTypeNotSupportedException) {
-			return HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
+			return MessageCode.CODE_3415;
 		}
 		if (t instanceof MissingServletRequestPartException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		if (t instanceof HttpMediaTypeNotAcceptableException) {
-			return HttpServletResponse.SC_NOT_ACCEPTABLE;
+			return MessageCode.CODE_3406;
 		}
 		if (t instanceof HttpRequestMethodNotSupportedException) {
-			return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+			return MessageCode.CODE_3405;
 		}
 		if (t instanceof MissingServletRequestParameterException) {
-			return HttpServletResponse.SC_BAD_REQUEST;
+			return MessageCode.CODE_3400;
 		}
 		// 唯一约束
-		if(t instanceof SQLIntegrityConstraintViolationException) {
-			return MessageCode.CODE_4001.getStatus();
+		if(
+			t instanceof DuplicateKeyException ||
+			t instanceof SQLIntegrityConstraintViolationException
+		) {
+			return MessageCode.CODE_4001;
 		}
-		return status;
+		return MessageCode.of(status);
+	}
+	
+	/**
+	 * 获取异常信息
+	 * 
+	 * @param t 异常
+	 * 
+	 * @return 异常信息
+	 */
+	public static final String message(Throwable t) {
+		if(
+			t instanceof BindException ||
+			t instanceof MethodArgumentNotValidException
+		) {
+			final BindException bindException = (BindException) t;
+			final List<ObjectError> allErrors = bindException.getAllErrors();
+			return allErrors.stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(","));
+		}
+		// 为了系统安全建议不要直接返回
+//		return t.getMessage();
+		return null;
 	}
 	
 	/**
