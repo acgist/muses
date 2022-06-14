@@ -1,5 +1,6 @@
 package com.acgist.www.utils;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,13 +94,14 @@ public final class ErrorUtils {
 		final Object rootErrorMessage = rootErrorMessage(globalErrorMessage);
 		if(rootErrorMessage instanceof MessageCodeException) {
 			final MessageCodeException messageCodeException = (MessageCodeException) rootErrorMessage;
-			status = status(status, messageCodeException);
+			status = messageCodeException.getCode().getStatus(status);
 			message = Message.fail(messageCodeException.getCode(), messageCodeException.getMessage());
 		} else if(rootErrorMessage instanceof Throwable) {
 			final Throwable throwable = (Throwable) rootErrorMessage;
 			status = status(status, throwable);
 			final MessageCode messageCode = MessageCode.of(status);
-			message = Message.fail(messageCode, throwable.getMessage());
+			message = Message.fail(messageCode);
+//			message = Message.fail(messageCode, throwable.getMessage());
 		} else {
 			final MessageCode messageCode = MessageCode.of(status);
 			message = Message.fail(messageCode);
@@ -180,23 +182,6 @@ public final class ErrorUtils {
 	 * 获取响应状态
 	 * 
 	 * @param status 原始状态
-	 * @param e 异常
-	 * 
-	 * @return 响应状态
-	 */
-	public static final int status(int status, MessageCodeException e) {
-		final String code = e.getCode().getCode();
-		final int length = MessageCode.HTTP_STATUS.length();
-		if (MessageCode.HTTP_STATUS.equals(code.substring(0, length))) {
-			return Integer.parseInt(code.substring(length));
-		}
-		return status;
-	}
-	
-	/**
-	 * 获取响应状态
-	 * 
-	 * @param status 原始状态
 	 * @param t 异常
 	 * 
 	 * @return 响应状态
@@ -243,11 +228,15 @@ public final class ErrorUtils {
 		if (t instanceof HttpMediaTypeNotAcceptableException) {
 			return HttpServletResponse.SC_NOT_ACCEPTABLE;
 		}
+		if (t instanceof HttpRequestMethodNotSupportedException) {
+			return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+		}
 		if (t instanceof MissingServletRequestParameterException) {
 			return HttpServletResponse.SC_BAD_REQUEST;
 		}
-		if (t instanceof HttpRequestMethodNotSupportedException) {
-			return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+		// 唯一约束
+		if(t instanceof SQLIntegrityConstraintViolationException) {
+			return MessageCode.CODE_4001.getStatus();
 		}
 		return status;
 	}

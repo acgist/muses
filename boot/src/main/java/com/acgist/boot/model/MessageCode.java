@@ -8,6 +8,7 @@ import lombok.Getter;
  * 1xxx=前置错误
  * 2xxx=服务错误
  * 3xxx=HTTP错误
+ * 4xxx=数据库错误
  * 9999=未知错误
  * 
  * @author acgist
@@ -29,6 +30,7 @@ public enum MessageCode {
 	CODE_3502("3502", "服务无效"),
 	CODE_3503("3503", "服务正在维护"),
 	CODE_3504("3504", "服务超时"),
+	CODE_4001("4001", "重复标识"),
 	CODE_9999("9999", "未知错误");
 	
 	/**
@@ -41,12 +43,17 @@ public enum MessageCode {
 	 */
 	private final String code;
 	/**
+	 * 状态数值
+	 */
+	private final Integer status;
+	/**
 	 * 状态信息
 	 */
 	private final String message;
 
 	private MessageCode(String code, String message) {
 		this.code = code;
+		this.status = Integer.valueOf(code);
 		this.message = message;
 	}
 
@@ -58,8 +65,8 @@ public enum MessageCode {
 	 * @return 状态编码
 	 */
 	public static final MessageCode of(String code) {
-		final MessageCode[] codes = MessageCode.values();
-		for (MessageCode value : codes) {
+		final MessageCode[] values = MessageCode.values();
+		for (MessageCode value : values) {
 			if (value.code.equals(code)) {
 				return value;
 			}
@@ -76,13 +83,28 @@ public enum MessageCode {
 	 */
 	public static final MessageCode of(int status) {
 		final String code = HTTP_STATUS + status;
-		final MessageCode[] codes = MessageCode.values();
-		for (MessageCode value : codes) {
+		final MessageCode[] values = MessageCode.values();
+		for (MessageCode value : values) {
 			if (value.code.equals(code)) {
 				return value;
 			}
 		}
-		return CODE_9999;
+		return of(String.valueOf(status));
+	}
+	
+	/**
+	 * 获取HTTP Status
+	 * 
+	 * @param status HTTP Status
+	 * 
+	 * @return HTTP Status
+	 */
+	public int getStatus(int status) {
+		final int length = MessageCode.HTTP_STATUS.length();
+		if (MessageCode.HTTP_STATUS.equals(this.code.substring(0, length))) {
+			return Integer.parseInt(this.code.substring(length));
+		}
+		return status;
 	}
 
 }
