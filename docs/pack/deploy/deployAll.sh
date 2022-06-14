@@ -1,17 +1,39 @@
 #!/bin/bash
 
+# 配置参数
+for i in $*;
+do
+  case $i in
+    -sg|--skip-git)
+      echo "跳过更新代码"
+      skipGit="true"
+    ;;
+    -sm|--skip-mvn)
+      echo "跳过编译代码"
+      skipMvn="true"
+    ;;
+    *)
+      echo "未知参数：$i"
+    ;;
+  esac
+done
+
 # 进入目录
 cd ${project.basedir}
 
 # 更新代码
-echo "更新代码"
-git pull
+if [ -z $skipGit ]; then
+  echo "更新代码"
+  git pull
+fi
 declare -x gitpull=true
 
 # 编译代码
-echo "编译代码"
-mvn clean package install -D skipTests -P ${profile}
-#mvn -q clean package install -D skipTests -P ${profile}
+if [ -z $skipMvn ]; then
+  echo "编译代码"
+  mvn clean package install -D skipTests -P ${profile}
+  #mvn -q clean package install -D skipTests -P ${profile}
+fi
 declare -x mvnbuild=true
 
 # 启动应用
