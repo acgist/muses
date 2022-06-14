@@ -21,4 +21,9 @@ public class RestControllerAdvice {
 		return ErrorUtils.message(e, request, response);
 	}
 	
+//	统一使用全局异常处理
+//	@ExceptionHandler(BindException.class)
+//	public void bindException(Exception e, HttpServletRequest request, HttpServletResponse response) {
+//	}
+	
 }

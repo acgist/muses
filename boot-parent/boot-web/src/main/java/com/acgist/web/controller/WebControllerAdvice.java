@@ -49,4 +49,9 @@ public class WebControllerAdvice {
 		return "forward:" + ErrorUtils.ERROR_PATH;
 	}
 	
+//	统一使用全局异常处理
+//	@ExceptionHandler(BindException.class)
+//	public void bindException(Exception e, HttpServletRequest request, HttpServletResponse response) {
+//	}
+	
 }
