@@ -8,10 +8,10 @@ if [ ! -z "$processId" ]; then
   while [ ! -z "$processId" ]
   do
     echo -n "."
-    if [ $killIndex -le 10 ]; then
+    if [ $killIndex -le 0 ]; then
       # 优雅关机
       kill -15 $processId
-    else
+    else if [ $killIndex -ge 10 ]; then
       echo -n '强制关闭'
       # 强制关机
       kill -9 $processId
