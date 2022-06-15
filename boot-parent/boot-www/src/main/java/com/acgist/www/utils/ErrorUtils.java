@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DuplicateKeyException;
@@ -37,6 +38,11 @@ import lombok.extern.slf4j.Slf4j;
  * 异常处理工具
  * 
  * 注意：浏览器访问时有时候会出现多次异常输入属于正常情况（浏览器会重试）
+ * 
+ * 异常处理：
+ * 1. MessageCodeException直接获取错误编码和错误提示
+ * 2. 未知系统异常使用异常错误提示
+ * 3. 已知系统异常如果异常提示少于64字符返回异常提示反之使用已知错误提示
  * 
  * @author acgist
  */
@@ -272,7 +278,14 @@ public final class ErrorUtils {
 			return allErrors.stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(","));
 		}
 		// 为了系统安全建议不要直接返回
-		return messageCode == MessageCode.CODE_9999 ? t.getMessage() : messageCode.getMessage();
+		final String message = t.getMessage();
+		if(messageCode == MessageCode.CODE_9999) {
+			return message;
+		}
+		if(StringUtils.isNotEmpty(message) && message.length() < 64) {
+			return message;
+		}
+		return messageCode.getMessage();
 	}
 	
 	/**
