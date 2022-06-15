@@ -7,17 +7,18 @@ if [ ! -z "$processId" ]; then
   echo "关闭应用：${project.artifactId}-${project.version} - $processId"
   while [ ! -z "$processId" ]
   do
+    echo -n "."
     if [ $killIndex -le 10 ]; then
       # 优雅关机
       kill -15 $processId
     else
+      echo -n '强制关闭'
       # 强制关机
       kill -9 $processId
     fi
     sleep 1
     killIndex=$((killIndex+1))
     processId=$(ps -aux | grep "${project.artifactId}" | grep -v grep | awk '{print $2}')
-    echo -n "."
   done
   echo ""
 fi
