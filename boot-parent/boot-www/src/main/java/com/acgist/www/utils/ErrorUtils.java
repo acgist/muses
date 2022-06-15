@@ -105,7 +105,7 @@ public final class ErrorUtils {
 			final Throwable throwable = (Throwable) rootErrorMessage;
 			final MessageCode messageCode = messageCode(status, throwable);
 			status = messageCode.getStatus();
-			message = Message.fail(messageCode, message(throwable));
+			message = Message.fail(messageCode, message(messageCode, throwable));
 		} else {
 			final MessageCode messageCode = MessageCode.of(status);
 			message = Message.fail(messageCode);
@@ -196,6 +196,9 @@ public final class ErrorUtils {
 		if (t instanceof BindException) {
 			return MessageCode.CODE_3400;
 		}
+//		if (t instanceof InvalidGrantException) {
+//			return MessageCode.CODE_3401;
+//		}
 		if (t instanceof TypeMismatchException) {
 			return MessageCode.CODE_3400;
 		}
@@ -254,11 +257,12 @@ public final class ErrorUtils {
 	/**
 	 * 获取异常信息
 	 * 
+	 * @param messageCode 错误编码
 	 * @param t 异常
 	 * 
 	 * @return 异常信息
 	 */
-	public static final String message(Throwable t) {
+	public static final String message(MessageCode messageCode, Throwable t) {
 		if(
 			t instanceof BindException ||
 			t instanceof MethodArgumentNotValidException
@@ -268,8 +272,7 @@ public final class ErrorUtils {
 			return allErrors.stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(","));
 		}
 		// 为了系统安全建议不要直接返回
-//		return t.getMessage();
-		return null;
+		return messageCode == MessageCode.CODE_9999 ? t.getMessage() : messageCode.getMessage();
 	}
 	
 	/**
