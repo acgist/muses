@@ -9,8 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.main.NotifyApplication;
 import com.acgist.notify.gateway.model.entity.GatewayEntity;
-import com.acgist.rule.condition.RuleCondition;
-import com.acgist.rule.config.ConditionMappingFactory;
+import com.acgist.notify.rule.condition.RuleCondition;
+import com.acgist.notify.rule.config.ConditionMappingFactory;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 

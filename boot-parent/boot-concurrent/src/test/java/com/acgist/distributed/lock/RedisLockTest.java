@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.acgist.ConcurrentApplication;
+import com.acgist.concurrent.distributed.lock.RedisLock;
 
 import lombok.extern.slf4j.Slf4j;
 

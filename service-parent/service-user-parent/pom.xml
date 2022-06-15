@@ -25,6 +25,7 @@
 	<modules>
 		<module>service-user-api</module>
 		<module>service-user-impl</module>
+		<module>service-user-model</module>
 	</modules>
 
 	<dependencies>

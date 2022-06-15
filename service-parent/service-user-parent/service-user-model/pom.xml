@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.acgist</groupId>
+		<artifactId>service-user-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<artifactId>service-user-model</artifactId>
+	<packaging>jar</packaging>
+
+	<name>service-user-model</name>
+	<description>用户内部服务模型</description>
+
+	<properties>
+		<system.maven.module>com.acgist.service.user.model</system.maven.module>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-dev</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
+			<artifactId>boot-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+</project>

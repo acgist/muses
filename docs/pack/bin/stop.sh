@@ -4,7 +4,7 @@
 killIndex=0
 processId=$(ps -aux | grep "${project.artifactId}" | grep -v grep | awk '{print $2}')
 if [ ! -z "$processId" ]; then
-  echo "关闭应用：${project.artifactId}-${project.version}"
+  echo "关闭应用：${project.artifactId}-${project.version} - $processId"
   while [ ! -z "$processId" ]
   do
     if [ $killIndex -le 10 ]; then

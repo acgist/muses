@@ -23,6 +23,7 @@ if [ $processPortNumber -lt 1 ]; then
 else
   finishTime=$(date +%s)
   processTime=$((finishTime-startTime))
-  echo "启动成功：${project.artifactId}-${project.version}"
+  echo "启动成功：${project.artifactId}-${project.version} - $processId"
+  echo "启动端口：$(netstat -anop | grep $processId | grep LISTEN | awk '{print $4}')"
   echo "启动耗时：$processTime S"
 fi

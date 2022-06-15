@@ -29,8 +29,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-service</artifactId>
-			<optional>true</optional>
+			<artifactId>service-notify-model</artifactId>
 		</dependency>
 	</dependencies>
 

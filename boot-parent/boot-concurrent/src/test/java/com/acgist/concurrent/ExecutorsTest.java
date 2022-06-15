@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.acgist.concurrent.Executor.RollbackType;
+import com.acgist.concurrent.executor.Executor;
+import com.acgist.concurrent.executor.Executors;
+import com.acgist.concurrent.executor.Executor.RollbackType;
 
 import lombok.extern.slf4j.Slf4j;
 

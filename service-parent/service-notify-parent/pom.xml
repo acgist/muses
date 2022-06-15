@@ -25,6 +25,7 @@
 	<modules>
 		<module>service-notify-api</module>
 		<module>service-notify-impl</module>
+		<module>service-notify-model</module>
 	</modules>
 
 	<dependencies>

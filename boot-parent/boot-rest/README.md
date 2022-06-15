@@ -47,3 +47,8 @@ UserContext.get()
 
 1. 在启动类添加注解：`@EnableWebMvc`
 2. 添加配置：`spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER`
+
+## 页面模块
+
+如果不是简单列表页面，建议一个页面使用一个`PageVO`，然后页面组件再使用一个组件`ModuleVO`。
+`PageVO`包含多个`ModuleVO`，`PageVO`和`ModuleVO`接口分开，进入页面统一使用`PageVO`接口，刷新某个组件使用`ModuleVO`接口。

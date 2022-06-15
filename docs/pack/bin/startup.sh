@@ -38,3 +38,5 @@ if [ $runType != "docker" ]; then
 else
   echo "启动成功：${project.artifactId}-${project.version}"
 fi
+
+echo "--------------------------------"

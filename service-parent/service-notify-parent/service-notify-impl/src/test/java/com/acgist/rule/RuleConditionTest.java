@@ -6,19 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import com.acgist.boot.utils.JSONUtils;
-import com.acgist.rule.condition.RuleCondition;
-import com.acgist.rule.condition.impl.EqCondition;
-import com.acgist.rule.condition.impl.ExcludeCondition;
-import com.acgist.rule.condition.impl.GeCondition;
-import com.acgist.rule.condition.impl.GtCondition;
-import com.acgist.rule.condition.impl.InCondition;
-import com.acgist.rule.condition.impl.IncludeCondition;
-import com.acgist.rule.condition.impl.LeCondition;
-import com.acgist.rule.condition.impl.LikeCondition;
-import com.acgist.rule.condition.impl.LtCondition;
-import com.acgist.rule.condition.impl.NeCondition;
-import com.acgist.rule.condition.impl.NotInCondition;
-import com.acgist.rule.condition.impl.NotLikeCondition;
+import com.acgist.notify.rule.condition.RuleCondition;
+import com.acgist.notify.rule.condition.impl.EqCondition;
+import com.acgist.notify.rule.condition.impl.ExcludeCondition;
+import com.acgist.notify.rule.condition.impl.GeCondition;
+import com.acgist.notify.rule.condition.impl.GtCondition;
+import com.acgist.notify.rule.condition.impl.InCondition;
+import com.acgist.notify.rule.condition.impl.IncludeCondition;
+import com.acgist.notify.rule.condition.impl.LeCondition;
+import com.acgist.notify.rule.condition.impl.LikeCondition;
+import com.acgist.notify.rule.condition.impl.LtCondition;
+import com.acgist.notify.rule.condition.impl.NeCondition;
+import com.acgist.notify.rule.condition.impl.NotInCondition;
+import com.acgist.notify.rule.condition.impl.NotLikeCondition;
 
 import lombok.extern.slf4j.Slf4j;
 
