@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /data/project/h5
+cd ${project.basedir}
 
 #git pull
 # 强制更新远程代码
@@ -13,7 +13,7 @@ git pull
 npm run build
 
 # 删除文件
-rm -rf /data/project/h5
+rm -rf ${system.maven.run.path}/h5
 
 # 替换文件
-cp -rf /data/project/h5/dist /data/project/h5
+cp -rf ${project.basedir} ${system.maven.run.path}/h5
