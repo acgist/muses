@@ -6,7 +6,7 @@ import ${typeValue};
 </#list>
 </#if>
 
-import com.acgist.boot.model.BootVo;
+import com.acgist.boot.model.EntityVo;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class ${prefix}Vo extends BootVo {
+public class ${prefix}Vo extends EntityVo {
 
 	private static final long serialVersionUID = 1L;
 

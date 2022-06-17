@@ -6,7 +6,7 @@ import ${typeValue};
 </#list>
 </#if>
 
-import com.acgist.boot.model.BootDto;
+import com.acgist.boot.model.EntityDto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class ${prefix}Dto extends BootDto {
+public class ${prefix}Dto extends EntityDto {
 
 	private static final long serialVersionUID = 1L;
 

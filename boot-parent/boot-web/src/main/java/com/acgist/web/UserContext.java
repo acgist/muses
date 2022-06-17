@@ -13,6 +13,18 @@ import com.acgist.web.model.WebUser;
 public class UserContext {
 
 	/**
+	 * 异步线程
+	 */
+	private static final InheritableThreadLocal<WebUser> ASYNC_LOCAL = new InheritableThreadLocal<>();
+	
+	/**
+	 * 设置异步线程当前用户
+	 */
+	public static final void setAsync() {
+		ASYNC_LOCAL.set(currentUser());
+	}
+	
+	/**
 	 * 获取当前用户
 	 * 
 	 * @return 当前用户

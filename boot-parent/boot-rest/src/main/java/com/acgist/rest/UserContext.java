@@ -17,6 +17,10 @@ public class UserContext {
 	 * 线程信息
 	 */
 	private static final ThreadLocal<User> LOCAL = new ThreadLocal<>();
+	/**
+	 * 异步线程
+	 */
+	private static final InheritableThreadLocal<User> ASYNC_LOCAL = new InheritableThreadLocal<>();
 	
 	/**
 	 * 设置当前用户
@@ -25,6 +29,13 @@ public class UserContext {
 	 */
 	public static final void set(User user) {
 		LOCAL.set(user);
+	}
+	
+	/**
+	 * 设置异步线程当前用户
+	 */
+	public static final void setAsync() {
+		ASYNC_LOCAL.set(currentUser());
 	}
 	
 	/**
