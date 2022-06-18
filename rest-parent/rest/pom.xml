@@ -25,6 +25,11 @@
 	</properties>
 
 	<dependencies>
+		<!-- 注意：环境自动排序还是需要映入 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

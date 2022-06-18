@@ -25,7 +25,7 @@ public class WorkbenchController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping()
+	@GetMapping
 	public Message<WorkbenchVo> workbench() {
 		return Message.success(this.userService.workbench());
 	}

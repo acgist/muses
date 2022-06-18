@@ -55,17 +55,24 @@ kafka.bootstrap.servers=127.0.0.1:9092
 
 ```
 # 创建Topic
-kafka-topics.sh --zookeeper zookeeper:2181 --topic log-topic --create --partitions 3 --replication-factor 3
+kafka-topics.sh --zookeeper zookeeper:2181 --topic topic-log --create --partitions 3 --replication-factor 3
 
 # 配置Kafka
 spring:
   cloud:
     stream:
+      binders:
+        log:
+          type: kafka
+      default-binder: log
+      function:
+        definition: logRecord
       bindings:
-        log-input:
+        logRecord-in-0:
           group: ${spring.application.name}
-          destination: log-topic
-          content-type: application/json
+          binder: log
+          destination: ${system.topic.log:topic-log}
+#         content-type: text/plain
 ```
 
 ## ElasticSearch
