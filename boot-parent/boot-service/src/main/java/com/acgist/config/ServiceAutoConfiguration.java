@@ -1,7 +1,9 @@
 package com.acgist.config;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import javax.sql.DataSource;
+
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +17,11 @@ import com.acgist.service.impl.DatabaseServiceImpl;
  * @author acgist
  */
 @Configuration
+@AutoConfigureAfter(MyBatisAutoConfiguration.class)
 public class ServiceAutoConfiguration {
 
 	@Bean
-	@ConditionalOnBean(SqlSession.class)
+	@ConditionalOnClass(DataSource.class)
 	@ConditionalOnMissingBean
 	public DatabaseService databaseService() {
 		return new DatabaseServiceImpl();

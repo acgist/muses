@@ -9,7 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acgist.boot.utils.StringUtils;
@@ -20,11 +21,11 @@ import com.acgist.service.DatabaseService;
 public class DatabaseServiceImpl implements DatabaseService {
 
 	@Autowired
-	private SqlSession sqlSession;
+	private DataSource dataSource;
 	
 	@Override
 	public TableDto table(String tableName) throws SQLException {
-		return this.table(tableName, this.sqlSession.getConnection());
+		return this.table(tableName, this.dataSource.getConnection());
 	}
 	
 	@Override

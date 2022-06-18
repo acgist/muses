@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.acgist.model.dto.TableColumnDto;
@@ -35,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @ConfigurationProperties("system.log")
 public class MappingConfig {
 	
+	@Autowired
 	private DatabaseService databaseService;
 	
 	/**

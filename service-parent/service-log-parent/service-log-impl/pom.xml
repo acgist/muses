@@ -35,6 +35,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
+			<artifactId>service-user-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.acgist</groupId>
 			<artifactId>service-log-api</artifactId>
 		</dependency>
 		<dependency>
