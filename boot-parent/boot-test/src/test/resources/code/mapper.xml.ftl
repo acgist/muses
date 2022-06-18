@@ -5,7 +5,7 @@
 	<resultMap id="${prefix}Entity" type="${modulePackage}${module}.model.entity.${prefix}Entity">
 		<id column="id" property="id" />
 		<#list columns as column>
-		<result column="${column.name}" property="${column.value}" />
+		<result column="${column.column}" property="${column.field}" />
 		</#list>
 		<result column="create_date" property="createDate" />
 		<result column="modify_date" property="modifyDate" />

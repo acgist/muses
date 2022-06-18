@@ -7,35 +7,29 @@
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>muses</artifactId>
+		<artifactId>service-log-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>service-parent</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>service-log-api</artifactId>
+	<packaging>jar</packaging>
 
-	<name>service-parent</name>
-	<description>内部服务模块：内部Dubbo服务</description>
+	<name>service-log-api</name>
+	<description>日志内部服务接口</description>
 
 	<properties>
-		<system.maven.module>com.acgist.service.parent</system.maven.module>
+		<system.maven.module>com.acgist.service.log.api</system.maven.module>
 	</properties>
-
-	<modules>
-		<module>service-log-parent</module>
-		<module>service-user-parent</module>
-		<module>service-notify-parent</module>
-	</modules>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot-dev</artifactId>
+			<artifactId>boot-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>boot</artifactId>
+			<artifactId>service-log-model</artifactId>
 		</dependency>
 	</dependencies>
 

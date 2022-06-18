@@ -1,11 +1,7 @@
-package com.acgist.dev;
+package com.acgist.test.code;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,13 +11,13 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import com.acgist.boot.model.Model;
 import com.acgist.boot.service.FreemarkerService;
 import com.acgist.boot.service.impl.FreemarkerServiceImpl;
-import com.acgist.boot.utils.StringUtils;
+import com.acgist.model.dto.TableColumnDto;
+import com.acgist.model.dto.TableDto;
+import com.acgist.service.DatabaseService;
+import com.acgist.service.impl.DatabaseServiceImpl;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -94,7 +90,7 @@ public class CodeBuilderTest {
 		map.put("id", this.id);
 		map.put("modulePackage", this.modulePackage);
 		map.put("hasId", Arrays.asList(this.skipColumns).indexOf(this.id) < 0);
-		final List<Column> list = this.loadTable(map, table);
+		final List<TableColumnDto> list = this.loadTable(map, table);
 		// 去掉前缀
 		final String tableSuffix = this.removePrefix(table);
 		// 作者
@@ -189,62 +185,35 @@ public class CodeBuilderTest {
 	 * 
 	 * @throws Exception 异常
 	 */
-	public List<Column> loadTable(Map<Object, Object> map, String tableName) throws Exception {
+	public List<TableColumnDto> loadTable(Map<Object, Object> map, String tableName) throws Exception {
 		Class.forName(this.driverClass);
 		final Connection connection = DriverManager.getConnection(this.url, this.user, this.password);
-		final Statement statement = connection.createStatement();
-		final DatabaseMetaData databaseMetaData = connection.getMetaData();
-		final ResultSet table = statement.executeQuery("select * from " + tableName + " limit 1");
-		// 表名描述
-		final ResultSet tableResultSet = databaseMetaData.getTables(null, null, tableName, new String[] {"TABLE"});
-		String tableComment = null;
-		if(tableResultSet.next()) {
-			tableComment = tableResultSet.getString("REMARKS");
-		}
-		if(StringUtils.isEmpty(tableComment)) {
-			tableComment = tableName;
-		}
-		map.put("name", tableComment);
-		final List<Column> list = new ArrayList<>();
+		final DatabaseService databaseService = new DatabaseServiceImpl();
+		final TableDto tableDto = databaseService.table(tableName, connection);
+		map.put("name", tableDto.getComment());
+		final List<TableColumnDto> list = new ArrayList<>();
 		final List<String> typeImport = new ArrayList<>();
-		final ResultSetMetaData tableMetaData = table.getMetaData();
-		final int columnCount = tableMetaData.getColumnCount();
 		map.put("typeImport", typeImport);
-		for (int index = 1; index <= columnCount; index++) {
-			final String name = tableMetaData.getColumnName(index);
+		tableDto.getColumns().forEach(column -> {
 			// 去掉通用
-			if(Arrays.asList(this.skipColumns).indexOf(name) >= 0) {
-				continue;
+			if(Arrays.asList(this.skipColumns).indexOf(column.getColumn()) >= 0) {
+				return;
 			}
-			String type = tableMetaData.getColumnClassName(index);
-			type = type.substring(type.lastIndexOf('.') + 1);
 			// 类型转换
+			String type = column.getType();
+			type = type.substring(type.lastIndexOf('.') + 1);
 			type = this.typeConverter.getOrDefault(type, type);
-			// 字段描述
-			String comment = null;
-			final ResultSet column = databaseMetaData.getColumns(null, null, tableName, name);
-			if(column.next()) {
-				comment = column.getString("REMARKS");
-			}
-			if(StringUtils.isEmpty(comment)) {
-				comment = name;
-			}
-			comment = comment
-				.replace("\r\n", " ")
-				.replace('\r', ' ')
-				.replace('\n', ' ')
-				.replace("\"", "\\\"");
+			column.setType(type);
 			// 添加类型
 			final String typeValue = this.typeImporter.get(type);
 			if(typeValue != null && !typeImport.contains(typeValue)) {
 				typeImport.add(typeValue);
 			}
+			// 设置字段
+			column.setField(this.hump(this.removePrefix(column.getColumn())));
 			// 字段前缀
-			list.add(new Column(name, type, this.hump(this.removePrefix(name)), comment));
-		}
-		tableResultSet.close();
-		statement.close();
-		table.close();
+			list.add(column);
+		});
 		connection.close();
 		return list;
 	}
@@ -329,43 +298,6 @@ public class CodeBuilderTest {
 		String path = this.modulePackage + map.get("module") + ".controller";
 		path = this.targetJava + path.replace('.', '/');
 		this.freemarkerService.build("controller.ftl", map, this.path + path, map.get("prefix") + "Controller.java");
-	}
-	
-	/**
-	 * 字段
-	 * 
-	 * @author acgist
-	 */
-	@Getter
-	@Setter
-	public static class Column extends Model {
-		
-		private static final long serialVersionUID = 1L;
-		
-		/**
-		 * 列名：t_id
-		 */
-		private String name;
-		/**
-		 * 类型
-		 */
-		private String type;
-		/**
-		 * Java字段：id
-		 */
-		private String value;
-		/**
-		 * 描述
-		 */
-		private String comment;
-		
-		public Column(String name, String type, String value, String comment) {
-			this.name = name;
-			this.type = type;
-			this.value = value;
-			this.comment = comment;
-		}
-		
 	}
 	
 }

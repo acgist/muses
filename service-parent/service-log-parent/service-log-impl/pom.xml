@@ -7,19 +7,19 @@
 
 	<parent>
 		<groupId>com.acgist</groupId>
-		<artifactId>service-notify-parent</artifactId>
+		<artifactId>service-log-parent</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>service-notify-impl</artifactId>
+	<artifactId>service-log-impl</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-notify-impl</name>
-	<description>通知内部服务实现</description>
+	<name>service-log-impl</name>
+	<description>日志内部服务实现</description>
 
 	<properties>
-		<system.maven.module>com.acgist.service.notify.impl</system.maven.module>
+		<system.maven.module>com.acgist.service.log.impl</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.parent.basedir}</system.maven.basedir>
 		<system.maven.skip.assembly>false</system.maven.skip.assembly>
 	</properties>
@@ -35,15 +35,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.acgist</groupId>
-			<artifactId>service-notify-api</artifactId>
+			<artifactId>service-log-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shardingsphere</groupId>
-			<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -55,7 +51,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.acgist.main.NotifyApplication</mainClass>
+							<mainClass>com.acgist.main.LogApplication</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>./</classpathPrefix>
 						</manifest>

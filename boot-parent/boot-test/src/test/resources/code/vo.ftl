@@ -1,4 +1,4 @@
-package ${modulePackage}${module}.model.dto;
+package ${modulePackage}${module}.model.vo;
 <#if typeImport?has_content>
 
 <#list typeImport as typeValue>
@@ -6,11 +6,13 @@ import ${typeValue};
 </#list>
 </#if>
 
-import com.acgist.boot.model.EntityDto;
+import com.acgist.boot.model.EntityVo;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * ${name}
@@ -19,8 +21,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Schema(name = "${name}")
 @EqualsAndHashCode(callSuper = true)
-public class ${prefix}Dto extends EntityDto {
+public class ${prefix}Vo extends EntityVo {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +31,8 @@ public class ${prefix}Dto extends EntityDto {
 	/**
 	 * ${column.comment}
 	 */
-	private ${column.type} ${column.value};
+	@Schema(name = "${column.simpleComment}")
+	private ${column.type} ${column.field};
 	</#list>
 	
 }

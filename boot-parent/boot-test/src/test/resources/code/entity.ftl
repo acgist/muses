@@ -31,8 +31,8 @@ public class ${prefix}Entity extends BootEntity {
 	/**
 	 * ${column.comment}
 	 */
-	@TableField(value = "${column.name}")
-	private ${column.type} ${column.value};
+	@TableField(value = "${column.column}")
+	private ${column.type} ${column.field};
 	</#list>
 	
 }

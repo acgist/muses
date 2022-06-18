@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: service-log
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  profiles:
+    active: @profile@
+  cloud:
+    nacos:
+      username: @nacosUser@
+      password: @nacosPassword@
+      discovery:
+        namespace: ${spring.profiles.active}
+        server-addr: @nacos@
+      config:
+        namespace: ${spring.profiles.active}
+        server-addr: @nacos@
+        file-extension: yml
+        refreshable-dataids: main.yml, task.yml, mq.yml, data.yml, dubbo.yml

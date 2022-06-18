@@ -1,4 +1,4 @@
-package ${modulePackage}${module}.model.vo;
+package ${modulePackage}${module}.model.dto;
 <#if typeImport?has_content>
 
 <#list typeImport as typeValue>
@@ -6,7 +6,7 @@ import ${typeValue};
 </#list>
 </#if>
 
-import com.acgist.boot.model.EntityVo;
+import com.acgist.boot.model.EntityDto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class ${prefix}Vo extends EntityVo {
+public class ${prefix}Dto extends EntityDto {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class ${prefix}Vo extends EntityVo {
 	/**
 	 * ${column.comment}
 	 */
-	private ${column.type} ${column.value};
+	private ${column.type} ${column.field};
 	</#list>
 	
 }
