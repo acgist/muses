@@ -1,4 +1,4 @@
-package com.acgist.log.repository;
+package com.acgist.log.dao.es;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;

@@ -28,6 +28,7 @@ show variables like '%log_bin%'
 # 授权
 CREATE USER canal IDENTIFIED BY 'canal';
 GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
+# 如果权限问题登陆不了使用下面授权语句
 -- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%';
 FLUSH PRIVILEGES;
 ```

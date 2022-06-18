@@ -17,4 +17,4 @@ spring:
         namespace: ${spring.profiles.active}
         server-addr: @nacos@
         file-extension: yml
-        refreshable-dataids: main.yml, task.yml, mq.yml, data.yml, dubbo.yml
+        refreshable-dataids: es.yml, mq.yml, main.yml, task.yml, data.yml, dubbo.yml

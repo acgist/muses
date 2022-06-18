@@ -15,9 +15,9 @@ import com.acgist.boot.utils.JSONUtils;
 import com.acgist.log.api.ILogService;
 import com.acgist.log.config.MappingConfig;
 import com.acgist.log.config.TableMapping;
+import com.acgist.log.dao.es.LogRepository;
 import com.acgist.log.model.es.Log;
 import com.acgist.log.model.message.LogMessage;
-import com.acgist.log.repository.LogRepository;
 import com.acgist.log.service.LogService;
 
 import lombok.extern.slf4j.Slf4j;
