@@ -29,7 +29,12 @@ public class LogListener {
 			}
 			try {
 				log.debug("记录日志：{}", message);
-				this.logService.log(JSONUtils.toJava(message, LogMessage.class));
+				final LogMessage logMessage = JSONUtils.toJava(message, LogMessage.class);
+				if(logMessage.getIsDdl()) {
+					// 忽略DDL
+					return;
+				}
+				this.logService.log(logMessage);
 			} catch (Exception e) {
 				log.error("日志记录异常：{}", message, e);
 			}

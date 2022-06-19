@@ -1,9 +1,7 @@
 package com.acgist.log.service.impl;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +45,15 @@ public class LogServiceImpl implements LogService, ILogService {
 			return;
 		}
 		final List<Log> logs = new ArrayList<>();
-		final Iterator<Object> oldIterator = logMessage.getOld().iterator();
-		final Iterator<Object> dataIterator = logMessage.getData().iterator();
 		final TableMapping tableMapping = this.mappingConfig.getMapping().get(table);
-		while(dataIterator.hasNext()) {
-			final Map<String, Object> old = (Map<String, Object>) oldIterator.next();
-			final Map<String, Object> data = (Map<String, Object>) dataIterator.next();
+		final Iterator<Object> oldIterator = logMessage.getOld() == null ? null : logMessage.getOld().iterator();
+		final Iterator<Object> dataIterator = logMessage.getData() == null ? null : logMessage.getData().iterator();
+		while(
+			(oldIterator != null && oldIterator.hasNext()) ||
+			(dataIterator != null && dataIterator.hasNext())
+		) {
+			final Map<String, Object> old = oldIterator == null ? null : (Map<String, Object>) oldIterator.next();
+			final Map<String, Object> data = dataIterator == null ? null : (Map<String, Object>) dataIterator.next();
 			this.map(tableMapping, old, data);
 			// 映射数据
 			final Log log = new Log();
@@ -80,42 +81,15 @@ public class LogServiceImpl implements LogService, ILogService {
 	 */
 	private void map(TableMapping tableMapping, Map<String, Object> old, Map<String, Object> data) {
 		tableMapping.getColumnMap().forEach((key, mapping) -> {
-			final Object oldValue = old.remove(key);
-			final Object dataValue = data.remove(key);
+			final Object oldValue = old == null ? null : old.remove(key);
+			final Object dataValue = data == null ? null : data.remove(key);
 			if(oldValue != null) {
-				old.put(mapping.getField(), this.convert(oldValue, mapping.getClazz()));
+				old.put(mapping.getField(), oldValue);
 			}
 			if(dataValue != null) {
-				data.put(mapping.getField(), this.convert(dataValue, mapping.getClazz()));
+				data.put(mapping.getField(), dataValue);
 			}
 		});
-	}
-	
-	/**
-	 * 类型转换
-	 * 
-	 * @param value 原始值
-	 * @param type 类型
-	 * 
-	 * @return 实际值
-	 */
-	private Object convert(Object value, Class<?> type) {
-		// Boolean支持0|1
-		final String toString = value.toString();
-		if(
-			Boolean.class.equals(type) &&
-			("1".equals(toString) || "0".equals(toString))
-		) {
-			return "1".equals(toString);
-		}
-		// 日期
-		if(
-			(Date.class.equals(type) || LocalDateTime.class.equals(type)) &&
-			toString.indexOf('.') >= 0
-		) {
-			return toString.substring(0, toString.indexOf('.'));
-		}
-		return value;
 	}
 	
 	/**

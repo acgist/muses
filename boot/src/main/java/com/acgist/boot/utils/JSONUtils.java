@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -172,6 +173,15 @@ public final class JSONUtils {
 			throw MessageCodeException.of(e, "JSON格式错误：", json);
 		}
 	}
+	
+	/**
+	 * 注册模块
+	 * 
+	 * @param module 模块
+	 */
+	public static final void registerModule(Module module) {
+		MAPPER.registerModule(module);
+	}
 
 	/**
 	 * 创建Mapper
@@ -181,7 +191,7 @@ public final class JSONUtils {
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
-			.registerModules(buildDefaultModule(), buildJavaTimeModule())
+			.registerModules(buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.setSerializationInclusion(Include.NON_NULL);
@@ -195,7 +205,7 @@ public final class JSONUtils {
 	public static final ObjectMapper buildWebMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
-			.registerModules(buildDefaultModule(), buildJavaTimeModule())
+			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			// 如果前台需要先是所有属性删除设置
@@ -214,7 +224,7 @@ public final class JSONUtils {
 			.allowIfBaseType(Object.class)
 			.build();
 		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
-			.registerModules(buildDefaultModule(), buildJavaTimeModule())
+			.registerModules(buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
@@ -222,26 +232,34 @@ public final class JSONUtils {
 	}
 
 	/**
+	 * @return Java类型转换模块（Web）
+	 */
+	private static final Module buildWebModule() {
+		final SimpleModule webModule = new SimpleModule("WebModule");
+		webModule.addSerializer(Long.class, ToStringSerializer.instance);
+		return webModule;
+	}
+	
+	/**
 	 * @return Java类型转换模块
 	 */
-	private static final com.fasterxml.jackson.databind.Module buildDefaultModule() {
-		final SimpleModule module = new SimpleModule();
-		module.addSerializer(Long.class, ToStringSerializer.instance);
-		return module;
+	private static final Module buildCustomModule() {
+		final SimpleModule customModule = new SimpleModule("CustomModule");
+		return customModule;
 	}
 	
 	/**
 	 * @return Java时间类型模块
 	 */
 	private static final JavaTimeModule buildJavaTimeModule() {
-		final JavaTimeModule module = new JavaTimeModule();
-		module.addSerializer(LocalTime.class, new LocalTimeSerializer(TimeStyle.HH24_MM_SS.getDateTimeFormatter()));
-		module.addSerializer(LocalDate.class, new LocalDateSerializer(DateStyle.YYYY_MM_DD.getDateTimeFormatter()));
-		module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getDateTimeFormatter()));
-		module.addDeserializer(LocalTime.class, new LocalTimeDeserializer(TimeStyle.HH24_MM_SS.getDateTimeFormatter()));
-		module.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateStyle.YYYY_MM_DD.getDateTimeFormatter()));
-		module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getDateTimeFormatter()));
-		return module;
+		final JavaTimeModule javaTimeModule = new JavaTimeModule();
+		javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(TimeStyle.HH24_MM_SS.getDateTimeFormatter()));
+		javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateStyle.YYYY_MM_DD.getDateTimeFormatter()));
+		javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getDateTimeFormatter()));
+		javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(TimeStyle.HH24_MM_SS.getDateTimeFormatter()));
+		javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateStyle.YYYY_MM_DD.getDateTimeFormatter()));
+		javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getDateTimeFormatter()));
+		return javaTimeModule;
 	}
 	
 }

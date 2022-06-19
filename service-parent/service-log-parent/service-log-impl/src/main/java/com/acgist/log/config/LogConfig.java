@@ -1,6 +1,7 @@
 package com.acgist.log.config;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import javax.annotation.PostConstruct;
 
@@ -16,7 +17,11 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
+import com.acgist.boot.utils.JSONUtils;
+import com.acgist.log.canal.json.CanalBooleanDeserializer;
+import com.acgist.log.canal.json.CanalLocalDateTimeDeserializer;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,7 +43,18 @@ public class LogConfig {
 
 	@PostConstruct
 	public void init() throws ClassNotFoundException, IOException {
+		this.loadJSONCanalModule();
 		this.loadTableMapping();
+	}
+
+	/**
+	 * 加载JSON模块
+	 */
+	private void loadJSONCanalModule() {
+		final SimpleModule module = new SimpleModule("CanalModule");
+		module.addDeserializer(Boolean.class, new CanalBooleanDeserializer());
+		module.addDeserializer(LocalDateTime.class, new CanalLocalDateTimeDeserializer());
+		JSONUtils.registerModule(module);
 	}
 
 	/**
