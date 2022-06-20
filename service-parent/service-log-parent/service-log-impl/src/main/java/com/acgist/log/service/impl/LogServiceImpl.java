@@ -228,10 +228,12 @@ public class LogServiceImpl implements LogService, ILogService {
 		final Class<?> clazz = tableMapping.getClazz();
 		final String diffValue = logDto.getDiffValue();
 		final String sourceValue = logDto.getSourceValue();
-		logDto.setSourceObject(JSONUtils.toJava(sourceValue, clazz));
+		if(StringUtils.isNotEmpty(sourceValue)) {
+			logDto.setSourceObject(JSONUtils.toJava(sourceValue, clazz));
+		}
 		if(StringUtils.isNotEmpty(diffValue)) {
 			final Map<String, Object> diffMap = JSONUtils.toMap(diffValue);
-			final Map<String, Object> sourceMap = JSONUtils.toMap(sourceValue);
+			final Map<String, Object> sourceMap = StringUtils.isEmpty(sourceValue) ? new HashMap<>() : JSONUtils.toMap(sourceValue);
 			sourceMap.putAll(diffMap);
 			logDto.setDiffMap(diffMap);
 			logDto.setDiffObject(JSONUtils.toJava(JSONUtils.toJSON(sourceMap), clazz));
