@@ -1,0 +1,1 @@
+【${log.table}】删除记录【${log.sourceId}】

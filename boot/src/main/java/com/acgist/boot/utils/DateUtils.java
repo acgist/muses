@@ -135,6 +135,17 @@ public final class DateUtils {
 	}
 
 	/**
+	 * 转换毫秒
+	 * 
+	 * @param localDateTime LocalDateTime
+	 * 
+	 * @return 毫秒
+	 */
+	public static final long toMilli(LocalDateTime localDateTime) {
+		return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+	}
+	
+	/**
 	 * 格式化时间
 	 * 
 	 * @param localTime LocalTime

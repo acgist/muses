@@ -1,5 +1,7 @@
 package com.acgist.log.model.query;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,13 +15,13 @@ import lombok.Setter;
 public class Query {
 
 	/**
-	 * 查询表
-	 */
-	private String[] table;
-	/**
 	 * 数据ID
 	 */
 	private Long[] id;
+	/**
+	 * 查询表
+	 */
+	private String[] table;
 	/**
 	 * 原始数据ID
 	 */
@@ -27,7 +29,11 @@ public class Query {
 	/**
 	 * 关键字
 	 */
-	private String keywork;
+	private String keyword;
+	/**
+	 * 时间范围
+	 */
+	private LocalDateTime[] createDate;
 	/**
 	 * 分页页码
 	 */

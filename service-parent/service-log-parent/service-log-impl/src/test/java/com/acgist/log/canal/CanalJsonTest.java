@@ -35,7 +35,7 @@ public class CanalJsonTest {
 //			final UserEntity user = new UserEntity();
 //			BeanMap.create(user).putAll(map);
 			final UserEntity user = JSONUtils.toJava(JSONUtils.toJSON(map), UserEntity.class);
-			System.out.println(user);
+			log.info("用户信息：{}", user);
 		});
 		assertNotNull(logMessage);
 	}

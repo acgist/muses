@@ -2,6 +2,8 @@ package com.acgist.log.config;
 
 import java.util.Map;
 
+import com.acgist.log.model.dto.LogDto;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,5 +68,25 @@ public class TableMapping {
 	 * 删除模板（默认：表名-delete.ftl）
 	 */
 	private String deleteTemplate;
+	
+	/**
+	 * 获取模板
+	 * 
+	 * @param logDto 日志
+	 * 
+	 * @return 模板
+	 */
+	public String getTemplate(LogDto logDto) {
+		switch (logDto.getType()) {
+		case INSERT:
+			return this.insertTemplate;
+		case UPDATE:
+			return this.updateTemplate;
+		case DELETE:
+			return this.deleteTemplate;
+		default:
+			return null;
+		}
+	}
 	
 }

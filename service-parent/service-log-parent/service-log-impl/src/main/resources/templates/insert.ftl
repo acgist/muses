@@ -1,0 +1,1 @@
+【${log.table}】新增记录【${log.sourceId}】

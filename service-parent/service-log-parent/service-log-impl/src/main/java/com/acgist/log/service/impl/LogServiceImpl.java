@@ -2,22 +2,44 @@ package com.acgist.log.service.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHitSupport;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.SearchPage;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
+import com.acgist.boot.service.FreemarkerService;
+import com.acgist.boot.service.IdService;
+import com.acgist.boot.utils.DateUtils;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.log.api.ILogService;
 import com.acgist.log.config.MappingConfig;
 import com.acgist.log.config.TableMapping;
 import com.acgist.log.dao.es.LogRepository;
+import com.acgist.log.model.dto.LogDto;
 import com.acgist.log.model.es.Log;
+import com.acgist.log.model.mapstruct.LogMapstruct;
 import com.acgist.log.model.message.LogMessage;
+import com.acgist.log.model.query.Query;
 import com.acgist.log.service.LogService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +49,17 @@ import lombok.extern.slf4j.Slf4j;
 public class LogServiceImpl implements LogService, ILogService {
 
 	@Autowired
+	private IdService idService;
+	@Autowired
+	private LogMapstruct logMapstruct;
+	@Autowired
 	private MappingConfig mappingConfig;
 	@Autowired
 	private LogRepository logRepository;
+	@Autowired
+	private FreemarkerService freemarkerService;
+	@Autowired
+	private ElasticsearchOperations elasticsearchOperations;
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -57,6 +87,7 @@ public class LogServiceImpl implements LogService, ILogService {
 			this.map(tableMapping, old, data);
 			// 映射数据
 			final Log log = new Log();
+			log.setId(this.idService.id());
 			final String sourceJson = JSONUtils.toJSON(data);
 			final Object sourceObject = JSONUtils.toJava(sourceJson, tableMapping.getClazz());
 			log.setType(type);
@@ -115,9 +146,102 @@ public class LogServiceImpl implements LogService, ILogService {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public void deleteHistory(String table, Long sourceId) {
+	}
+	
+	@Override
+	public List<LogDto> query(Query query) {
+		final Class<Log> entityClass = Log.class;
+		final QueryBuilder queryBuilder = this.builder(query);
+		final NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).build();
+		final IndexCoordinates indexCoordinates = this.elasticsearchOperations.getIndexCoordinatesFor(entityClass);
+		// 分页信息
+//		final long count = this.elasticsearchOperations.count(searchQuery, entityClass, indexCoordinates);
+//		if (count == 0L) {
+//			return List.of();
+//		}
+		// 注意分页：从零开始
+		searchQuery.setPageable(PageRequest.of(query.getPage(), query.getPageSize()));
+		final SearchHits<Log> searchHits = this.elasticsearchOperations.search(searchQuery, entityClass, indexCoordinates);
+		final SearchPage<Log> searchPage = SearchHitSupport.searchPageFor(searchHits, searchQuery.getPageable());
+		return this.toPageDto(searchPage);
+	}
+	
+	/**
+	 * 构建查询语句
+	 * 
+	 * @param query 查询语句
+	 * 
+	 * @return ES查询语句
+	 */
+	private QueryBuilder builder(Query query) {
+		final BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+		if(ArrayUtils.isNotEmpty(query.getId())) {
+			queryBuilder.must(QueryBuilders.termsQuery("id", ArrayUtils.toPrimitive(query.getId())));
+		}
+		if(ArrayUtils.isNotEmpty(query.getTable())) {
+			queryBuilder.must(QueryBuilders.termsQuery("table", query.getTable()));
+		}
+		if(ArrayUtils.isNotEmpty(query.getSourceId())) {
+			queryBuilder.must(QueryBuilders.termsQuery("sourceId", ArrayUtils.toPrimitive(query.getSourceId())));
+		}
+		if(StringUtils.isNotEmpty(query.getKeyword())) {
+			queryBuilder.must(QueryBuilders.matchQuery("sourceName", QueryParser.escape(query.getKeyword())));
+		}
+		if(query.getCreateDate() != null) {
+			queryBuilder.must(
+				QueryBuilders.rangeQuery("createDate")
+				.gte(DateUtils.toMilli(query.getCreateDate()[0]))
+				.lte(DateUtils.toMilli(query.getCreateDate()[1]))
+			);
+		}
+		return queryBuilder;
+	}
+	
+	/**
+	 * 类型转换
+	 * 
+	 * @param searchPage 搜索结果
+	 * 
+	 * @return DTO结果
+	 */
+	private List<LogDto> toPageDto(SearchPage<Log> searchPage) {
+		final List<Log> logs = searchPage.getContent().stream().map(SearchHit::getContent).collect(Collectors.toList());
+		final List<LogDto> list = this.logMapstruct.toDto(logs);
+		list.forEach(this::complet);
+		return list;
+	}
+	
+	/**
+	 * 补全信息
+	 * 
+	 * @param logDto 日志
+	 */
+	private void complet(LogDto logDto) {
+		final String table = logDto.getTable();
+		final TableMapping tableMapping = this.mappingConfig.getMapping().get(table);
+		if(tableMapping == null) {
+			return;
+		}
+		final Class<?> clazz = tableMapping.getClazz();
+		final String diffValue = logDto.getDiffValue();
+		final String sourceValue = logDto.getSourceValue();
+		logDto.setSourceObject(JSONUtils.toJava(sourceValue, clazz));
+		if(StringUtils.isNotEmpty(diffValue)) {
+			final Map<String, Object> diffMap = JSONUtils.toMap(diffValue);
+			final Map<String, Object> sourceMap = JSONUtils.toMap(sourceValue);
+			sourceMap.putAll(diffMap);
+			logDto.setDiffMap(diffMap);
+			logDto.setDiffObject(JSONUtils.toJava(JSONUtils.toJSON(sourceMap), clazz));
+		}
+		final Map<String, Object> map = new HashMap<>();
+		map.put("log", logDto);
+		map.put("diff", logDto.getDiffObject());
+		map.put("source", logDto.getSourceObject());
+		map.put("diffMap", logDto.getDiffMap());
+		logDto.setLog(this.freemarkerService.buildTemplate(tableMapping.getTemplate(logDto), map));
 	}
 
 }

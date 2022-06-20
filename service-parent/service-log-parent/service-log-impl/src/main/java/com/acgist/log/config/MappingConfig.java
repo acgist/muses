@@ -1,6 +1,7 @@
 package com.acgist.log.config;
 
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -120,13 +121,13 @@ public class MappingConfig {
 		}
 		// 设置模板
 		if(StringUtils.isEmpty(tableMapping.getInsertTemplate())) {
-			tableMapping.setInsertTemplate(tableMapping.getTable() + "-insert.ftl");
+			tableMapping.setInsertTemplate(this.getTemplate(tableName.value(), "insert.ftl"));
 		}
 		if(StringUtils.isEmpty(tableMapping.getUpdateTemplate())) {
-			tableMapping.setUpdateTemplate(tableMapping.getTable() + "-update.ftl");
+			tableMapping.setUpdateTemplate(this.getTemplate(tableName.value(), "update.ftl"));
 		}
 		if(StringUtils.isEmpty(tableMapping.getDeleteTemplate())) {
-			tableMapping.setDeleteTemplate(tableMapping.getTable() + "-delete.ftl");
+			tableMapping.setDeleteTemplate(this.getTemplate(tableName.value(), "delete.ftl"));
 		}
 		// 设置字段
 		FieldUtils.getAllFieldsList(clazz).stream()
@@ -214,6 +215,23 @@ public class MappingConfig {
 		}
 		fieldMappingMap.put(fieldName, fieldMapping);
 		columnMappingMap.put(columnName, fieldMapping);
+	}
+	
+	/**
+	 * 获取模板文件
+	 * 
+	 * @param table 数据库表
+	 * @param name 模板文件名称
+	 * 
+	 * @return 完整文件名称
+	 */
+	private String getTemplate(String table, String name) {
+		final String template = "/" + table + "/" + name;
+		final URL resource = this.getClass().getResource("/templates" + template);
+		if(resource != null) {
+			return template;
+		}
+		return name;
 	}
 	
 }
