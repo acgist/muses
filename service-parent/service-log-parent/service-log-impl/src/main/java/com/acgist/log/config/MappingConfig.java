@@ -45,15 +45,15 @@ public class MappingConfig {
 	 */
 	private Integer maxHistoryVersion;
 	/**
-	 * 新增模板（默认：表名-insert.ftl）
+	 * 新增模板（默认：表名/insert.ftl）
 	 */
 	private String insertTemplate;
 	/**
-	 * 修改模板（默认：表名-update.ftl）
+	 * 修改模板（默认：表名/update.ftl）
 	 */
 	private String updateTemplate;
 	/**
-	 * 删除模板（默认：表名-delete.ftl）
+	 * 删除模板（默认：表名/delete.ftl）
 	 */
 	private String deleteTemplate;
 	/**
@@ -83,8 +83,9 @@ public class MappingConfig {
 	 * @param clazz 类型
 	 */
 	public void loadEntity(TableName tableName, Class<?> clazz) {
-		final TableMapping tableMapping = this.mapping.computeIfAbsent(tableName.value(), key -> new TableMapping());
-		this.loadTableConfig(tableName, clazz, tableMapping);
+		final String name = tableName.value();
+		final TableMapping tableMapping = this.mapping.computeIfAbsent(name, key -> new TableMapping());
+		this.loadTableConfig(name, clazz, tableMapping);
 	}
 
 	/**
@@ -94,10 +95,10 @@ public class MappingConfig {
 	 * @param clazz 类型
 	 * @param tableMapping 数据映射
 	 */
-	private void loadTableConfig(TableName tableName, Class<?> clazz, TableMapping tableMapping) {
+	private void loadTableConfig(String tableName, Class<?> clazz, TableMapping tableMapping) {
 		// 设置表名
 		if(StringUtils.isEmpty(tableMapping.getTable())) {
-			tableMapping.setTable(tableName.value());
+			tableMapping.setTable(tableName);
 		}
 		// 数据库表
 		final TableDto tableDto;
@@ -105,6 +106,8 @@ public class MappingConfig {
 			tableDto = this.databaseService.table(tableMapping.getTable());
 		} catch (SQLException e) {
 			log.warn("数据库表加载异常：{}", tableMapping.getTable(), e);
+			this.tables.remove(tableName);
+			this.mapping.remove(tableName);
 			return;
 		}
 		// 设置名称
@@ -121,13 +124,13 @@ public class MappingConfig {
 		}
 		// 设置模板
 		if(StringUtils.isEmpty(tableMapping.getInsertTemplate())) {
-			tableMapping.setInsertTemplate(this.getTemplate(tableName.value(), "insert.ftl"));
+			tableMapping.setInsertTemplate(this.getTemplate(tableName, "insert.ftl"));
 		}
 		if(StringUtils.isEmpty(tableMapping.getUpdateTemplate())) {
-			tableMapping.setUpdateTemplate(this.getTemplate(tableName.value(), "update.ftl"));
+			tableMapping.setUpdateTemplate(this.getTemplate(tableName, "update.ftl"));
 		}
 		if(StringUtils.isEmpty(tableMapping.getDeleteTemplate())) {
-			tableMapping.setDeleteTemplate(this.getTemplate(tableName.value(), "delete.ftl"));
+			tableMapping.setDeleteTemplate(this.getTemplate(tableName, "delete.ftl"));
 		}
 		// 设置字段
 		FieldUtils.getAllFieldsList(clazz).stream()
@@ -140,6 +143,7 @@ public class MappingConfig {
 			StringUtils.isEmpty(tableMapping.getNameColumn())
 		) {
 			// 不做任何操作
+			log.info("数据库表没有指定数据名称字段：{}", tableName);
 		} else if(
 			StringUtils.isEmpty(tableMapping.getNameField()) &&
 			columnMappingMap.get(tableMapping.getNameColumn()) != null

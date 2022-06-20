@@ -5,8 +5,8 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-import com.acgist.log.model.dto.LogDto;
 import com.acgist.log.model.es.Log;
+import com.acgist.log.model.vo.LogVo;
 
 /**
  * 日志
@@ -16,6 +16,6 @@ import com.acgist.log.model.es.Log;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LogMapstruct {
 
-	List<LogDto> toDto(List<Log> list);
+	List<LogVo> toVo(List<Log> list);
 	
 }

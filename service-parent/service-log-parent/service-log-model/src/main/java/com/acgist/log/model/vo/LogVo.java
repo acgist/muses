@@ -1,4 +1,4 @@
-package com.acgist.log.model.dto;
+package com.acgist.log.model.vo;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class LogDto extends Log {
+public class LogVo extends Log {
 
 	private static final long serialVersionUID = 1L;
 

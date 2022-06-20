@@ -37,10 +37,10 @@ public class Query {
 	/**
 	 * 分页页码
 	 */
-	private Integer page;
+	private Integer page = 0;
 	/**
 	 * 分页数量
 	 */
-	private Integer pageSize;
+	private Integer pageSize = 20;
 	
 }

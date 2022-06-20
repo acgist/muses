@@ -58,7 +58,7 @@ public class LogConfig {
 	}
 
 	/**
-	 * 加载实体
+	 * 加载数据库表
 	 */
 	private void loadTableMapping() throws ClassNotFoundException, IOException {
 		final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();

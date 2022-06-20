@@ -17,6 +17,8 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHitSupport;
@@ -35,11 +37,11 @@ import com.acgist.log.api.ILogService;
 import com.acgist.log.config.MappingConfig;
 import com.acgist.log.config.TableMapping;
 import com.acgist.log.dao.es.LogRepository;
-import com.acgist.log.model.dto.LogDto;
 import com.acgist.log.model.es.Log;
 import com.acgist.log.model.mapstruct.LogMapstruct;
 import com.acgist.log.model.message.LogMessage;
 import com.acgist.log.model.query.Query;
+import com.acgist.log.model.vo.LogVo;
 import com.acgist.log.service.LogService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -84,14 +86,14 @@ public class LogServiceImpl implements LogService, ILogService {
 		) {
 			final Map<String, Object> old = oldIterator == null ? null : (Map<String, Object>) oldIterator.next();
 			final Map<String, Object> data = dataIterator == null ? null : (Map<String, Object>) dataIterator.next();
-			this.map(tableMapping, old, data);
+			this.columnToField(tableMapping, old, data);
 			// 映射数据
 			final Log log = new Log();
 			log.setId(this.idService.id());
-			final String sourceJson = JSONUtils.toJSON(data);
-			final Object sourceObject = JSONUtils.toJava(sourceJson, tableMapping.getClazz());
 			log.setType(type);
 			log.setTable(table);
+			final String sourceJson = JSONUtils.toJSON(data);
+			final Object sourceObject = JSONUtils.toJava(sourceJson, tableMapping.getClazz());
 			final Object sourceId = this.getFieldValue(sourceObject, tableMapping.getIdField());
 			log.setSourceId(sourceId == null ? null : Long.valueOf(sourceId.toString()));
 			final Object sourceName = this.getFieldValue(sourceObject, tableMapping.getNameField());
@@ -104,13 +106,13 @@ public class LogServiceImpl implements LogService, ILogService {
 	}
 	
 	/**
-	 * 数据映射
+	 * 数据映射替换
 	 * 
 	 * @param tableMapping 数据映射
 	 * @param old 旧的数据
 	 * @param data 新的数据
 	 */
-	private void map(TableMapping tableMapping, Map<String, Object> old, Map<String, Object> data) {
+	private void columnToField(TableMapping tableMapping, Map<String, Object> old, Map<String, Object> data) {
 		tableMapping.getColumnMap().forEach((key, mapping) -> {
 			final Object oldValue = old == null ? null : old.remove(key);
 			final Object dataValue = data == null ? null : data.remove(key);
@@ -149,10 +151,11 @@ public class LogServiceImpl implements LogService, ILogService {
 	
 	@Override
 	public void deleteHistory(String table, Long sourceId) {
+		// TODO：删除
 	}
 	
 	@Override
-	public List<LogDto> query(Query query) {
+	public List<LogVo> query(Query query) {
 		final Class<Log> entityClass = Log.class;
 		final QueryBuilder queryBuilder = this.builder(query);
 		final NativeSearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(queryBuilder).build();
@@ -163,10 +166,15 @@ public class LogServiceImpl implements LogService, ILogService {
 //			return List.of();
 //		}
 		// 注意分页：从零开始
-		searchQuery.setPageable(PageRequest.of(query.getPage(), query.getPageSize()));
+		final PageRequest pageRequest = PageRequest.of(
+			query.getPage(),
+			query.getPageSize(),
+			Sort.by(Order.desc("id"))
+		);
+		searchQuery.setPageable(pageRequest);
 		final SearchHits<Log> searchHits = this.elasticsearchOperations.search(searchQuery, entityClass, indexCoordinates);
 		final SearchPage<Log> searchPage = SearchHitSupport.searchPageFor(searchHits, searchQuery.getPageable());
-		return this.toPageDto(searchPage);
+		return this.toPageVo(searchPage);
 	}
 	
 	/**
@@ -207,9 +215,9 @@ public class LogServiceImpl implements LogService, ILogService {
 	 * 
 	 * @return DTO结果
 	 */
-	private List<LogDto> toPageDto(SearchPage<Log> searchPage) {
+	private List<LogVo> toPageVo(SearchPage<Log> searchPage) {
 		final List<Log> logs = searchPage.getContent().stream().map(SearchHit::getContent).collect(Collectors.toList());
-		final List<LogDto> list = this.logMapstruct.toDto(logs);
+		final List<LogVo> list = this.logMapstruct.toVo(logs);
 		list.forEach(this::complet);
 		return list;
 	}
@@ -217,36 +225,39 @@ public class LogServiceImpl implements LogService, ILogService {
 	/**
 	 * 补全信息
 	 * 
-	 * @param logDto 日志
+	 * @param logVo 日志
 	 */
-	private void complet(LogDto logDto) {
-		final String table = logDto.getTable();
+	private void complet(LogVo logVo) {
+		final String table = logVo.getTable();
 		final TableMapping tableMapping = this.mappingConfig.getMapping().get(table);
 		if(tableMapping == null) {
 			return;
 		}
+		// 基本信息
 		final Class<?> clazz = tableMapping.getClazz();
-		final String diffValue = logDto.getDiffValue();
-		final String sourceValue = logDto.getSourceValue();
+		final String diffValue = logVo.getDiffValue();
+		final String sourceValue = logVo.getSourceValue();
 		if(StringUtils.isNotEmpty(sourceValue)) {
-			logDto.setSourceObject(JSONUtils.toJava(sourceValue, clazz));
+			logVo.setSourceObject(JSONUtils.toJava(sourceValue, clazz));
 		}
+		// 差异信息
 		if(StringUtils.isNotEmpty(diffValue)) {
 			final Map<String, Object> diffMap = JSONUtils.toMap(diffValue);
 			final Map<String, Object> sourceMap = StringUtils.isEmpty(sourceValue) ? new HashMap<>() : JSONUtils.toMap(sourceValue);
 			sourceMap.putAll(diffMap);
-			logDto.setDiffMap(diffMap);
-			logDto.setDiffObject(JSONUtils.toJava(JSONUtils.toJSON(sourceMap), clazz));
+			logVo.setDiffMap(diffMap);
+			logVo.setDiffObject(JSONUtils.toJava(JSONUtils.toJSON(sourceMap), clazz));
 		}
+		// 日志信息
 		final Map<String, Object> map = new HashMap<>();
-		map.put("log", logDto);
-		map.put("diff", logDto.getDiffObject());
-		map.put("source", logDto.getSourceObject());
-		map.put("diffMap", logDto.getDiffMap());
+		map.put("log", logVo);
+		map.put("diff", logVo.getDiffObject());
+		map.put("source", logVo.getSourceObject());
+		map.put("diffMap", logVo.getDiffMap());
 		map.put("mapping", tableMapping);
 		map.put("fieldMap", tableMapping.getFieldMap());
 		map.put("columnMap", tableMapping.getColumnMap());
-		logDto.setLog(this.freemarkerService.buildTemplate(tableMapping.getTemplate(logDto), map));
+		logVo.setLog(this.freemarkerService.buildTemplate(tableMapping.getTemplate(logVo), map));
 	}
 
 }

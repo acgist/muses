@@ -2,8 +2,8 @@ package com.acgist.log.api;
 
 import java.util.List;
 
-import com.acgist.log.model.dto.LogDto;
 import com.acgist.log.model.query.Query;
+import com.acgist.log.model.vo.LogVo;
 
 /**
  * 日志服务
@@ -19,6 +19,6 @@ public interface ILogService {
 	 * 
 	 * @return 日志列表
 	 */
-	List<LogDto> query(Query query);
+	List<LogVo> query(Query query);
 	
 }

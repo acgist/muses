@@ -26,7 +26,7 @@ public class LogMessage implements Serializable {
 	 */
 	private String table;
 	/**
-	 * 数据库名称
+	 * 数据库名
 	 */
 	private String database;
 	/**
