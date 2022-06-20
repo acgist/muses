@@ -243,6 +243,9 @@ public class LogServiceImpl implements LogService, ILogService {
 		map.put("diff", logDto.getDiffObject());
 		map.put("source", logDto.getSourceObject());
 		map.put("diffMap", logDto.getDiffMap());
+		map.put("mapping", tableMapping);
+		map.put("fieldMap", tableMapping.getFieldMap());
+		map.put("columnMap", tableMapping.getColumnMap());
 		logDto.setLog(this.freemarkerService.buildTemplate(tableMapping.getTemplate(logDto), map));
 	}
 

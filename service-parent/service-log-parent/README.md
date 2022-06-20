@@ -87,4 +87,4 @@ spring:
 
 差异模板输出
 
-默认使用`insert.ftl`/`update.ftl`/`delete.ftl`，如果数据库表需要定时新建表名目录下面新增响应文件即可。
+默认使用`insert.ftl`/`update.ftl`/`delete.ftl`，如果数据库表需要使用自定义模板需要在表名目录下面新增相应模板文件即可。
