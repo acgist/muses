@@ -1,1 +1,1 @@
-【${log.table}】新增记录【${log.sourceId}】
+【${log.updatedName}】新增【${tableMapping.tableName?default(tableMapping.table)}】记录【${log.sourceId}】

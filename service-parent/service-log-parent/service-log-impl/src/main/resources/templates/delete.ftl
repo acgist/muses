@@ -1,1 +1,1 @@
-【${log.table}】删除记录【${log.sourceId}】
+【${log.updatedName}】删除【${tableMapping.tableName?default(tableMapping.table)}】记录【${log.sourceId}】
