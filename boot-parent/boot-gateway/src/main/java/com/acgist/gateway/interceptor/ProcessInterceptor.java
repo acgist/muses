@@ -62,7 +62,7 @@ public class ProcessInterceptor implements WwwInterceptor {
 			if(session.hasResponse()) {
 				gatewayDto.setResponse(session.getResponseJSON());
 			} else {
-				final Object errorMessage = request.getAttribute(ErrorUtils.ERROR_MESSAGE);
+				final Object errorMessage = ErrorUtils.getSystemErrorMessage(request);
 				if(errorMessage != null) {
 					gatewayDto.setResponse(errorMessage.toString());
 				}

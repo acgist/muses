@@ -49,25 +49,6 @@ public class MessageCodeException extends RuntimeException {
 		}
 	}
 
-	/**
-	 * 获取底层异常
-	 * 
-	 * @param t 异常
-	 * 
-	 * @return 底层异常
-	 */
-	public static final Throwable root(Throwable t) {
-		Throwable cause = t;
-		do {
-			// 属于状态编码异常
-			if(cause instanceof MessageCodeException) {
-				return cause;
-			}
-		} while(cause != null && (cause = cause.getCause()) != null);
-		// 返回原始异常
-		return t;
-	}
-	
 	public MessageCodeException(MessageCode code) {
 		this(code, code.getMessage());
 	}

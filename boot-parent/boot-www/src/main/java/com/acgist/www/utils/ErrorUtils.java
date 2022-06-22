@@ -26,11 +26,13 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.utils.ExceptionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +56,7 @@ public final class ErrorUtils {
 	 */
 	public static final String ERROR_PATH = "/error";
 	/**
-	 * 系统异常
+	 * 系统异常信息
 	 */
 	public static final String ERROR_MESSAGE = "system.error.message";
 	/**
@@ -66,15 +68,40 @@ public final class ErrorUtils {
 	 */
 	public static final String SERVLET_STATUS_CODE = "javax.servlet.error.status_code";
 	/**
-	 * 异常
+	 * 系统异常
 	 */
-	public static final String SERVLET_EXCEPTION = "javax.servlet.error.exception";
+	public static final String EXCEPTION_SYSTEM = "system.error.exception";
 	/**
-	 * 异常
+	 * Servlet异常
 	 */
-	public static final String SPRINGBOOT_EXCEPTION = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
+	public static final String EXCEPTION_SERVLET = "javax.servlet.error.exception";
+	/**
+	 * SpringBoot异常
+	 */
+	public static final String EXCEPTION_SPRINGBOOT = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
 
 	private ErrorUtils() {
+	}
+	
+	/**
+	 * 获取错误信息
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 错误信息
+	 */
+	public static final Object getSystemErrorMessage(HttpServletRequest request) {
+		return request.getAttribute(ErrorUtils.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * 设置系统异常
+	 * 
+	 * @param request 请求
+	 * @param e 异常
+	 */
+	public static final void putSystemErrorException(HttpServletRequest request, Exception e) {
+		request.setAttribute(ErrorUtils.EXCEPTION_SYSTEM, e);
 	}
 	
 	/**
@@ -100,22 +127,27 @@ public final class ErrorUtils {
 	public static final Message<String> message(Throwable t, HttpServletRequest request, HttpServletResponse response) {
 		final Message<String> message;
 		int status = status(request, response);
+		// 获取异常信息
 		final Object globalErrorMessage = t == null ? globalErrorMessage(request) : t;
-		final Object rootErrorMessage = rootErrorMessage(globalErrorMessage);
+		final Object rootErrorMessage = ExceptionUtils.root(globalErrorMessage);
 		if(rootErrorMessage instanceof MessageCodeException) {
+			// 自定义的异常
 			final MessageCodeException messageCodeException = (MessageCodeException) rootErrorMessage;
 			final MessageCode messageCode = messageCodeException.getCode();
 			status = messageCode.getStatus();
 			message = Message.fail(messageCode, messageCodeException.getMessage());
 		} else if(rootErrorMessage instanceof Throwable) {
+			// 未知异常
 			final Throwable throwable = (Throwable) rootErrorMessage;
 			final MessageCode messageCode = messageCode(status, throwable);
 			status = messageCode.getStatus();
 			message = Message.fail(messageCode, message(messageCode, throwable));
 		} else {
+			// 没有异常
 			final MessageCode messageCode = MessageCode.of(status);
 			message = Message.fail(messageCode);
 		}
+		// 状态编码
 		if(status == HttpServletResponse.SC_OK) {
 			status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 		}
@@ -147,29 +179,22 @@ public final class ErrorUtils {
 	 * @return 异常
 	 */
 	public static final Object globalErrorMessage(HttpServletRequest request) {
-		Object throwable = request.getAttribute(SERVLET_EXCEPTION);
+		// 系统异常
+		Object throwable = request.getAttribute(EXCEPTION_SYSTEM);
 		if(throwable != null) {
 			return throwable;
 		}
-		throwable = request.getAttribute(SPRINGBOOT_EXCEPTION);
+		// Servlet异常
+		throwable = request.getAttribute(EXCEPTION_SERVLET);
+		if(throwable != null) {
+			return throwable;
+		}
+		// SpringBoot异常
+		throwable = request.getAttribute(EXCEPTION_SPRINGBOOT);
 		if(throwable != null) {
 			return throwable;
 		}
 		return throwable;
-	}
-	
-	/**
-	 * 获取原始异常
-	 * 
-	 * @param t 异常
-	 * 
-	 * @return 原始异常
-	 */
-	public static final Object rootErrorMessage(Object t) {
-		if(t instanceof Throwable) {
-			return MessageCodeException.root((Throwable) t);
-		}
-		return t;
 	}
 	
 	/**
@@ -183,7 +208,7 @@ public final class ErrorUtils {
 	public static final int status(HttpServletRequest request, HttpServletResponse response) {
 		final Object status = request.getAttribute(SERVLET_STATUS_CODE);
 		if(status instanceof Integer) {
-			return (int) status;
+			return (Integer) status;
 		}
 		return response.getStatus();
 	}
@@ -196,6 +221,7 @@ public final class ErrorUtils {
 	 * 
 	 * @return 响应状态
 	 * 
+	 * @see ResponseEntityExceptionHandler
 	 * @see DefaultHandlerExceptionResolver
 	 */
 	public static final MessageCode messageCode(int status, Throwable t) {
@@ -279,7 +305,7 @@ public final class ErrorUtils {
 		}
 		// 为了系统安全建议不要直接返回
 		final String message = t.getMessage();
-		if(messageCode == MessageCode.CODE_9999) {
+		if(messageCode == MessageCode.CODE_9999 && StringUtils.isNotEmpty(message)) {
 			return message;
 		}
 		if(StringUtils.isNotEmpty(message) && message.length() < 64) {

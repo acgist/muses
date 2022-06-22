@@ -13,6 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.utils.ExceptionUtils;
 import com.acgist.gateway.utils.ResponseUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class GatewayConfig {
 				}
 				HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 				final Message<String> message;
-				t = MessageCodeException.root(t);
+				t = ExceptionUtils.root(t);
 				if (t instanceof ResponseStatusException) {
 					final ResponseStatusException responseStatusException = (ResponseStatusException) t;
 					status = responseStatusException.getStatus();

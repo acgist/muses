@@ -17,9 +17,6 @@
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
-	<name>muses</name>
-	<description>基于SpringCloudAlibaba技术栈微服务模板项目</description>
-
 	<properties>
 		<!-- 系统配置 -->
 		<system.maven.vendor>acgist</system.maven.vendor>
@@ -358,6 +355,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
@@ -413,6 +418,65 @@
 								<skipAssembly>${system.maven.skip.assembly}</skipAssembly>
 								<appendAssemblyId>false</appendAssemblyId>
 							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<!--
+				打包文档：
+					mvn site
+					mvn javadoc:jar
+					mvn javadoc:javadoc
+				跳过文档：-D maven.javadoc.skip=true
+				-->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<!-- 忽略警告：注解、标签等等 -->
+						<doclint>none</doclint>
+						<charset>${system.maven.encoding}</charset>
+						<encoding>${system.maven.encoding}</encoding>
+						<docencoding>${system.maven.encoding}</docencoding>
+						<description>${project.description}</description>
+						<!-- 忽略模块描述 -->
+						<!--
+						<sourceFileExcludes>
+							<sourceFileExclude>**/module-info.java</sourceFileExclude>
+						</sourceFileExcludes>
+						-->
+					</configuration>
+					<executions>
+						<!-- 自动打包文档 -->
+						<execution>
+							<id>auto-build-javadoc</id>
+							<!--
+							打包文档：mvn install|deploy
+							生命周期：
+								package不用打包文档
+								install|deploy不能正常签名
+							-->
+							<phase>verify</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<!--
+				生成签名：mvn verify
+				跳过签名：-D gpg.skip=true
+				-->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<executions>
+						<!-- 自动生成签名 -->
+						<execution>
+							<id>auto-build-sign</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
 						</execution>
 					</executions>
 				</plugin>
@@ -538,5 +602,71 @@
 			</dependencyManagement>
 		</profile>
 	</profiles>
+
+	<!-- 基本信息 -->
+	<url>https://gitee.com/acgist/muses</url>
+	<name>muses</name>
+	<description>基于SpringCloudAlibaba技术栈微服务模板项目</description>
+	<inceptionYear>2021</inceptionYear>
+
+	<!-- 仓库信息 -->
+	<scm>
+		<tag>HEAD</tag>
+		<url>https://gitee.com/acgist/muses</url>
+		<connection>scm:git:git://gitee.com/acgist/muses</connection>
+		<developerConnection>scm:git:git@gitee.com:acgist/muses</developerConnection>
+	</scm>
+	
+	<!-- 开源许可 -->
+	<licenses>
+		<license>
+			<url>https://opensource.org/licenses/Apache-2.0</url>
+			<name>Apache-2.0</name>
+		</license>
+	</licenses>
+
+	<!-- 开发人员 -->
+	<developers>
+		<developer>
+			<id>acgist</id>
+			<url>https://gitee.com/acgist</url>
+			<name>Sheng Yu</name>
+			<email>admin@acgist.com</email>
+			<timezone>+8</timezone>
+			<organization>https://www.acgist.com</organization>
+			<roles>
+				<role>master</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<!-- 组织信息 -->
+	<organization>
+		<url>https://www.acgist.com</url>
+		<name>acgist</name>
+	</organization>
+	
+	<!-- issues -->
+	<issueManagement>
+		<url>https://gitee.com/acgist/muses/issues</url>
+		<system>Gitee Issues</system>
+	</issueManagement>
+	
+	<!-- https://oss.sonatype.org/ -->
+	<!-- https://issues.sonatype.org/browse/OSSRH-51336 -->
+	<!-- mvn clean package deploy -P release -D skipTests -->
+	<distributionManagement>
+		<repository>
+			<id>sonatype_releases</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+			<name>Nexus Release Repository</name>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype_snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<name>Nexus Snapshot Repository</name>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

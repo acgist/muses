@@ -45,7 +45,7 @@ public class WebControllerAdvice {
 			this.index.remove();
 			return "redirect:" + ErrorUtils.ERROR_PATH;
 		}
-		request.setAttribute(ErrorUtils.SPRINGBOOT_EXCEPTION, e);
+		ErrorUtils.putSystemErrorException(request, e);
 		return "forward:" + ErrorUtils.ERROR_PATH;
 	}
 	
