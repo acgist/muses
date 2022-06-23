@@ -167,7 +167,7 @@ public class LogServiceImpl implements LogService, ILogService {
 //		}
 		// 注意分页：从零开始
 		final PageRequest pageRequest = PageRequest.of(
-			query.getPage(),
+			query.getPage() - 1,
 			query.getPageSize(),
 			Sort.by(Order.desc("id"))
 		);

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.acgist.boot.model.Message;
-import com.acgist.www.utils.ErrorUtils;
+import com.acgist.boot.utils.ErrorUtils;
 
 /**
  * 统一错误页面

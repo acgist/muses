@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.acgist.www.utils.ErrorUtils;
+import com.acgist.boot.utils.ErrorUtils;
 
 /**
  * 统一异常处理

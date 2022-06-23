@@ -20,8 +20,11 @@ public class UserContext {
 	/**
 	 * 设置异步线程当前用户
 	 */
-	public static final void setAsync() {
-		ASYNC_LOCAL.set(currentUser());
+	public static final void set() {
+		final WebUser currentUser = currentUser();
+		if(currentUser != null) {
+			ASYNC_LOCAL.set(currentUser);
+		}
 	}
 	
 	/**
@@ -34,7 +37,14 @@ public class UserContext {
 		if(authentication != null && authentication.isAuthenticated()) {
 			return (WebUser) authentication.getPrincipal();
 		}
-		return null;
+		return ASYNC_LOCAL.get();
+	}
+	
+	/**
+	 * 移除当前用户
+	 */
+	public static final void remove() {
+		ASYNC_LOCAL.remove();
 	}
 	
 }

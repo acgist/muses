@@ -5,7 +5,7 @@ import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.http.HttpStatus;
 
-import com.acgist.www.utils.ErrorUtils;
+import com.acgist.boot.utils.ErrorUtils;
 
 /**
  * 定义错误代码页面

@@ -29,13 +29,7 @@ public class UserContext {
 	 */
 	public static final void set(User user) {
 		LOCAL.set(user);
-	}
-	
-	/**
-	 * 设置异步线程当前用户
-	 */
-	public static final void setAsync() {
-		ASYNC_LOCAL.set(currentUser());
+		ASYNC_LOCAL.set(user);
 	}
 	
 	/**
@@ -44,7 +38,11 @@ public class UserContext {
 	 * @return 当前用户
 	 */
 	public static final User currentUser() {
-		return LOCAL.get();
+		final User user = LOCAL.get();
+		if(user != null) {
+			return user;
+		}
+		return ASYNC_LOCAL.get();
 	}
 	
 	/**
@@ -52,6 +50,7 @@ public class UserContext {
 	 */
 	public static final void remove() {
 		LOCAL.remove();
+		ASYNC_LOCAL.remove();
 	}
 	
 }

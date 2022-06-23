@@ -1,7 +1,8 @@
-package com.acgist.www.utils;
+package com.acgist.boot.utils;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -9,30 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.ConversionNotSupportedException;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingPathVariableException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
-import org.springframework.web.multipart.support.MissingServletRequestPartException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
-import com.acgist.boot.utils.ExceptionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,6 +36,11 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public final class ErrorUtils {
+	
+	/**
+	 * 异常映射
+	 */
+	private static final Map<Class<?>, MessageCode> CODE_MAPPING = new LinkedHashMap<>();
 	
 	/**
 	 * 错误地址
@@ -81,6 +72,17 @@ public final class ErrorUtils {
 	public static final String EXCEPTION_SPRINGBOOT = "org.springframework.boot.web.servlet.error.DefaultErrorAttributes.ERROR";
 
 	private ErrorUtils() {
+	}
+	
+	/**
+	 * 注册异常（注意继承顺序）
+	 * 
+	 * @param code 异常编码
+	 * @param clazz 异常类型
+	 */
+	public static final void register(MessageCode code, Class<?> clazz) {
+		log.info("注册异常：{}-{}", code, clazz);
+		CODE_MAPPING.put(clazz, code);
 	}
 	
 	/**
@@ -225,65 +227,15 @@ public final class ErrorUtils {
 	 * @see DefaultHandlerExceptionResolver
 	 */
 	public static final MessageCode messageCode(int status, Throwable t) {
-		if (t instanceof BindException) {
-			return MessageCode.CODE_3400;
-		}
-//		if (t instanceof InvalidGrantException) {
-//			return MessageCode.CODE_3401;
-//		}
-		if (t instanceof TypeMismatchException) {
-			return MessageCode.CODE_3400;
-		}
-		if (t instanceof NoHandlerFoundException) {
-			return MessageCode.CODE_3404;
-		}
-//		if (t instanceof AuthenticationException) {
-//			return MessageCode.CODE_3401;
-//		}
-		if (t instanceof AsyncRequestTimeoutException) {
-			return MessageCode.CODE_3503;
-		}
-		if (t instanceof MissingPathVariableException) {
-			return MessageCode.CODE_3500;
-		}
-		if (t instanceof ServletRequestBindingException) {
-			return MessageCode.CODE_3400;
-		}
-		if (t instanceof HttpMessageNotReadableException) {
-			return MessageCode.CODE_3400;
-		}
-		if (t instanceof MethodArgumentNotValidException) {
-			return MessageCode.CODE_3400;
-		}
-		if (t instanceof ConversionNotSupportedException) {
-			return MessageCode.CODE_3500;
-		}
-		if (t instanceof HttpMessageNotWritableException) {
-			return MessageCode.CODE_3500;
-		}
-		if (t instanceof HttpMediaTypeNotSupportedException) {
-			return MessageCode.CODE_3415;
-		}
-		if (t instanceof MissingServletRequestPartException) {
-			return MessageCode.CODE_3400;
-		}
-		if (t instanceof HttpMediaTypeNotAcceptableException) {
-			return MessageCode.CODE_3406;
-		}
-		if (t instanceof HttpRequestMethodNotSupportedException) {
-			return MessageCode.CODE_3405;
-		}
-		if (t instanceof MissingServletRequestParameterException) {
-			return MessageCode.CODE_3400;
-		}
-		// 唯一约束
-		if(
-			t instanceof DuplicateKeyException ||
-			t instanceof SQLIntegrityConstraintViolationException
-		) {
-			return MessageCode.CODE_4001;
-		}
-		return MessageCode.of(status);
+		return CODE_MAPPING.entrySet().stream()
+			.filter(entry -> {
+				final Class<?> clazz = t.getClass();
+				final Class<?> mappingClazz = entry.getKey();
+				return mappingClazz.equals(clazz) || mappingClazz.isAssignableFrom(clazz);
+			})
+			.map(Map.Entry::getValue)
+			.findFirst()
+			.orElse(MessageCode.of(status));
 	}
 	
 	/**

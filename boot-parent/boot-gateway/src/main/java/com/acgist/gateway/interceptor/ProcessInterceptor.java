@@ -10,10 +10,10 @@ import org.springframework.context.ApplicationContext;
 
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.service.IdService;
+import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.gateway.model.GatewaySession;
 import com.acgist.notify.gateway.model.dto.GatewayDto;
 import com.acgist.www.interceptor.WwwInterceptor;
-import com.acgist.www.utils.ErrorUtils;
 
 /**
  * 处理拦截

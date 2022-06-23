@@ -20,6 +20,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -33,9 +35,11 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
@@ -44,6 +48,8 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.oauth2.service.impl.RedisOAuth2AuthorizationConsentService;
 import com.acgist.oauth2.service.impl.RedisOAuth2AuthorizationService;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -71,6 +77,19 @@ public class AuthorizationServerConfig {
 	
 	@Autowired
 	private OAuth2Config oAuth2Config;
+	
+	@PostConstruct
+	public void init() {
+		this.registerException();
+	}
+	
+	/**
+	 * 注册异常
+	 */
+	public void registerException() {
+		ErrorUtils.register(MessageCode.CODE_3401, AuthenticationException.class);
+		ErrorUtils.register(MessageCode.CODE_3401, OAuth2AuthorizationException.class);
+	}
 	
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)

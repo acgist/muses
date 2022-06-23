@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.acgist.boot.model.Message;
-import com.acgist.www.utils.ErrorUtils;
+import com.acgist.boot.utils.ErrorUtils;
 
 /**
  * 统一错误页面
@@ -23,6 +23,7 @@ public class WebErrorController implements ErrorController {
 
 	@ResponseBody
 	@RequestMapping(value = ErrorUtils.ERROR_PATH)
+//	@RequestMapping(value = ErrorUtils.ERROR_PATH, produces = MediaType.ALL_VALUE)
 //	@RequestMapping(value = ErrorUtils.ERROR_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Message<String> index(HttpServletRequest request, HttpServletResponse response) {
 		return ErrorUtils.message(request, response);

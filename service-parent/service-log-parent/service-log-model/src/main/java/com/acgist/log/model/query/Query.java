@@ -35,9 +35,9 @@ public class Query {
 	 */
 	private LocalDateTime[] createDate;
 	/**
-	 * 分页页码
+	 * 分页页码（默认使用MyBatisPlus分页相同）
 	 */
-	private Integer page = 0;
+	private Integer page = 1;
 	/**
 	 * 分页数量
 	 */

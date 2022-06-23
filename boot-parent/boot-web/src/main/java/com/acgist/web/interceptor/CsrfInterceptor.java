@@ -10,9 +10,9 @@ import org.springframework.http.HttpMethod;
 
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.boot.utils.StringUtils;
 import com.acgist.www.interceptor.WwwInterceptor;
-import com.acgist.www.utils.ErrorUtils;
 
 /**
  * CSRF拦截器
