@@ -10,5 +10,11 @@
 		<result column="create_date" property="createDate" />
 		<result column="modify_date" property="modifyDate" />
 	</resultMap>
-
+	
+	<resultMap id="${prefix}Vo" type="${modulePackage}${module}.model.vo.${prefix}Vo" extends="${prefix}Entity">
+	</resultMap>
+	
+	<resultMap id="${prefix}Dto" type="${modulePackage}${module}.model.dto.${prefix}Dto" extends="${prefix}Entity">
+	</resultMap>
+	
 </mapper>
