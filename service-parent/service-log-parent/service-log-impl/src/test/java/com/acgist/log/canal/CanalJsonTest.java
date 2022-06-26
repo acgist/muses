@@ -53,7 +53,7 @@ public class CanalJsonTest {
 		+ "		\"sorted\": \"0\",\r\n"
 		+ "		\"password\": \"$2a$10$lRFeC7uj.rCiI7p9YLWMAeOqdx.1ZV6iRJzilNs6WagRa0S63wcou\"\r\n"
 		+ "	}],\r\n"
-		+ "	\"database\": \"zhwg\",\r\n"
+		+ "	\"database\": \"muses\",\r\n"
 		+ "	\"es\": 1655600359000,\r\n"
 		+ "	\"id\": 17,\r\n"
 		+ "	\"isDdl\": false,\r\n"

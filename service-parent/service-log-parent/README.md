@@ -15,12 +15,12 @@
 ```
 # 配置
 [mysqld]
+# 配置 ServerID
+server_id=1
 # 开启 binlog
 log-bin=binlog
 # 选择 ROW 模式
 binlog-format=ROW
-# 配置 ServerID
-server_id=1
 
 # 查询
 show variables like '%log_bin%'
@@ -47,6 +47,7 @@ canal.mq.topic=log-topic
 
 # 配置Kafka（instance.properties）
 canal.serverMode=kafka
+canal.destinations=muses
 kafka.bootstrap.servers=127.0.0.1:9092
 ```
 
