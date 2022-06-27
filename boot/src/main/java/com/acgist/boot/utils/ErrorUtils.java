@@ -47,9 +47,17 @@ public final class ErrorUtils {
 	 */
 	public static final String ERROR_PATH = "/error";
 	/**
+	 * 最大错误次数
+	 */
+	public static final int SYSTEM_ERROR_INDEX_MAX = 4;
+	/**
+	 * 系统错误计数
+	 */
+	public static final String SYSTEM_ERROR_INDEX = "system.error.index";
+	/**
 	 * 系统异常信息
 	 */
-	public static final String ERROR_MESSAGE = "system.error.message";
+	public static final String SYSTEM_ERROR_MESSAGE = "system.error.message";
 	/**
 	 * 错误地址
 	 */
@@ -93,7 +101,7 @@ public final class ErrorUtils {
 	 * @return 错误信息
 	 */
 	public static final Object getSystemErrorMessage(HttpServletRequest request) {
-		return request.getAttribute(ErrorUtils.ERROR_MESSAGE);
+		return request.getAttribute(ErrorUtils.SYSTEM_ERROR_MESSAGE);
 	}
 	
 	/**
@@ -104,6 +112,34 @@ public final class ErrorUtils {
 	 */
 	public static final void putSystemErrorException(HttpServletRequest request, Exception e) {
 		request.setAttribute(ErrorUtils.EXCEPTION_SYSTEM, e);
+	}
+	/**
+	 * 获取系统错误计数
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 系统错误计数
+	 */
+	public static final Integer getSystemErrorIndex(HttpServletRequest request) {
+		return (Integer) request.getAttribute(ErrorUtils.SYSTEM_ERROR_INDEX);
+	}
+	
+	/**
+	 * 获取系统错误计数同时增加
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 系统错误计数
+	 */
+	public static final Integer getSystemErrorIndexAndIncrement(HttpServletRequest request) {
+		Integer errorIndex = getSystemErrorIndex(request);
+		if(errorIndex == null) {
+			errorIndex = 0;
+		} else {
+			errorIndex++;
+		}
+		request.setAttribute(ErrorUtils.SYSTEM_ERROR_INDEX, errorIndex);
+		return errorIndex;
 	}
 	
 	/**
@@ -157,19 +193,20 @@ public final class ErrorUtils {
 		final String method = request.getMethod();
 		final String path = Objects.toString(request.getAttribute(SERVLET_REQUEST_URI), request.getServletPath());
 		final String query = request.getQueryString();
-		log.warn("系统错误：{}-{}-{}", method, path, query);
+		final Integer errorIndex = ErrorUtils.getSystemErrorIndex(request);
+		log.warn("系统错误：{}-{}-{}-{}", method, path, query, errorIndex);
 		if(globalErrorMessage instanceof Throwable) {
 //			log.error("""
-//				系统错误：{}-{}-{}
+//				系统错误：{}-{}-{}-{}
 //				错误信息：{}
-//				""", method, path, query, message, globalErrorMessage);
+//				""", method, path, query, errorIndex, message, globalErrorMessage);
 		} else {
 //			log.warn("""
-//				系统错误：{}-{}-{}
+//				系统错误：{}-{}-{}-{}
 //				错误信息：{}-{}
-//				""", method, path, query, message, globalErrorMessage);
+//				""", method, path, query, errorIndex, message, globalErrorMessage);
 		}
-		request.setAttribute(ERROR_MESSAGE, message);
+		request.setAttribute(SYSTEM_ERROR_MESSAGE, message);
 		return message;
 	}
 	
