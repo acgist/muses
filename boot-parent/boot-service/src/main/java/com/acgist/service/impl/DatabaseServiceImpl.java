@@ -41,6 +41,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 			// 数据库表信息
 			String tableComment = null;
 			if (tableInfoResultSet.next()) {
+				// MySQL5.7必须设置后面参数才能获取表的备注：remarks=true&useInformationSchema=true
 				tableComment = tableInfoResultSet.getString("REMARKS");
 			}
 			if (StringUtils.isEmpty(tableComment)) {
@@ -48,6 +49,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 			}
 			tableDto.setComment(tableComment);
 			// 数据库列信息
+//			show full columns from table;
 			final ResultSetMetaData tableMetaData = tableResult.getMetaData();
 			final int columnCount = tableMetaData.getColumnCount();
 			final List<TableColumnDto> cloumns = new ArrayList<>();
