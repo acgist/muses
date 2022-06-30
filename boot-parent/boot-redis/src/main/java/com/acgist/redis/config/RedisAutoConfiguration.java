@@ -1,12 +1,15 @@
 package com.acgist.redis.config;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +27,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
 import com.acgist.boot.service.CacheService;
 import com.acgist.boot.utils.JSONUtils;
+import com.acgist.boot.utils.MapUtils;
 import com.acgist.redis.service.impl.CacheServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableCaching
 @ConditionalOnClass({CacheManager.class, RedisTemplate.class})
+@EnableConfigurationProperties(CacheProperties.class)
 public class RedisAutoConfiguration {
 	
 	/**
@@ -52,6 +57,8 @@ public class RedisAutoConfiguration {
 	
 	@Autowired
 	private SerializerType serializerType;
+	@Autowired
+	private CacheProperties cacheProperties;
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -65,9 +72,26 @@ public class RedisAutoConfiguration {
 //			.disableCachingNullValues()
 			// 设置缓存前缀
 			.prefixCacheNameWith(this.cachePrefix)
-			// 设置过期时间：不同时间通过缓存名称配置
+			// 设置过期时间
 			.entryTtl(Duration.ofMinutes(this.cacheTtl));
+		final Map<String, RedisCacheConfiguration> cacheConfig = new HashMap<>();
+		if(MapUtils.isNotEmpty(this.cacheProperties.getKeys())) {
+			this.cacheProperties.getKeys().forEach((key, value) -> {
+				log.info("配置缓存：{}-{}", key, value);
+				cacheConfig.put(
+					key,
+					RedisCacheConfiguration
+					.defaultCacheConfig()
+					.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(this.buildKeySerializer()))
+					.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(this.buildValueSerializer()))
+//					.disableCachingNullValues()
+					.prefixCacheNameWith(this.cachePrefix)
+					.entryTtl(Duration.ofMinutes(value))
+				);
+			});
+		}
 		final RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
+			.withInitialCacheConfigurations(cacheConfig)
 			.cacheDefaults(config)
 			// 配置初始缓存
 //			.initialCacheNames(null)
