@@ -31,8 +31,8 @@ declare -x gitpull=true
 # 编译代码
 if [ -z $skipMvn ]; then
   echo "编译代码"
-  mvn clean package install -D skipTests -P ${profile}
-  #mvn -q clean package install -D skipTests -P ${profile}
+  mvn clean package install -D skipTests -P ${profile} -T 4
+  #mvn -q clean package install -D skipTests -P ${profile} -T 4
 fi
 declare -x mvnbuild=true
 

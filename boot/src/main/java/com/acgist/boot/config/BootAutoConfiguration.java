@@ -25,7 +25,9 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.acgist.boot.service.FreemarkerService;
+import com.acgist.boot.service.RsaService;
 import com.acgist.boot.service.impl.FreemarkerServiceImpl;
+import com.acgist.boot.service.impl.RsaServiceImpl;
 import com.acgist.boot.utils.FileUtils;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.boot.utils.SpringUtils;
@@ -71,6 +73,12 @@ public class BootAutoConfiguration {
 	
 	@Autowired
 	private ApplicationContext context;
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public RsaService rsaService() {
+		return new RsaServiceImpl();
+	}
 	
 	@Bean
 	@ConditionalOnClass(freemarker.template.Configuration.class)

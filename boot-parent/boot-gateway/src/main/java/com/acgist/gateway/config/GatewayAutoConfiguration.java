@@ -9,7 +9,6 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.gateway.service.impl.RsaService;
 import com.acgist.notify.gateway.model.dto.GatewayDto;
 
 /**
@@ -26,12 +25,6 @@ public class GatewayAutoConfiguration {
 	@Autowired
 	private StreamBridge streamBridge;
 
-	@Bean
-	@ConditionalOnMissingBean
-	public RsaService rsaService() {
-		return new RsaService();
-	}
-	
 	@Bean
 	@ConditionalOnMissingBean
 	public Consumer<GatewayDto> gatewayPush() {

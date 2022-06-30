@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.service.RsaService;
 import com.acgist.boot.utils.DateUtils;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.boot.utils.MapUtils;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.model.request.GatewayRequest;
-import com.acgist.gateway.service.impl.RsaService;
 import com.acgist.www.utils.ResponseUtils;
 
 import lombok.Getter;

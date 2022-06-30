@@ -1,4 +1,4 @@
-package com.acgist.gateway.service.impl;
+package com.acgist.boot.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.acgist.boot.service.impl.RsaServiceImpl;
 import com.acgist.boot.utils.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RsaServiceTest {
 
-	private static RsaService rsaService;
+	private static RsaServiceImpl rsaService;
 	
 	@BeforeAll
 	private static final void init() {
 		final Map<String, String> key = RsaUtils.buildKey();
-		rsaService = new RsaService(key.get(RsaUtils.PUBLIC_KEY), key.get(RsaUtils.PRIVATE_KEY));
+		rsaService = new RsaServiceImpl(key.get(RsaUtils.PUBLIC_KEY), key.get(RsaUtils.PRIVATE_KEY));
 		rsaService.init();
 	}
 

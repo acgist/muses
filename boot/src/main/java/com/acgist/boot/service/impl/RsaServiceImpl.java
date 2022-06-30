@@ -1,4 +1,4 @@
-package com.acgist.gateway.service.impl;
+package com.acgist.boot.service.impl;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.acgist.boot.service.RsaService;
 import com.acgist.boot.utils.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author acgist
  */
 @Slf4j
-public class RsaService {
+public class RsaServiceImpl implements RsaService {
 
 	/**
 	 * 签名
@@ -46,10 +47,10 @@ public class RsaService {
 	 */
 	private PrivateKey privateKey;
 
-	public RsaService() {
+	public RsaServiceImpl() {
 	}
 
-	public RsaService(String publicKeyValue, String privateKeyValue) {
+	public RsaServiceImpl(String publicKeyValue, String privateKeyValue) {
 		this.publicKeyValue = publicKeyValue;
 		this.privateKeyValue = privateKeyValue;
 	}
@@ -61,48 +62,23 @@ public class RsaService {
 		this.privateKey = RsaUtils.loadPrivateKey(this.privateKeyValue);
 	}
 
-	/**
-	 * 内容加密
-	 * 
-	 * @param content 原始内容
-	 * 
-	 * @return 加密内容
-	 */
+	@Override
 	public String encrypt(String content) {
 		return RsaUtils.encrypt(content, this.publicKey);
 	}
 	
-	/**
-	 * 内容解密
-	 * 
-	 * @param content 加密内容
-	 * 
-	 * @return 原始内容
-	 */
+	@Override
 	public String decrypt(String content) {
 		return RsaUtils.decrypt(content, this.privateKey);
 	}
 	
-	/**
-	 * 计算签名
-	 * 
-	 * @param map 签名数据
-	 * 
-	 * @return 签名内容
-	 */
+	@Override
 	public String signature(Map<String, Object> map) {
 		final String content = this.join(map);
 		return RsaUtils.signature(content, this.privateKey);
 	}
 	
-	/**
-	 * 验签
-	 * 
-	 * @param map 数据
-	 * @param signature 签名
-	 * 
-	 * @return 是否验证成功
-	 */
+	@Override
 	public boolean verify(Map<String, Object> map, String signature) {
 		final String content = this.join(map);
 		return RsaUtils.verify(content, signature, this.publicKey);

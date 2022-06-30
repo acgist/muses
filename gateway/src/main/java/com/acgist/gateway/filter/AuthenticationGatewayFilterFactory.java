@@ -6,7 +6,6 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.RequestPath;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +31,9 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 	 * 权限头部信息
 	 */
 	private static final String BEARER = "Bearer";
+	/**
+	 * 权限头部信息长度
+	 */
 	private static final int BEARER_INDEX = BEARER.length();
 	/**
 	 * 授权信息
@@ -74,7 +76,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 				return chain.filter(exchange);
 			}
 			final ServerHttpRequest oldRequest = exchange.getRequest();
-			final RequestPath path = oldRequest.getPath();
+			final String path = oldRequest.getPath().toString();
 			final String method = oldRequest.getMethodValue();
 			final String token = oldRequest.getHeaders().getFirst(AUTHORIZATION);
 			final JWSObject jws = jws(token);
@@ -85,7 +87,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 			// 鉴权
 			final String sub = (String) jws.getPayload().toJSONObject().get("sub");
 			final User user = this.userService.selectByName(sub);
-			if (user == null || !user.hasPath(method, path.toString())) {
+			if (user == null || !user.hasPath(method, path)) {
 				final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有权限");
 				return ResponseUtils.response(message, HttpStatus.UNAUTHORIZED, exchange.getResponse());
 			}
