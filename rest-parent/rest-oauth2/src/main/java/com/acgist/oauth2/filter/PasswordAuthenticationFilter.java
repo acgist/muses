@@ -26,15 +26,15 @@ import com.acgist.oauth2.token.AuthorizeToken;
  * 
  * @author acgist
  */
-public class AuthorizeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	/**
 	 * 匹配地址
 	 */
-	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/token");
+	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/login/password");
 	
-	public AuthorizeAuthenticationFilter() {
-		super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
+	public PasswordAuthenticationFilter() {
+		super(MATCHER);
 	}
 
 	@Override

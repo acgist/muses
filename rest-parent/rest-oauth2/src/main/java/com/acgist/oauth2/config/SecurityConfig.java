@@ -22,16 +22,17 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-import com.acgist.oauth2.filter.AuthorizeAuthenticationFilter;
+import com.acgist.oauth2.filter.PasswordAuthenticationFilter;
 import com.acgist.oauth2.filter.CodeAuthenticationFilter;
 import com.acgist.oauth2.filter.FailCountAuthenticationFilter;
 import com.acgist.oauth2.filter.SmsAuthenticationFilter;
-import com.acgist.oauth2.handler.FailCountManager;
 import com.acgist.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.acgist.oauth2.handler.OAuth2AuthenticationSuccessHandler;
-import com.acgist.oauth2.provider.AuthorizeAuthenticationProvider;
+import com.acgist.oauth2.provider.PasswordAuthenticationProvider;
 import com.acgist.oauth2.provider.SmsAuthenticationProvider;
+import com.acgist.oauth2.service.FailCountService;
 import com.acgist.oauth2.service.SmsService;
+import com.acgist.oauth2.service.impl.FailCountServiceImpl;
 import com.acgist.oauth2.service.impl.SmsServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +64,7 @@ public class SecurityConfig {
 		AuthenticationSuccessHandler authenticationSuccessHandler,
 		AuthenticationFailureHandler authenticationFailureHandler,
 		FailCountAuthenticationFilter failCountAuthenticationFilter,
-		AuthorizeAuthenticationFilter authorizeAuthenticationFilter,
+		PasswordAuthenticationFilter passwordAuthenticationFilter,
 		CodeAuthenticationFilter codeAuthenticationFilter,
 		SmsAuthenticationFilter smsAuthenticationFilter
 	) throws Exception {
@@ -71,20 +72,20 @@ public class SecurityConfig {
 			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
 			.and()
 			.authorizeRequests()
-			.antMatchers(HttpMethod.GET, "/login").permitAll()
+			.antMatchers(HttpMethod.GET, "/oauth2/login").permitAll()
 //			.anyRequest().permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
-			.loginPage("/login")
+			.loginPage("/oauth2/login")
 			// 如果没有设置默认使用登陆页面：POST
-//			.loginProcessingUrl("/login")
+//			.loginProcessingUrl("/oauth2/login")
 			.successHandler(authenticationSuccessHandler)
 			.failureHandler(authenticationFailureHandler)
 			.and()
 			// 注意顺序
 			.addFilterAt(failCountAuthenticationFilter, CsrfFilter.class)
-			.addFilterAt(authorizeAuthenticationFilter, CsrfFilter.class)
+			.addFilterAt(passwordAuthenticationFilter, CsrfFilter.class)
 			.addFilterAt(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterAt(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 //			.httpBasic();
@@ -117,8 +118,8 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public AuthorizeAuthenticationProvider authorizeAuthenticationProvider() {
-		return new AuthorizeAuthenticationProvider();
+	public PasswordAuthenticationProvider passwordAuthenticationProvider() {
+		return new PasswordAuthenticationProvider();
 	}
 	
 	@Bean
@@ -149,16 +150,16 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public AuthorizeAuthenticationFilter authorizeAuthenticationFilter(
+	public PasswordAuthenticationFilter passwordAuthenticationFilter(
 		ProviderManager providerManager,
 		AuthenticationSuccessHandler authenticationSuccessHandler,
 		AuthenticationFailureHandler authenticationFailureHandler
 	) {
-		final AuthorizeAuthenticationFilter authorizeAuthenticationFilter = new AuthorizeAuthenticationFilter();
-		authorizeAuthenticationFilter.setAuthenticationManager(providerManager);
-		authorizeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
-		authorizeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-		return authorizeAuthenticationFilter;
+		final PasswordAuthenticationFilter passwordAuthenticationFilter = new PasswordAuthenticationFilter();
+		passwordAuthenticationFilter.setAuthenticationManager(providerManager);
+		passwordAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+		passwordAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+		return passwordAuthenticationFilter;
 	}
 	
 	@Bean
@@ -169,8 +170,8 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public FailCountManager failCountManager() {
-		return new FailCountManager();
+	public FailCountService failCountService() {
+		return new FailCountServiceImpl();
 	}
 	
 	@Bean

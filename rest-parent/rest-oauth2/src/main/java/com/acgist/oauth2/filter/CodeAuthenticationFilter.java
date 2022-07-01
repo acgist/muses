@@ -29,14 +29,14 @@ public class CodeAuthenticationFilter extends OncePerRequestFilter {
 	/**
 	 * 匹配地址
 	 */
-	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", HttpMethod.POST.name());
+	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/login", HttpMethod.POST.name());
 	
 	@Autowired
 	private AuthenticationFailureHandler authenticationFailureHandler;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		if(DEFAULT_ANT_PATH_REQUEST_MATCHER.matches(request)) {
+		if(MATCHER.matches(request)) {
 			final String newCode = request.getParameter(CODE);
 			final String oldCode = (String) request.getSession().getAttribute(CODE);
 			if(!StringUtils.equalsIgnoreCase(newCode, oldCode)) {

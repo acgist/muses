@@ -21,9 +21,6 @@ public class UserEntity extends StateEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String PROPERTY_PASSWORD = "password";
-	public static final String PROPERTY_ROLES = "roles";
-	
 	/**
 	 * 密码
 	 */

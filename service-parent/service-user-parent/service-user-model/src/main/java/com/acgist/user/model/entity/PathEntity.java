@@ -23,10 +23,6 @@ public class PathEntity extends StateEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String PROPERTY_PATH = "path";
-	public static final String PROPERTY_PARENT = "parent";
-	public static final String PROPERTY_CHILDREN = "children";
-
 	/**
 	 * 匹配规则
 	 * 

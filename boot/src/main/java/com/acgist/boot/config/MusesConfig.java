@@ -26,5 +26,17 @@ public class MusesConfig {
 	 * JSON HTTP数据类型
 	 */
 	public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
+	/**
+	 * OAuth2用户ID
+	 */
+	public static final String OAUTH2_ID = "id";
+	/**
+	 * OAuth2用户名称
+	 */
+	public static final String OAUTH2_NAME = "name";
+	/**
+	 * OAuth2用户角色
+	 */
+	public static final String OAUTH2_ROLE = "role";
 
 }

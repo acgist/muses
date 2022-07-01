@@ -38,8 +38,8 @@ public class UserServiceImpl implements IUserService {
 			return null;
 		}
 		final User user = this.userMapstruct.toUser(entity);
-		user.setRoles(this.roleMapper.selectByUser(name).stream().map(RoleEntity::getName).collect(Collectors.toSet()));
-		user.setPaths(this.pathMapper.selectByUser(name).stream().map(PathEntity::getPath).collect(Collectors.toSet()));
+		user.setRoles(this.roleMapper.selectByUser(name).stream().filter(RoleEntity::getEnabled).map(RoleEntity::getName).collect(Collectors.toSet()));
+		user.setPaths(this.pathMapper.selectByUser(name).stream().filter(PathEntity::getEnabled).map(PathEntity::getPath).collect(Collectors.toSet()));
 		return user;
 	}
 

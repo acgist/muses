@@ -15,7 +15,7 @@
 </head>
 <body>
 	<div class="container">
-		<form class="form-signin" method="post" action="/login">
+		<form class="form-signin" method="post" action="/oauth2/login">
 			<h2 class="form-signin-heading">登陆</h2>
 			<#if message??>
 			<div class="alert alert-danger" role="alert">${message}</div>
@@ -58,14 +58,14 @@
 			console.log(type)
 			switch(type) {
 			case 'sms':
-				document.getElementsByTagName('form')[0].setAttribute('action', '/login/sms');
+				document.getElementsByTagName('form')[0].setAttribute('action', '/oauth2/login/sms');
 				document.getElementById('password').hidden = true;
 				document.getElementById('code').hidden = true;
 				document.getElementById('image').hidden = true;
 				document.getElementById('smsCode').hidden = false;
 				break;
 			case 'password':
-				document.getElementsByTagName('form')[0].setAttribute('action', '/login');
+				document.getElementsByTagName('form')[0].setAttribute('action', '/oauth2/login');
 				document.getElementById('password').hidden = false;
 				document.getElementById('code').hidden = false;
 				document.getElementById('image').hidden = false;

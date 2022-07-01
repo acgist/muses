@@ -16,7 +16,7 @@ import com.acgist.oauth2.token.AuthorizeToken;
  * 
  * @author acgist
  */
-public class AuthorizeAuthenticationProvider implements AuthenticationProvider {
+public class PasswordAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

@@ -32,6 +32,6 @@ keytool -genkeypair -alias jwk -keyalg RSA -keysize 2048 -keystore jwk.jks -vali
 ### password
 
 现在默认已经不能使用这种方式获取`Token`了，所以这里自己实现了这个功能。
-现在提供一个登陆地址`GET:/login/token`，登陆成功自动跳转`/oauth2/authorize`获取`Code`。
+现在提供一个登陆地址`GET:/oauth2/login/password`，登陆成功自动跳转`/oauth2/authorize`获取`Code`。
 
 > 需要请求支持自动跳转

@@ -1,4 +1,4 @@
-package com.acgist.oauth2.handler;
+package com.acgist.oauth2.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

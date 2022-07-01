@@ -30,9 +30,9 @@ public class GatewayMappingService {
 	 * @return 网关映射
 	 */
 	public GatewayMapping gatewayMapping(String method, String path) {
-		final String gateway = UrlUtils.authority(method, path);
+		final String authority = UrlUtils.authority(method, path);
 		for (GatewayMapping gatewayMapping : this.mapping) {
-			if (gatewayMapping.getGateway().equals(gateway)) {
+			if (UrlUtils.match(authority, gatewayMapping.getGateway())) {
 				return gatewayMapping;
 			}
 		}

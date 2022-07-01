@@ -7,6 +7,7 @@ import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
@@ -33,6 +34,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.core.AuthenticationException;
@@ -42,12 +44,16 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.oauth2.service.impl.RedisOAuth2AuthorizationConsentService;
@@ -95,8 +101,8 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(security);
-		// 必须设置表单登陆：可以不用设置登陆页面@SecurityConfig
-		security.formLogin();
+		// 必须设置表单登陆：登陆页面必须配置成和SecurityConfig登陆页面一致否者跳转失败
+		security.formLogin().loginPage("/oauth2/login");
 		return security.build();
 	}
 	
@@ -189,6 +195,26 @@ public class AuthorizationServerConfig {
 		return NimbusJwtDecoder
 			.withPublicKey((RSAPublicKey) keyPair.getPublic())
 			.build();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public OAuth2TokenCustomizer<JwtEncodingContext> oAuth2TokenCustomizer() {
+		return new OAuth2TokenCustomizer<JwtEncodingContext>() {
+			@Override
+			public void customize(JwtEncodingContext context) {
+				final OAuth2Authorization authorization = context.getAuthorization();
+				final Object attribute = authorization.getAttribute(Principal.class.getName());
+				// Token增强
+				if(attribute != null && attribute instanceof AbstractAuthenticationToken) {
+					final AbstractAuthenticationToken token = (AbstractAuthenticationToken) attribute;
+					final com.acgist.oauth2.model.Principal principal = (com.acgist.oauth2.model.Principal) token.getPrincipal();
+					context.getClaims().claim(MusesConfig.OAUTH2_ID, principal.getId());
+					context.getClaims().claim(MusesConfig.OAUTH2_NAME, principal.getUsername());
+					context.getClaims().claim(MusesConfig.OAUTH2_ROLE, String.join(",", principal.getRoles()));
+				}
+			}
+		};
 	}
 	
 	/**

@@ -18,7 +18,7 @@ public class UserControllerTest {
 		log.info("{}", HTTPUtils.get(
 			"http://localhost:19298/user",
 			"",
-			Map.of(User.HEADER_CURRENT_USER, new User().currentUser().toString()),
+			Map.of(User.HEADER_CURRENT_USER, User.current(1L, "root").toString()),
 			1000
 		));
 	}
@@ -31,7 +31,7 @@ public class UserControllerTest {
 		log.info("{}", HTTPUtils.get(
 			"http://localhost:9090/user/404",
 			"",
-			Map.of(User.HEADER_CURRENT_USER, new User().currentUser().toString()),
+			Map.of(User.HEADER_CURRENT_USER, User.current(1L, "root").toString()),
 			1000
 		));
 		log.info("{}", HTTPUtils.get(
@@ -46,7 +46,7 @@ public class UserControllerTest {
 		log.info("{}", HTTPUtils.get(
 			"http://localhost:8888/rest/user/404",
 			"",
-			Map.of(User.HEADER_CURRENT_USER, new User().currentUser().toString()),
+			Map.of(User.HEADER_CURRENT_USER, User.current(1L, "root").toString()),
 			1000
 		));
 		log.info("{}", HTTPUtils.get(
@@ -63,7 +63,7 @@ public class UserControllerTest {
 			HTTPUtils.get(
 				"http://localhost:19570/user",
 				"",
-				Map.of(User.HEADER_CURRENT_USER, new User().currentUser().toString()),
+				Map.of(User.HEADER_CURRENT_USER, User.current(1L, "root").toString()),
 				1000
 			);
 		});

@@ -29,10 +29,10 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	/**
 	 * 地址匹配
 	 */
-	private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login/sms", HttpMethod.POST.name());
+	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/login/sms", HttpMethod.POST.name());
 	
 	public SmsAuthenticationFilter() {
-		super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
+		super(MATCHER);
 	}
 
 	@Override

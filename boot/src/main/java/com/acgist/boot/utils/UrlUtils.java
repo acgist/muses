@@ -49,12 +49,24 @@ public final class UrlUtils {
 	 * 通过请求信息获取权限路径
 	 * 
 	 * @param method 请求方法
-	 * @param path 请求地址
+	 * @param path 权限地址
 	 * 
 	 * @return 权限路径
 	 */
 	public static final String authority(String method, String path) {
 		return method.toUpperCase() + ":" + path;
+	}
+	
+	/**
+	 * 判断是否请求地址是否符合权限路径
+	 * 
+	 * @param authority 权限路径
+	 * @param path 请求地址
+	 * 
+	 * @return 是否符合
+	 */
+	public static final boolean match(String authority, String path) {
+		return authority.equals(path) || authority.matches(path);
 	}
 
 }

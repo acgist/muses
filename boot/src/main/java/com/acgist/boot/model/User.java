@@ -51,18 +51,25 @@ public class User extends Model {
 	 * 地址
 	 */
 	private Set<String> paths;
+	
+	public User() {
+	}
 
+	public User(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	/**
-	 * 获取网关透传用户
+	 * 当前用户
 	 * 
-	 * @return 网关透传用户
+	 * @param id ID
+	 * @param name 名称
+	 * 
+	 * @return 用户
 	 */
-	public User currentUser() {
-		final User user = new User();
-		user.setId(this.id);
-		user.setName(this.name);
-		user.setPassword(this.password);
-		return user;
+	public static final User current(Long id, String name) {
+		return new User(id, name);
 	}
 
 	/**
@@ -97,8 +104,8 @@ public class User extends Model {
 		if (CollectionUtils.isEmpty(this.paths)) {
 			return false;
 		}
-		final String value = UrlUtils.authority(method, path);
-		return this.paths.stream().anyMatch(pathValue -> pathValue.equals(value));
+		final String authority = UrlUtils.authority(method, path);
+		return this.paths.stream().anyMatch(value -> UrlUtils.match(authority, value));
 	}
 
 }

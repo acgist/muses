@@ -40,7 +40,7 @@ public class OAuth2Test {
 		final String code = HTTPUtils.get(
 			// 注意：环回地址这里redirect_uri不要配置：配置中心配死（域名可以配置）
 			// POST需要设置重定向测量
-			"http://localhost:9999/login/token?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&username=root&password=123456",
+			"http://localhost:9999/oauth2/login/password?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&username=root&password=123456",
 //			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state",
 //			"http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state&redirect_uri=https://www.acgist.com",
 //			Map.of()
@@ -57,7 +57,7 @@ public class OAuth2Test {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.set("Authorization", "Basic " + StringUtils.base64Encode("web:acgist".getBytes()));
 		final MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("code", "LSYHpPPv_1mDi_X8LULwqqRJjayqVrx1kHTQIwgzX2qlv2FHrUyYg2esrdbphKj5DATkC1aqAd5RVqv2T6S2jo9gOl81xKzot4jkuc_5uUtc4mmu5SHGsvcc1kdTLAF7");
+		params.add("code", "-8Ejdfnw6W9WNwYsZvAtK4I0NL-Dk7tyQELsJu5ipxBmKx5yreD8D1mNChbtaEWCAEmGo7k-dvZJ2EXT-mY4wy9Som78RONmEFgeVeJ8tOyk78I81w7JSaLUPaqykjpI");
 		params.add("grant_type", "authorization_code");
 		// 如果没有指定redirect_uri可以填写也可以不填写
 //		params.add("redirect_uri", "https://www.acgist.com");

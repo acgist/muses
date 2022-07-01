@@ -2,12 +2,12 @@ package com.acgist.oauth2.service.impl;
 
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.acgist.oauth2.model.Principal;
 import com.acgist.user.api.IUserService;
 
 /**
@@ -27,9 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if(user == null) {
 			throw new UsernameNotFoundException("用户无效");
 		}
-		return new User(
-			user.getName(), user.getPassword(), user.isEnabled(),
-			true, true, true,
+		return new Principal(
+			user.getId(), user.getRoles(), user.getName(), user.getPassword(),
+			user.isEnabled(), true, true, true,
 			AuthorityUtils.createAuthorityList(user.getPaths().toArray(String[]::new))
 		);
 	}

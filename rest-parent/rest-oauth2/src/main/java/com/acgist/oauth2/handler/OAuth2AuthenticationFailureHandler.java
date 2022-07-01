@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.acgist.boot.model.Message;
 import com.acgist.boot.utils.UrlUtils;
 import com.acgist.oauth2.config.LoginType;
+import com.acgist.oauth2.model.FailCountSession;
+import com.acgist.oauth2.service.FailCountService;
 import com.acgist.www.utils.ResponseUtils;
+import com.acgist.www.utils.WebUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,16 +29,16 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationFailureHandler implements AuthenticationFailureHandler {
 	
 	@Autowired
-	private FailCountManager failCountManager;
+	private FailCountService failCountService;
 	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-		final String username = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
-		final FailCountSession failCountSession = this.failCountManager.get(username);
+		final String clientIP = WebUtils.clientIP(request);
+		final FailCountSession failCountSession = this.failCountService.get(clientIP);
 		final long failCount = failCountSession.fail();
-		log.info("登陆失败：{}-{}", username, failCount);
+		log.info("登陆失败：{}-{}", clientIP, failCount);
 		if(LoginType.get().isHtml()) {
-			response.sendRedirect("/login?message=" + UrlUtils.encode(exception.getMessage()));
+			response.sendRedirect("/oauth2/login?message=" + UrlUtils.encode(exception.getMessage()));
 		} else {
 			ResponseUtils.response(Message.fail(exception.getMessage()), response);
 		}

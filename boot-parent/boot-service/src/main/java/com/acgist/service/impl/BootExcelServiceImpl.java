@@ -315,11 +315,16 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 						data.add(cell.getStringCellValue());
 					}
 				});
-				list.add(data);
 				// 设置头部长度
 				if(row.getRowNum() == 0) {
 					colLength.set(data.size());
 				}
+				// 填充数据
+				if(data.size() < colLength.get()) {
+					IntStream.range(0, colLength.get() - data.size()).forEach(i -> data.add(null));
+				}
+				// 添加数据
+				list.add(data);
 			});
 			ExcelMarkContext.copy(workbook);
 		} catch (IOException e) {
@@ -341,7 +346,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		// 索引 = 字段信息
 		final Map<Integer, ExcelHeaderValue> headerMapping = new HashMap<>();
 		for (int index = 0; index < excelHeader.size(); index++) {
-			headerMapping.put(index, mapping.get(excelHeader.get(index).toString()));
+			headerMapping.put(index, mapping.get(Objects.toString(excelHeader.get(index), "")));
 		}
 		final AtomicInteger row = new AtomicInteger();
 		ExcelMarkContext.setTotal(list.size());

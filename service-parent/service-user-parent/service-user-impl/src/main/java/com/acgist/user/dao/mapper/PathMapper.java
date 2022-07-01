@@ -88,6 +88,7 @@ public interface PathMapper extends BootMapper<PathEntity> {
 		});
 		// 返回顶级菜单
 		return list.stream()
+			.distinct()
 			.filter(path -> path.getParentId() == null)
 			.sorted(Comparator.comparing(entity -> entity.getSorted() == null ? 0 : entity.getSorted()))
 			.collect(Collectors.toList());

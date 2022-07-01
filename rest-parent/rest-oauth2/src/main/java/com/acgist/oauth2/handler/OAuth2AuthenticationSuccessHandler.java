@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.acgist.oauth2.config.LoginType;
+import com.acgist.oauth2.service.FailCountService;
+import com.acgist.www.utils.WebUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,13 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	
 	@Autowired
-	private FailCountManager failCountManager;
+	private FailCountService failCountService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		final String username = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
-		log.debug("登陆成功：{}", username);
-		this.failCountManager.remove(username);
+		final String clientIP = WebUtils.clientIP(request);
+		log.debug("登陆成功：{}", clientIP);
+		this.failCountService.remove(clientIP);
 		if(LoginType.get().isHtml()) {
 			super.onAuthenticationSuccess(request, response, authentication);
 		} else {
