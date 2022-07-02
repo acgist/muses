@@ -80,8 +80,15 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
 			mark.getMarks().forEach(message -> {
 				final XSSFRow row = sheetValue.getRow(message.getRow());
-				final XSSFCell cell = row == null ? null : row.getCell(message.getCol());
-				this.markCell(cellStyle, sheetValue, cell, message.getMessage());
+				if(row == null) {
+					return;
+				}
+				final XSSFCell cell = row.getCell(message.getCol());
+				if(cell == null) {
+					this.markCell(cellStyle, sheetValue, row.createCell(message.getCol()), message.getMessage());
+				} else {
+					this.markCell(cellStyle, sheetValue, cell, message.getMessage());
+				}
 			});
 			workbook.write(output);
 		} catch (IOException e) {
