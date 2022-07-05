@@ -10,7 +10,6 @@
 
 ```
 # 配置参考：https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/current/reference/html/spring-cloud-stream-binder-kafka.html
-# 注意：不建议自动创建Topic
 # 注意：如果消费者数量大于分区数量部分消费者将不会收到消息
 # ./bin/windows/kafka-topics.bat --zookeeper localhost:2181 --list
 # ./bin/windows/kafka-topics.bat --zookeeper localhost:2181 --topic topic-gateway --describe

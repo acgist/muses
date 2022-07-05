@@ -13,7 +13,7 @@ import com.acgist.boot.utils.JSONUtils;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.model.GatewaySession;
 import com.acgist.gateway.model.request.GatewayRequest;
-import com.acgist.gateway.service.impl.GatewayMappingService;
+import com.acgist.gateway.service.impl.GatewayMappingServiceImpl;
 import com.acgist.www.interceptor.AdapterInterceptor;
 
 /**
@@ -24,7 +24,7 @@ import com.acgist.www.interceptor.AdapterInterceptor;
 public class PackageInterceptor extends AdapterInterceptor {
 
 	@Autowired
-	private GatewayMappingService gatewayMappingService;
+	private GatewayMappingServiceImpl gatewayMappingService;
 
 	@Override
 	public int order() {

@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.acgist.boot.service.IdService;
 import com.acgist.model.entity.BootEntity;
-import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
@@ -48,7 +47,8 @@ public class MyBatisAutoConfiguration {
 	@ConditionalOnMissingBean
 	public MybatisPlusInterceptor mybatisPlusInterceptor() {
 		final MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-		interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+		interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+//		interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
 		return interceptor;
 	}
 

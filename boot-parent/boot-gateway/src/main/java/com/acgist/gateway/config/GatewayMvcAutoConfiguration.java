@@ -12,7 +12,7 @@ import com.acgist.gateway.resolver.GatewayBodyArgumentResolver;
 import com.acgist.www.config.WwwMvcAutoConfiguration;
 
 /**
- * 加载配置
+ * Gateway MVC配置
  * 
  * @author acgist
  */

@@ -35,4 +35,5 @@ public abstract class BootNode extends Model {
 	 * 修改时间
 	 */
 	private LocalDateTime modifyDate;
+	
 }

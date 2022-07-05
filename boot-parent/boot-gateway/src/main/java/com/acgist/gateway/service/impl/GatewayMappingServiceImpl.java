@@ -4,31 +4,20 @@ import java.util.List;
 
 import com.acgist.boot.utils.URLUtils;
 import com.acgist.gateway.config.GatewayMapping;
+import com.acgist.gateway.service.GatewayMappingService;
 
-/**
- * 网关映射
- * 
- * @author acgist
- */
-public class GatewayMappingService {
+public class GatewayMappingServiceImpl implements GatewayMappingService {
 
 	/**
 	 * 网关映射
 	 */
 	private final List<GatewayMapping> mapping;
 	
-	public GatewayMappingService(List<GatewayMapping> mapping) {
+	public GatewayMappingServiceImpl(List<GatewayMapping> mapping) {
 		this.mapping = mapping;
 	}
 
-	/**
-	 * 通过网关地址获取网关映射
-	 * 
-	 * @param method 请求方法
-	 * @param path 网关地址
-	 * 
-	 * @return 网关映射
-	 */
+	@Override
 	public GatewayMapping gatewayMapping(String method, String path) {
 		final String authority = URLUtils.authority(method, path);
 		for (GatewayMapping gatewayMapping : this.mapping) {

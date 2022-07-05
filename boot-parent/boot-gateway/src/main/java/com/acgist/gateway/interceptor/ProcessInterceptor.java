@@ -65,9 +65,12 @@ public class ProcessInterceptor extends AdapterInterceptor {
 			if(session.hasResponse()) {
 				gatewayDto.setResponse(session.getResponseJSON());
 			} else {
+				// 错误请求
 				final Object errorMessage = ErrorUtils.getSystemErrorMessage(request);
 				if(errorMessage != null) {
 					gatewayDto.setResponse(errorMessage.toString());
+				} else {
+					// 未知响应
 				}
 			}
 			this.gatewayPush.accept(gatewayDto);

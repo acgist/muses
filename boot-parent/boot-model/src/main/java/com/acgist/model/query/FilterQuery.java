@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.acgist.boot.model.MessageCodeException;
+import com.acgist.boot.model.Model;
 import com.acgist.model.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -28,12 +29,12 @@ import lombok.Setter;
  * 过滤查询
  * 
  * @author acgist
- *
- * @param <T> 类型
  */
 @Getter
 @Setter
-public class FilterQuery {
+public class FilterQuery extends Model {
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * 缓存
@@ -187,31 +188,17 @@ public class FilterQuery {
 		 * @param alias 别名
 		 * @param entityClazz entityClazz
 		 * @param wrapper wrapper
-		 * 
-		 * TODO：JDK17
 		 */
 		public <T> void filter(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper) {
 			final String column = aliasCloumn(this.alias, alias, column(entityClazz, this.name));
 			switch (this.type) {
-			case EQ:
-				wrapper.eq(column, this.value);
-				break;
-			case NE:
-				wrapper.ne(column, this.value);
-				break;
-			case LT:
-				wrapper.lt(column, this.value);
-				break;
-			case GT:
-				wrapper.gt(column, this.value);
-				break;
-			case LE:
-				wrapper.le(column, this.value);
-				break;
-			case GE:
-				wrapper.ge(column, this.value);
-				break;
-			case IN:
+			case EQ -> wrapper.eq(column, this.value);
+			case NE -> wrapper.ne(column, this.value);
+			case LT -> wrapper.lt(column, this.value);
+			case GT -> wrapper.gt(column, this.value);
+			case LE -> wrapper.le(column, this.value);
+			case GE -> wrapper.ge(column, this.value);
+			case IN -> {
 				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					wrapper.in(column, (Collection<?>) this.value);
 				} else if(this.value != null && this.value.getClass().isArray()) {
@@ -219,8 +206,8 @@ public class FilterQuery {
 				} else {
 					throw MessageCodeException.of("不支持的in类型：", this.value);
 				}
-				break;
-			case NOT_IN:
+			}
+			case NOT_IN -> {
 				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					wrapper.notIn(column, (Collection<?>) this.value);
 				} else if(this.value != null && this.value.getClass().isArray()) {
@@ -228,14 +215,10 @@ public class FilterQuery {
 				} else {
 					throw MessageCodeException.of("不支持的notIn类型：", this.value);
 				}
-				break;
-			case LIKE:
-				wrapper.like(column, this.value);
-				break;
-			case NOT_LIKE:
-				wrapper.notLike(column, this.value);
-				break;
-			case BETWEEN:
+			}
+			case LIKE -> wrapper.like(column, this.value);
+			case NOT_LIKE -> wrapper.notLike(column, this.value);
+			case BETWEEN -> {
 				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					final Collection<?> collection = (Collection<?>) this.value;
 					final Iterator<?> iterator = collection.iterator();
@@ -247,14 +230,10 @@ public class FilterQuery {
 				} else {
 					throw MessageCodeException.of("不支持的between类型：", this.value);
 				}
-				break;
-			case IS_NULL:
-				wrapper.isNull(column);
-				break;
-			case IS_NOT_NULL:
-				wrapper.isNotNull(column);
-				break;
-			case INCLUDE:
+			}
+			case IS_NULL -> wrapper.isNull(column);
+			case IS_NOT_NULL -> wrapper.isNotNull(column);
+			case INCLUDE -> {
 				wrapper.and(includeWrapper -> {
 					if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 						final Collection<?> collection = (Collection<?>) this.value;
@@ -270,8 +249,8 @@ public class FilterQuery {
 						throw MessageCodeException.of("不支持的include类型：", this.value);
 					}
 				});
-				break;
-			case EXCLUDE:
+			}
+			case EXCLUDE -> {
 				wrapper.not(excludeWrapper -> {
 					if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 						final Collection<?> collection = (Collection<?>) this.value;
@@ -287,9 +266,8 @@ public class FilterQuery {
 						throw MessageCodeException.of("不支持的exclude类型：", this.value);
 					}
 				});
-				break;
-			default:
-				throw MessageCodeException.of("未知过滤类型：", this.type);
+			}
+			default -> throw MessageCodeException.of("未知过滤类型：", this.type);
 			}
 		}
 
@@ -363,14 +341,9 @@ public class FilterQuery {
 		public <T> void order(String alias, QueryWrapper<T> wrapper) {
 			final String cloumn = aliasCloumn(this.alias, alias, this.name);
 			switch (this.type) {
-			case ASC:
-				wrapper.orderByAsc(cloumn);
-				break;
-			case DESC:
-				wrapper.orderByDesc(cloumn);
-				break;
-			default:
-				throw MessageCodeException.of("未知排序类型：", this.type);
+			case ASC -> wrapper.orderByAsc(cloumn);
+			case DESC -> wrapper.orderByDesc(cloumn);
+			default -> throw MessageCodeException.of("未知排序类型：", this.type);
 			}
 		}
 

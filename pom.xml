@@ -25,7 +25,6 @@
 		<system.maven.encoding>UTF-8</system.maven.encoding>
 		<system.maven.skip.assembly>true</system.maven.skip.assembly>
 		<!-- 版本配置 -->
-		<!-- TODO：JDK17 -->
 		<java.version>17</java.version>
 		<poi.version>5.2.2</poi.version>
 		<ws.rs.version>2.1.1</ws.rs.version>

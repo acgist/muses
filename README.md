@@ -2,6 +2,10 @@
 
 基于`SpringCloudAlibaba`技术栈微服务模板项目
 
+## 优化位置
+
+boot-service
+
 ## 模块
 
 |模块|描述|
@@ -223,7 +227,11 @@ server.port=${system.port:8080}
 
 ## JDK17
 
-现在Dubbo暂不支持JDK17，需要添加参数`--add-opens java.base/java.lang=ALL-UNNAMED`才能启动。
+现在Dubbo暂不支持JDK17，需要添加以下参数才能启动：
+
+```
+--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.math=ALL-UNNAMED
+```
 
 ## 其他链接
 

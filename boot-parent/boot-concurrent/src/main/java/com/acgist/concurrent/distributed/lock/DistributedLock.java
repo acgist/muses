@@ -105,12 +105,21 @@ public interface DistributedLock {
 			if (newReentry == 0) {
 				VALUE_LOCAL.remove();
 				REENTRY_LOCAL.remove();
-				this.delete(key);
+				this.delete(key, oldValue);
 			} else {
 				REENTRY_LOCAL.set(newReentry);
 			}
 		}
 	}
+	
+	/**
+	 * 获取锁值
+	 * 
+	 * @param key 锁名
+	 * 
+	 * @return 锁值
+	 */
+	String get(String key);
 
 	/**
 	 * 添加锁
@@ -134,20 +143,12 @@ public interface DistributedLock {
 	}
 
 	/**
-	 * 获取锁值
-	 * 
-	 * @param key 锁名
-	 * 
-	 * @return 锁值
-	 */
-	String get(String key);
-
-	/**
 	 * 删除锁
 	 * 
 	 * @param key 锁名
+	 * @param value 锁值
 	 */
-	void delete(String key);
+	void delete(String key, String value);
 
 	/**
 	 * 阻塞

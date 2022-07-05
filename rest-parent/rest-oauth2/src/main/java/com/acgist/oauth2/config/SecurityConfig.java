@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -71,16 +70,7 @@ public class SecurityConfig {
 			// OAauth2所有地址：通过OAuth2实现拦截
 			.antMatchers("/oauth2/**").permitAll()
 			// OAuth2登陆页面
-			.antMatchers(HttpMethod.GET, "/oauth2/login").permitAll()
-			// 配置允许地址
-//			.antMatchers(
-//				// 错误
-//				"/error",
-//				// 图标
-//				"/favicon.ico",
-//				// Swagger
-//				"/v2/api-docs", "/swagger-ui/**", "/swagger-resources/**"
-//			).permitAll()
+//			.antMatchers(HttpMethod.GET, "/oauth2/login").permitAll()
 			// 配置IP名单
 //			.requestMatchers(request -> WebUtils.clientIP(request)).permitAll()
 			// 其余地址全部允许

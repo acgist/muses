@@ -8,7 +8,12 @@ Rest模块Boot：提供Rest接口服务
 # 代码
 UserContext.get()
 # 参数注解
+@CurrentUser Long id
+@CurrentUser(Type.ID) Long id
+@CurrentUser String name
+@CurrentUser(Type.NAME) String name
 @CurrentUser User user
+@CurrentUser(Type.USER) User name
 ```
 
 ## 接口文档

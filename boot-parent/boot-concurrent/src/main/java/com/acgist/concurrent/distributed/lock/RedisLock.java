@@ -14,6 +14,11 @@ public class RedisLock implements DistributedLock {
 
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
+	
+	@Override
+	public String get(String key) {
+		return this.redisTemplate.opsForValue().get(key);
+	}
 
 	@Override
 	public boolean set(String key, String value, int ttl) {
@@ -26,12 +31,8 @@ public class RedisLock implements DistributedLock {
 	}
 
 	@Override
-	public String get(String key) {
-		return this.redisTemplate.opsForValue().get(key);
-	}
-
-	@Override
-	public void delete(String key) {
+	public void delete(String key, String value) {
+		// TODO：严格意义来讲需要使用Lua脚本验证value
 		this.redisTemplate.opsForValue().getOperations().delete(key);
 	}
 

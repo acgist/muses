@@ -91,12 +91,11 @@ public class RedisAutoConfiguration {
 			});
 		}
 		final RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
-			.withInitialCacheConfigurations(cacheConfig)
 			.cacheDefaults(config)
 			// 配置初始缓存
 //			.initialCacheNames(null)
 			// 不同缓存配置
-//			.withInitialCacheConfigurations(null)
+			.withInitialCacheConfigurations(cacheConfig)
 			.build();
 		return cacheManager;
 	}
@@ -104,7 +103,6 @@ public class RedisAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-		log.info("配置RedisTemplate");
 		final RedisTemplate<String, Object> template = new RedisTemplate<>();
 		template.setConnectionFactory(factory);
 		template.setKeySerializer(this.buildKeySerializer());
@@ -121,7 +119,7 @@ public class RedisAutoConfiguration {
 	}
 	
 	/**
-	 * @return 键序列号
+	 * @return 键序列化
 	 */
 	private RedisSerializer<String> buildKeySerializer() {
 		return StringRedisSerializer.UTF_8;

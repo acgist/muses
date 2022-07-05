@@ -1,6 +1,6 @@
 package com.acgist.gateway.config;
 
-import com.acgist.boot.utils.JSONUtils;
+import com.acgist.boot.model.Model;
 import com.acgist.gateway.model.request.GatewayRequest;
 
 import lombok.Getter;
@@ -13,8 +13,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class GatewayMapping {
+public class GatewayMapping extends Model {
 
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * 网关名称
 	 */
@@ -35,9 +37,4 @@ public class GatewayMapping {
 	 */
 	private Class<GatewayRequest> clazz;
 
-	@Override
-	public String toString() {
-		return JSONUtils.toJSON(this);
-	}
-	
 }

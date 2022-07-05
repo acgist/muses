@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,10 +41,6 @@ import springfox.documentation.spring.web.plugins.Docket;
  * 1. 在启动类添加注解：`@EnableWebMvc`
  * 2. 添加配置：`spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER`
  * 
- * 注意：OpenAPI不好配置
- * 
- * 授权配置：https://swagger.io/docs/specification/authentication/oauth2/
- * 
  * @author acgist
  */
 @Slf4j
@@ -66,6 +63,7 @@ public class SwaggerAutoConfiguration {
 	private SwaggerConfig swaggerConfig;
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public Docket createRestApi() {
 		log.info("配置Swagger文档");
 		return this.buildDocket("Muses", "/**");
@@ -91,6 +89,8 @@ public class SwaggerAutoConfiguration {
 	 * @param path 地址
 	 * 
 	 * @return 分组
+	 * 
+	 * @see OAuth2认证服务 https://swagger.io/docs/specification/authentication/oauth2/
 	 */
 	private Docket buildDocket(String name, String path) {
 		return new Docket(DocumentationType.OAS_30)
@@ -111,6 +111,9 @@ public class SwaggerAutoConfiguration {
 			.securityContexts(this.securityContexts());
 	}
 
+	/**
+	 * @return 授权范围
+	 */
 	private AuthorizationScope[] allScope() {
 		final AuthorizationScope allScope = new AuthorizationScope("all", "all");
 		return new AuthorizationScope[] {
@@ -118,6 +121,9 @@ public class SwaggerAutoConfiguration {
 		};
 	}
 	
+	/**
+	 * @return 授权服务器
+	 */
 	private List<SecurityScheme> securitySchemes() {
 		final List<SecurityScheme> securitySchemes = new ArrayList<>();
 		// Header透传
@@ -137,6 +143,9 @@ public class SwaggerAutoConfiguration {
 		return securitySchemes;
 	}
 
+	/**
+	 * @return 授权上下文
+	 */
 	private List<SecurityContext> securityContexts() {
 		final List<SecurityContext> securityContexts = new ArrayList<>();
 		securityContexts.add(

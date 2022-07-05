@@ -1,6 +1,5 @@
 package com.acgist.gateway.model;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.model.Model;
 import com.acgist.boot.service.RsaService;
 import com.acgist.boot.utils.DateUtils;
 import com.acgist.boot.utils.JSONUtils;
@@ -37,7 +37,7 @@ import lombok.Setter;
 @Setter
 @Scope("request")
 @Component
-public class GatewaySession implements Serializable {
+public class GatewaySession extends Model {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -86,9 +86,9 @@ public class GatewaySession implements Serializable {
 	 */
 	private Map<String, Object> responseData;
 	/**
-	 * 响应数据
+	 * 响应消息
 	 */
-	private Message<Map<String, Object>> gatewayResponse;
+	private Message<Map<String, Object>> responseMessage;
 
 	/**
 	 * 获取请求
@@ -102,7 +102,7 @@ public class GatewaySession implements Serializable {
 	/**
 	 * 首次获取请求
 	 * 
-	 * @param context context
+	 * @param context ApplicationContext
 	 * 
 	 * @return 请求
 	 */
@@ -138,10 +138,11 @@ public class GatewaySession implements Serializable {
 		synchronized (this) {
 			this.process = false;
 			this.queryId = null;
+			this.gatewayMapping = null;
 			this.requestData = null;
 			this.gatewayRequest = null;
 			this.responseData = null;
-			this.gatewayMapping = null;
+			this.responseMessage = null;
 			LOCAL.remove();
 		}
 	}
@@ -176,7 +177,7 @@ public class GatewaySession implements Serializable {
 	 */
 	public Message<Map<String, Object>> buildFail(MessageCode code, String message) {
 		this.buildResponse();
-		this.gatewayResponse = Message.fail(code, message, this.responseData);
+		this.responseMessage = Message.fail(code, message, this.responseData);
 		return this.buildSignature();
 	}
 
@@ -197,11 +198,11 @@ public class GatewaySession implements Serializable {
 	 * @return 响应
 	 */
 	public Message<Map<String, Object>> buildSuccess(Map<String, Object> response) {
+		this.buildResponse();
 		if(MapUtils.isNotEmpty(response)) {
 			this.responseData.putAll(response);
 		}
-		this.buildResponse();
-		this.gatewayResponse = Message.success(this.responseData);
+		this.responseMessage = Message.success(this.responseData);
 		return this.buildSignature();
 	}
 	
@@ -225,9 +226,9 @@ public class GatewaySession implements Serializable {
 		// 含有响应数据需要签名
 		if(MapUtils.isNotEmpty(this.responseData)) {
 			final String signature = this.rsaService.signature(this.responseData);
-			this.gatewayResponse.setSignature(signature);
+			this.responseMessage.setSignature(signature);
 		}
-		return this.gatewayResponse;
+		return this.responseMessage;
 	}
 	
 	/**
@@ -236,7 +237,7 @@ public class GatewaySession implements Serializable {
 	 * @return 响应数据
 	 */
 	public String getResponseJSON() {
-		return JSONUtils.toJSON(this.gatewayResponse);
+		return JSONUtils.toJSON(this.responseMessage);
 	}
 	
 	/**
@@ -258,7 +259,7 @@ public class GatewaySession implements Serializable {
 	 * @return 是否含有响应
 	 */
 	public boolean hasResponse() {
-		return Objects.nonNull(this.gatewayResponse);
+		return Objects.nonNull(this.responseMessage);
 	}
 	
 	/**
@@ -267,7 +268,7 @@ public class GatewaySession implements Serializable {
 	 * @param response 响应
 	 */
 	public void fail(HttpServletResponse response) {
-		ResponseUtils.fail(this.gatewayResponse, response);
+		ResponseUtils.fail(this.responseMessage, response);
 	}
 
 }

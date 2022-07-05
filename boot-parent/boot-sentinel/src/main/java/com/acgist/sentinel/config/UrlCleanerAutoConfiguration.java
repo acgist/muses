@@ -41,6 +41,7 @@ public class UrlCleanerAutoConfiguration {
 	@ConditionalOnMissingBean
 	public UrlCleaner urlCleaner() {
 		return new UrlCleaner() {
+			
 			@Override
 			public String clean(String url) {
 				if (StringUtils.isEmpty(url)) {
@@ -52,6 +53,7 @@ public class UrlCleanerAutoConfiguration {
 					.findFirst()
 					.orElse(url);
 			}
+			
 		};
 	}
 

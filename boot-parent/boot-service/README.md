@@ -16,6 +16,8 @@ mybatis-plus:
     - classpath:/mybatis/mapper/**/*.xml
 ```
 
+> 如果`mapper.xml`打包在`jar`中扫描配置`classpath*:/mybatis/mapper/**/*.xml`
+
 ## JPA
 
 ```
@@ -92,7 +94,7 @@ public MetaObjectHandler metaObjectHandler(@Autowired IdService idService) {
 spring:
   shardingsphere.enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/muses?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/muses?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -125,7 +127,7 @@ spring:
       ds-master:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/muses?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+        jdbc-url: jdbc:mysql://localhost:3306/muses?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
         username: root
         password:
         pool-name: HikariCP-ds-master
@@ -134,7 +136,7 @@ spring:
       ds0-master:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/muses0?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+        jdbc-url: jdbc:mysql://localhost:3306/muses0?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
         username: root
         password:
         pool-name: HikariCP-ds0-master
@@ -143,7 +145,7 @@ spring:
       ds1-master:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/muses1?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+        jdbc-url: jdbc:mysql://localhost:3306/muses1?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
         username: root
         password:
         pool-name: HikariCP-ds1-master
@@ -152,7 +154,7 @@ spring:
       ds-slave:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/muses-slave?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+        jdbc-url: jdbc:mysql://localhost:3306/muses-slave?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
         username: root
         password:
         pool-name: HikariCP-ds-slave
@@ -161,7 +163,7 @@ spring:
       ds0-slave:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/muses0-slave?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+        jdbc-url: jdbc:mysql://localhost:3306/muses0-slave?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
         username: root
         password:
         pool-name: HikariCP-ds0-slave
@@ -170,7 +172,7 @@ spring:
       ds1-slave:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/muses1-slave?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+        jdbc-url: jdbc:mysql://localhost:3306/muses1-slave?serverTimezone=Asia/Shanghai&useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true&remarks=true&useInformationSchema=true
         username: root
         password:
         pool-name: HikariCP-ds1-slave

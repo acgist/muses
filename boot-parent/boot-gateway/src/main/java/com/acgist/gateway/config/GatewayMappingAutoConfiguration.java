@@ -8,7 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.gateway.service.impl.GatewayMappingService;
+import com.acgist.gateway.service.GatewayMappingService;
+import com.acgist.gateway.service.impl.GatewayMappingServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +40,7 @@ public class GatewayMappingAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public GatewayMappingService gatewayMappingService() {
-		return new GatewayMappingService(this.mapping);
+		return new GatewayMappingServiceImpl(this.mapping);
 	}
 	
 }

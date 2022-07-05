@@ -22,7 +22,7 @@ public class CacheServiceImpl implements CacheService {
 	public boolean cache(String name, String key, Object value) {
 		final Cache cache = this.cacheManager.getCache(name);
 		if(cache == null) {
-			throw MessageCodeException.of("缓存不存在：" + name);
+			throw MessageCodeException.of("缓存不存在：", name);
 		}
 		cache.put(key, value);
 		return true;
@@ -33,7 +33,7 @@ public class CacheServiceImpl implements CacheService {
 	public <T> T cache(String name, String key) {
 		final Cache cache = this.cacheManager.getCache(name);
 		if(cache == null) {
-			throw MessageCodeException.of("缓存不存在：" + name);
+			throw MessageCodeException.of("缓存不存在：", name);
 		}
 		final ValueWrapper valueWrapper = cache.get(key);
 		if(valueWrapper == null) {
@@ -46,7 +46,7 @@ public class CacheServiceImpl implements CacheService {
 	public boolean remove(String name, String key) {
 		final Cache cache = this.cacheManager.getCache(name);
 		if(cache == null) {
-			throw MessageCodeException.of("缓存不存在：" + name);
+			throw MessageCodeException.of("缓存不存在：", name);
 		}
 		cache.evict(key);
 		return true;
