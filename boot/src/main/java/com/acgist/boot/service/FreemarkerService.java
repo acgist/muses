@@ -2,6 +2,11 @@ package com.acgist.boot.service;
 
 import java.util.Map;
 
+/**
+ * FreeMarker
+ * 
+ * @author acgist
+ */
 public interface FreemarkerService {
 
 	/**

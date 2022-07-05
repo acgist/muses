@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.acgist.boot.model.Message;
-import com.acgist.boot.utils.UrlUtils;
+import com.acgist.boot.utils.URLUtils;
 import com.acgist.oauth2.config.LoginType;
 import com.acgist.oauth2.model.IPCountSession;
 import com.acgist.oauth2.service.IPCountService;
@@ -38,7 +38,7 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 		final long failCount = failCountSession.increment();
 		log.info("登陆失败：{}-{}", clientIP, failCount);
 		if(LoginType.get().isHtml()) {
-			response.sendRedirect("/oauth2/login?message=" + UrlUtils.encode(exception.getMessage()));
+			response.sendRedirect("/oauth2/login?message=" + URLUtils.encode(exception.getMessage()));
 		} else {
 			ResponseUtils.response(Message.fail(exception.getMessage()), response);
 		}

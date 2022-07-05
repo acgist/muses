@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
-import com.acgist.boot.utils.FormatStyle.DateTimeStyle;
+import com.acgist.boot.config.FormatStyle.DateTimeStyle;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,11 +30,16 @@ public class DateUtilsTest {
 		final LocalDateTime now = LocalDateTime.now();
 		final DateTimeStyle[] values = DateTimeStyle.values();
 		for (DateTimeStyle dateTimeStyle : values) {
-			log.info("{}	|	{}	|	{}", dateTimeStyle.getDateTimeFormatter().format(now), now, dateTimeStyle.getFormat());
-			assertEquals(
-				dateTimeStyle.getDateTimeFormatter().format(now),
-				dateTimeStyle.getDateTimeFormatter().format(DateUtils.parse(dateTimeStyle.getDateTimeFormatter().format(now)))
-			);
+			final String format = dateTimeStyle.getDateTimeFormatter().format(now);
+			final String rollback = dateTimeStyle.getDateTimeFormatter().format(DateUtils.parse(format));
+			log.info("{} - {} - {} - {}", format, rollback, now, dateTimeStyle.getFormat());
+			// 忽略UTC
+			if(dateTimeStyle.getFormat().indexOf('Z') < 0) {
+				assertEquals(
+					format,
+					rollback
+				);
+			}
 		}
 	}
 	

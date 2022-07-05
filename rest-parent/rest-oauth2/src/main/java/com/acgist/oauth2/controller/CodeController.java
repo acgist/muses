@@ -10,6 +10,7 @@ public class CodeController {
 
 	@GetMapping("/code")
 	public String get(String code) {
+		// 写出授权Code
 		return code;
 	}
 	

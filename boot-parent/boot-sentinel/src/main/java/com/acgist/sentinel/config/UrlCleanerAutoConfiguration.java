@@ -3,12 +3,12 @@ package com.acgist.sentinel.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.acgist.boot.utils.StringUtils;
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.UrlCleaner;
 
 import lombok.extern.slf4j.Slf4j;

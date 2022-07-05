@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import com.acgist.boot.config.FormatStyle.DateStyle;
+import com.acgist.boot.config.FormatStyle.DateTimeStyle;
+import com.acgist.boot.config.FormatStyle.TimeStyle;
 import com.acgist.boot.model.MessageCodeException;
-import com.acgist.boot.utils.FormatStyle.DateStyle;
-import com.acgist.boot.utils.FormatStyle.DateTimeStyle;
-import com.acgist.boot.utils.FormatStyle.TimeStyle;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -208,7 +208,7 @@ public final class JSONUtils {
 			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-			// 如果前台需要先是所有属性删除设置
+			// 如果前台需要显示所有属性删除设置
 			.setSerializationInclusion(Include.NON_NULL);
 	}
 

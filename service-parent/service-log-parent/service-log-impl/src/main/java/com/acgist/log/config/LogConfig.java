@@ -2,6 +2,8 @@ package com.acgist.log.config;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -61,6 +63,12 @@ public class LogConfig {
 	 * 加载数据库表
 	 */
 	private void loadTableMapping() throws ClassNotFoundException, IOException {
+		if(this.mappingConfig.getTables() == null) {
+			this.mappingConfig.setTables(new ArrayList<>());
+		}
+		if(this.mappingConfig.getMapping() == null) {
+			this.mappingConfig.setMapping(new HashMap<>());
+		}
 		final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 		final String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 			ClassUtils.convertClassNameToResourcePath(this.basePackage) +

@@ -10,6 +10,17 @@ import com.acgist.boot.utils.HTTPUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 测试
+ * 
+ * 404
+ * 授权错误
+ * 指定异常
+ * 系统异常
+ * 未知异常
+ * 
+ * @author acgist
+ */
 @Slf4j
 public class UserControllerTest {
 

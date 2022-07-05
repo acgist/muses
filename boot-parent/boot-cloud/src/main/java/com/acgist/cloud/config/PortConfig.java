@@ -44,9 +44,13 @@ public final class PortConfig {
 	@Getter
 	public enum Type {
 		
+		// 网关服务
 		GATEWAY(8888),
+		// OAuth2授权服务
 		REST_OAUTH2(9999),
+		// Web服务
 		WEB(18000, 19000),
+		// Rest服务
 		REST(19000, 20000);
 		
 		// 最小端口
@@ -75,16 +79,19 @@ public final class PortConfig {
 	public static final void buildPort(Type type, String ... args) {
 		Objects.requireNonNull(type, "没有设置启动类型");
 		final ApplicationArguments arguments = new DefaultApplicationArguments(args);
+		// 应用端口配置
 		final String serverPort = getArgument(SERVER_PORT, arguments);
 		if(serverPort != null) {
 			System.setProperty(SYSTEM_PORT, serverPort);
 			return;
 		}
+		// 系统端口配置
 		final String systemPort = getArgument(SYSTEM_PORT, arguments);
 		if(systemPort != null) {
 			System.setProperty(SYSTEM_PORT, systemPort);
 			return;
 		}
+		// 随机端口配置
 		final String systemPortMin = getArgument(SYSTEM_PORT_MIN, arguments);
 		final String systemPortMax = getArgument(SYSTEM_PORT_MAX, arguments);
 		final int portMin = Objects.isNull(systemPortMin) ? type.getMin() : Integer.parseInt(systemPortMin);

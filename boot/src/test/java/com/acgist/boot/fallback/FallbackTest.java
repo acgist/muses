@@ -1,5 +1,8 @@
 package com.acgist.boot.fallback;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +17,12 @@ public class FallbackTest {
 
 	@Test
 	public void testFallback() {
-		this.fallbackService.execute();
-		this.fallbackService.execute("name");
+		assertDoesNotThrow(() -> {
+			this.fallbackService.execute();
+		});
+		assertThrows(ArithmeticException.class, () -> {
+			this.fallbackService.execute("name");
+		});
 	}
 	
 }

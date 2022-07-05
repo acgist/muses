@@ -3,7 +3,7 @@ package com.acgist.log.canal.json;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import com.acgist.boot.utils.FormatStyle.DateTimeStyle;
+import com.acgist.boot.config.FormatStyle.DateTimeStyle;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;
 import com.fasterxml.jackson.databind.DeserializationContext;

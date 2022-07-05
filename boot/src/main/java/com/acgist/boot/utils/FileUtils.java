@@ -21,7 +21,7 @@ public final class FileUtils {
 	
 	private FileUtils() {
 	}
-
+	
 	/**
 	 * 格式化文件大小
 	 * 
@@ -30,10 +30,24 @@ public final class FileUtils {
 	 * @return 文件大小
 	 */
 	public static final String formatSize(Long size) {
+		return formatSize(size, 0);
+	}
+
+	/**
+	 * 格式化文件大小
+	 * 
+	 * @param size 文件大小
+	 * @param index 单位位置
+	 * 
+	 * @return 文件大小
+	 */
+	public static final String formatSize(Long size, int index) {
 		if(size == null || size == 0L) {
 			return "0B";
 		}
-		int index = 0;
+		if(size < 0L) {
+			return size.toString();
+		}
 		BigDecimal decimal = BigDecimal.valueOf(size);
 		final BigDecimal dataScale = BigDecimal.valueOf(DATA_SCALE);
 		while(decimal.compareTo(dataScale) >= 0) {

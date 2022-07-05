@@ -3,6 +3,7 @@ package com.acgist.rest.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -13,7 +14,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.acgist.boot.model.User;
-import com.acgist.boot.utils.StringUtils;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.OpenAPI;

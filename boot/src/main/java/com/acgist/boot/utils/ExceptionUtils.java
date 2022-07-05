@@ -10,11 +10,13 @@ import com.acgist.boot.model.MessageCodeException;
 public class ExceptionUtils {
 	
 	/**
-	 * 获取原始异常
+	 * 获取异常
 	 * 
 	 * @param t 异常
 	 * 
 	 * @return 原始异常
+	 * 
+	 * @see #root(Throwable)
 	 */
 	public static final Object root(Object t) {
 		if(t instanceof Throwable) {
@@ -24,16 +26,16 @@ public class ExceptionUtils {
 	}
 
 	/**
-	 * 获取底层异常
+	 * 获取异常
 	 * 
 	 * @param t 异常
 	 * 
-	 * @return 底层异常
+	 * @return 原始异常
 	 */
 	public static final Throwable root(Throwable t) {
 		Throwable cause = t;
 		do {
-			// 属于状态编码异常
+			// 返回状态编码异常
 			if(cause instanceof MessageCodeException) {
 				return cause;
 			}

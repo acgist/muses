@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -36,8 +38,6 @@ import org.springframework.cglib.beans.BeanMap;
 
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.boot.utils.BeanUtils;
-import com.acgist.boot.utils.CollectionUtils;
-import com.acgist.boot.utils.MapUtils;
 import com.acgist.dao.mapper.BootMapper;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.service.BootExcelService;

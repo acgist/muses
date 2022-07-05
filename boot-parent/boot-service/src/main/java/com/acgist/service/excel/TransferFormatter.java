@@ -62,10 +62,10 @@ public class TransferFormatter implements Formatter {
 			return Map.of();
 		}
 		final String groupName = this.group.get();
-		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, groupName);
+		Map<String, String> transferMap = this.cacheService.cache(TransferService.CACHE_TRANSFER, groupName);
 		if(transferMap == null) {
 			transferMap = this.transferService.select(groupName);
-			this.cacheService.cache(CacheService.CACHE_TRANSFER, groupName, transferMap);
+			this.cacheService.cache(TransferService.CACHE_TRANSFER, groupName, transferMap);
 		}
 		return transferMap;
 	}

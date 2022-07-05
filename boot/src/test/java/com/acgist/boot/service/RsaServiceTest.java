@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.acgist.boot.service.impl.RsaServiceImpl;
-import com.acgist.boot.utils.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,8 +20,7 @@ public class RsaServiceTest {
 	
 	@BeforeAll
 	private static final void init() {
-		final Map<String, String> key = RsaUtils.buildKey();
-		rsaService = new RsaServiceImpl(key.get(RsaUtils.PUBLIC_KEY), key.get(RsaUtils.PRIVATE_KEY));
+		rsaService = new RsaServiceImpl();
 		rsaService.init();
 	}
 

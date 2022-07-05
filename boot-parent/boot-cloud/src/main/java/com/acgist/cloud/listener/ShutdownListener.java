@@ -36,7 +36,7 @@ public class ShutdownListener {
 	/**
 	 * 服务名称
 	 */
-	@Value("${spring.application.name:}")
+	@Value("${spring.application.name:muses}")
 	private String serviceName;
 	/**
 	 * 是否启动自动关闭
@@ -99,10 +99,10 @@ public class ShutdownListener {
 			 */
 			private void up() {
 				if(!ShutdownListener.this.shutdown) {
-					log.debug("实例有效：已经生效：{}", ShutdownListener.this.serviceName);
+					log.debug("实例有效（已经生效）：{}", ShutdownListener.this.serviceName);
 					return;
 				}
-				log.debug("实例有效：重置关闭事件：{}", ShutdownListener.this.serviceName);
+				log.debug("实例有效（重置关闭事件）：{}", ShutdownListener.this.serviceName);
 				ShutdownListener.this.shutdown = false;
 				try {
 					this.lock.lock();
@@ -117,25 +117,26 @@ public class ShutdownListener {
 			 */
 			private void down() {
 				if(ShutdownListener.this.shutdown) {
-					log.debug("实例无效：已经启动关闭事件：{}", ShutdownListener.this.serviceName);
+					log.debug("实例无效（已经启动关闭事件）：{}", ShutdownListener.this.serviceName);
 					return;
 				}
-				log.debug("实例无效：启动关闭事件：{}-{}", ShutdownListener.this.serviceName, ShutdownListener.this.shutdownGracefully);
+				log.debug("实例无效（启动关闭事件）：{}-{}", ShutdownListener.this.serviceName, ShutdownListener.this.shutdownGracefully);
 				ShutdownListener.this.shutdown = true;
 				ShutdownListener.this.taskExecutor.execute(() -> {
 					try {
 						this.lock.lock();
 						final long remaing = this.condition.awaitNanos(TimeUnit.SECONDS.toNanos(ShutdownListener.this.shutdownGracefully));
 						if (ShutdownListener.this.shutdown) {
-							log.info("实例无效：关闭实例：{}", ShutdownListener.this.serviceName);
+							log.info("实例无效（关闭实例）：{}", ShutdownListener.this.serviceName);
 							// 关闭NacosServiceManager.nacosServiceShutDown()会出现空指针异常：2021-08以后版本已经修复
 							// 阻塞关闭：不用再次等待
 							ShutdownListener.this.context.close();
+							// 强制关机：无效
 //							System.exit(0);
 							// 强制关机
 							Runtime.getRuntime().halt(0);
 						} else {
-							log.debug("实例有效：忽略关闭事件：{}-{}", ShutdownListener.this.serviceName, TimeUnit.NANOSECONDS.toSeconds(remaing));
+							log.debug("实例有效（忽略关闭事件）：{}-{}", ShutdownListener.this.serviceName, TimeUnit.NANOSECONDS.toSeconds(remaing));
 						}
 					} catch (InterruptedException e) {
 						log.error("关闭实例异常", e);
@@ -167,7 +168,7 @@ public class ShutdownListener {
 			(
 				// Dubbo服务端口
 				String.valueOf(instance.getPort()).equals(dubboPort) ||
-				// Web服务端口
+				// Www服务端口
 				instance.getPort() == this.nacosDiscoveryProperties.getPort()
 			);
 	}

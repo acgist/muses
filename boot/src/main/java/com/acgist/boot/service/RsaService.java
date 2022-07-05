@@ -10,6 +10,11 @@ import java.util.Map;
 public interface RsaService {
 
 	/**
+	 * 签名
+	 */
+	String SIGNATURE = "signature";
+	
+	/**
 	 * 内容加密
 	 * 
 	 * @param content 原始内容
@@ -28,7 +33,7 @@ public interface RsaService {
 	String decrypt(String content);
 	
 	/**
-	 * 计算签名
+	 * 签名
 	 * 
 	 * @param map 签名数据
 	 * 
@@ -39,7 +44,7 @@ public interface RsaService {
 	/**
 	 * 验签
 	 * 
-	 * @param map 数据
+	 * @param map 签名数据
 	 * @param signature 签名
 	 * 
 	 * @return 是否验证成功

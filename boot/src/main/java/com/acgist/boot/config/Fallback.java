@@ -21,19 +21,19 @@ public @interface Fallback {
 	/**
 	 * 注意：返回值和方法必须一致
 	 * 
-	 * @return 异常处理方法
+	 * @return 异常处理方法名称
 	 */
 	String method();
 	
 	/**
-	 * 注意：配置和处理异常类型无关
+	 * 注意：和处理异常类型无关
 	 * 
-	 * @return 异常抛出
+	 * @return 是否抛出异常
 	 */
 	boolean throwThrowable() default true;
 	
 	/**
-	 * 注意：只和是否执行异常处理方法有关
+	 * 注意：和是否抛出异常无关
 	 * 
 	 * @return 处理异常类型
 	 */

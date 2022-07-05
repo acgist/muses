@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.acgist.boot.config.FormatStyle;
 import com.acgist.boot.model.Model;
-import com.acgist.boot.utils.FormatStyle;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;

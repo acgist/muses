@@ -22,6 +22,10 @@ public final class SpringUtils {
 	 * ApplicationContext
 	 */
 	private static ApplicationContext context;
+	/**
+	 * 最大循环次数
+	 */
+	private static final int MAX_LOOP_INDEX = 1000;
 
 	/**
 	 * @param context ApplicationContext
@@ -43,7 +47,8 @@ public final class SpringUtils {
 		if(SpringUtils.noneSpring) {
 			return null;
 		}
-		while(SpringUtils.context == null) {
+		int index = 0;
+		while(SpringUtils.context == null && ++index < MAX_LOOP_INDEX) {
 			Thread.yield();
 		}
 		return SpringUtils.context.getBean(clazz);
@@ -75,7 +80,8 @@ public final class SpringUtils {
 		if(SpringUtils.noneSpring) {
 			return Map.of();
 		}
-		while(SpringUtils.context == null) {
+		int index = 0;
+		while(SpringUtils.context == null && ++index < MAX_LOOP_INDEX) {
 			Thread.yield();
 		}
 		return SpringUtils.context.getBeansOfType(clazz);

@@ -18,7 +18,7 @@ import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.Message;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.User;
-import com.acgist.boot.utils.UrlUtils;
+import com.acgist.boot.utils.URLUtils;
 import com.acgist.gateway.utils.ResponseUtils;
 import com.acgist.user.api.IRoleService;
 import com.acgist.user.model.dto.RoleDto;
@@ -103,11 +103,11 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 			final String name = (String) jws.getPayload().toJSONObject().get(MusesConfig.OAUTH2_NAME);
 			final String role = (String) jws.getPayload().toJSONObject().get(MusesConfig.OAUTH2_ROLE);
 			final String[] roles = StringUtils.split(role, ',');
-			final String authority = UrlUtils.authority(method, path);
+			final String authority = URLUtils.authority(method, path);
 			final boolean success = this.roles.stream()
 				.filter(value -> ArrayUtils.contains(roles, value.getName()))
 				.flatMap(value -> value.getPaths().stream())
-				.anyMatch(value -> UrlUtils.match(authority, value));
+				.anyMatch(value -> URLUtils.match(authority, value));
 			if (!success) {
 				final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有权限");
 				return ResponseUtils.response(message, HttpStatus.UNAUTHORIZED, exchange.getResponse());

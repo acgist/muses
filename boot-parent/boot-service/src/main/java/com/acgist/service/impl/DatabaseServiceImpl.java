@@ -11,9 +11,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.acgist.boot.utils.StringUtils;
 import com.acgist.model.dto.TableColumnDto;
 import com.acgist.model.dto.TableDto;
 import com.acgist.service.DatabaseService;

@@ -35,3 +35,40 @@ keytool -genkeypair -alias jwk -keyalg RSA -keysize 2048 -keystore jwk.jks -vali
 现在提供一个登陆地址`GET:/oauth2/login/password`，登陆成功自动跳转`/oauth2/authorize`获取`Code`。
 
 > 需要请求支持自动跳转
+
+## 免登陆授权
+
+如果存在一些类型大屏这种不要登陆的授权方式，建议自己实现IP和帐号绑定逻辑，直接通过IP地址进行授权，参考`PasswordToken`、`PasswordAuthenticationFilter`和`PasswordAuthenticationProvider`。
+
+## 自定义过滤器
+
+```
+/**
+ * 自定义过滤器
+ * 
+ * @author acgist
+ */
+public class CustomFilter implements Filter {
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		chain.doFilter(request, response);
+	}
+	
+}
+
+@Bean
+@ConditionalOnMissingBean
+public CustomFilter customFilter() {
+	return new CustomFilter();
+}
+
+@Bean
+public FilterRegistrationBean<CustomFilter> codeFilterRegistrationBean(CustomFilter customFilter) {
+	final FilterRegistrationBean<CustomFilter> registration = new FilterRegistrationBean<CustomFilter>();
+	registration.setOrder(-100);
+	registration.setFilter(customFilter);
+	registration.addUrlPatterns("/oauth2/token");
+	return registration;
+}
+```

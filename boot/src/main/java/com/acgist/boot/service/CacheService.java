@@ -1,17 +1,12 @@
 package com.acgist.boot.service;
 
 /**
- * 缓存
+ * 缓存：延迟加载
  * 
  * @author acgist
  */
 public interface CacheService {
 	
-	/**
-	 * 枚举缓存
-	 */
-	String CACHE_TRANSFER = "transfer";
-
 	/**
 	 * 存放缓存
 	 * 

@@ -3,15 +3,16 @@ package com.acgist.boot.model;
 import java.util.Objects;
 import java.util.Set;
 
-import com.acgist.boot.utils.CollectionUtils;
-import com.acgist.boot.utils.UrlUtils;
+import org.apache.commons.collections4.CollectionUtils;
+
+import com.acgist.boot.utils.URLUtils;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 用户
+ * 系统用户
  * 
  * @author acgist
  */
@@ -104,8 +105,8 @@ public class User extends Model {
 		if (CollectionUtils.isEmpty(this.paths)) {
 			return false;
 		}
-		final String authority = UrlUtils.authority(method, path);
-		return this.paths.stream().anyMatch(value -> UrlUtils.match(authority, value));
+		final String authority = URLUtils.authority(method, path);
+		return this.paths.stream().anyMatch(value -> URLUtils.match(authority, value));
 	}
 
 }

@@ -43,10 +43,6 @@ public final class ErrorUtils {
 	private static final Map<Class<?>, MessageCode> CODE_MAPPING = new LinkedHashMap<>();
 	
 	/**
-	 * 错误地址
-	 */
-	public static final String ERROR_PATH = "/error";
-	/**
 	 * 最大错误次数
 	 */
 	public static final int SYSTEM_ERROR_INDEX_MAX = 4;
@@ -89,7 +85,7 @@ public final class ErrorUtils {
 	 * @param clazz 异常类型
 	 */
 	public static final void register(MessageCode code, Class<?> clazz) {
-		log.info("注册异常：{}-{}", code, clazz);
+		log.info("注册异常映射：{}-{}", code, clazz);
 		CODE_MAPPING.put(clazz, code);
 	}
 	
@@ -113,6 +109,7 @@ public final class ErrorUtils {
 	public static final void putSystemErrorException(HttpServletRequest request, Exception e) {
 		request.setAttribute(ErrorUtils.EXCEPTION_SYSTEM, e);
 	}
+	
 	/**
 	 * 获取系统错误计数
 	 * 
@@ -157,6 +154,7 @@ public final class ErrorUtils {
 	/**
 	 * 获取错误信息
 	 * 
+	 * @param t 异常
 	 * @param request 请求
 	 * @param response 响应
 	 * 
@@ -164,25 +162,25 @@ public final class ErrorUtils {
 	 */
 	public static final Message<String> message(Throwable t, HttpServletRequest request, HttpServletResponse response) {
 		final Message<String> message;
-		int status = status(request, response);
-		// 获取异常信息
-		final Object globalErrorMessage = t == null ? globalErrorMessage(request) : t;
-		final Object rootErrorMessage = ExceptionUtils.root(globalErrorMessage);
-		if(rootErrorMessage instanceof MessageCodeException) {
+		int status = globalStatus(request, response);
+		final Object globalError = t == null ? globalError(request) : t;
+		final Object rootError = ExceptionUtils.root(globalError);
+		if(rootError instanceof MessageCodeException) {
 			// 自定义的异常
-			final MessageCodeException messageCodeException = (MessageCodeException) rootErrorMessage;
+			final MessageCodeException messageCodeException = (MessageCodeException) rootError;
 			final MessageCode messageCode = messageCodeException.getCode();
 			status = messageCode.getStatus();
 			message = Message.fail(messageCode, messageCodeException.getMessage());
-		} else if(rootErrorMessage instanceof Throwable) {
+		} else if(rootError instanceof Throwable) {
 			// 未知异常
-			final Throwable throwable = (Throwable) rootErrorMessage;
+			final Throwable throwable = (Throwable) rootError;
 			final MessageCode messageCode = messageCode(status, throwable);
 			status = messageCode.getStatus();
 			message = Message.fail(messageCode, message(messageCode, throwable));
 		} else {
 			// 没有异常
 			final MessageCode messageCode = MessageCode.of(status);
+//			status = messageCode.getStatus();
 			message = Message.fail(messageCode);
 		}
 		// 状态编码
@@ -190,24 +188,39 @@ public final class ErrorUtils {
 			status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 		}
 		response.setStatus(status);
-		final String method = request.getMethod();
 		final String path = Objects.toString(request.getAttribute(SERVLET_REQUEST_URI), request.getServletPath());
 		final String query = request.getQueryString();
+		final String method = request.getMethod();
 		final Integer errorIndex = ErrorUtils.getSystemErrorIndex(request);
-		log.warn("系统错误：{}-{}-{}-{}", method, path, query, errorIndex);
-		if(globalErrorMessage instanceof Throwable) {
-//			log.error("""
-//				系统错误：{}-{}-{}-{}
-//				错误信息：{}
-//				""", method, path, query, errorIndex, message, globalErrorMessage);
+		if(globalError instanceof Throwable) {
+			log.error("""
+				系统错误：{}-{}-{}-{}
+				错误信息：{}
+				""", path, query, method, errorIndex, message, globalError);
 		} else {
-//			log.warn("""
-//				系统错误：{}-{}-{}-{}
-//				错误信息：{}-{}
-//				""", method, path, query, errorIndex, message, globalErrorMessage);
+			log.warn("""
+				系统错误：{}-{}-{}-{}
+				错误信息：{}-{}
+				""", path, query, method, errorIndex, message, globalError);
 		}
 		request.setAttribute(SYSTEM_ERROR_MESSAGE, message);
 		return message;
+	}
+	
+	/**
+	 * 获取响应状态
+	 * 
+	 * @param request 请求
+	 * @param response 响应
+	 * 
+	 * @return 响应状态
+	 */
+	public static final int globalStatus(HttpServletRequest request, HttpServletResponse response) {
+		final Object status = request.getAttribute(SERVLET_STATUS_CODE);
+		if(status instanceof Integer) {
+			return (Integer) status;
+		}
+		return response.getStatus();
 	}
 	
 	/**
@@ -217,7 +230,7 @@ public final class ErrorUtils {
 	 * 
 	 * @return 异常
 	 */
-	public static final Object globalErrorMessage(HttpServletRequest request) {
+	public static final Object globalError(HttpServletRequest request) {
 		// 系统异常
 		Object throwable = request.getAttribute(EXCEPTION_SYSTEM);
 		if(throwable != null) {
@@ -234,22 +247,6 @@ public final class ErrorUtils {
 			return throwable;
 		}
 		return throwable;
-	}
-	
-	/**
-	 * 获取响应状态
-	 * 
-	 * @param request 请求
-	 * @param response 响应
-	 * 
-	 * @return 响应状态
-	 */
-	public static final int status(HttpServletRequest request, HttpServletResponse response) {
-		final Object status = request.getAttribute(SERVLET_STATUS_CODE);
-		if(status instanceof Integer) {
-			return (Integer) status;
-		}
-		return response.getStatus();
 	}
 	
 	/**
@@ -301,17 +298,6 @@ public final class ErrorUtils {
 			return message;
 		}
 		return messageCode.getMessage();
-	}
-	
-	/**
-	 * 判断是否错误请求
-	 * 
-	 * @param request 请求
-	 * 
-	 * @return 是否错误请求
-	 */
-	public static final boolean error(HttpServletRequest request) {
-		return ERROR_PATH.equals(request.getServletPath());
 	}
 	
 }

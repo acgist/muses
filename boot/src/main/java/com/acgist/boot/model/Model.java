@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.acgist.boot.utils.JSONUtils;
 
 /**
- * 对象属性复制
+ * Model
  * 
  * @author acgist
  */

@@ -3,23 +3,22 @@ package com.acgist.rest.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.boot.model.User;
-import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.boot.utils.JSONUtils;
-import com.acgist.boot.utils.StringUtils;
 import com.acgist.rest.UserContext;
-import com.acgist.www.interceptor.WwwInterceptor;
+import com.acgist.www.interceptor.AdapterInterceptor;
 
 /**
  * 用户拦截
  * 
  * @author acgist
  */
-public class UserInterceptor implements WwwInterceptor {
+public class UserInterceptor extends AdapterInterceptor {
 
 	/**
 	 * 忽略用户登陆
@@ -34,7 +33,7 @@ public class UserInterceptor implements WwwInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		if(ErrorUtils.error(request)) {
+		if(this.error(request)) {
 			return true;
 		}
 		final String currentUser = request.getHeader(User.HEADER_CURRENT_USER);

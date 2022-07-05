@@ -10,6 +10,11 @@ import java.util.Map;
 public interface TransferService {
 
 	/**
+	 * 枚举缓存
+	 */
+	String CACHE_TRANSFER = "transfer";
+	
+	/**
 	 * 枚举查询
 	 * 
 	 * @param group 枚举分组

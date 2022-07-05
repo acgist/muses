@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.acgist.boot.service.RsaService;
@@ -15,19 +16,9 @@ import com.acgist.boot.utils.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * RSA
- * 
- * @author acgist
- */
 @Slf4j
 public class RsaServiceImpl implements RsaService {
 
-	/**
-	 * 签名
-	 */
-	private static final String SIGNATURE = "signature";
-	
 	/**
 	 * 文本公钥
 	 */
@@ -50,16 +41,17 @@ public class RsaServiceImpl implements RsaService {
 	public RsaServiceImpl() {
 	}
 
-	public RsaServiceImpl(String publicKeyValue, String privateKeyValue) {
-		this.publicKeyValue = publicKeyValue;
-		this.privateKeyValue = privateKeyValue;
-	}
-
 	@PostConstruct
 	public void init() {
-		log.info("加载公钥私钥");
+		if(StringUtils.isEmpty(this.publicKeyValue) || StringUtils.isEmpty(this.privateKeyValue)) {
+			final var keys = RsaUtils.buildKey();
+			this.publicKeyValue = keys.get(RsaUtils.PUBLIC_KEY);
+			this.privateKeyValue = keys.get(RsaUtils.PRIVATE_KEY);
+		}
 		this.publicKey = RsaUtils.loadPublicKey(this.publicKeyValue);
+		log.info("加载RSA公钥：{}", this.publicKey.getAlgorithm());
 		this.privateKey = RsaUtils.loadPrivateKey(this.privateKeyValue);
+		log.info("加载RSA私钥：{}", this.privateKey.getAlgorithm());
 	}
 
 	@Override
@@ -74,14 +66,12 @@ public class RsaServiceImpl implements RsaService {
 	
 	@Override
 	public String signature(Map<String, Object> map) {
-		final String content = this.join(map);
-		return RsaUtils.signature(content, this.privateKey);
+		return RsaUtils.signature(this.join(map), this.privateKey);
 	}
 	
 	@Override
 	public boolean verify(Map<String, Object> map, String signature) {
-		final String content = this.join(map);
-		return RsaUtils.verify(content, signature, this.publicKey);
+		return RsaUtils.verify(this.join(map), signature, this.publicKey);
 	}
 	
 	/**
@@ -92,10 +82,12 @@ public class RsaServiceImpl implements RsaService {
 	 * @return 拼接结果
 	 */
 	private String join(Map<String, Object> map) {
+		// 排序
 		final Map<String, Object> sortMap = new TreeMap<>((source, target) -> source.compareTo(target));
 		sortMap.putAll(map);
+		// 拼接
 		return sortMap.entrySet().stream()
-			.filter(entity -> !SIGNATURE.equals(entity.getKey()))
+			.filter(entity -> !RsaService.SIGNATURE.equals(entity.getKey()))
 			.map(entity -> entity.getKey() + entity.getValue())
 			.collect(Collectors.joining());
 	}

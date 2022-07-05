@@ -37,7 +37,7 @@ public final class BeanUtils {
 		try {
 			return clazz.getDeclaredConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			log.error("通过反射生成实例异常：{}", clazz, e);
+			log.error("获取类型实例异常：{}", clazz, e);
 		}
 		return null;
 	}
@@ -54,7 +54,7 @@ public final class BeanUtils {
 		try {
 			return FieldUtils.getField(value.getClass(), field, true).get(value);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			log.error("读取属性异常", e);
+			log.error("读取对象字段属性异常", e);
 		}
 		return null;
 	}
@@ -70,15 +70,14 @@ public final class BeanUtils {
 	 * @return 注解
 	 */
 	public static final <T extends Annotation> T getAnnotation(ProceedingJoinPoint proceedingJoinPoint, Class<T> clazz) {
-		if (proceedingJoinPoint.getSignature() instanceof MethodSignature) {
-			// TODO：JDK17
-			final T t = ((MethodSignature) proceedingJoinPoint.getSignature()).getMethod().getAnnotation(clazz);
+		if (proceedingJoinPoint.getSignature() instanceof MethodSignature methodSignature) {
+			final T t = methodSignature.getMethod().getAnnotation(clazz);
 			if (t == null) {
-				throw MessageCodeException.of("获取注解失败：", clazz);
+				throw MessageCodeException.of("获取切点注解失败：", clazz);
 			}
 			return t;
 		}
-		throw MessageCodeException.of("注解错误");
+		throw MessageCodeException.of("切点注解类型错误：", clazz);
 	}
 	
 }

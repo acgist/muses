@@ -44,7 +44,7 @@ public class FallbackAutoConfiguration {
 		} catch (Throwable t) {
 			final Fallback fallback = BeanUtils.getAnnotation(proceedingJoinPoint, Fallback.class);
 			if(fallback.methodExecuteThrowable().isAssignableFrom(t.getClass())) {
-				log.error("方法执行失败执行失败方法：{}", proceedingJoinPoint, t);
+				log.error("方法执行异常执行失败方法：{}-{}", fallback.method(), proceedingJoinPoint, t);
 				MethodUtils.invokeMethod(proceedingJoinPoint.getThis(), fallback.method(), proceedingJoinPoint.getArgs());
 			}
 			if(fallback.throwThrowable()) {

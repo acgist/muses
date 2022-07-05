@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -27,7 +28,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import com.acgist.boot.config.BootAutoConfiguration.SerializerType;
 import com.acgist.boot.service.CacheService;
 import com.acgist.boot.utils.JSONUtils;
-import com.acgist.boot.utils.MapUtils;
 import com.acgist.redis.service.impl.CacheServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;

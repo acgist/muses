@@ -17,15 +17,6 @@ import lombok.Setter;
 public class CloudConfig {
 
 	/**
-	 * 最大系统编号
-	 */
-	public static final int MAX_SN = 100;
-	/**
-	 * 系统自动配置
-	 */
-	public static final String MUSES_CONFIG = "muses.json";
-	
-	/**
 	 * 当前系统编号
 	 */
 	@JsonIgnore
@@ -41,11 +32,7 @@ public class CloudConfig {
 	@JsonIgnore
 	private Integer port;
 	/**
-	 * 实例系统编号
-	 * 
-	 * 如果服务编号配置为负数时，系统自动为不同服务配置一个递增的系统编号。
-	 * 
-	 * @see #MAX_SN
+	 * 服务实例编号
 	 */
 	private Map<String, Integer> sns;
 	

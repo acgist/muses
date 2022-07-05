@@ -26,6 +26,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
@@ -52,6 +53,7 @@ public final class RsaUtils {
 	private static final int KEY_LENGTH = 2048;
 	/**
 	 * RSA最大加密明文大小：密钥长度 / 8 - 11
+	 * 
 	 * 11：填充长度
 	 */
 	private static final int MAX_ENCRYPT_BLOCK = KEY_LENGTH / 8 - 11;
@@ -101,8 +103,8 @@ public final class RsaUtils {
 		final RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		final RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 		return Map.of(
-			PUBLIC_KEY, StringUtils.base64Encode(publicKey.getEncoded()),
-			PRIVATE_KEY, StringUtils.base64Encode(privateKey.getEncoded())
+			PUBLIC_KEY, Base64.getEncoder().encodeToString(publicKey.getEncoded()),
+			PRIVATE_KEY, Base64.getEncoder().encodeToString(privateKey.getEncoded())
 		);
 	}
 
@@ -114,7 +116,7 @@ public final class RsaUtils {
 	 * @return 公钥
 	 */
 	public static final PublicKey loadPublicKey(String content) {
-		final byte[] bytes = StringUtils.base64Decode(content);
+		final byte[] bytes = Base64.getDecoder().decode(content);
 		final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(bytes);
 		try {
 			final KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
@@ -150,7 +152,7 @@ public final class RsaUtils {
 	 */
 	public static final PrivateKey loadPrivateKey(String content) {
 		try {
-			final byte[] bytes = StringUtils.base64Decode(content);
+			final byte[] bytes = Base64.getDecoder().decode(content);
 			final PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
 			final KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
 			return keyFactory.generatePrivate(keySpec);
@@ -191,7 +193,10 @@ public final class RsaUtils {
 	 * @return Base64编码加密数据
 	 */
 	public static final String encrypt(String data, PublicKey publicKey) {
-		return StringUtils.base64Encode(encrypt(data.getBytes(), publicKey));
+		if(Objects.isNull(data)) {
+			return null;
+		}
+		return Base64.getEncoder().encodeToString(encrypt(data.getBytes(), publicKey));
 	}
 
 	/**
@@ -235,7 +240,10 @@ public final class RsaUtils {
 	 * @return 原始数据
 	 */
 	public static final String decrypt(String data, PrivateKey privateKey) {
-		return new String(decrypt(StringUtils.base64Decode(data), privateKey));
+		if(Objects.isNull(data)) {
+			return null;
+		}
+		return new String(decrypt(Base64.getDecoder().decode(data), privateKey));
 	}
 
 	/**
@@ -282,7 +290,7 @@ public final class RsaUtils {
 		if (Objects.isNull(data) || Objects.isNull(privateKey)) {
 			return null;
 		}
-		return StringUtils.base64Encode(signature(data.getBytes(), privateKey));
+		return Base64.getEncoder().encodeToString(signature(data.getBytes(), privateKey));
 	}
 
 	/**
@@ -317,7 +325,7 @@ public final class RsaUtils {
 		if (Objects.isNull(data) || Objects.isNull(signature) || Objects.isNull(publicKey)) {
 			return false;
 		}
-		return verify(data.getBytes(), StringUtils.base64Decode(signature), publicKey);
+		return verify(data.getBytes(), Base64.getDecoder().decode(signature), publicKey);
 	}
 
 	/**
@@ -365,7 +373,7 @@ public final class RsaUtils {
 	 * @return 公钥字符串
 	 */
 	public static final String toString(PublicKey publicKey) {
-		return StringUtils.base64Encode(publicKey.getEncoded());
+		return Base64.getEncoder().encodeToString(publicKey.getEncoded());
 	}
 
 	/**
@@ -376,7 +384,7 @@ public final class RsaUtils {
 	 * @return 私钥字符串
 	 */
 	public static final String toString(PrivateKey privateKey) {
-		return StringUtils.base64Encode(privateKey.getEncoded());
+		return Base64.getEncoder().encodeToString(privateKey.getEncoded());
 	}
 
 }

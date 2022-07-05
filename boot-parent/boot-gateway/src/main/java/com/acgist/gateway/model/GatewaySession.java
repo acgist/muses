@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +18,6 @@ import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.service.RsaService;
 import com.acgist.boot.utils.DateUtils;
 import com.acgist.boot.utils.JSONUtils;
-import com.acgist.boot.utils.MapUtils;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.model.request.GatewayRequest;
 import com.acgist.www.utils.ResponseUtils;

@@ -84,10 +84,10 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 		if(this.cacheService == null || this.transferService == null) {
 			return Map.of();
 		}
-		Map<String, String> transferMap = this.cacheService.cache(CacheService.CACHE_TRANSFER, this.group);
+		Map<String, String> transferMap = this.cacheService.cache(TransferService.CACHE_TRANSFER, this.group);
 		if(transferMap == null) {
 			transferMap = this.transferService.select(this.group);
-			this.cacheService.cache(CacheService.CACHE_TRANSFER, this.group, transferMap);
+			this.cacheService.cache(TransferService.CACHE_TRANSFER, this.group, transferMap);
 		}
 		return transferMap;
 	}

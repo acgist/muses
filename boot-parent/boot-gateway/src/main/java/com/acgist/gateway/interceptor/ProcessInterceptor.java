@@ -13,14 +13,14 @@ import com.acgist.boot.service.IdService;
 import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.gateway.model.GatewaySession;
 import com.acgist.notify.gateway.model.dto.GatewayDto;
-import com.acgist.www.interceptor.WwwInterceptor;
+import com.acgist.www.interceptor.AdapterInterceptor;
 
 /**
  * 处理拦截
  * 
  * @author acgist
  */
-public class ProcessInterceptor implements WwwInterceptor {
+public class ProcessInterceptor extends AdapterInterceptor {
 
 	@Autowired
 	private IdService idService;
@@ -41,6 +41,9 @@ public class ProcessInterceptor implements WwwInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(this.error(request)) {
+			return true;
+		}
 		final GatewaySession session = GatewaySession.getInstance(this.context);
 		final Long queryId = this.idService.id();
 		if (session.buildProcess(queryId)) {

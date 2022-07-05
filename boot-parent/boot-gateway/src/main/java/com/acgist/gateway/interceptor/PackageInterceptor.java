@@ -3,25 +3,25 @@ package com.acgist.gateway.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.utils.JSONUtils;
-import com.acgist.boot.utils.StringUtils;
 import com.acgist.gateway.config.GatewayMapping;
 import com.acgist.gateway.model.GatewaySession;
 import com.acgist.gateway.model.request.GatewayRequest;
 import com.acgist.gateway.service.impl.GatewayMappingService;
-import com.acgist.www.interceptor.WwwInterceptor;
+import com.acgist.www.interceptor.AdapterInterceptor;
 
 /**
  * 数据打包
  * 
  * @author acgist
  */
-public class PackageInterceptor implements WwwInterceptor {
+public class PackageInterceptor extends AdapterInterceptor {
 
 	@Autowired
 	private GatewayMappingService gatewayMappingService;
@@ -38,6 +38,9 @@ public class PackageInterceptor implements WwwInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		if(this.error(request)) {
+			return true;
+		}
 		final GatewaySession session = GatewaySession.getInstance();
 		final GatewayMapping gatewayMapping = this.gatewayMappingService.gatewayMapping(request.getMethod(), request.getRequestURI());
 		if(gatewayMapping == null) {

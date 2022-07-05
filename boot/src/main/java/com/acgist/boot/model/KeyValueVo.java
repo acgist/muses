@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * KeyValueDto
+ * KeyValueVo
  * 
  * @author acgist
  */
 @Getter
 @Setter
-public class KeyValueVo<V> extends BootDto {
+public class KeyValueVo<V> extends BootVo {
 
 	private static final long serialVersionUID = 1L;
 	

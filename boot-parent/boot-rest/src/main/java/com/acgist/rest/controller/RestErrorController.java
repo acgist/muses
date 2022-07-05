@@ -18,7 +18,7 @@ import com.acgist.boot.utils.ErrorUtils;
 @RestController
 public class RestErrorController implements ErrorController {
 
-	@RequestMapping(value = ErrorUtils.ERROR_PATH)
+	@RequestMapping(value = "${system.error.path:/error}")
 	public Message<String> index(HttpServletRequest request, HttpServletResponse response) {
 		return ErrorUtils.message(request, response);
 	}

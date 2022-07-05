@@ -124,7 +124,17 @@ system.excel.header.size=16
 system.excel.cell.font=宋体
 system.excel.cell.size=12
 system.excel.font.width=256
+# 错误路径
+system.error.path=/error
+# 错误页面
+system.error.view=/error
 ```
+
+## 错误处理
+
+系统已经统一处理所有异常错误，Web模块建议不要使用网关进行地址截取，同时配置错误路径防止重定向时跳转地址错误。
+
+> 存在重定向的服务均不建议使用网关地址截取
 
 ## Maven配置
 
@@ -210,6 +220,10 @@ server.port=${system.port:8080}
 * 远程`Service`接口需要使用`I`开头：`IUserService`
 * 实现接口使用`Impl`结尾：`UserServiceImpl`
 * 不要使用继承`BootService`提供远程服务
+
+## JDK17
+
+现在Dubbo暂不支持JDK17，需要添加参数`--add-opens java.base/java.lang=ALL-UNNAMED`才能启动。
 
 ## 其他链接
 

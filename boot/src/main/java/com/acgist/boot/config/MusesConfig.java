@@ -23,9 +23,21 @@ public class MusesConfig {
 	 */
 	public static final String CHARSET_VALUE = CHARSET.name();
 	/**
-	 * JSON HTTP数据类型
+	 * JSON MIME
 	 */
 	public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
+	/**
+	 * 最小系统编号
+	 */
+	public static final int CLOUD_MIN_SN = 10;
+	/**
+	 * 最大系统编号
+	 */
+	public static final int CLOUD_MAX_SN = 100;
+	/**
+	 * 系统自动配置
+	 */
+	public static final String CLOUD_CONFIG = "muses.json";
 	/**
 	 * OAuth2用户ID
 	 */

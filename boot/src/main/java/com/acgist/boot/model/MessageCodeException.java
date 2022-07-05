@@ -2,8 +2,8 @@ package com.acgist.boot.model;
 
 import java.util.Objects;
 
-import com.acgist.boot.utils.ArrayUtils;
-import com.acgist.boot.utils.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 状态编码异常
@@ -36,6 +36,7 @@ public class MessageCodeException extends RuntimeException {
 		if(ArrayUtils.isEmpty(messages)) {
 			message = Objects.isNull(t) ? code.getMessage() : t.getMessage();
 		} else {
+			// 拼接错误描述
 			final StringBuilder builder = new StringBuilder();
 			for (Object value : messages) {
 				builder.append(value);

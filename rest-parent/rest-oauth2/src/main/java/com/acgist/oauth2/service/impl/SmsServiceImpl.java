@@ -25,7 +25,7 @@ public class SmsServiceImpl implements SmsService {
 	 */
 	@Override
 	public void send(String mobile) {
-		// TODO：自行实现发送
+		// TODO：自行实现发送还有次数限制
 		final Random random = new Random();
 		final StringBuilder builder = new StringBuilder();
 		for (int index = 0; index < SmsService.SMS_CODE_LENGTH; index++) {

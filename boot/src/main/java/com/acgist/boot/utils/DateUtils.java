@@ -11,9 +11,11 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-import com.acgist.boot.utils.FormatStyle.DateStyle;
-import com.acgist.boot.utils.FormatStyle.DateTimeStyle;
-import com.acgist.boot.utils.FormatStyle.TimeStyle;
+import org.apache.commons.lang3.StringUtils;
+
+import com.acgist.boot.config.FormatStyle.DateStyle;
+import com.acgist.boot.config.FormatStyle.DateTimeStyle;
+import com.acgist.boot.config.FormatStyle.TimeStyle;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,28 +56,28 @@ public final class DateUtils {
 	}
 	
 	/**
-	 * 字符串转换日期
+	 * 日期字符串转换日期
 	 * 
-	 * @param value 日期
+	 * @param value 日期字符串
 	 * @param format 格式
 	 * 
 	 * @return 日期
 	 */
 	public static final Date parse(String value, String format) {
-		if(value == null || format == null) {
+		if(StringUtils.isEmpty(value) || StringUtils.isEmpty(format)) {
 			return null;
 		}
 		try {
 			final SimpleDateFormat formatter = new SimpleDateFormat(format);
 			return formatter.parse(value);
 		} catch (ParseException e) {
-			log.error("日期转换异常", e);
+			log.error("字符串转换日期异常：{}-{}", value, format, e);
 		}
 		return null;
 	}
 
 	/**
-	 * 日期格式化
+	 * 日期格式化字符串
 	 * 
 	 * @param date 日期
 	 * @param format 格式
@@ -83,7 +85,7 @@ public final class DateUtils {
 	 * @return 日期字符串
 	 */
 	public static final String format(Date date, String format) {
-		if(date == null || format == null) {
+		if(date == null || StringUtils.isEmpty(format)) {
 			return null;
 		}
 		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);

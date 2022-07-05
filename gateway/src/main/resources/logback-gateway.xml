@@ -24,7 +24,7 @@
 	<!-- name：包名、日志名称 -->
 	<!-- additivity：是否追加到根（root）日志 -->
 	<logger name="com.acgist.gateway" level="INFO" additivity="false">
-		<appender-ref ref="gatewayFile" />
+		<appender-ref ref="gatewayFileAsync" />
 	</logger>
 	
 </included>

@@ -27,15 +27,15 @@ public class CloudAutoConfiguration {
 	@Value("${system.sn:-1}")
 	private int sn;
 	/**
-	 * 服务名称
-	 */
-	@Value("${spring.application.name:}")
-	private String name;
-	/**
 	 * 服务端口
 	 */
 	@Value("${server.port:0}")
 	private int port;
+	/**
+	 * 服务名称
+	 */
+	@Value("${spring.application.name:muses}")
+	private String name;
 	
 	@Autowired
 	private NacosConfigManager nacosConfigManager;

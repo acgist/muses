@@ -14,7 +14,7 @@ public final class CostUtils {
 	}
 
 	/**
-	 * 执行消耗统计
+	 * 执行时间消耗统计
 	 * 
 	 * @param count 执行次数
 	 * @param coster 消耗函数
@@ -37,10 +37,12 @@ public final class CostUtils {
 	 * @author acgist
 	 */
 	public interface Coster {
+		
 		/**
 		 * 消耗方法
 		 */
 		void execute();
+		
 	}
 
 }

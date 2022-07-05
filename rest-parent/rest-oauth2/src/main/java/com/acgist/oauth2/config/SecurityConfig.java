@@ -61,17 +61,31 @@ public class SecurityConfig {
 		ProviderManager providerManager,
 		AuthenticationSuccessHandler authenticationSuccessHandler,
 		AuthenticationFailureHandler authenticationFailureHandler,
-		IPCountAuthenticationFilter ipCountAuthenticationFilter,
-		PasswordAuthenticationFilter passwordAuthenticationFilter,
 		SmsAuthenticationFilter smsAuthenticationFilter,
-		CodeAuthenticationFilter codeAuthenticationFilter
+		CodeAuthenticationFilter codeAuthenticationFilter,
+		IPCountAuthenticationFilter ipCountAuthenticationFilter,
+		PasswordAuthenticationFilter passwordAuthenticationFilter
 	) throws Exception {
 		security
-			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
-			.and()
 			.authorizeRequests()
+			// OAauth2所有地址：通过OAuth2实现拦截
+			.antMatchers("/oauth2/**").permitAll()
+			// OAuth2登陆页面
 			.antMatchers(HttpMethod.GET, "/oauth2/login").permitAll()
+			// 配置允许地址
+//			.antMatchers(
+//				// 错误
+//				"/error",
+//				// 图标
+//				"/favicon.ico",
+//				// Swagger
+//				"/v2/api-docs", "/swagger-ui/**", "/swagger-resources/**"
+//			).permitAll()
+			// 配置IP名单
+//			.requestMatchers(request -> WebUtils.clientIP(request)).permitAll()
+			// 其余地址全部允许
 //			.anyRequest().permitAll()
+			// 其余地址需要授权
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
@@ -101,12 +115,6 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SmsAuthenticationProvider smsAuthenticationProvider() {
-		return new SmsAuthenticationProvider();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
 	public DaoAuthenticationProvider daoAuthenticationProvider() {
 		final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder);
@@ -116,20 +124,14 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
+	public SmsAuthenticationProvider smsAuthenticationProvider() {
+		return new SmsAuthenticationProvider();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
 	public PasswordAuthenticationProvider passwordAuthenticationProvider() {
 		return new PasswordAuthenticationProvider();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public IPCountAuthenticationFilter ipCountAuthenticationFilter() {
-		return new IPCountAuthenticationFilter();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public CodeAuthenticationFilter codeAuthenticationFilter() {
-		return new CodeAuthenticationFilter();
 	}
 	
 	@Bean
@@ -144,6 +146,18 @@ public class SecurityConfig {
 		smsAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
 		smsAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
 		return smsAuthenticationFilter;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public CodeAuthenticationFilter codeAuthenticationFilter() {
+		return new CodeAuthenticationFilter();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public IPCountAuthenticationFilter ipCountAuthenticationFilter() {
+		return new IPCountAuthenticationFilter();
 	}
 	
 	@Bean

@@ -1,15 +1,17 @@
 package com.acgist.www.resolver;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.acgist.boot.utils.JSONUtils;
-import com.acgist.boot.utils.StringUtils;
 
 /**
- * 获取当前用户
+ * 获取当前请求参数
+ * 
+ * 区别`@RequestBody`
  * 
  * @author acgist
  */

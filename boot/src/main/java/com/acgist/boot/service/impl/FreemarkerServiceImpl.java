@@ -10,11 +10,11 @@ import java.io.Writer;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.service.FreemarkerService;
-import com.acgist.boot.utils.StringUtils;
 
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
@@ -22,11 +22,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * FreeMarker
- * 
- * @author acgist
- */
 @Slf4j
 public class FreemarkerServiceImpl implements FreemarkerService {
 
@@ -58,7 +53,7 @@ public class FreemarkerServiceImpl implements FreemarkerService {
 			template.process(data, writer);
 			writer.flush();
 		} catch (TemplateException | IOException e) {
-			log.error("freemarker模板异常：{}-{}", templatePath, data, e);
+			log.error("处理FreeMarker模板异常：{}-{}", templatePath, data, e);
 		}
 		return true;
 	}
@@ -86,7 +81,7 @@ public class FreemarkerServiceImpl implements FreemarkerService {
 			template.process(data, writer);
 			return writer.toString();
 		} catch (TemplateException | IOException e) {
-			log.error("freemarker模板异常：{}-{}", name, data, e);
+			log.error("处理FreeMarker模板异常：{}-{}", name, data, e);
 		}
 		return null;
 	}

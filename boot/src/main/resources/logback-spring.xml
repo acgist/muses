@@ -18,26 +18,6 @@
 	<!-- 日志格式 -->
 	<property name="system.pattern" value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %file:%line - %m%n" />
 
-	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${system.path}/${system.name}.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<maxHistory>${system.history}</maxHistory>
-			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-		</rollingPolicy>
-		<bufferSize>${system.buffer}</bufferSize>
-		<immediateFlush>false</immediateFlush>
-		<encoder>
-			<charset>${system.charset}</charset>
-			<pattern>${system.pattern}</pattern>
-		</encoder>
-	</appender>
-	<appender name="fileAsync" class="ch.qos.logback.classic.AsyncAppender">
-		<appender-ref ref="file" />
-		<queueSize>${system.queue}</queueSize>
-		<includeCallerData>true</includeCallerData>
-		<discardingThreshold>0</discardingThreshold>
-	</appender>
-
 	<appender name="fileDebug" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${system.path}/${system.name}.debug.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -112,51 +92,82 @@
 			<charset>${system.charset}</charset>
 			<pattern>${system.pattern}</pattern>
 		</encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
 	</appender>
 	
 	<!-- 引入文件：文件可以不存在 -->
 	<include resource="logback-gateway.xml" />
 
+	<!-- 忽略部分DEBUG日志 -->
 	<!-- Redis连接 -->
 	<logger name="io.lettuce.core" level="INFO" additivity="false">
-		<appender-ref ref="file" />
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
+	</logger>
+	<!-- Nacos日志 -->
+	<logger name="com.alibaba.nacos.client" level="INFO" additivity="false">
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
+	</logger>
+	<!-- Kafka日志 -->
+	<logger name="org.apache.kafka.clients" level="INFO" additivity="false">
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
+	</logger>
+	<!-- HikariPool日志 -->
+	<logger name="com.zaxxer.hikari.pool.HikariPool" level="INFO" additivity="false">
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
 	</logger>
 	<!-- MyBatis -->
 	<logger name="org.mybatis.spring.SqlSessionUtils" level="INFO" additivity="false">
-		<appender-ref ref="file" />
-	</logger>
-	<!-- 数据库事务 -->
-	<logger name="o.m.spring.transaction.SpringManagedTransaction" level="INFO" additivity="false">
-		<appender-ref ref="file" />
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
 	</logger>
 	<!-- 数据库连接 -->
-	<logger name="o.springframework.jdbc.datasource.DataSourceUtils" level="INFO" additivity="false">
-		<appender-ref ref="file" />
+	<logger name="org.springframework.jdbc.datasource.DataSourceUtils" level="INFO" additivity="false">
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
+	</logger>
+	<!-- 数据库事务 -->
+	<logger name="org.mybatis.spring.transaction.SpringManagedTransaction" level="INFO" additivity="false">
+		<appender-ref ref="fileInfoAsync" />
+		<appender-ref ref="fileErrorAsync" />
 	</logger>
 	
 	<springProfile name="dev">
-		<root level="INFO">
-			<appender-ref ref="file" />
+		<root level="DEBUG">
 			<appender-ref ref="console" />
+			<appender-ref ref="fileDebugAsync" />
+			<appender-ref ref="fileInfoAsync" />
+			<appender-ref ref="fileErrorAsync" />
 		</root>
 	</springProfile>
 
 	<springProfile name="test">
 		<root level="INFO">
-			<appender-ref ref="file" />
+			<appender-ref ref="fileDebugAsync" />
+			<appender-ref ref="fileInfoAsync" />
+			<appender-ref ref="fileErrorAsync" />
 		</root>
 	</springProfile>
 	
 	<springProfile name="release">
 		<root level="INFO">
-			<appender-ref ref="file" />
+			<appender-ref ref="fileDebugAsync" />
+			<appender-ref ref="fileInfoAsync" />
+			<appender-ref ref="fileErrorAsync" />
 		</root>
 	</springProfile>
 
 	<springProfile name="!dev &amp; !test &amp; !release">
-		<root level="debug">
-			<appender-ref ref="file" />
+		<root level="DEBUG">
 			<appender-ref ref="console" />
+			<appender-ref ref="fileDebugAsync" />
+			<appender-ref ref="fileInfoAsync" />
+			<appender-ref ref="fileErrorAsync" />
 		</root>
 	</springProfile>
 

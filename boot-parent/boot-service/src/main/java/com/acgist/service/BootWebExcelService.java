@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.acgist.boot.model.MessageCodeException;
-import com.acgist.boot.utils.UrlUtils;
+import com.acgist.boot.utils.URLUtils;
 import com.acgist.model.entity.BootEntity;
 import com.acgist.model.query.FilterQuery;
 import com.acgist.service.impl.BootExcelServiceImpl;
@@ -69,7 +69,7 @@ public interface BootWebExcelService<T extends BootEntity> extends BootExcelServ
 	 */
 	default void download(String name, List<T> list, Map<String, ExcelHeaderValue> header, HttpServletResponse response) {
 		try {
-			final String downloadName = UrlUtils.encode(Objects.toString(name, this.getEntityClass().getSimpleName()));
+			final String downloadName = URLUtils.encode(Objects.toString(name, this.getEntityClass().getSimpleName()));
 			response.setHeader("Content-Type", "application/vnd.ms-excel");
 			response.addHeader("Content-Disposition", "attachment;filename=" + downloadName + ".xlsx");
 			this.download(list, header, response.getOutputStream());

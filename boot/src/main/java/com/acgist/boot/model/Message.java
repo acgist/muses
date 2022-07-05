@@ -1,6 +1,6 @@
 package com.acgist.boot.model;
 
-import com.acgist.boot.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -141,6 +141,7 @@ public class Message<T> extends Model {
 	 * 错误消息
 	 * 
 	 * @param <T> 消息类型
+	 * 
 	 * @param code 错误编码
 	 * @param message 错误描述
 	 * @param body 消息内容

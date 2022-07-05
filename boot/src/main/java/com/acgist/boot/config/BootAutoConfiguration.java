@@ -1,6 +1,8 @@
 package com.acgist.boot.config;
 
 import java.lang.management.ManagementFactory;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -12,11 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
 import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.boot.task.TaskSchedulerBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -37,7 +42,7 @@ import ch.qos.logback.classic.LoggerContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Boot自动配置
+ * 全局自动配置
  * 
  * @author acgist
  */
@@ -45,6 +50,10 @@ import lombok.extern.slf4j.Slf4j;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @EnableAsync
 @Configuration
+@Import({
+	TaskExecutionAutoConfiguration.class,
+	TaskSchedulingAutoConfiguration.class
+})
 public class BootAutoConfiguration {
 
 	/**
@@ -54,17 +63,20 @@ public class BootAutoConfiguration {
 	 */
 	public enum SerializerType {
 		
-		JDK, JACKSON;
+		// JDK
+		JDK,
+		// JACKSON
+		JACKSON;
 		
 	}
 
 	/**
 	 * 服务名称
 	 */
-	@Value("${spring.application.name:}")
+	@Value("${spring.application.name:muses}")
 	private String name;
 	/**
-	 * 默认使用JDK序列化
+	 * 序列化类型：默认使用JDK序列化
 	 * 
 	 * Jackson不支持没有默认函数的对象：JWT Token授权信息
 	 */
@@ -81,18 +93,17 @@ public class BootAutoConfiguration {
 	}
 	
 	@Bean
+	@Primary
+	@ConditionalOnMissingBean
+	public ObjectMapper objectMapper() {
+		return JSONUtils.buildWebMapper();
+	}
+	
+	@Bean
 	@ConditionalOnClass(freemarker.template.Configuration.class)
 	@ConditionalOnMissingBean
 	public FreemarkerService freemarkerService() {
 		return new FreemarkerServiceImpl();
-	}
-
-	@Bean
-	@Primary
-	@ConditionalOnMissingBean
-	public ObjectMapper objectMapper() {
-		// Jackson2ObjectMapperBuilder
-		return JSONUtils.buildWebMapper();
 	}
 
 	@Bean
@@ -108,17 +119,15 @@ public class BootAutoConfiguration {
 	
 	@Bean
 	@Primary
-//	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean
 	public TaskExecutor taskExecutor(TaskExecutorBuilder builder) {
-		log.info("创建系统任务线程池");
 		return builder.build();
 	}
 	
 	@Bean
 	@Primary
-//	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean
 	public TaskScheduler taskScheduler(TaskSchedulerBuilder builder) {
-		log.info("创建系统定时任务线程池");
 		return builder.build();
 	}
 
@@ -130,7 +139,6 @@ public class BootAutoConfiguration {
 		final String freeMemory = FileUtils.formatSize(runtime.freeMemory());
 		final String totalMemory = FileUtils.formatSize(runtime.totalMemory());
 		final String maxMemory = FileUtils.formatSize(runtime.maxMemory());
-		final String jvmArgs = bean.getInputArguments().stream().collect(Collectors.joining(" "));
 		log.info("操作系统名称：{}", System.getProperty("os.name"));
 		log.info("操作系统架构：{}", System.getProperty("os.arch"));
 		log.info("操作系统版本：{}", System.getProperty("os.version"));
@@ -140,25 +148,41 @@ public class BootAutoConfiguration {
 		log.info("Java库目录：{}", System.getProperty("java.library.path"));
 		log.info("ClassPath：{}", System.getProperty("java.class.path"));
 		log.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
+		log.info("虚拟机参数：{}", bean.getInputArguments().stream().collect(Collectors.joining(" ")));
 		log.info("虚拟机空闲内存：{}", freeMemory);
 		log.info("虚拟机已用内存：{}", totalMemory);
 		log.info("虚拟机最大内存：{}", maxMemory);
-		log.info("用户目录：{}", System.getProperty("user.home"));
 		log.info("工作目录：{}", System.getProperty("user.dir"));
+		log.info("用户目录：{}", System.getProperty("user.home"));
+		log.info("临时目录：{}", System.getProperty("java.io.tmpdir"));
 		log.info("文件编码：{}", System.getProperty("file.encoding"));
-		log.info("临时文件目录：{}", System.getProperty("java.io.tmpdir"));
-		log.info("JVM启动参数：{}", jvmArgs);
+		SpringUtils.getBeanByType(TaskExecutor.class).forEach((k, v) -> {
+			log.info("系统任务线程池：{}-{}", k, v);
+		});
+		SpringUtils.getBeanByType(TaskScheduler.class).forEach((k, v) -> {
+			log.info("系统定时任务线程池：{}-{}", k, v);
+		});
 	}
 	
 	@PreDestroy
 	public void destroy() {
-		log.info("系统关闭");
+		log.info("系统关闭：{}", this.name);
 		// 刷出日志缓存
 		final ILoggerFactory factory = LoggerFactory.getILoggerFactory();
-		if (factory != null && factory instanceof LoggerContext) {
-			// TODO：JDK17
-			((LoggerContext) factory).stop();
+		if (factory instanceof LoggerContext context) {
+			context.stop();
 		}
+		// 定时强制关机
+		final Timer timer = new Timer(true);
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				// 强制关机：无效
+//				System.exit(0);
+				// 强制关机
+				Runtime.getRuntime().halt(0);
+			}
+		}, 5000);
 	}
 
 }

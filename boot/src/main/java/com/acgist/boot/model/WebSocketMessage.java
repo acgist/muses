@@ -18,6 +18,7 @@ public class WebSocketMessage {
 	 * @author acgist
 	 */
 	public enum Type {
+		
 	}
 
 	/**

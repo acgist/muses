@@ -1,18 +1,18 @@
-package com.acgist.boot.utils;
+package com.acgist.boot.config;
 
 import java.time.format.DateTimeFormatter;
 
 import lombok.Getter;
 
 /**
- * 日期格式
+ * 格式
  * 
  * @author acgist
  */
 public interface FormatStyle {
 	
 	/**
-	 * 日期格式
+	 * 默认日期格式
 	 */
 	public static final String YYYY_MM_DD_HH24_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
