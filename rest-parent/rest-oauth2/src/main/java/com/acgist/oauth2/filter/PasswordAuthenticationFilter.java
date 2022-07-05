@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.acgist.oauth2.config.LoginType;
-import com.acgist.oauth2.token.AuthorizeToken;
+import com.acgist.oauth2.token.PasswordToken;
 
 /**
  * 密码认证过滤器
@@ -48,7 +48,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 		if(StringUtils.isEmpty(password)) {
 			throw new AuthenticationServiceException("帐号密码错误");
 		}
-		final AuthorizeToken authorizeToken = new AuthorizeToken(username, password);
+		final PasswordToken authorizeToken = new PasswordToken(username, password);
 		this.setDetails(request, authorizeToken);
 		return this.getAuthenticationManager().authenticate(authorizeToken);
 	}
@@ -56,7 +56,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 	/**
 	 * 设置请求附加信息
 	 */
-	protected void setDetails(HttpServletRequest request, AuthorizeToken authorizeToken) {
+	protected void setDetails(HttpServletRequest request, PasswordToken authorizeToken) {
 		// 设置跳转地址参数
 		authorizeToken.setDetails(request.getQueryString());
 	}

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.acgist.oauth2.token.AuthorizeToken;
+import com.acgist.oauth2.token.PasswordToken;
 
 /**
  * 密码认证验证器
@@ -25,19 +25,19 @@ public class PasswordAuthenticationProvider implements AuthenticationProvider {
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		final AuthorizeToken token = (AuthorizeToken) authentication;
+		final PasswordToken token = (PasswordToken) authentication;
 		final String username = (String) token.getPrincipal();
 		final String password = (String) token.getCredentials();
 		final UserDetails user = this.userDetailsService.loadUserByUsername(username);
 		if(!this.passwordEncoder.matches(password, user.getPassword())) {
 			throw new AuthenticationServiceException("帐号密码错误");
 		}
-		return new AuthorizeToken(user, password, user.getAuthorities());
+		return new PasswordToken(user, password, user.getAuthorities());
 	}
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return AuthorizeToken.class.isAssignableFrom(authentication);
+		return PasswordToken.class.isAssignableFrom(authentication);
 	}
 
 }

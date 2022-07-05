@@ -64,7 +64,8 @@ public class FailCountAuthenticationFilter extends OncePerRequestFilter {
 			final FailCountSession failCountSession = this.failCountService.get(clientIP);
 			if(!failCountSession.verify(this.count, this.duration)) {
 				// 只有登陆成功才能清除次数：过了时间只能重试一次
-				this.authenticationFailureHandler.onAuthenticationFailure(request, response, new AuthenticationServiceException("登陆次数限制"));
+//				LockedException
+				this.authenticationFailureHandler.onAuthenticationFailure(request, response, new AuthenticationServiceException("IP已被锁定"));
 				return;
 			}
 		}

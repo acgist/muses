@@ -29,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 鉴权、透传用户信息
  * 
+ * TODO：IP绑定
+ * 
  * @author acgist
  */
 @Slf4j

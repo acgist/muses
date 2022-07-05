@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * 
  * @author acgist
  */
-public class AuthorizeToken extends AbstractAuthenticationToken {
+public class PasswordToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -26,14 +26,14 @@ public class AuthorizeToken extends AbstractAuthenticationToken {
 	 */
 	private Object credentials;
 	
-	public AuthorizeToken(String username, String password) {
+	public PasswordToken(String username, String password) {
 		super(null);
 		this.principal = username;
 		this.credentials = password;
 		super.setAuthenticated(false);
 	}
 
-	public AuthorizeToken(UserDetails user, String password, Collection<? extends GrantedAuthority> authorities) {
+	public PasswordToken(UserDetails user, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = user;
 		this.credentials = password;

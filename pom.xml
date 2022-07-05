@@ -522,7 +522,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${system.maven.basedir}/docs/pack/assembly/dev.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/build/assembly/dev.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -548,7 +548,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${system.maven.basedir}/docs/pack/assembly/test.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/build/assembly/test.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -584,7 +584,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${system.maven.basedir}/docs/pack/assembly/release.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/build/assembly/release.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>

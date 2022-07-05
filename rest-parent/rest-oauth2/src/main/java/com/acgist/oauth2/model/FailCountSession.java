@@ -10,17 +10,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FailCountSession {
 
 	/**
-	 * 失败次数
-	 */
-	private AtomicInteger count;
-	/**
 	 * 最后一次登陆失败时间
 	 */
 	private long lastTime;
+	/**
+	 * 失败次数
+	 */
+	private AtomicInteger count;
 
 	public FailCountSession() {
-		this.count = new AtomicInteger(0);
 		this.lastTime = System.currentTimeMillis();
+		this.count = new AtomicInteger(0);
 	}
 
 	/**
