@@ -10,22 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.acgist.oauth2.config.LoginType;
-import com.acgist.oauth2.model.FailCountSession;
-import com.acgist.oauth2.service.FailCountService;
+import com.acgist.oauth2.model.IPCountSession;
+import com.acgist.oauth2.service.IPCountService;
 import com.acgist.www.utils.WebUtils;
 
 /**
- * 失败次数过滤器
+ * IP请求次数过滤器
  * 
  * @author acgist
  */
-public class FailCountAuthenticationFilter extends OncePerRequestFilter {
+public class IPCountAuthenticationFilter extends OncePerRequestFilter {
 
 	/**
 	 * 匹配地址
@@ -48,7 +48,7 @@ public class FailCountAuthenticationFilter extends OncePerRequestFilter {
 	private int duration;
 	
 	@Autowired
-	private FailCountService failCountService;
+	private IPCountService ipCountService;
 	@Autowired
 	private AuthenticationFailureHandler authenticationFailureHandler;
 	
@@ -61,11 +61,10 @@ public class FailCountAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} else if (MATCHER.matches(request)) {
 			final String clientIP = WebUtils.clientIP(request);
-			final FailCountSession failCountSession = this.failCountService.get(clientIP);
+			final IPCountSession failCountSession = this.ipCountService.get(clientIP);
 			if(!failCountSession.verify(this.count, this.duration)) {
 				// 只有登陆成功才能清除次数：过了时间只能重试一次
-//				LockedException
-				this.authenticationFailureHandler.onAuthenticationFailure(request, response, new AuthenticationServiceException("IP已被锁定"));
+				this.authenticationFailureHandler.onAuthenticationFailure(request, response, new LockedException("IP已被锁定"));
 				return;
 			}
 		}

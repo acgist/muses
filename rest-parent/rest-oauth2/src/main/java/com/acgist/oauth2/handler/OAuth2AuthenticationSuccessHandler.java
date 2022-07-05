@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import com.acgist.oauth2.config.LoginType;
-import com.acgist.oauth2.service.FailCountService;
+import com.acgist.oauth2.service.IPCountService;
 import com.acgist.www.utils.WebUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	
 	@Autowired
-	private FailCountService failCountService;
+	private IPCountService ipCountService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		final String clientIP = WebUtils.clientIP(request);
 		log.debug("登陆成功：{}", clientIP);
-		this.failCountService.remove(clientIP);
+		this.ipCountService.remove(clientIP);
 		if(LoginType.get().isHtml()) {
 			super.onAuthenticationSuccess(request, response, authentication);
 		} else {

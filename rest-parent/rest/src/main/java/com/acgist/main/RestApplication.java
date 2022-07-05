@@ -5,6 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
+/**
+ * TODO：rest->rest-user
+ * 
+ * @author acgist
+ */
 @ComponentScan("com.acgist.rest")
 @EnableDiscoveryClient
 @SpringBootApplication

@@ -22,25 +22,23 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-import com.acgist.oauth2.filter.PasswordAuthenticationFilter;
 import com.acgist.oauth2.filter.CodeAuthenticationFilter;
-import com.acgist.oauth2.filter.FailCountAuthenticationFilter;
+import com.acgist.oauth2.filter.IPCountAuthenticationFilter;
+import com.acgist.oauth2.filter.PasswordAuthenticationFilter;
 import com.acgist.oauth2.filter.SmsAuthenticationFilter;
 import com.acgist.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.acgist.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.acgist.oauth2.provider.PasswordAuthenticationProvider;
 import com.acgist.oauth2.provider.SmsAuthenticationProvider;
-import com.acgist.oauth2.service.FailCountService;
+import com.acgist.oauth2.service.IPCountService;
 import com.acgist.oauth2.service.SmsService;
-import com.acgist.oauth2.service.impl.FailCountServiceImpl;
+import com.acgist.oauth2.service.impl.IPCountServiceImpl;
 import com.acgist.oauth2.service.impl.SmsServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * OAuth2安全认证
- * 
- * 登陆必须包含参数：username
  * 
  * @author acgist
  */
@@ -63,10 +61,10 @@ public class SecurityConfig {
 		ProviderManager providerManager,
 		AuthenticationSuccessHandler authenticationSuccessHandler,
 		AuthenticationFailureHandler authenticationFailureHandler,
-		FailCountAuthenticationFilter failCountAuthenticationFilter,
+		IPCountAuthenticationFilter ipCountAuthenticationFilter,
 		PasswordAuthenticationFilter passwordAuthenticationFilter,
-		CodeAuthenticationFilter codeAuthenticationFilter,
-		SmsAuthenticationFilter smsAuthenticationFilter
+		SmsAuthenticationFilter smsAuthenticationFilter,
+		CodeAuthenticationFilter codeAuthenticationFilter
 	) throws Exception {
 		security
 			.authorizeRequests().antMatchers("/oauth2/**").permitAll()
@@ -84,10 +82,10 @@ public class SecurityConfig {
 			.failureHandler(authenticationFailureHandler)
 			.and()
 			// 注意顺序
-			.addFilterAt(failCountAuthenticationFilter, CsrfFilter.class)
+			.addFilterAt(ipCountAuthenticationFilter, CsrfFilter.class)
 			.addFilterAt(passwordAuthenticationFilter, CsrfFilter.class)
-			.addFilterAt(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-			.addFilterAt(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+			.addFilterAt(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterAt(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 //			.httpBasic();
 //			.formLogin(withDefaults());
 		return security.build();
@@ -124,8 +122,8 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public FailCountAuthenticationFilter failCountAuthenticationFilter() {
-		return new FailCountAuthenticationFilter();
+	public IPCountAuthenticationFilter ipCountAuthenticationFilter() {
+		return new IPCountAuthenticationFilter();
 	}
 	
 	@Bean
@@ -170,8 +168,8 @@ public class SecurityConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public FailCountService failCountService() {
-		return new FailCountServiceImpl();
+	public IPCountService ipCountService() {
+		return new IPCountServiceImpl();
 	}
 	
 	@Bean
