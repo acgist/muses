@@ -37,6 +37,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -48,10 +49,12 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.MessageCode;
@@ -66,7 +69,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * OAuth2授权配置
+ * OAuth2授权服务配置
  * 
  * @author acgist
  */
@@ -100,10 +103,26 @@ public class AuthorizationServerConfig {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(security);
+//		参考：OAuth2AuthorizationServerConfiguration
+		final OAuth2AuthorizationServerConfigurer<HttpSecurity> auth2AuthorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
+		final RequestMatcher endpointsMatcher = auth2AuthorizationServerConfigurer.getEndpointsMatcher();
+		security
+			.requestMatcher(endpointsMatcher)
+			.authorizeRequests(
+				authorizeRequests -> authorizeRequests
+//					.antMatchers("/oauth2/login").permitAll()
+					.anyRequest().authenticated()
+			).csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+			.apply(auth2AuthorizationServerConfigurer);
 		// 必须设置表单登陆：登陆页面必须配置成和SecurityConfig登陆页面一致否者跳转失败
 		security.formLogin().loginPage("/oauth2/login");
 		return security.build();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ProviderSettings providerSettings() {
+		return ProviderSettings.builder().issuer("https://www.acgist.com").build();
 	}
 	
 	@Bean

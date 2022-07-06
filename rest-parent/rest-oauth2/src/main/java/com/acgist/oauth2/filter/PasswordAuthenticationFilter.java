@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -14,15 +15,10 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.acgist.oauth2.config.LoginType;
 import com.acgist.oauth2.token.PasswordToken;
 
 /**
  * 密码认证过滤器
- * 
- * 如果使用HttpClient需要注意重定向问题：
- * GET：正常重定向
- * POST：需要配置重定向策略
  * 
  * @author acgist
  */
@@ -31,7 +27,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 	/**
 	 * 匹配地址
 	 */
-	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/login/password");
+	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/password", HttpMethod.POST.name());
 	
 	public PasswordAuthenticationFilter() {
 		super(MATCHER);
@@ -39,7 +35,6 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-		LoginType.set(LoginType.AUTHORIZE);
 		final String username = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
 		final String password = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY);
 		if(StringUtils.isEmpty(username)) {
@@ -59,6 +54,7 @@ public class PasswordAuthenticationFilter extends AbstractAuthenticationProcessi
 	protected void setDetails(HttpServletRequest request, PasswordToken authorizeToken) {
 		// 设置跳转地址参数
 		authorizeToken.setDetails(request.getQueryString());
+//		authorizeToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
 	}
 	
 }

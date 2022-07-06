@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import com.acgist.oauth2.config.LoginType;
 import com.acgist.oauth2.service.IPCountService;
 import com.acgist.www.utils.WebUtils;
 
@@ -32,9 +31,10 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 		final String clientIP = WebUtils.clientIP(request);
 		log.debug("登陆成功：{}", clientIP);
 		this.ipCountService.remove(clientIP);
-		if(LoginType.get().isHtml()) {
+		if(WebUtils.responseHTML(request)) {
 			super.onAuthenticationSuccess(request, response, authentication);
 		} else {
+//			request.getRequestDispatcher("/oauth2/authorize").forward(request, response);
 			response.sendRedirect("/oauth2/authorize?" + authentication.getDetails().toString());
 		}
 	}

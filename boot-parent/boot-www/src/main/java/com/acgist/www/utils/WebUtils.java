@@ -3,6 +3,8 @@ package com.acgist.www.utils;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 /**
  * Web工具
@@ -31,6 +33,30 @@ public class WebUtils {
 			clientIP = request.getRemoteAddr();
 		}
 		return clientIP;
+	}
+	
+	/**
+	 * 判断是否响应JSON
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 是否响应JSON
+	 */
+	public static final boolean responseJSON(HttpServletRequest request) {
+		final String header = request.getHeader(HttpHeaders.ACCEPT);
+		return header == null || header.contains(MediaType.APPLICATION_JSON_VALUE);
+	}
+	
+	/**
+	 * 判断是否响应HTML
+	 * 
+	 * @param request 请求
+	 * 
+	 * @return 是否响应HTML
+	 */
+	public static final boolean responseHTML(HttpServletRequest request) {
+		final String header = request.getHeader(HttpHeaders.ACCEPT);
+		return header != null && header.contains(MediaType.TEXT_HTML_VALUE);
 	}
 	
 }

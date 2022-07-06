@@ -3,6 +3,7 @@ package com.acgist.oauth2.config;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,7 @@ import com.acgist.oauth2.service.impl.SmsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * OAuth2安全认证
+ * OAuth2安全认证配置
  * 
  * @author acgist
  */
@@ -45,6 +46,9 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Value("${system.error.path:/error}")
+	private String errorPath;
 	
 	@Autowired
 	private ApplicationContext context;
@@ -67,20 +71,22 @@ public class SecurityConfig {
 	) throws Exception {
 		security
 			.authorizeRequests()
-			// OAauth2所有地址：通过OAuth2实现拦截
-			.antMatchers("/oauth2/**").permitAll()
-			// OAuth2登陆页面
-//			.antMatchers(HttpMethod.GET, "/oauth2/login").permitAll()
-			// 配置IP名单
-//			.requestMatchers(request -> WebUtils.clientIP(request)).permitAll()
-			// 其余地址全部允许
-//			.anyRequest().permitAll()
+			.antMatchers(
+				// OAuth2：AuthorizationServerConfig
+				"/oauth2/**",
+				// 错误
+				this.errorPath,
+				// 图标
+				"/favicon.ico",
+				// Swagger
+				"/v2/api-docs", "/swagger-ui/**", "/swagger-resources/**"
+			).permitAll()
 			// 其余地址需要授权
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
 			.loginPage("/oauth2/login")
-			// 如果没有设置默认使用登陆页面：POST
+			// 默认使用登陆页面：POST
 //			.loginProcessingUrl("/oauth2/login")
 			.successHandler(authenticationSuccessHandler)
 			.failureHandler(authenticationFailureHandler)
@@ -91,7 +97,7 @@ public class SecurityConfig {
 			.addFilterAt(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.addFilterAt(codeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 //			.httpBasic();
-//			.formLogin(withDefaults());
+//			.formLogin(Customizer.withDefaults());
 		return security.build();
 	}
 	

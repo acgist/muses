@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.acgist.oauth2.config.LoginType;
 import com.acgist.oauth2.model.IPCountSession;
 import com.acgist.oauth2.service.IPCountService;
 import com.acgist.www.utils.WebUtils;
@@ -30,11 +29,7 @@ public class IPCountAuthenticationFilter extends OncePerRequestFilter {
 	/**
 	 * 匹配地址
 	 */
-	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/login/**");
-	/**
-	 * 匹配登陆页面地址
-	 */
-	private static final AntPathRequestMatcher LOGIN_MATCHER = new AntPathRequestMatcher("/oauth2/login", HttpMethod.GET.name());
+	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/**", HttpMethod.POST.name());
 	
 	/**
 	 * 最大次数
@@ -54,12 +49,8 @@ public class IPCountAuthenticationFilter extends OncePerRequestFilter {
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		// 重置登陆方式
-		LoginType.set(LoginType.PASSWORD);
 		// 拦截所有登陆排除登陆页面
-		if(LOGIN_MATCHER.matches(request)) {
-			filterChain.doFilter(request, response);
-		} else if (MATCHER.matches(request)) {
+		if (MATCHER.matches(request)) {
 			final String clientIP = WebUtils.clientIP(request);
 			final IPCountSession failCountSession = this.ipCountService.get(clientIP);
 			if(!failCountSession.verify(this.count, this.duration)) {

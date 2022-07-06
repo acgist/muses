@@ -24,7 +24,8 @@
 				<label for="type" class="sr-only">登陆方式</label>
 				<select id="type" name="type" class="form-control" onchange="change()">
 					<option value="sms">短信</option>
-					<option value="password" selected="selected">密码</option>
+					<option value="password">密码</option>
+					<option value="default" selected="selected">默认</option>
 				</select>
 			</p>
 			<p>
@@ -58,13 +59,20 @@
 			console.log(type)
 			switch(type) {
 			case 'sms':
-				document.getElementsByTagName('form')[0].setAttribute('action', '/oauth2/login/sms');
+				document.getElementsByTagName('form')[0].setAttribute('action', '/oauth2/sms');
 				document.getElementById('password').hidden = true;
 				document.getElementById('code').hidden = true;
 				document.getElementById('image').hidden = true;
 				document.getElementById('smsCode').hidden = false;
 				break;
 			case 'password':
+				document.getElementsByTagName('form')[0].setAttribute('action', '/oauth2/password');
+				document.getElementById('password').hidden = false;
+				document.getElementById('code').hidden = true;
+				document.getElementById('image').hidden = true;
+				document.getElementById('smsCode').hidden = true;
+				break;
+			case 'default':
 				document.getElementsByTagName('form')[0].setAttribute('action', '/oauth2/login');
 				document.getElementById('password').hidden = false;
 				document.getElementById('code').hidden = false;

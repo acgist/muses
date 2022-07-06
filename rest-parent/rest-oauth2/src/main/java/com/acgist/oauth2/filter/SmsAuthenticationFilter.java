@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.acgist.oauth2.config.LoginType;
 import com.acgist.oauth2.service.SmsService;
 import com.acgist.oauth2.token.SmsToken;
 
@@ -29,7 +28,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	/**
 	 * 地址匹配
 	 */
-	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/login/sms", HttpMethod.POST.name());
+	private static final AntPathRequestMatcher MATCHER = new AntPathRequestMatcher("/oauth2/sms", HttpMethod.POST.name());
 	
 	public SmsAuthenticationFilter() {
 		super(MATCHER);
@@ -37,7 +36,6 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-		LoginType.set(LoginType.SMS);
 		final String mobile = request.getParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY);
 		final String smsCode = request.getParameter("smsCode");
 		if(StringUtils.isEmpty(mobile)) {
@@ -55,7 +53,9 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	 * 设置请求附加信息
 	 */
 	protected void setDetails(HttpServletRequest request, SmsToken smsToken) {
-		smsToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
+		// 设置跳转参数
+		smsToken.setDetails(request.getQueryString());
+//		smsToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
 	}
 	
 }
