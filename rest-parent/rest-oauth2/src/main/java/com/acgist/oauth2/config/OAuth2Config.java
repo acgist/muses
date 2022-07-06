@@ -38,6 +38,10 @@ public class OAuth2Config {
 	 */
 	private int refresh;
 	/**
+	 * 发行人
+	 */
+	private String issuer;
+	/**
 	 * 跳转地址
 	 */
 	private String redirectUri;

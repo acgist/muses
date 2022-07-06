@@ -12,20 +12,20 @@
 
 	<fileSets>
 		<fileSet>
-			<directory>${system.maven.basedir}/docs/pack</directory>
+			<directory>${system.maven.basedir}/docs/build</directory>
 			<outputDirectory>./</outputDirectory>
 			<includes>
 				<include>README.md</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${system.maven.basedir}/docs/pack/bin</directory>
+			<directory>${system.maven.basedir}/docs/build/bin</directory>
 			<outputDirectory>bin</outputDirectory>
 			<fileMode>0755</fileMode>
 			<filtered>true</filtered>
 		</fileSet>
 		<fileSet>
-			<directory>${system.maven.basedir}/docs/pack/config</directory>
+			<directory>${system.maven.basedir}/docs/build/config</directory>
 			<outputDirectory>config</outputDirectory>
 		</fileSet>
 		<fileSet>

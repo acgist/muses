@@ -122,7 +122,7 @@ public class AuthorizationServerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ProviderSettings providerSettings() {
-		return ProviderSettings.builder().issuer("https://www.acgist.com").build();
+		return ProviderSettings.builder().issuer(this.oAuth2Config.getIssuer()).build();
 	}
 	
 	@Bean

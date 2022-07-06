@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.acgist.boot.model.Message;
-import com.acgist.boot.model.MessageCode;
+import com.acgist.boot.utils.ErrorUtils;
 import com.acgist.boot.utils.URLUtils;
 import com.acgist.oauth2.model.IPCountSession;
 import com.acgist.oauth2.service.IPCountService;
@@ -40,7 +40,7 @@ public class OAuth2AuthenticationFailureHandler implements AuthenticationFailure
 		if(WebUtils.responseHTML(request)) {
 			response.sendRedirect("/oauth2/login?message=" + URLUtils.encode(exception.getMessage()));
 		} else {
-			ResponseUtils.response(Message.fail(MessageCode.CODE_3401, exception.getMessage()), response);
+			ResponseUtils.response(Message.fail(ErrorUtils.messageCode(401, exception), exception.getMessage()), response);
 		}
 	}
 	

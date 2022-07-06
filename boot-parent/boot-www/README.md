@@ -18,6 +18,8 @@ Www模块Boot：所有通过网络提供服务的模块必须包含此依赖
 
 ### 分页
 
+支持前缀连表，分页查询参数`ew`，查询条件`${ew.customSqlSegment}`。
+
 ```
 GET /admin/user?current=1&size=20
 
@@ -33,6 +35,8 @@ GET /admin/user?current=1&size=20
 	]
 }
 ```
+
+> 分页参数可以写在`FilterQuery`里面
 
 ### 保存更新
 

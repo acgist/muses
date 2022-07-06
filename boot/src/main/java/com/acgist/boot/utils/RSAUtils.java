@@ -45,7 +45,7 @@ import com.acgist.boot.model.MessageCodeException;
  * 
  * @author acgist
  */
-public final class RsaUtils {
+public final class RSAUtils {
 
 	/**
 	 * 密钥长度

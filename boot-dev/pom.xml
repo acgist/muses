@@ -16,7 +16,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-dev</name>
-	<description>开发模块Boot</description>
+	<description>开发Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot.dev</system.maven.module>

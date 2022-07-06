@@ -3,6 +3,7 @@
 
 	<!-- 系统名称 -->
 	<springProperty scope="context" name="system.name" source="spring.application.name" />
+	
 	<!-- 系统名称 -->
 	<contextName>${system.name}</contextName>
 	<!-- 日志目录 -->
@@ -22,7 +23,7 @@
 		<file>${system.path}/${system.name}.debug.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>${system.history}</maxHistory>
-			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/debug.${system.name}%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/${system.name}.debug.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 		</rollingPolicy>
 		<bufferSize>${system.buffer}</bufferSize>
 		<immediateFlush>false</immediateFlush>
@@ -45,7 +46,7 @@
 		<file>${system.path}/${system.name}.info.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>${system.history}</maxHistory>
-			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/info.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/${system.name}.info.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 		</rollingPolicy>
 		<bufferSize>${system.buffer}</bufferSize>
 		<immediateFlush>false</immediateFlush>
@@ -68,7 +69,7 @@
 		<file>${system.path}/${system.name}.error.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<maxHistory>${system.history}</maxHistory>
-			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/error.${system.name}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/${system.name}.error.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 		</rollingPolicy>
 		<bufferSize>${system.buffer}</bufferSize>
 		<immediateFlush>false</immediateFlush>
@@ -98,9 +99,15 @@
 	</appender>
 	
 	<!-- 引入文件：文件可以不存在 -->
-	<include resource="logback-gateway.xml" />
+	<!--
+	<include resource="logback-include.xml" />
+	-->
 
-	<!-- 忽略部分DEBUG日志 -->
+	<!--
+	忽略部分DEBUG日志
+	name：包名、日志名称
+	additivity：是否追加到根（root）日志
+	-->
 	<!-- Redis连接 -->
 	<logger name="io.lettuce.core" level="INFO" additivity="false">
 		<appender-ref ref="fileInfoAsync" />

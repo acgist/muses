@@ -36,13 +36,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity security) throws Exception {
 		security
 			.csrf().disable()
-			.headers().frameOptions().sameOrigin()
+			.headers()
+			.frameOptions()
+			.sameOrigin()
 //			.httpStrictTransportSecurity().disable()
 			.and()
 			// 单条规则
 //			.antMatcher("/user/**").authorizeRequests().anyRequest().authenticated()
 			// 多条规则
-			.authorizeRequests().antMatchers("/user/**").authenticated()
+			.authorizeRequests()
+			.antMatchers("/user/**").authenticated()
 			.anyRequest().permitAll()
 			.and()
 			.exceptionHandling()
@@ -51,12 +54,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			// 没有认证
 //			.authenticationEntryPoint(null)
 			.and()
-			.logout().logoutUrl("/logout").logoutSuccessUrl("/")
+			.logout()
+			.logoutUrl("/logout")
+			.logoutSuccessUrl("/")
 			.and()
 			// 防止SessionFixation攻击
 //			.sessionManagement().sessionFixation()
-			.formLogin().usernameParameter("username").passwordParameter("password").loginPage("/login")
-			.loginProcessingUrl("/login").defaultSuccessUrl("/user").failureUrl("/login");
+			.formLogin()
+			.usernameParameter("username")
+			.passwordParameter("password")
+			.loginPage("/login")
+			.loginProcessingUrl("/login")
+			.failureUrl("/login")
+			.defaultSuccessUrl("/user");
 	}
 
 	@Override

@@ -1,14 +1,14 @@
-# Boot-Parent
+# 模块Boot
 
-Boot模块：各种模块自动配置
+各种自动配置模块
 
-## Www模块继承
+## Www模块继承关系
 
 ```
 /-boot-www：网络服务
   /-boot-web：网页资源服务
   /-boot-rest：Rest接口服务：前后端分离时提供接口服务
-    /-boot-gateway：网关Rest接口服务：对外用户提供接口服务
+    /-boot-gateway：网关Rest接口服务：外部用户提供接口服务（提供签名、验签、报文保存推送等等功能）
 ```
 
 ## 更多模块

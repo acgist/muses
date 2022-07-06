@@ -16,7 +16,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-api</name>
-	<description>服务接口Boot</description>
+	<description>Dubbo服务Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot.api</system.maven.module>
@@ -25,7 +25,7 @@
 	</properties>
 
 	<dependencies>
-		<!-- 服务调用 -->
+		<!-- Dubbo服务 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-dubbo</artifactId>

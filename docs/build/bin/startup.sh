@@ -15,7 +15,6 @@ if [ $runType != "docker" ]; then
 fi
 
 # 启动参数
-# --add-opens java.base/java.lang=ALL-UNNAMED
 JAVA_OPTS_GC="-XX:+UseG1GC -Xlog:gc:./logs/gc.log:time,level"
 JAVA_OPTS_MEM="-server ${system.maven.jvm.mem}"
 JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding} -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true"

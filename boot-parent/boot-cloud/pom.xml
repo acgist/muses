@@ -16,7 +16,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-cloud</name>
-	<description>服务注册发现配置模块Boot</description>
+	<description>服务注册发现Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot.cloud</system.maven.module>

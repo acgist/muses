@@ -4,7 +4,7 @@
 
 ## 优化位置
 
-boot-service
+boot-concurrent
 
 ## 模块
 
@@ -86,6 +86,7 @@ spring:
 
 * 服务下线
 * `kill -2 pid`
+* `kill -15 pid`
 
 ## 系统配置
 
@@ -230,7 +231,13 @@ server.port=${system.port:8080}
 现在Dubbo暂不支持JDK17，需要添加以下参数才能启动：
 
 ```
---add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.math=ALL-UNNAMED
+--add-opens java.base/java.io=ALL-UNNAMED
+--add-opens java.base/java.math=ALL-UNNAMED
+--add-opens java.base/java.util=ALL-UNNAMED
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-opens java.rmi/sun.rmi.transport=ALL-UNNAMED
+--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens java.base/java.util.concurrent=ALL-UNNAMED
 ```
 
 ## 其他链接

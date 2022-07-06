@@ -16,7 +16,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot</name>
-	<description>启动：含有所有基础配置和必须依赖，所有项目必须包含启动依赖。</description>
+	<description>启动Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot</system.maven.module>

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.acgist.boot.service.RsaService;
-import com.acgist.boot.utils.RsaUtils;
+import com.acgist.boot.utils.RSAUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,34 +44,35 @@ public class RsaServiceImpl implements RsaService {
 	@PostConstruct
 	public void init() {
 		if(StringUtils.isEmpty(this.publicKeyValue) || StringUtils.isEmpty(this.privateKeyValue)) {
-			final var keys = RsaUtils.buildKey();
-			this.publicKeyValue = keys.get(RsaUtils.PUBLIC_KEY);
-			this.privateKeyValue = keys.get(RsaUtils.PRIVATE_KEY);
+			log.info("没有配置RSA公钥私钥：使用随机证书");
+			final var keys = RSAUtils.buildKey();
+			this.publicKeyValue = keys.get(RSAUtils.PUBLIC_KEY);
+			this.privateKeyValue = keys.get(RSAUtils.PRIVATE_KEY);
 		}
-		this.publicKey = RsaUtils.loadPublicKey(this.publicKeyValue);
+		this.publicKey = RSAUtils.loadPublicKey(this.publicKeyValue);
 		log.info("加载RSA公钥：{}", this.publicKey.getAlgorithm());
-		this.privateKey = RsaUtils.loadPrivateKey(this.privateKeyValue);
+		this.privateKey = RSAUtils.loadPrivateKey(this.privateKeyValue);
 		log.info("加载RSA私钥：{}", this.privateKey.getAlgorithm());
 	}
 
 	@Override
 	public String encrypt(String content) {
-		return RsaUtils.encrypt(content, this.publicKey);
+		return RSAUtils.encrypt(content, this.publicKey);
 	}
 	
 	@Override
 	public String decrypt(String content) {
-		return RsaUtils.decrypt(content, this.privateKey);
+		return RSAUtils.decrypt(content, this.privateKey);
 	}
 	
 	@Override
 	public String signature(Map<String, Object> map) {
-		return RsaUtils.signature(this.join(map), this.privateKey);
+		return RSAUtils.signature(this.join(map), this.privateKey);
 	}
 	
 	@Override
 	public boolean verify(Map<String, Object> map, String signature) {
-		return RsaUtils.verify(this.join(map), signature, this.publicKey);
+		return RSAUtils.verify(this.join(map), signature, this.publicKey);
 	}
 	
 	/**

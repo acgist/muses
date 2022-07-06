@@ -16,7 +16,7 @@
 	<packaging>pom</packaging>
 
 	<name>boot-parent</name>
-	<description>Boot模块：各种模块自动配置</description>
+	<description>模块Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot.parent</system.maven.module>

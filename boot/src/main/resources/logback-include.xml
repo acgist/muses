@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+
+	<appender name="includeFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${system.path}/${system.name}.include.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<maxHistory>${system.history}</maxHistory>
+			<fileNamePattern>${system.path}/%d{yyyy-MM, aux}/${system.name}.include.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+		</rollingPolicy>
+		<bufferSize>${system.buffer}</bufferSize>
+		<immediateFlush>false</immediateFlush>
+		<encoder>
+			<charset>${system.charset}</charset>
+			<pattern>${system.pattern}</pattern>
+		</encoder>
+	</appender>
+	<appender name="includeFileAsync" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="includeFile" />
+		<queueSize>${system.queue}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<discardingThreshold>0</discardingThreshold>
+	</appender>
+
+	<logger name="com.acgist.include" level="INFO" additivity="false">
+		<appender-ref ref="includeFileAsync" />
+	</logger>
+	
+</included>
