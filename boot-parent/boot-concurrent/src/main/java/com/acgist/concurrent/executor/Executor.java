@@ -61,13 +61,13 @@ public abstract class Executor<I, O> {
 	}
 	
 	/**
-	 * 判断是否执行成功
+	 * 判断是否全部执行成功
 	 * 
-	 * @return 是否成功
+	 * @return 是否全部执行成功
 	 */
-	public boolean success() {
+	public boolean allSuccess() {
 		if(this.success && this.executor != null) {
-			return this.executor.success();
+			return this.executor.allSuccess();
 		}
 		return this.success;
 	}
@@ -101,8 +101,22 @@ public abstract class Executor<I, O> {
 	
 	/**
 	 * 执行任务
+	 * 
+	 * @return 执行结果
 	 */
 	protected abstract O doExecute();
+
+	/**
+	 * 判断是否全部回滚成功
+	 * 
+	 * @return 是否全部回滚成功
+	 */
+	public boolean allRollback() {
+		if(this.rollback && this.executor != null) {
+			return this.executor.allRollback();
+		}
+		return this.rollback;
+	}
 	
 	/**
 	 * 回滚任务
@@ -110,16 +124,13 @@ public abstract class Executor<I, O> {
 	 * @return 是否回滚成功
 	 */
 	public boolean rollback() {
-		switch (this.rollbackType) {
-		case ALL:
-			return this.rollbackAll();
-		case SUCCESS:
-			return this.rollbackSuccess();
-		case LAST_SUCCESS:
-			return this.rollbackLastSuccess();
-		default:
-			return false;
-		}
+		return
+			switch (this.rollbackType) {
+			case ALL -> this.rollbackAll();
+			case SUCCESS -> this.rollbackSuccess();
+			case LAST_SUCCESS -> this.rollbackLastSuccess();
+			default -> false;
+			};
 	}
 	
 	/**
@@ -159,7 +170,7 @@ public abstract class Executor<I, O> {
 	 */
 	protected boolean rollbackLastSuccess() {
 		if(this.executor != null) {
-			if(this.success && !this.executor.success()) {
+			if(this.success && !this.executor.success) {
 				return this.doRollback();
 			} else {
 				return this.executor.rollback();

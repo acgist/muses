@@ -9,6 +9,8 @@ import lombok.Setter;
  * 响应消息
  * 
  * @author acgist
+ *
+ * @param <T> 消息类型
  */
 @Getter
 @Setter

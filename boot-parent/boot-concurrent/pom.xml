@@ -16,7 +16,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-concurrent</name>
-	<description>高并发分布式模块Boot</description>
+	<description>高并发分布式Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot.concurrent</system.maven.module>

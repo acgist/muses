@@ -10,7 +10,7 @@ import com.acgist.concurrent.distributed.lock.DistributedLock;
 import com.acgist.concurrent.distributed.lock.RedisLock;
 
 /**
- * 分布式锁
+ * 分布式锁自动配置
  * 
  * @author acgist
  */

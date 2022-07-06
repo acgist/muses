@@ -15,7 +15,7 @@ import com.acgist.concurrent.distributed.lock.DistributedLock;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 分布式定时任务
+ * 分布式定时任务自动配置
  * 
  * @author acgist
  */

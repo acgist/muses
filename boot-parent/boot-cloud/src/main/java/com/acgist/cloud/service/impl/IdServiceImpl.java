@@ -21,7 +21,7 @@ public class IdServiceImpl implements IdService {
 	private static final int MAX_INDEX = 9999;
 
 	/**
-	 * 当前系统编号
+	 * 当前机器编号
 	 */
 	private int sn;
 	/**

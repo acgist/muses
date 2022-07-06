@@ -70,16 +70,8 @@ public class BootAutoConfiguration {
 		
 	}
 
-	/**
-	 * 服务名称
-	 */
 	@Value("${spring.application.name:muses}")
 	private String name;
-	/**
-	 * 序列化类型：默认使用JDK序列化
-	 * 
-	 * Jackson不支持没有默认函数的对象：JWT Token授权信息
-	 */
 	@Value("${system.serializer.type:jdk}")
 	private String serializerType;
 	
@@ -109,6 +101,7 @@ public class BootAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public SerializerType serializerType() {
+//		默认使用JDK序列化：Jackson不支持没有默认函数的对象（JWT Token授权信息）
 		log.info("系统序列化类型：{}", this.serializerType);
 		if (SerializerType.JACKSON.name().equalsIgnoreCase(this.serializerType)) {
 			return SerializerType.JACKSON;

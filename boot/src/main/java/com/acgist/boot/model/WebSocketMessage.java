@@ -7,11 +7,15 @@ import lombok.Setter;
  * WebSocket消息
  * 
  * @author acgist
+ * 
+ * @param <T> 消息类型
  */
 @Getter
 @Setter
-public class WebSocketMessage {
+public class WebSocketMessage<T> extends Model {
 
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * 消息类型
 	 * 
@@ -26,8 +30,8 @@ public class WebSocketMessage {
 	 */
 	private Type type;
 	/**
-	 * 消息
+	 * 消息内容
 	 */
-	private Object message;
+	private T message;
 	
 }

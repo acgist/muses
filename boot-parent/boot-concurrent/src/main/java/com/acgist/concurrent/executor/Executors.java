@@ -2,7 +2,6 @@ package com.acgist.concurrent.executor;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -53,7 +52,7 @@ public class Executors {
 	private static final Supplier<Boolean> execute(Executor<?, ?> executor) {
 		return () -> {
 			executor.execute();
-			return executor.success();
+			return executor.allSuccess();
 		};
 	}
 	
@@ -65,7 +64,10 @@ public class Executors {
 	 * @return supplier
 	 */
 	private static final Supplier<Boolean> rollback(Executor<?, ?> executor) {
-		return () -> executor.rollback();
+		return () -> {
+			executor.rollback();
+			return executor.allRollback();
+		};
 	}
 	
 	/**
@@ -76,22 +78,33 @@ public class Executors {
 	 * @return 是否成功
 	 */
 	public static final boolean execute(Executor<?, ?> ... executors) {
+		return execute(true, executors);
+	}
+	
+	/**
+	 * 执行任务
+	 * 
+	 * @param autoRollback 自动回滚
+	 * @param executors 任务执行器
+	 * 
+	 * @return 是否成功
+	 */
+	public static final boolean execute(boolean autoRollback, Executor<?, ?> ... executors) {
 		final List<Executor<?, ?>> list = Stream.of(executors).collect(Collectors.toList());
 		final CompletableFuture<Void> future = CompletableFuture.allOf(
-			list.stream().map(executor -> CompletableFuture.supplyAsync(Executors.execute(executor), EXECUTOR))
+			list.stream()
+				.map(executor -> CompletableFuture.supplyAsync(Executors.execute(executor), EXECUTOR))
 				.collect(Collectors.toList())
 				.toArray(CompletableFuture[]::new)
 		);
-		boolean success = true;
 		try {
 			future.get();
-		} catch (InterruptedException | ExecutionException e) {
+		} catch (Exception e) {
 			log.error("任务执行异常", e);
-		} finally {
-			success = list.stream().map(Executor::success).allMatch(Boolean.TRUE::equals);
-			if(!success) {
-				rollback(executors);
-			}
+		}
+		final boolean success = list.stream().map(Executor::allSuccess).allMatch(Boolean.TRUE::equals);
+		if(autoRollback && !success) {
+			rollback(executors);
 		}
 		return success;
 	}
@@ -100,19 +113,23 @@ public class Executors {
 	 * 任务回滚
 	 * 
 	 * @param executors 任务执行器
+	 * 
+	 * @return 是否成功
 	 */
-	private static final void rollback(Executor<?, ?> ... executors) {
+	public static final boolean rollback(Executor<?, ?> ... executors) {
 		final List<Executor<?, ?>> list = Stream.of(executors).collect(Collectors.toList());
 		final CompletableFuture<Void> future = CompletableFuture.allOf(
-			list.stream().map(executor -> CompletableFuture.supplyAsync(Executors.rollback(executor), EXECUTOR))
+			list.stream()
+				.map(executor -> CompletableFuture.supplyAsync(Executors.rollback(executor), EXECUTOR))
 				.collect(Collectors.toList())
 				.toArray(CompletableFuture[]::new)
 		);
 		try {
 			future.get();
-		} catch (InterruptedException | ExecutionException e) {
+		} catch (Exception e) {
 			log.error("任务回滚异常", e);
 		}
+		return list.stream().map(Executor::allRollback).allMatch(Boolean.TRUE::equals);
 	}
 	
 }

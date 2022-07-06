@@ -33,21 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ShutdownListener {
 
-	/**
-	 * 服务名称
-	 */
 	@Value("${spring.application.name:muses}")
 	private String serviceName;
-	/**
-	 * 是否启动自动关闭
-	 */
 	@Value("${system.shutdown.enable:true}")
 	private boolean shutdownEnable;
-	/**
-	 * 优雅关闭：等待时间（秒）
-	 */
 	@Value("${system.shutdown.gracefully:30}")
 	private int shutdownGracefully;
+	
 	/**
 	 * 是否关闭
 	 */
@@ -73,11 +65,11 @@ public class ShutdownListener {
 		NotifyCenter.registerSubscriber(new Subscriber<InstancesChangeEvent>() {
 
 			/**
-			 * 锁
+			 * 关机锁
 			 */
 			private final Lock lock = new ReentrantLock();
 			/**
-			 * 条件
+			 * 锁条件
 			 */
 			private final Condition condition = this.lock.newCondition();
 			
@@ -162,14 +154,14 @@ public class ShutdownListener {
 	 * @return 是否实例本身
 	 */
 	private boolean self(Instance instance) {
-		final String dubboPort = this.nacosDiscoveryProperties.getMetadata().get("dubbo.protocols.dubbo.port");
 		return
-			this.nacosDiscoveryProperties.getIp().equals(instance.getIp()) &&
+			// 匹配IP地址
+			instance.getIp().equals(this.nacosDiscoveryProperties.getIp()) &&
 			(
-				// Dubbo服务端口
-				String.valueOf(instance.getPort()).equals(dubboPort) ||
 				// Www服务端口
-				instance.getPort() == this.nacosDiscoveryProperties.getPort()
+				instance.getPort() == this.nacosDiscoveryProperties.getPort() ||
+				// Dubbo服务端口
+				String.valueOf(instance.getPort()).equals(this.nacosDiscoveryProperties.getMetadata().get("dubbo.protocols.dubbo.port"))
 			);
 	}
 	

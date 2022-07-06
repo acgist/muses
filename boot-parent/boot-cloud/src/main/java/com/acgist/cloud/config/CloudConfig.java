@@ -17,7 +17,9 @@ import lombok.Setter;
 public class CloudConfig {
 
 	/**
-	 * 当前系统编号
+	 * 当前机器编号：01~99
+	 * 
+	 * 可以配置负数：自动生成
 	 */
 	@JsonIgnore
 	private Integer sn;

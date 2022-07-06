@@ -4,7 +4,7 @@
 
 ## 优化位置
 
-boot-concurrent
+boot-gateway
 
 ## 模块
 
@@ -13,11 +13,15 @@ boot-concurrent
 |docs|配置文档|
 |boot|启动模块|
 |boot-dev|开发模块|
-|boot-parent|依赖启动模块|
+|boot-parent|依赖模块|
 |gateway|网关服务模块|
 |web-parent|Web服务模块|
 |rest-parent|Rest服务模块|
 |service-parent|内部服务模块|
+
+#### Web|Rest|Service
+
+三个模块没有具体区分，均可按需向外提供服务。
 
 ## 规范
 
@@ -145,11 +149,9 @@ system.error.view=/error
 
 ```
 # 应用启动JVM参数
-system.maven.jvm=
-# 应用启动JVM参数：xms
-system.maven.xms=256M
-# 应用启动JVM参数：xmx
-system.maven.xmx=512M
+system.maven.jvm.arg=
+# 应用启动JVM内存
+system.maven.jvm.mem=
 # 作者
 system.maven.vendor=acgist
 # 模块
@@ -158,10 +160,10 @@ system.maven.module=com.acgist.muses
 system.maven.basedir=${project.basedir}
 # 编码
 system.maven.encoding=UTF-8
+# 应用运行环境
+system.maven.run.type=system|docker
 # 应用输出目录
 system.maven.run.path=/data/project
-# 应用输运行环境
-system.maven.run.type=system|docker
 # 是否跳过打包
 system.maven.skip.assembly=true
 ```

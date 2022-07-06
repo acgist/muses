@@ -15,7 +15,7 @@ import com.alibaba.nacos.api.exception.NacosException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 系统配置Builder
+ * Cloud配置Builder
  * 
  * @author acgist
  */
@@ -23,55 +23,60 @@ import lombok.extern.slf4j.Slf4j;
 public final class CloudConfigBuilder {
 	
 	/**
-	 * 系统配置
+	 * Cloud配置
 	 */
 	private CloudConfig cloudConfig;
 	/**
-	 * NacosConfigManager
+	 * ConfigService
 	 */
-	private final NacosConfigManager nacosConfigManager;
+	private final ConfigService configService;
+	/**
+	 * NacosConfigProperties
+	 */
+	private final NacosConfigProperties nacosConfigProperties;
 	
 	private CloudConfigBuilder(NacosConfigManager nacosConfigManager) {
-		this.nacosConfigManager = nacosConfigManager;
+		this.configService = nacosConfigManager.getConfigService();
+		this.nacosConfigProperties = nacosConfigManager.getNacosConfigProperties();
 	}
 	
 	/**
-	 * 获取系统配置Builder
+	 * 获取Cloud配置Builder
 	 * 
 	 * @param nacosConfigManager NacosConfigManager
 	 * 
-	 * @return 系统配置Builder
+	 * @return Cloud配置Builder
 	 */
 	public static final CloudConfigBuilder builder(NacosConfigManager nacosConfigManager) {
-		final CloudConfigBuilder builder = new CloudConfigBuilder(nacosConfigManager);
-		return builder.init();
+		return new CloudConfigBuilder(nacosConfigManager);
 	}
 	
 	/**
-	 * 初始系统配置
-	 * 
-	 * @param nacosConfigManager NacosConfigManager
+	 * 初始Cloud配置
 	 * 
 	 * @return this
 	 */
-	private CloudConfigBuilder init() {
-		final ConfigService configService = this.nacosConfigManager.getConfigService();
-		final NacosConfigProperties nacosConfigProperties = this.nacosConfigManager.getNacosConfigProperties();
+	public CloudConfigBuilder init() {
 		try {
-			final String oldConfig = configService.getConfig(MusesConfig.CLOUD_CONFIG, nacosConfigProperties.getGroup(), MusesConfig.TIMEOUT);
+			// 拉取配置中心配置
+			final String oldConfig = this.configService.getConfig(
+				MusesConfig.CLOUD_CONFIG,
+				this.nacosConfigProperties.getGroup(),
+				MusesConfig.TIMEOUT
+			);
 			if(StringUtils.isEmpty(oldConfig)) {
 				this.cloudConfig = new CloudConfig();
 			} else {
 				this.cloudConfig = JSONUtils.toJava(oldConfig, CloudConfig.class);
 			}
 		} catch (NacosException e) {
-			log.error("初始系统配置异常", e);
+			log.error("初始Cloud配置异常", e);
 		}
 		return this;
 	}
 	
 	/**
-	 * 设置当前服务系统编号
+	 * 设置当前服务机器编号
 	 * 
 	 * @param sn sn
 	 * @param serviceName 服务名称
@@ -84,8 +89,8 @@ public final class CloudConfigBuilder {
 			sns = new HashMap<>();
 			this.cloudConfig.setSns(sns);
 		}
-		if(sn < 0) {
-			// 负数自动生成机器序号
+		if(sn < MusesConfig.CLOUD_MIN_SN) {
+			// 负数自动生成机器编号
 			sn = sns.getOrDefault(serviceName, MusesConfig.CLOUD_MIN_SN);
 			if (++sn >= MusesConfig.CLOUD_MAX_SN) {
 				sn = MusesConfig.CLOUD_MIN_SN;
@@ -123,18 +128,20 @@ public final class CloudConfigBuilder {
 	}
 	
 	/**
-	 * 创建系统配置
+	 * 创建Cloud配置
 	 * 
-	 * @return 系统配置
+	 * @return Cloud配置
 	 */
 	public CloudConfig build() {
-		final ConfigService configService = this.nacosConfigManager.getConfigService();
-		final NacosConfigProperties nacosConfigProperties = this.nacosConfigManager.getNacosConfigProperties();
 		try {
-			// 保存配置中心
-			configService.publishConfig(MusesConfig.CLOUD_CONFIG, nacosConfigProperties.getGroup(), JSONUtils.toJSON(this.cloudConfig));
+			// 推送配置中心配置
+			this.configService.publishConfig(
+				MusesConfig.CLOUD_CONFIG,
+				this.nacosConfigProperties.getGroup(),
+				JSONUtils.toJSON(this.cloudConfig)
+			);
 		} catch (NacosException e) {
-			log.error("设置系统配置异常", e);
+			log.error("创建Cloud配置异常", e);
 		}
 		return this.cloudConfig;
 	}

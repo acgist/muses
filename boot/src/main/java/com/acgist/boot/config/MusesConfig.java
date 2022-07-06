@@ -9,6 +9,9 @@ import java.nio.charset.StandardCharsets;
  * @author acgist
  */
 public class MusesConfig {
+	
+	private MusesConfig() {
+	}
 
 	/**
 	 * 超时时间
@@ -28,8 +31,10 @@ public class MusesConfig {
 	public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
 	/**
 	 * 最小系统编号
+	 * 
+	 * 乘以系数不用担心位数对齐问题
 	 */
-	public static final int CLOUD_MIN_SN = 10;
+	public static final int CLOUD_MIN_SN = 000;
 	/**
 	 * 最大系统编号
 	 */

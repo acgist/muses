@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import com.acgist.concurrent.executor.Executor;
-import com.acgist.concurrent.executor.Executors;
 import com.acgist.concurrent.executor.Executor.RollbackType;
+import com.acgist.concurrent.executor.Executors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,14 +18,13 @@ public class ExecutorsTest {
 //		final SIExecutor siExecutor = new SIExecutor(RollbackType.ALL);
 //		final ISExecutor isExecutor = new ISExecutor(RollbackType.ALL);
 //		final SIExecutor nxExecutor = new SIExecutor(isExecutor, RollbackType.ALL);
-//		assertTrue(Executors.execute(siExecutor, isExecutor, nxExecutor));
-		final SIExecutor siExecutor = new SIExecutor(RollbackType.SUCCESS);
-		final ISExecutor isExecutor = new ISExecutor(RollbackType.SUCCESS);
-		final SIExecutor nxExecutor = new SIExecutor(isExecutor, RollbackType.SUCCESS);
-		assertTrue(Executors.execute(siExecutor, isExecutor, nxExecutor));
-//		final SIExecutor siExecutor = new SIExecutor(RollbackType.LAST_SUCCESS);
-//		final ISExecutor isExecutor = new ISExecutor(RollbackType.LAST_SUCCESS);
-//		final SIExecutor nxExecutor = new SIExecutor(isExecutor, RollbackType.LAST_SUCCESS);
+//		final SIExecutor siExecutor = new SIExecutor(RollbackType.SUCCESS);
+//		final ISExecutor isExecutor = new ISExecutor(RollbackType.SUCCESS);
+//		final SIExecutor nxExecutor = new SIExecutor(isExecutor, RollbackType.SUCCESS);
+		final SIExecutor siExecutor = new SIExecutor(RollbackType.LAST_SUCCESS);
+		final ISExecutor isExecutor = new ISExecutor(RollbackType.LAST_SUCCESS);
+		final SIExecutor nxExecutor = new SIExecutor(isExecutor, RollbackType.LAST_SUCCESS);
+		assertTrue(Executors.execute(siExecutor, nxExecutor));
 //		assertTrue(Executors.execute(siExecutor, isExecutor, nxExecutor));
 	}
 	
@@ -52,6 +51,7 @@ public class ExecutorsTest {
 		@Override
 		public boolean doRollback() {
 			log.info("回滚任务：{}", this);
+			this.rollback = true;
 			return true;
 		}
 		
@@ -66,8 +66,8 @@ public class ExecutorsTest {
 		@Override
 		public String doExecute() {
 			log.info("执行任务：{}", this);
-//			final String value = String.valueOf(100 / 0);
-			final String value = String.valueOf(100 / 1);
+			final String value = String.valueOf(100 / 0);
+//			final String value = String.valueOf(100 / 1);
 			this.success = true;
 			return value;
 		}
@@ -75,6 +75,7 @@ public class ExecutorsTest {
 		@Override
 		public boolean doRollback() {
 			log.info("回滚任务：{}", this);
+			this.rollback = true;
 			return true;
 		}
 		

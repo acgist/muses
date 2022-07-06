@@ -92,7 +92,7 @@ public enum MessageCode {
 	 * 
 	 * @return 状态编码
 	 */
-	public static final MessageCode of(int status) {
+	public static final MessageCode of(Integer status) {
 		final String code = HTTP_STATUS + status;
 		final MessageCode[] values = MessageCode.values();
 		for (MessageCode value : values) {

@@ -12,28 +12,17 @@ import com.acgist.cloud.service.impl.IdServiceImpl;
 import com.alibaba.cloud.nacos.NacosConfigManager;
 
 /**
- * Cloud服务配置
+ * Cloud服务自动配置
  * 
  * @author acgist
  */
 @Configuration
 public class CloudAutoConfiguration {
 
-	/**
-	 * 系统编号：01~99
-	 * 
-	 * 可以配置负数：自动生成
-	 */
 	@Value("${system.sn:-1}")
 	private int sn;
-	/**
-	 * 服务端口
-	 */
 	@Value("${server.port:0}")
 	private int port;
-	/**
-	 * 服务名称
-	 */
 	@Value("${spring.application.name:muses}")
 	private String name;
 	
@@ -44,6 +33,7 @@ public class CloudAutoConfiguration {
 	@ConditionalOnMissingBean
 	public CloudConfig cloudConfig() {
 		return CloudConfigBuilder.builder(this.nacosConfigManager)
+			.init()
 			.buildSn(this.sn, this.name)
 			.buildPid()
 			.buildPort(this.port)
