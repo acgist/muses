@@ -16,7 +16,7 @@
 	<packaging>jar</packaging>
 
 	<name>boot-gateway</name>
-	<description>网关Rest模块Boot：提供网关Rest接口服务</description>
+	<description>网关Rest接口Boot</description>
 
 	<properties>
 		<system.maven.module>com.acgist.boot.gateway</system.maven.module>

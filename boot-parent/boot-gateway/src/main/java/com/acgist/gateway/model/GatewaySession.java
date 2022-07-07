@@ -171,7 +171,7 @@ public class GatewaySession extends Model {
 	 * 创建失败响应
 	 * 
 	 * @param code 状态编码
-	 * @param message 状态描述
+	 * @param message 错误信息
 	 * 
 	 * @return 响应
 	 */
@@ -209,7 +209,7 @@ public class GatewaySession extends Model {
 	/**
 	 * 创建响应数据
 	 */
-	public void buildResponse() {
+	private void buildResponse() {
 		if(this.gatewayRequest != null) {
 			this.responseData.put(PROPERTY_RESERVED, this.gatewayRequest.getReserved());
 		}
