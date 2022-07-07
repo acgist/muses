@@ -1,9 +1,9 @@
-package com.acgist;
+package com.acgist.concurrent;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.acgist.concurrent.distributed.config.DistributedScheduled;
+import com.acgist.concurrent.config.DistributedScheduled;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.acgist.concurrent.distributed.config;
+package com.acgist.concurrent.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 
 import com.acgist.boot.utils.BeanUtils;
-import com.acgist.concurrent.distributed.lock.DistributedLock;
+import com.acgist.concurrent.lock.DistributedLock;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @Configuration
 @ConditionalOnBean(value = DistributedLock.class)
-@AutoConfigureAfter(value = DistributedLockAutoConfiguration.class)
+@AutoConfigureAfter(value = ConcurrentAutoConfiguration.class)
 public class DistributedScheduledAutoConfiguration {
 
 	@Autowired
@@ -32,7 +32,7 @@ public class DistributedScheduledAutoConfiguration {
 	/**
 	 * 注解切点
 	 */
-	@Pointcut("@annotation(com.acgist.distributed.config.DistributedScheduled)")
+	@Pointcut("@annotation(com.acgist.concurrent.config.DistributedScheduled)")
 	public void scheduled() {
 	}
 

@@ -1,4 +1,4 @@
-package com.acgist.concurrent.distributed.config;
+package com.acgist.concurrent.config;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

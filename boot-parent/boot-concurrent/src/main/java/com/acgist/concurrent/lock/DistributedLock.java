@@ -1,4 +1,4 @@
-package com.acgist.concurrent.distributed.lock;
+package com.acgist.concurrent.lock;
 
 import java.util.Objects;
 import java.util.UUID;

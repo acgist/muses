@@ -16,5 +16,5 @@ spring:
       config:
         namespace: ${spring.profiles.active}
         file-extension: yml
-        refreshable-dataids: redis.yml, dubbo.yml
+        refreshable-dataids: task.yml, redis.yml, dubbo.yml
     

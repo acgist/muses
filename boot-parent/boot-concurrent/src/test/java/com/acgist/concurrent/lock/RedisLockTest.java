@@ -1,4 +1,4 @@
-package com.acgist.distributed.lock;
+package com.acgist.concurrent.lock;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.acgist.ConcurrentApplication;
-import com.acgist.concurrent.distributed.lock.RedisLock;
+import com.acgist.concurrent.ConcurrentApplication;
 
 import lombok.extern.slf4j.Slf4j;
 
