@@ -21,7 +21,7 @@ public class ExecutorServiceImpl implements ExecutorService {
 	private TaskExecutor taskExecutor;
 	
 	@Override
-	public boolean execute(Executor<?, ?>... executors) {
+	public boolean execute(Executor<?, ?> ... executors) {
 		final List<Executor<?, ?>> list = Stream.of(executors).collect(Collectors.toList());
 		final CompletableFuture<Void> future = CompletableFuture.allOf(
 			list.stream()
@@ -38,7 +38,7 @@ public class ExecutorServiceImpl implements ExecutorService {
 	}
 
 	@Override
-	public boolean executeRollbackUnsuccess(Executor<?, ?>... executors) {
+	public boolean executeRollbackUnsuccess(Executor<?, ?> ... executors) {
 		final boolean success = this.execute(executors);
 		if(!success) {
 			this.rollback(executors);
@@ -47,7 +47,7 @@ public class ExecutorServiceImpl implements ExecutorService {
 	}
 	
 	@Override
-	public boolean rollback(Executor<?, ?>... executors) {
+	public boolean rollback(Executor<?, ?> ... executors) {
 		final List<Executor<?, ?>> list = Stream.of(executors).collect(Collectors.toList());
 		final CompletableFuture<Void> future = CompletableFuture.allOf(
 			list.stream()

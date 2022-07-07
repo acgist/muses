@@ -28,3 +28,7 @@ public void scheduled() {
 	...
 }
 ```
+
+## 任务执行器
+
+`ExecutorService`同时执行多个任务`Executor`，支持依赖执行、失败回滚。
