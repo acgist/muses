@@ -15,9 +15,6 @@
 	<artifactId>rest</artifactId>
 	<packaging>jar</packaging>
 
-	<name>rest</name>
-	<description>Rest服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.rest.rest</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

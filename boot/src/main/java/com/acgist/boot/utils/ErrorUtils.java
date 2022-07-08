@@ -194,13 +194,22 @@ public final class ErrorUtils {
 		final Integer errorIndex = ErrorUtils.getSystemErrorIndex(request);
 		if(globalError instanceof Throwable) {
 			log.error("""
-				系统错误：{}-{}-{}-{}
+				请求错误
+				请求地址：{}
+				请求参数：{}
+				请求方法：{}
+				错误次数：{}
 				错误信息：{}
 				""", path, query, method, errorIndex, message, globalError);
 		} else {
 			log.warn("""
-				系统错误：{}-{}-{}-{}
-				错误信息：{}-{}
+				请求错误
+				请求地址：{}
+				请求参数：{}
+				请求方法：{}
+				错误次数：{}
+				错误信息：{}
+				原始信息：{}
 				""", path, query, method, errorIndex, message, globalError);
 		}
 		request.setAttribute(SYSTEM_ERROR_MESSAGE, message);

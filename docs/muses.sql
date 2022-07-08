@@ -48,7 +48,9 @@ CREATE TABLE `t_path` (
   `name` varchar(32) NOT NULL COMMENT '名称',
   `enabled` bit(1) DEFAULT b'1' COMMENT '是否可用',
   `sorted` int(11) DEFAULT '0' COMMENT '排序',
-  `path` varchar(128) NOT NULL COMMENT '规则匹配',
+  `path` varchar(128) NOT NULL COMMENT '规则匹配（正则）：DELETE:/user/delete',
+  `type` varchar(32) NOT NULL COMMENT '权限类型：API-接口；MENU-菜单；BUTTON-按钮；',
+  `route` varchar(128) NOT NULL COMMENT '前端路由',
   `parent_id` bigint(20) DEFAULT NULL COMMENT '上级ID',
   `parent_id_path` varchar(256) DEFAULT NULL COMMENT '上级ID路径',
   PRIMARY KEY (`id`) USING BTREE,
@@ -56,9 +58,9 @@ CREATE TABLE `t_path` (
   CONSTRAINT `key_path_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `t_path` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='权限';
 
-INSERT INTO `t_path` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户备注', '查询用户备注', b'1', 0, 'GET:/user/memo', NULL, NULL);
-INSERT INTO `t_path` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '修改用户备注', '修改用户备注', b'1', 0, 'POST:/user/memo', NULL, NULL);
-INSERT INTO `t_path` VALUES (3, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户信息', '查询用户信息', b'1', 0, 'POST:/user', NULL, NULL);
+INSERT INTO `t_path` VALUES (1, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户备注', '查询用户备注', b'1', 0, 'GET:/user/memo', 'API', '/user/memo/select', NULL, NULL);
+INSERT INTO `t_path` VALUES (2, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '修改用户备注', '修改用户备注', b'1', 0, 'POST:/user/memo', 'API', '/user/memo/update', NULL, NULL);
+INSERT INTO `t_path` VALUES (3, '2020-01-01 00:00:00.000000', '2020-01-01 00:00:00.000000', '查询用户信息', '查询用户信息', b'1', 0, 'POST:/user', 'API', '/user/select', NULL, NULL);
 
 DROP TABLE IF EXISTS `t_role`;
 CREATE TABLE `t_role` (

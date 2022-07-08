@@ -1,12 +1,10 @@
-# Boot-Service
+# 服务Boot
 
-服务模块Boot：提供基本功能
-
-## 基本功能
-
-`service`和`dao`层增删改查
+提供服务注册发现，以及`service`和`dao`相关功能，没有提供`www`相关服务。
 
 ## MyBatisPlus
+
+#### 配置
 
 ```
 mybatis-plus:
@@ -18,55 +16,9 @@ mybatis-plus:
 
 > 如果`mapper.xml`打包在`jar`中扫描配置`classpath*:/mybatis/mapper/**/*.xml`
 
-## JPA
+#### 审计
 
 ```
-spring:
-  jpa:
-    database: MYSQL
-    show-sql: true
-    open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL57Dialect
-    hibernate:
-      ddl-auto: none
-      jdbc:
-        batch_size: 10
-        fetch_size: 10
-    properties.hibernate.temp.use_jdbc_metadata_defaults: false
-```
-
-## Auditing
-
-```
-# JPA
-
-@EntityListeners(AuditingEntityListener.class)
-
-@CreatedBy
-@CreatedDate
-@LastModifiedBy
-@LastModifiedDate
-
-@EnableJpaAuditing
-
-@Bean
-@ConditionalOnMissingBean
-public AuditorAware<Long> auditorAware() {
-	return () -> {
-		return id;
-	};
-}
-
-# JPA
-
-@PreUpdate
-@PrePersist
-public void persistent() {
-...
-}
-
-# MyBatisPlus
-
 @Bean
 @ConditionalOnMissingBean
 public MetaObjectHandler metaObjectHandler(@Autowired IdService idService) {
@@ -83,6 +35,50 @@ public MetaObjectHandler metaObjectHandler(@Autowired IdService idService) {
 			this.setFieldValByName(BootEntity.PROPERTY_MODIFY_DATE, now, metaObject);
 		}
 	};
+}
+```
+
+## JPA
+
+#### 配置
+
+```
+spring:
+  jpa:
+    database: MYSQL
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    hibernate:
+      ddl-auto: none
+      jdbc:
+        batch_size: 10
+        fetch_size: 10
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+```
+
+#### 审计
+
+```
+@EntityListeners(AuditingEntityListener.class)
+
+@CreatedBy
+@CreatedDate
+@LastModifiedBy
+@LastModifiedDate
+
+@EnableJpaAuditing
+
+@Bean
+@ConditionalOnMissingBean
+public AuditorAware<Long> auditorAware() {
+	return () -> id;
+}
+
+@PreUpdate
+@PrePersist
+public void persistent() {
+...
 }
 ```
 
@@ -257,7 +253,7 @@ spring:
 </dependency>
 ```
 
-> 注意：需要配置`Maven`插件（`apt-maven-plugin`）和`Eclipse`插件（`m2e-apt`）
+> 注意：需要安装`Eclipse`插件（`m2e-apt`）
 
 ##  版本管理
 
@@ -280,8 +276,6 @@ spring:
 ```
 
 ## Excel导出
-
-参考实现：
 
 ```
 ExcelService

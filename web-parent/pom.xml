@@ -15,9 +15,6 @@
 	<artifactId>web-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>web-parent</name>
-	<description>Web服务模块：提供网页资源服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.web.parent</system.maven.module>
 	</properties>

@@ -15,9 +15,6 @@
 	<artifactId>service-log-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>service-log-parent</name>
-	<description>日志内部服务模块</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.log.parent</system.maven.module>
 	</properties>

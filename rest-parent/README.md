@@ -1,12 +1,11 @@
-# Rest-Parent
+# Rest接口服务
 
-Rest服务模块：提供Rest接口服务
+提供Rest接口服务
 
 ## 认证授权
 
 网关
 
-## 注意事项
+## Swagger
 
-* `rest`：前端接口
-* `rest-gateway`：外部接口
+引入`Swagger`依赖，开发环境提供接口文档查看，其他环境自动排除依赖。

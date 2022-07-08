@@ -15,9 +15,6 @@
 	<artifactId>rest-oauth2</artifactId>
 	<packaging>jar</packaging>
 
-	<name>rest-oauth2</name>
-	<description>认证授权Rest服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.rest.oauth2</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

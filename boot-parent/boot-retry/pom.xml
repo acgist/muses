@@ -15,9 +15,6 @@
 	<artifactId>boot-retry</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-retry</name>
-	<description>Retry模块Boot：重试模块</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.retry</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

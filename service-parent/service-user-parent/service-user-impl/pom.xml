@@ -15,9 +15,6 @@
 	<artifactId>service-user-impl</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-user-impl</name>
-	<description>用户内部服务实现</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.user.impl</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.parent.basedir}</system.maven.basedir>

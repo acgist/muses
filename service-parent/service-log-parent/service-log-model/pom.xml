@@ -15,9 +15,6 @@
 	<artifactId>service-log-model</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-log-model</name>
-	<description>通知内部服务模型</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.log.model</system.maven.module>
 	</properties>

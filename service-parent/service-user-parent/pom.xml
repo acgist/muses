@@ -15,9 +15,6 @@
 	<artifactId>service-user-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>service-user-parent</name>
-	<description>用户内部服务模块</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.user.parent</system.maven.module>
 	</properties>

@@ -15,9 +15,6 @@
 	<artifactId>boot-service</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-service</name>
-	<description>服务模块Boot：提供基本功能</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.service</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

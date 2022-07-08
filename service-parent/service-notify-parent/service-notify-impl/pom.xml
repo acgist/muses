@@ -15,9 +15,6 @@
 	<artifactId>service-notify-impl</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-notify-impl</name>
-	<description>通知内部服务实现</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.notify.impl</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.parent.basedir}</system.maven.basedir>

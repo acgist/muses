@@ -15,9 +15,6 @@
 	<artifactId>service-user-model</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-user-model</name>
-	<description>用户内部服务模型</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.user.model</system.maven.module>
 	</properties>

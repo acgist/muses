@@ -4,7 +4,7 @@
 
 ## 优化位置
 
-boot-gateway
+boot-model
 
 ## 模块
 
@@ -68,20 +68,22 @@ spring:
   application:
     name: acgist
   main:
+    allow-circular-references: true
     allow-bean-definition-overriding: true
   profiles:
     active: @profile@
   cloud:
     nacos:
-      username: nacos
-      password: nacos
+      username: @nacosUser@
+      password: @nacosPassword@
       discovery:
         namespace: ${spring.profiles.active}
         server-addr: @nacos@
       config:
         namespace: ${spring.profiles.active}
+        server-addr: @nacos@
         file-extension: yml
-        refreshable-dataids: redis.yml, dubbo.yml
+        refreshable-dataids: main.yml, task.yml, dubbo.yml
 ```
 
 > 配置备份[./docs/nacos_config.zip](./docs/nacos_config.zip)
@@ -99,7 +101,7 @@ spring:
 system.name=muses
 # 系统版本
 system.version=1.0.0
-# 系统编号（负数自动生成）：主要用于生成ID，相同服务建议设置不同编号。
+# 机器编号（负数自动生成）：主要用于生成ID（相同服务建议设置不同编号）
 system.sn=-1
 # 系统端口：随机生成
 system.port=8080
@@ -214,9 +216,9 @@ server.port=${system.port:8080}
 |监听器|com.acgist.**.listener||
 |拦截器|com.acgist.**.inteceptor||
 |控制器|com.acgist.**.controller||
-|微服务|com.acgist.**.api.impl||
+|远程服务|com.acgist.**.api.impl||
 |本地服务|com.acgist.**.service.impl||
-|数据层|com.acgist.**.dao.*|es/neo4j/mapper/repository|
+|数据模块|com.acgist.**.dao.*|es/neo4j/mapper/repository|
 |数据模型|com.acgist.**.model.*|es/neo4j/entity/vo/dto/type/request/response/exception|
 
 > `model.type`存放实体枚举
@@ -244,4 +246,6 @@ server.port=${system.port:8080}
 
 ## 其他链接
 
-> `SpringBoot`配置：[https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
+#### `SpringBoot`配置
+
+[https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)

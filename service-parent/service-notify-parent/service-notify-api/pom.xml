@@ -15,9 +15,6 @@
 	<artifactId>service-notify-api</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-notify-api</name>
-	<description>通知内部服务接口</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.notify.api</system.maven.module>
 	</properties>

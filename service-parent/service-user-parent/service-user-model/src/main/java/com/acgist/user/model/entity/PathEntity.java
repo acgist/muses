@@ -3,6 +3,7 @@ package com.acgist.user.model.entity;
 import java.util.List;
 
 import com.acgist.model.entity.StateEntity;
+import com.acgist.user.model.type.PathType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -26,11 +27,20 @@ public class PathEntity extends StateEntity {
 	/**
 	 * 匹配规则
 	 * 
-	 * GET:/user/name
-	 * POST:/user/name
+	 * GET:/user/id
+	 * POST:/user
+	 * DELETE：/user/delete
 	 */
 	@TableField(value = "path")
 	private String path;
+	/**
+	 * 权限类型：API-接口；MENU-菜单；BUTTON-按钮；
+	 */
+	private PathType type;
+	/**
+	 * 前端路由
+	 */
+	private String route;
 	/**
 	 * 上级
 	 */

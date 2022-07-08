@@ -15,9 +15,6 @@
 	<artifactId>web</artifactId>
 	<packaging>jar</packaging>
 
-	<name>web</name>
-	<description>Web服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.web.web</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

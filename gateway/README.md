@@ -1,6 +1,6 @@
-# Gateway
+# 网关
 
-网关：通过网关访问内部Www服务
+通过网关访问内部Www服务
 
 > 注意：不要引入`spring-boot-starter-web`模块
 
@@ -16,18 +16,13 @@ lb://服务名称
 
 ## 认证授权
 
+#### Web
+
+Web服务需要自己实现认证授权
+
+#### Rest
+
 Rest服务统一使用`rest-oauth2`认证授权
-
-## 模块
-
-#### gateway sentinel adapter
-
-```
-<dependency>
-	<groupId>com.alibaba.cloud</groupId>
-	<artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
-</dependency>
-```
 
 ## 注意事项
 

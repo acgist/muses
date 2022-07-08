@@ -1,6 +1,6 @@
-# Boot-MQ
+# 消息队列Boot
 
-消息队列模块Boot
+提供消息队列功能
 
 ## Kafka
 

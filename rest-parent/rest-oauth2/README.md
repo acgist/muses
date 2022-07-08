@@ -1,6 +1,6 @@
-# Rest-OAuth2
+# OAuth2认证服务
 
-认证授权Rest服务
+提供OAuth2认证服务
 
 ## 术语
 

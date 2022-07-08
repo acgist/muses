@@ -15,9 +15,6 @@
 	<artifactId>boot-sentinel</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-sentinel</name>
-	<description>熔断降级模块Boot</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.sentinel</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

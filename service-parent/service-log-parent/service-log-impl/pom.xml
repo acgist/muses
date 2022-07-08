@@ -15,9 +15,6 @@
 	<artifactId>service-log-impl</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-log-impl</name>
-	<description>日志内部服务实现</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.log.impl</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.parent.basedir}</system.maven.basedir>

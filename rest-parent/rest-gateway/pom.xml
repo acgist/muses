@@ -15,9 +15,6 @@
 	<artifactId>rest-gateway</artifactId>
 	<packaging>jar</packaging>
 
-	<name>rest-gateway</name>
-	<description>网关Rest服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.rest.gateway</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

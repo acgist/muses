@@ -15,9 +15,6 @@
 	<artifactId>boot-cloud</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-cloud</name>
-	<description>服务注册发现Boot</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.cloud</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

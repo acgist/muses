@@ -15,9 +15,6 @@
 	<artifactId>boot-redis</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-redis</name>
-	<description>Redis和缓存模块Boot</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.redis</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

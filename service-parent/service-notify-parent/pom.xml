@@ -15,9 +15,6 @@
 	<artifactId>service-notify-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>service-notify-parent</name>
-	<description>通知内部服务模块</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.notify.parent</system.maven.module>
 	</properties>

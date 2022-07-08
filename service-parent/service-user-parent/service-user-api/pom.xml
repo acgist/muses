@@ -15,9 +15,6 @@
 	<artifactId>service-user-api</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-user-api</name>
-	<description>用户内部服务接口</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.user.api</system.maven.module>
 	</properties>

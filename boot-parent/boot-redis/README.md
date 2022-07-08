@@ -1,3 +1,3 @@
-# Boot-Redis
+# Redis Boot
 
-Redis和缓存模块Boot
+提供Redis和缓存功能

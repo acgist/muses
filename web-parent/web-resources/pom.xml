@@ -15,9 +15,6 @@
 	<artifactId>web-resources</artifactId>
 	<packaging>jar</packaging>
 
-	<name>web-resources</name>
-	<description>静态资源Web服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.web.resources</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

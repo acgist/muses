@@ -15,9 +15,6 @@
 	<artifactId>boot-model</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-model</name>
-	<description>数据模型模块Boot</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.model</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

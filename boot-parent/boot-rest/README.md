@@ -1,6 +1,6 @@
-# Boot-Rest
+# Rest接口Boot
 
-Rest模块Boot：提供Rest接口服务
+提供Rest接口功能
 
 ## 当前用户
 

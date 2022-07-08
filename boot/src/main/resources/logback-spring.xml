@@ -12,10 +12,10 @@
 	<property name="system.queue" value="2048" />
 	<!-- 日志文件缓存大小 -->
 	<property name="system.buffer" value="8192" />
-	<!-- 日志保留时间 -->
+	<!-- 日志最大保留时间 -->
 	<property name="system.history" value="30" />
 	<!-- 日志编码 -->
-	<property name="system.charset" value="utf-8" />
+	<property name="system.charset" value="UTF-8" />
 	<!-- 日志格式 -->
 	<property name="system.pattern" value="[${system.name}] %d{YYYY-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} %file:%line - %m%n" />
 

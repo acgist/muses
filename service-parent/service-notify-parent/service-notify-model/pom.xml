@@ -15,9 +15,6 @@
 	<artifactId>service-notify-model</artifactId>
 	<packaging>jar</packaging>
 
-	<name>service-notify-model</name>
-	<description>通知内部服务模型</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.notify.model</system.maven.module>
 	</properties>

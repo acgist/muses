@@ -15,9 +15,6 @@
 	<artifactId>boot</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot</name>
-	<description>启动Boot</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot</system.maven.module>
 		<system.maven.basedir>${project.parent.basedir}</system.maven.basedir>

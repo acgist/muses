@@ -15,9 +15,6 @@
 	<artifactId>service-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>service-parent</name>
-	<description>内部服务模块：内部Dubbo服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.service.parent</system.maven.module>
 	</properties>

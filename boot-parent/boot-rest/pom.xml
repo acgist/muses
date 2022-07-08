@@ -15,9 +15,6 @@
 	<artifactId>boot-rest</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-rest</name>
-	<description>Rest模块Boot：提供Rest接口服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.rest</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

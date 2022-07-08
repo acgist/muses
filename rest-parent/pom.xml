@@ -15,9 +15,6 @@
 	<artifactId>rest-parent</artifactId>
 	<packaging>pom</packaging>
 
-	<name>rest-parent</name>
-	<description>Rest服务模块：提供Rest接口服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.rest.parent</system.maven.module>
 	</properties>

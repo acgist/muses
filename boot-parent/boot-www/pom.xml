@@ -15,9 +15,6 @@
 	<artifactId>boot-www</artifactId>
 	<packaging>jar</packaging>
 
-	<name>boot-www</name>
-	<description>Www模块Boot：所有通过网络提供服务的模块必须包含此依赖</description>
-
 	<properties>
 		<system.maven.module>com.acgist.boot.www</system.maven.module>
 		<system.maven.basedir>${project.parent.parent.basedir}</system.maven.basedir>

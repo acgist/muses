@@ -15,9 +15,6 @@
 	<artifactId>gateway</artifactId>
 	<packaging>jar</packaging>
 
-	<name>gateway</name>
-	<description>网关：通过网关访问内部Www服务</description>
-
 	<properties>
 		<system.maven.module>com.acgist.gateway</system.maven.module>
 		<system.maven.basedir>${project.parent.basedir}</system.maven.basedir>
