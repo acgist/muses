@@ -3,14 +3,14 @@
 <mapper namespace="com.acgist.user.dao.mapper.PathMapper">
 
 	<select id="selectByRole" resultType="com.acgist.user.model.entity.PathEntity">
-	SELECT path.* FROM t_path path
+	SELECT DISTINCT path.* FROM t_path path
 		LEFT JOIN t_role_path rp ON path.id = rp.path_id
 		LEFT JOIN t_role role ON rp.role_id = role.id
 	WHERE role.id = #{id}
 	</select>
 
 	<select id="selectByUser" resultType="com.acgist.user.model.entity.PathEntity">
-	SELECT path.* FROM t_path path
+	SELECT DISTINCT path.* FROM t_path path
 		LEFT JOIN t_role_path rp ON path.id = rp.path_id
 		LEFT JOIN t_role role ON rp.role_id = role.id
 		LEFT JOIN t_user_role ur ON role.id = ur.role_id

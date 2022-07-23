@@ -36,7 +36,7 @@ fi
 if [ $runType != "docker" ]; then
   sh bin/wait.sh
 else
-  echo "启动成功：${project.artifactId}-${project.version}"
+  echo -e "\033[32m启动成功：${project.artifactId}-${project.version}\033[0m"
 fi
 
 echo "--------------------------------"

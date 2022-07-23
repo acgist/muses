@@ -1,5 +1,7 @@
 package com.acgist.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,6 +70,20 @@ public class ExcelServiceTest {
 		final List<ExcelEntity> load = service.loadEntity("D:/tmp/excel.xlsx");
 //		final List<ExcelEntity> load = service.load("D:/tmp/excel.xlsx", ExcelEntity.class);
 		log.info("{}", load);
+	}
+
+	@Test
+	public void testError() throws FileNotFoundException {
+		SpringUtils.noneSpring = true;
+		final BootExcelService<ExcelEntity> service = new BootExcelServiceImpl<ExcelMapper, ExcelServiceTest.ExcelEntity>() {
+		};
+		final File file = Paths.get("D://tmp/1.xlsx").toFile();
+//		final File file = Paths.get("D://tmp/excelMark.xlsx").toFile();
+		final FileInputStream input = new FileInputStream(file);
+		service.load(input, 0).forEach(list -> {
+			log.info("------------");
+			list.forEach(line -> log.info("{}", line));
+		});
 	}
 
 	@Test

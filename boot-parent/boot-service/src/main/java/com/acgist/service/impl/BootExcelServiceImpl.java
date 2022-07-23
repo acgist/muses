@@ -21,15 +21,19 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -103,10 +107,28 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			return;
 		}
 		cell.setCellStyle(cellStyle);
-		final XSSFDrawing drawing = sheet.createDrawingPatriarch();
-		final XSSFComment comment = drawing.createCellComment(new XSSFClientAnchor());
-		comment.setString(message);
-		cell.setCellComment(comment);
+		Comment comment = cell.getCellComment();
+		if(comment == null) {
+			final XSSFClientAnchor anchor = new XSSFClientAnchor();
+			anchor.setRow1(cell.getRowIndex());
+			anchor.setRow2(cell.getRowIndex() + 4);
+			anchor.setCol1(cell.getColumnIndex());
+			anchor.setCol2(cell.getColumnIndex() + 8);
+			final XSSFDrawing drawing = sheet.createDrawingPatriarch();
+			comment = drawing.createCellComment(anchor);
+			cell.setCellComment(comment);
+		}
+		RichTextString richText = comment.getString();
+		if(richText == null) {
+			richText = new XSSFRichTextString(message);
+			comment.setString(richText);
+		} else if(richText instanceof XSSFRichTextString xssfRichText) {
+			xssfRichText.append(message);
+		} else {
+			final XSSFRichTextString xssfRichText = new XSSFRichTextString(message);
+			xssfRichText.append(richText.getString());
+			comment.setString(xssfRichText);
+		}
 	}
 	
 	@Override
@@ -295,32 +317,30 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			final XSSFSheet sheetValue = workbook.getSheetAt(sheet);
 			// 默认最长列宽128
 			final AtomicInteger colLength = new AtomicInteger(128);
-			sheetValue.forEach(row -> {
+			final Iterator<Row> rowIterator = sheetValue.rowIterator();
+			rowIterator.forEachRemaining(row -> {
+				// 补全row
+				if(list.size() < row.getRowNum()) {
+					IntStream.range(list.size(), row.getRowNum()).forEach(rowIndex -> {
+						final List<Object> empty = IntStream.range(0, colLength.get()).boxed().map(cellIndex -> null).collect(Collectors.toList());
+						list.add(empty);
+					});
+				}
 				final List<Object> data = new ArrayList<>();
-				final Iterator<Cell> iterator = row.cellIterator();
-				iterator.forEachRemaining(cell -> {
+				final Iterator<Cell> cellIterator = row.cellIterator();
+				cellIterator.forEachRemaining(cell -> {
 					// 索引填充：默认返回有值数据
-					final int size = data.size();
-					final int index = cell.getColumnIndex();
-					if(colLength.get() <= index) {
-						// 删除无效单元
-						iterator.remove();
+					// 补全cell
+					if(data.size() < cell.getColumnIndex()) {
+						IntStream.range(data.size(), Integer.min(cell.getColumnIndex(), colLength.get())).forEach(i -> data.add(null));
+					}
+					if(colLength.get() <= cell.getColumnIndex()) {
+						// 删除无效单元：删除容易导致拷贝异常
+//						cellIterator.remove();
 						// 列宽超过头部退出循环
 						return;
 					}
-					if(size <= index) {
-						IntStream.range(index, size).forEach(i -> data.add(null));
-					}
-					final CellType cellType = cell.getCellType();
-					if(cellType == CellType.STRING) {
-						data.add(cell.getStringCellValue());
-					} else if(cellType == CellType.BOOLEAN) {
-						data.add(cell.getBooleanCellValue());
-					} else if(cellType == CellType.NUMERIC) {
-						data.add(cell.getNumericCellValue());
-					} else {
-						data.add(cell.getStringCellValue());
-					}
+					data.add(this.cellValue(cell));
 				});
 				// 设置头部长度
 				if(row.getRowNum() == 0) {
@@ -328,7 +348,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				}
 				// 填充数据
 				if(data.size() < colLength.get()) {
-					IntStream.range(0, colLength.get() - data.size()).forEach(i -> data.add(null));
+					IntStream.range(data.size(), colLength.get()).forEach(i -> data.add(null));
 				}
 				// 添加数据
 				list.add(data);
@@ -367,11 +387,15 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 				final Map<String, Object> map = new HashMap<>();
 				for (int index = 0; index < data.size(); index++) {
 					final ExcelHeaderValue headerValue = headerMapping.get(index);
+					if(headerValue == null) {
+						ExcelMarkContext.mark(row.get(), index, "所在列不存在");
+						continue;
+					}
 					try {
 						map.put(headerValue.getField(), headerValue.getFormatter().parse(data.get(index)));
 					} catch (Exception e) {
-						hasException = true;
 						// 记录异常信息
+						hasException = true;
 						ExcelMarkContext.mark(row.get(), index, e.getMessage());
 					}
 				}
@@ -389,6 +413,35 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			})
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
+	}
+	
+	/**
+	 * 读取Cell数据
+	 * 
+	 * @param cell Cell
+	 * 
+	 * @return Cell数据
+	 */
+	private Object cellValue(Cell cell) {
+		// 类型判断
+		final CellType cellType = cell.getCellType();
+		if(cellType == CellType.STRING) {
+			return cell.getStringCellValue();
+		} else if(cellType == CellType.BOOLEAN) {
+			return cell.getBooleanCellValue();
+		} else if(cellType == CellType.NUMERIC) {
+			if(DateUtil.isCellDateFormatted(cell)) {
+				return cell.getDateCellValue();
+			} else {
+				return cell.getNumericCellValue();
+			}
+		} else if(cellType == CellType.FORMULA) {
+			// 公式需要转为文本
+//			return cell.getCellFormula();
+			return cell.getStringCellValue();
+		} else {
+			return cell.toString();
+		}
 	}
 	
 }
