@@ -18,7 +18,7 @@ public class IdServiceImpl implements IdService {
 	/**
 	 * 最大序号
 	 */
-	private static final int MAX_INDEX = 9999;
+	private static final int MAX_INDEX = 99999;
 
 	/**
 	 * 当前机器编号
@@ -49,13 +49,16 @@ public class IdServiceImpl implements IdService {
 		}
 		final LocalDateTime time = LocalDateTime.now();
 		return
-			10000000000000000L * (time.getYear() % 100) +
-			100000000000000L * time.getMonthValue() +
-			1000000000000L * time.getDayOfMonth() +
-			10000000000L * time.getHour() +
-			100000000L * time.getMinute() +
-			1000000L * time.getSecond() +
-			10000L * this.sn +
+//			9223372036854775807
+			100000000000000000L * (time.getYear() % 100) +
+			1000000000000000L * time.getMonthValue() +
+			10000000000000L * time.getDayOfMonth() +
+			100000000000L * time.getHour() +
+			1000000000L * time.getMinute() +
+			// 机器序号两位
+			10000000L * time.getSecond() +
+			// 每秒并发数量
+			100000L * this.sn +
 			this.index;
 	}
 

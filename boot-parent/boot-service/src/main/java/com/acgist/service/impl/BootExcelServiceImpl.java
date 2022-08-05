@@ -426,7 +426,7 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 		// 类型判断
 		final CellType cellType = cell.getCellType();
 		if(cellType == CellType.STRING) {
-			return cell.getStringCellValue();
+			return cell.getStringCellValue().strip();
 		} else if(cellType == CellType.BOOLEAN) {
 			return cell.getBooleanCellValue();
 		} else if(cellType == CellType.NUMERIC) {
@@ -437,10 +437,10 @@ public abstract class BootExcelServiceImpl<M extends BootMapper<T>, T extends Bo
 			}
 		} else if(cellType == CellType.FORMULA) {
 			// 公式需要转为文本
-//			return cell.getCellFormula();
-			return cell.getStringCellValue();
+//			return cell.getCellFormula().strip();
+			return cell.getStringCellValue().strip();
 		} else {
-			return cell.toString();
+			return cell.toString().strip();
 		}
 	}
 	

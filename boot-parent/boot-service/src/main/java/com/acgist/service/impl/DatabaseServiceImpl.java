@@ -25,7 +25,12 @@ public class DatabaseServiceImpl implements DatabaseService {
 	
 	@Override
 	public TableDto table(String tableName) throws SQLException {
-		return this.table(tableName, this.dataSource.getConnection());
+		try (
+			// 连接需要关闭不然容易超过最大连接数量
+			final Connection connection = this.dataSource.getConnection();
+		) {
+			return this.table(tableName, connection);
+		}
 	}
 	
 	@Override
