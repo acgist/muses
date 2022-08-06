@@ -91,12 +91,13 @@ public final class BeanUtils {
 	 * 
 	 * @param object 对象
 	 * @param data 属性
+	 * @param overwrite 覆盖属性
 	 */
-	public static final void copy(Object object, Map<String, Object> data) {
+	public static final void copy(Object object, Map<String, Object> data, boolean overwrite) {
 		if(object == null || MapUtils.isEmpty(data)) {
 			return;
 		}
-		BeanUtils.copy(object, data, data.keySet().toArray(String[]::new));
+		BeanUtils.copy(object, data, overwrite, data.keySet().toArray(String[]::new));
 	}
 	
 	/**
@@ -104,15 +105,16 @@ public final class BeanUtils {
 	 * 
 	 * @param object 对象
 	 * @param data 属性
+	 * @param overwrite 覆盖属性
 	 * @param fields 拷贝属性
 	 */
-	public static final void copy(Object object, Map<String, Object> data, String ... fields) {
+	public static final void copy(Object object, Map<String, Object> data, boolean overwrite, String ... fields) {
 		if(object == null || MapUtils.isEmpty(data) || ArrayUtils.isEmpty(fields)) {
 			return;
 		}
 		final Class<?> clazz = object.getClass();
 		for (String fieldName : fields) {
-			BeanUtils.copy(object, FieldUtils.getField(clazz, fieldName, true), data.get(fieldName));
+			BeanUtils.copy(object, FieldUtils.getField(clazz, fieldName, true), data.get(fieldName), overwrite);
 		}
 	}
 	
@@ -122,8 +124,9 @@ public final class BeanUtils {
 	 * @param object 对象
 	 * @param field 属性
 	 * @param fieldValue 属性的值
+	 * @param overwrite 覆盖属性
 	 */
-	public static final void copy(Object object, Field field, Object fieldValue) {
+	public static final void copy(Object object, Field field, Object fieldValue, boolean overwrite) {
 		if(object == null || field == null || fieldValue == null) {
 			return;
 		}
@@ -160,7 +163,9 @@ public final class BeanUtils {
 			return;
 		}
 		try {
-			field.set(object, fieldValue);
+			if(overwrite || field.get(object) == null) {
+				field.set(object, fieldValue);
+			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			log.error("设置属性异常：{}-{}-{}", fieldType, field, fieldValue);
 		}
