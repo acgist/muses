@@ -30,8 +30,8 @@ public class ${prefix}Controller {
 	private ${prefix}Service ${prefixLower}Service;
 	
 	@GetMapping
-	public Page<${prefix}Entity> page(@RequestBody FilterQuery query, Page<${prefix}Entity> page) {
-		return this.${prefixLower}Service.page(query, page);
+	public Message<Page<${prefix}Entity>> page(@RequestBody FilterQuery query) {
+		return Message.success(this.${prefixLower}Service.page(query));
 	}
 
 	@PostMapping
@@ -44,8 +44,8 @@ public class ${prefix}Controller {
 	}
 
 	@GetMapping("/{id}")
-	public ${prefix}Entity select(@PathVariable Long id) {
-		return this.${prefixLower}Service.getById(id);
+	public Message<${prefix}Entity> select(@PathVariable Long id) {
+		return Message.success(this.${prefixLower}Service.getById(id));
 	}
 
 	@DeleteMapping("/{id}")

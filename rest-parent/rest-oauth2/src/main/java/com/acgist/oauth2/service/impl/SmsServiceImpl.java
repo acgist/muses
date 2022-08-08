@@ -18,13 +18,8 @@ public class SmsServiceImpl implements SmsService {
 	 */
 	private Map<String, String> smsCode = new ConcurrentHashMap<>();
 	
-	/**
-	 * 发送短信验证码
-	 * 
-	 * @param mobile 手机号码
-	 */
 	@Override
-	public void send(String mobile) {
+	public boolean send(String mobile) {
 		// TODO：自行实现发送还有次数限制
 		final Random random = new Random();
 		final StringBuilder builder = new StringBuilder();
@@ -33,16 +28,9 @@ public class SmsServiceImpl implements SmsService {
 		}
 		this.smsCode.put(mobile, builder.toString());
 		log.info("短信验证码：{}-{}", mobile, builder.toString());
+		return true;
 	}
 	
-	/**
-	 * 验证短信验证码
-	 * 
-	 * @param mobile 手机号码
-	 * @param smsCode 短信验证码
-	 * 
-	 * @return 是否成功
-	 */
 	@Override
 	public boolean verify(String mobile, String smsCode) {
 		return StringUtils.equals(this.smsCode.get(mobile), smsCode);

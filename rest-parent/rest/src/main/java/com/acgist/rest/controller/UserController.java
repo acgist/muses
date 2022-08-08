@@ -19,8 +19,8 @@ public class UserController {
 
 	@PostMapping()
 	@Operation(summary = "查询当前用户", description = "查询当前登陆用户", tags = "用户接口")
-	public User index() {
-		return UserContext.currentUser();
+	public Message<User> index() {
+		return Message.success(UserContext.currentUser());
 	}
 	
 	@GetMapping

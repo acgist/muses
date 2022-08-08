@@ -16,8 +16,10 @@ public interface SmsService {
 	 * 发送短信验证码
 	 * 
 	 * @param mobile 手机号码
+	 * 
+	 * @return 是否成功
 	 */
-	void send(String mobile);
+	boolean send(String mobile);
 	
 	/**
 	 * 验证短信验证码

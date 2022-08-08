@@ -57,8 +57,8 @@ public class DatabaseServiceImpl implements DatabaseService {
 //			show full columns from table;
 			final ResultSetMetaData tableMetaData = tableResult.getMetaData();
 			final int columnCount = tableMetaData.getColumnCount();
-			final List<TableColumnDto> cloumns = new ArrayList<>();
-			tableDto.setColumns(cloumns);
+			final List<TableColumnDto> columns = new ArrayList<>();
+			tableDto.setColumns(columns);
 			for (int index = 1; index <= columnCount; index++) {
 				final String column = tableMetaData.getColumnName(index);
 				final String columnType = tableMetaData.getColumnClassName(index);
@@ -77,7 +77,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 				tableColumnDto.setColumn(column);
 				tableColumnDto.setComment(columnComment);
 				tableColumnDto.setType(columnType);
-				cloumns.add(tableColumnDto);
+				columns.add(tableColumnDto);
 			}
 		}
 		return tableDto;

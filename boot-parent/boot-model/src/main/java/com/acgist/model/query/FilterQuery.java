@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -48,15 +49,45 @@ public class FilterQuery extends Model {
 	 * 
 	 * @param entity entity
 	 * @param name Java字段名称
+	 * @param joinEntities 连表实体
 	 * 
 	 * @return 数据库列名
 	 */
-	private static final <T> String column(Class<T> entity, final String name) {
+	private static final <T> String column(Class<T> entity, final String name, final Class<?> ... joinEntities) {
+		// 本表
+		String column = columnDefaultValue(entity, name, null);
+		if(column != null) {
+			return column;
+		}
+		// 连表
+		if(ArrayUtils.isNotEmpty(joinEntities)) {
+			for (Class<?> join : joinEntities) {
+				column = columnDefaultValue(join, name, null);
+				if(column != null) {
+					return column;
+				}
+			}
+		}
+		return name;
+	}
+	
+	/**
+	 * 通过MyBatis注解获取数据库列名
+	 * 
+	 * @param <T> 类型
+	 * 
+	 * @param entity entity
+	 * @param name Java字段名称
+	 * @param defaultValue 字段不存在默认值
+	 * 
+	 * @return 数据库列名
+	 */
+	private static final <T> String columnDefaultValue(Class<T> entity, final String name, final String defaultValue) {
 		final Map<String, String> map = COLUMN_CACHE.computeIfAbsent(entity, key -> new ConcurrentHashMap<>());
 		return map.computeIfAbsent(name, key -> {
 			final Field field = FieldUtils.getField(entity, name, true);
 			if(field == null) {
-				return name;
+				return defaultValue;
 			}
 			final TableField tableField = field.getAnnotation(TableField.class);
 			if(tableField != null && StringUtils.isNotEmpty(tableField.value())) {
@@ -66,6 +97,7 @@ public class FilterQuery extends Model {
 			if(tableId != null && StringUtils.isNotEmpty(tableId.value())) {
 				return tableId.value();
 			}
+			// 字段存在直接返回名称
 			return name;
 		});
 	}
@@ -75,16 +107,15 @@ public class FilterQuery extends Model {
 	 * 
 	 * @param thisAlias 优先别名
 	 * @param thatAlias 次要别名
-	 * @param cloumn 列名
+	 * @param column 列名
 	 * 
 	 * @return 列名
 	 */
-	private static final String aliasCloumn(String thisAlias, String thatAlias, String cloumn) {
-		return StringUtils.isNotEmpty(thisAlias) ?
-			thisAlias + "." + cloumn :
-			StringUtils.isNotEmpty(thatAlias) ?
-			thatAlias + "." + cloumn :
-			cloumn;
+	private static final String aliasColumn(String thisAlias, String thatAlias, String column) {
+		return
+			StringUtils.isNotEmpty(thisAlias) ? thisAlias + "." + column :
+			StringUtils.isNotEmpty(thatAlias) ? thatAlias + "." + column :
+			column;
 	}
 	
 	/**
@@ -176,7 +207,7 @@ public class FilterQuery extends Model {
 		/**
 		 * @see #filter(String, Class, QueryWrapper)
 		 */
-		public <T> void filter(Class<T> entityClazz, QueryWrapper<T> wrapper) {
+		public <T> void filter(Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
 			this.filter(null, entityClazz, wrapper);
 		}
 		
@@ -188,9 +219,10 @@ public class FilterQuery extends Model {
 		 * @param alias 别名
 		 * @param entityClazz entityClazz
 		 * @param wrapper wrapper
+		 * @param joinEntities 连表实体
 		 */
-		public <T> void filter(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper) {
-			final String column = aliasCloumn(this.alias, alias, column(entityClazz, this.name));
+		public <T> void filter(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			final String column = aliasColumn(this.alias, alias, column(entityClazz, this.name, joinEntities));
 			switch (this.type) {
 			case EQ -> wrapper.eq(column, this.value);
 			case NE -> wrapper.ne(column, this.value);
@@ -327,8 +359,8 @@ public class FilterQuery extends Model {
 		/**
 		 * @see #order(String, QueryWrapper)
 		 */
-		public <T> void order(QueryWrapper<T> wrapper) {
-			this.order(null, wrapper);
+		public <T> void order(Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			this.order(null, entityClazz, wrapper);
 		}
 		
 		/**
@@ -336,13 +368,16 @@ public class FilterQuery extends Model {
 		 * 
 		 * @param <T> 类型
 		 * 
+		 * @param alias 别名
+		 * @param entityClazz entityClazz
 		 * @param wrapper wrapper
+		 * @param joinEntities 连表实体
 		 */
-		public <T> void order(String alias, QueryWrapper<T> wrapper) {
-			final String cloumn = aliasCloumn(this.alias, alias, this.name);
+		public <T> void order(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			final String column = aliasColumn(this.alias, alias, column(entityClazz, this.name, joinEntities));
 			switch (this.type) {
-			case ASC -> wrapper.orderByAsc(cloumn);
-			case DESC -> wrapper.orderByDesc(cloumn);
+			case ASC -> wrapper.orderByAsc(column);
+			case DESC -> wrapper.orderByDesc(column);
 			default -> throw MessageCodeException.of("未知排序类型：", this.type);
 			}
 		}
@@ -355,12 +390,16 @@ public class FilterQuery extends Model {
 	private boolean nullable = true;
 	/**
 	 * 查询列
+	 * 
+	 * 注意：只能筛选本表字段，连表字段建议直接使用SQL别名映射。
 	 */
-	private List<String> selectCloumn = new ArrayList<>();
+	private List<String> selectColumn = new ArrayList<>();
 	/**
 	 * 忽略列
+	 * 
+	 * 注意：只能筛选本表字段，连表字段建议直接使用SQL别名映射。
 	 */
-	private List<String> ignoreCloumn = new ArrayList<>();
+	private List<String> ignoreColumn = new ArrayList<>();
 	/**
 	 * 过滤条件
 	 */
@@ -707,23 +746,27 @@ public class FilterQuery extends Model {
 	/**
 	 * 创建MyBatis查询条件
 	 * 
+	 * @param alias 别名
 	 * @param entity entity
+	 * @param joinEntities 连表实体
 	 * 
 	 * @return MyBatis查询条件
 	 */
-	public <T extends BootEntity> Wrapper<T> build(String alias, Class<T> entity) {
+	public <T extends BootEntity> Wrapper<T> build(String alias, Class<T> entity, Class<?> ... joinEntities) {
 		final QueryWrapper<T> wrapper = Wrappers.query();
-		if(CollectionUtils.isNotEmpty(this.selectCloumn)) {
-			wrapper.select(field -> this.selectCloumn.contains(field.getField().getName()));
+		if(CollectionUtils.isNotEmpty(this.selectColumn)) {
+			// 只用处理本表
+			wrapper.select(field -> this.selectColumn.contains(field.getField().getName()));
 		}
-		if(CollectionUtils.isNotEmpty(this.ignoreCloumn)) {
-			wrapper.select(field -> !this.ignoreCloumn.contains(field.getField().getName()));
+		if(CollectionUtils.isNotEmpty(this.ignoreColumn)) {
+			// 只用处理本表
+			wrapper.select(field -> !this.ignoreColumn.contains(field.getField().getName()));
 		}
 		this.filter.stream()
 			.filter(filter -> this.nullable || filter.value != null)
-			.forEach(filter -> filter.filter(alias, entity, wrapper));
+			.forEach(filter -> filter.filter(alias, entity, wrapper, joinEntities));
 		this.sorted.stream()
-			.forEach(sorted -> sorted.order(alias, wrapper));
+			.forEach(sorted -> sorted.order(alias, entity, wrapper, joinEntities));
 		return wrapper;
 	}
 	

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.acgist.boot.model.Message;
 import com.acgist.oauth2.service.SmsService;
 
 @RestController
@@ -15,8 +16,12 @@ public class CodeSmsController {
 	private SmsService smsService;
 	
 	@GetMapping("/code.sms")
-	public void sms(String mobile) {
-		this.smsService.send(mobile);
+	public Message<String> sms(String mobile) {
+		if(this.smsService.send(mobile)) {
+			return Message.success();
+		} else {
+			return Message.fail();
+		}
 	}
 	
 }

@@ -72,7 +72,7 @@ public interface BootService<T extends BootEntity> extends IService<T> {
 	 * @return 分页
 	 */
 	default Page<T> page(FilterQuery filterQuery) {
-		return this.page(filterQuery, new Page<T>(filterQuery.getCurrent(), filterQuery.getSize()));
+		return this.page(filterQuery, filterQuery.buildPage());
 	}
 	
 	/**
