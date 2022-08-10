@@ -48,6 +48,11 @@ public final class JSONUtils {
 	private static final ObjectMapper MAPPER = buildMapper();
 	
 	/**
+	 * MapperNullable（线程安全）
+	 */
+	private static final ObjectMapper MAPPER_NULLABLE = buildMapperNullable();
+	
+	/**
 	 * Java转JSON
 	 * 
 	 * @param object Java
@@ -60,6 +65,24 @@ public final class JSONUtils {
 		}
 		try {
 			return MAPPER.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			throw MessageCodeException.of(e, "JSON格式失败：", object);
+		}
+	}
+	
+	/**
+	 * Java转JSON（保留空值）
+	 * 
+	 * @param object Java
+	 * 
+	 * @return JSON
+	 */
+	public static final String toJSONNullable(Object object) {
+		if (Objects.isNull(object)) {
+			return null;
+		}
+		try {
+			return MAPPER_NULLABLE.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
 			throw MessageCodeException.of(e, "JSON格式失败：", object);
 		}
@@ -198,6 +221,19 @@ public final class JSONUtils {
 	}
 	
 	/**
+	 * 创建NullableMapper
+	 * 
+	 * @return Mapper
+	 */
+	public static final ObjectMapper buildMapperNullable() {
+		final ObjectMapper mapper = new ObjectMapper();
+		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
+			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
+			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+	}
+	
+	/**
 	 * 创建WebMapper
 	 * 
 	 * @return Mapper
@@ -208,7 +244,6 @@ public final class JSONUtils {
 			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-			// 如果前台需要显示所有属性删除设置
 			.setSerializationInclusion(Include.NON_NULL);
 	}
 
@@ -223,6 +258,7 @@ public final class JSONUtils {
 		final PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
 			.allowIfBaseType(Object.class)
 			.build();
+		// 配置属性
 		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)

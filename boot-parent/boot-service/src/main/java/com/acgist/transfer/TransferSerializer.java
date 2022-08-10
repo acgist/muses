@@ -1,4 +1,4 @@
-package com.acgist.www.transfer;
+package com.acgist.transfer;
 
 import java.io.IOException;
 import java.util.Map;

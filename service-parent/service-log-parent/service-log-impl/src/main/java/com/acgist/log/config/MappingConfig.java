@@ -16,6 +16,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import com.acgist.model.dto.TableColumnDto;
 import com.acgist.model.dto.TableDto;
 import com.acgist.service.DatabaseService;
+import com.acgist.transfer.Transfer;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -216,6 +217,12 @@ public class MappingConfig {
 		}
 		if(fieldMapping.getClazz() == null) {
 			fieldMapping.setClazz(field.getType());
+		}
+		if(fieldMapping.getTransfer() == null) {
+			final Transfer transfer = field.getAnnotation(Transfer.class);
+			if(transfer != null) {
+				fieldMapping.setTransfer(transfer.group());
+			}
 		}
 		fieldMappingMap.put(fieldName, fieldMapping);
 		columnMappingMap.put(columnName, fieldMapping);

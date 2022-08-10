@@ -9,7 +9,7 @@ git reset --hard origin/master
 git pull
 
 # 如果提交package-lock.json不用安装
-#npm install
+npm install --unsafe-perm --allow-root
 npm run build
 
 # 删除文件

@@ -1,4 +1,4 @@
-package com.acgist.www.transfer;
+package com.acgist.transfer;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

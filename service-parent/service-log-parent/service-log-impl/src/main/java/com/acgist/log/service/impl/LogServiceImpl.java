@@ -34,6 +34,7 @@ import com.acgist.boot.service.IdService;
 import com.acgist.boot.utils.DateUtils;
 import com.acgist.boot.utils.JSONUtils;
 import com.acgist.log.api.ILogService;
+import com.acgist.log.config.FieldMapping;
 import com.acgist.log.config.MappingConfig;
 import com.acgist.log.config.TableMapping;
 import com.acgist.log.dao.es.LogRepository;
@@ -43,6 +44,7 @@ import com.acgist.log.model.message.LogMessage;
 import com.acgist.log.model.query.Query;
 import com.acgist.log.model.vo.LogVo;
 import com.acgist.log.service.LogService;
+import com.acgist.service.TransferService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,6 +60,8 @@ public class LogServiceImpl implements LogService, ILogService {
 	private MappingConfig mappingConfig;
 	@Autowired
 	private LogRepository logRepository;
+	@Autowired
+	private TransferService transferService;
 	@Autowired
 	private FreemarkerService freemarkerService;
 	@Autowired
@@ -92,14 +96,14 @@ public class LogServiceImpl implements LogService, ILogService {
 			log.setId(this.idService.id());
 			log.setType(type);
 			log.setTable(table);
-			final String sourceJson = JSONUtils.toJSON(data);
+			final String sourceJson = JSONUtils.toJSONNullable(data);
 			final Object sourceObject = JSONUtils.toJava(sourceJson, tableMapping.getClazz());
 			final Object sourceId = this.getFieldValue(sourceObject, tableMapping.getIdField());
 			log.setSourceId(sourceId == null ? null : Long.valueOf(sourceId.toString()));
 			final Object sourceName = this.getFieldValue(sourceObject, tableMapping.getNameField());
 			log.setSourceName(sourceName == null ? null : sourceName.toString());
 			log.setSourceValue(sourceJson);
-			log.setDiffValue(JSONUtils.toJSON(old));
+			log.setDiffValue(JSONUtils.toJSONNullable(old));
 			logs.add(log);
 		}
 		this.logRepository.saveAll(logs);
@@ -114,13 +118,11 @@ public class LogServiceImpl implements LogService, ILogService {
 	 */
 	private void columnToField(TableMapping tableMapping, Map<String, Object> old, Map<String, Object> data) {
 		tableMapping.getColumnMap().forEach((key, mapping) -> {
-			final Object oldValue = old == null ? null : old.remove(key);
-			final Object dataValue = data == null ? null : data.remove(key);
-			if(oldValue != null) {
-				old.put(mapping.getField(), oldValue);
+			if(old != null && old.containsKey(key)) {
+				old.put(mapping.getField(), old.remove(key));
 			}
-			if(dataValue != null) {
-				data.put(mapping.getField(), dataValue);
+			if(data != null && data.containsKey(key)) {
+				data.put(mapping.getField(), data.remove(key));
 			}
 		});
 	}
@@ -249,18 +251,36 @@ public class LogServiceImpl implements LogService, ILogService {
 			sourceCopyMap.putAll(sourceMap);
 			sourceMap.putAll(diffMap);
 			logVo.setDiffMap(diffMap);
-			logVo.setDiffObject(JSONUtils.toJava(JSONUtils.toJSON(sourceMap), clazz));
+			logVo.setDiffObject(JSONUtils.toJava(JSONUtils.toJSONNullable(sourceMap), clazz));
 		}
 		// 日志信息
 		logMap.put("log", logVo);
 		logMap.put("diff", logVo.getDiffObject());
 		logMap.put("source", logVo.getSourceObject());
-		logMap.put("diffMap", logVo.getDiffMap());
-		logMap.put("sourceMap", sourceCopyMap);
+		logMap.put("diffMap", this.transfer(logVo.getDiffMap(), tableMapping.getFieldMap()));
+		logMap.put("sourceMap", this.transfer(sourceCopyMap, tableMapping.getFieldMap()));
 		logMap.put("fieldMap", tableMapping.getFieldMap());
 		logMap.put("columnMap", tableMapping.getColumnMap());
 		logMap.put("tableMapping", tableMapping);
 		logVo.setLog(this.freemarkerService.buildTemplate(tableMapping.getTemplate(logVo), logMap));
+	}
+	
+	/**
+	 * 翻译
+	 * 
+	 * @param data 数据
+	 * @param mapping 字段映射
+	 * 
+	 * @return 翻译结果
+	 */
+	private Map<String, Object> transfer(Map<String, Object> data, Map<String, FieldMapping> mapping) {
+		data.entrySet().forEach(entry -> {
+			final FieldMapping fieldMapping = mapping.get(entry.getKey());
+			if(fieldMapping != null && fieldMapping.getTransfer() != null) {
+				entry.setValue(this.transferService.select(fieldMapping.getTransfer(), String.valueOf(entry.getValue())));
+			}
+		});
+		return data;
 	}
 
 }

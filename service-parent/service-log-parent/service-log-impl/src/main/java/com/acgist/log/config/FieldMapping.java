@@ -28,5 +28,9 @@ public class FieldMapping {
 	 * 类型
 	 */
 	private Class<?> clazz;
+	/**
+	 * 枚举翻译
+	 */
+	private String transfer;
 
 }

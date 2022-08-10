@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -680,6 +681,15 @@ public class FilterQuery extends Model {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 获取条件Map
+	 * 
+	 * @return 条件Map
+	 */
+	public Map<String, Object> toFilterMap() {
+		return this.filter.stream().collect(Collectors.toMap(Filter::getName, Filter::getValue));
 	}
 	
 	/**
