@@ -274,10 +274,13 @@ public class LogServiceImpl implements LogService, ILogService {
 	 * @return 翻译结果
 	 */
 	private Map<String, Object> transfer(Map<String, Object> data, Map<String, FieldMapping> mapping) {
+		if(data == null) {
+			return data;
+		}
 		data.entrySet().forEach(entry -> {
 			final FieldMapping fieldMapping = mapping.get(entry.getKey());
-			if(fieldMapping != null && fieldMapping.getTransfer() != null) {
-				entry.setValue(this.transferService.select(fieldMapping.getTransfer(), String.valueOf(entry.getValue())));
+			if(fieldMapping != null && fieldMapping.getTransfer() != null && entry.getValue() != null) {
+				entry.setValue(this.transferService.select(fieldMapping.getTransfer(), entry.getValue().toString()));
 			}
 		});
 		return data;

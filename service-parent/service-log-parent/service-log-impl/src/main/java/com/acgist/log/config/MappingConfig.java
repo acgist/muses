@@ -207,6 +207,7 @@ public class MappingConfig {
 		final FieldMapping fieldMapping = fieldFieldMapping != null ? fieldFieldMapping : columnFieldMapping != null ? columnFieldMapping : new FieldMapping();
 		if(StringUtils.isEmpty(fieldMapping.getName())) {
 			final TableColumnDto tableColumnDto = tableDto.getColumn(columnName);
+			// 字段名称
 			fieldMapping.setName(tableColumnDto == null ? null : tableColumnDto.getComment());
 		}
 		if(StringUtils.isEmpty(fieldMapping.getField())) {
