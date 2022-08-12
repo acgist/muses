@@ -39,7 +39,7 @@ public class CodeAuthenticationFilter extends OncePerRequestFilter {
 		if(MATCHER.matches(request)) {
 			final String newCode = request.getParameter(CODE);
 			final String oldCode = (String) request.getSession().getAttribute(CODE);
-			if(!StringUtils.equalsIgnoreCase(newCode, oldCode)) {
+			if(!StringUtils.equalsIgnoreCase(newCode.strip(), oldCode.strip())) {
 				this.authenticationFailureHandler.onAuthenticationFailure(request, response, new AuthenticationServiceException("图形验证码错误"));
 				return;
 			}

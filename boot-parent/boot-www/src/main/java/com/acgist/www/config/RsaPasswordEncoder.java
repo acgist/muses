@@ -28,12 +28,13 @@ public class RsaPasswordEncoder implements PasswordEncoder {
 
 	@Override
 	public boolean matches(CharSequence rawPassword, String encodedPassword) {
-		final String password = rawPassword.toString();
+		String password = rawPassword.toString().strip();
 		// 明文校验
 		boolean success = this.proxy.matches(password, encodedPassword);
 		// 解密校验
 		if(!success && password.length() > 64) {
-			success = this.proxy.matches(this.rsaService.decrypt(password), encodedPassword);
+			password = this.rsaService.decrypt(password).strip();
+			success = this.proxy.matches(password, encodedPassword);
 		}
 		return success;
 	}

@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		final com.acgist.boot.model.User user = this.userService.selectByName(username);
+		final com.acgist.boot.model.User user = this.userService.selectByName(username.strip());
 		if(user == null) {
 			throw new UsernameNotFoundException("用户无效");
 		}
