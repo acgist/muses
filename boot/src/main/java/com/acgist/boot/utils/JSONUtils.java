@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import com.acgist.boot.config.FormatStyle.DateStyle;
 import com.acgist.boot.config.FormatStyle.DateTimeStyle;
@@ -213,7 +214,9 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
+		return mapper
+			.setTimeZone(TimeZone.getDefault())
+			.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -227,7 +230,9 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildMapperNullable() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
+		return mapper
+			.setTimeZone(TimeZone.getDefault())
+			.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -240,7 +245,9 @@ public final class JSONUtils {
 	 */
 	public static final ObjectMapper buildWebMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
-		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
+		return mapper
+			.setTimeZone(TimeZone.getDefault())
+			.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -259,7 +266,9 @@ public final class JSONUtils {
 			.allowIfBaseType(Object.class)
 			.build();
 		// 配置属性
-		return mapper.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
+		return mapper
+			.setTimeZone(TimeZone.getDefault())
+			.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
 			.registerModules(buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)

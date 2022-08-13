@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.data.neo4j.Neo4jDataAutoConfigurat
 	Neo4jDataAutoConfiguration.class,
 	ElasticsearchDataAutoConfiguration.class
 })
-//默认配置：配置template不用配置factory
+// 默认配置：配置template不用配置factory
 @MapperScan(basePackages = { "com.acgist.mysql.mapper", "com.acgist.**.dao.mapper" }, sqlSessionTemplateRef = "sqlSessionTemplate")
 public class MssqlApplication {
 
