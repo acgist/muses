@@ -208,6 +208,57 @@ spring:
 
 > 注意`ShardingJDBC`版本配置
 
+#### 动态数据源
+
+###### Maven
+
+```
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+</dependency>
+```
+
+> 用来切换数据源和数据源的提供者没有关系
+
+###### 配置
+
+```
+spring:
+  datasource:
+    dynamic:
+      strict: false
+      primary: master
+      hikari:
+        minimum-idle: 2
+        maximum-pool-size: 10
+        connection-test-query: SELECT 1
+      datasource:
+        master:
+          type: com.zaxxer.hikari.HikariDataSource
+          url: 
+          username: 
+          password: 
+          driverClassName: com.mysql.cj.jdbc.Driver
+        slave:
+          type: com.zaxxer.hikari.HikariDataSource
+          url: 
+          username: 
+          password: 
+          driverClassName: com.mysql.cj.jdbc.Driver
+        oracle:
+          hikari:
+            minimum-idle: 2
+            maximum-pool-size: 10
+            connection-test-query: SELECT 1 from dual
+          url: 
+          username: 
+          password: 
+          driverClassName: oracle.jdbc.driver.OracleDriver
+```
+
+> 结合`ShardingJDBC`使用可以不用配置`datasource`，`master`直接使用`ShardingJDBC`的数据源。
+
 #### 注意事项
 
 本地测试不想建立太多数据库，所以都是连接单个数据库，实际只有分表没有分库。

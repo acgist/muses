@@ -291,6 +291,12 @@
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis.plus.version}</version>
 			</dependency>
+			<!-- MyBatis-Plus DS -->
+			<dependency>
+			    <groupId>com.baomidou</groupId>
+			    <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+				<version>${mybatis.plus.version}</version>
+			</dependency>
 			<!-- ShardingJDBC -->
 			<dependency>
 				<groupId>org.apache.shardingsphere</groupId>
