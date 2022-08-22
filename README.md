@@ -88,6 +88,19 @@ spring:
 
 > 配置备份[./docs/nacos_config.zip](./docs/nacos_config.zip)
 
+## 版本
+
+```
+# 设置标签
+git tag 1.0.0
+# 设置版本
+mvn versions:set -DnewVersion=1.0.0
+mvn -N versions:update-child-modules
+mvn versions:commit
+# 配置中心
+system.version=1.0.0
+```
+
 ## 关机
 
 * 服务下线
