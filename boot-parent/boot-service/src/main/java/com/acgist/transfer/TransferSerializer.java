@@ -1,9 +1,7 @@
 package com.acgist.transfer;
 
 import java.io.IOException;
-import java.util.Map;
 
-import com.acgist.boot.service.CacheService;
 import com.acgist.boot.utils.SpringUtils;
 import com.acgist.service.TransferService;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -29,21 +27,16 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 	 */
 	private final String group;
 	/**
-	 * 缓存
-	 */
-	private final CacheService cacheService;
-	/**
 	 * 枚举翻译服务
 	 */
 	private final TransferService transferService;
 	
 	public TransferSerializer() {
-		this(null, null, null);
+		this(null, null);
 	}
 	
-	public TransferSerializer(String group, CacheService cacheService, TransferService transferService) {
+	public TransferSerializer(String group, TransferService transferService) {
 		this.group = group;
-		this.cacheService = cacheService;
 		this.transferService = transferService;
 	}
 
@@ -60,7 +53,6 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 		if(transfer != null) {
 			return new TransferSerializer(
 				transfer.group(),
-				SpringUtils.getBeanNullable(CacheService.class),
 				SpringUtils.getBeanNullable(TransferService.class)
 			);
 		}
@@ -74,22 +66,7 @@ public class TransferSerializer extends JsonSerializer<Object> implements Contex
 		generator.writeString(value);
 		// 翻译字段输出
 		final String fieldName = generator.getOutputContext().getCurrentName() + "Value";
-		generator.writeStringField(fieldName, this.transferMap().getOrDefault(value, value));
+		generator.writeStringField(fieldName, this.transferService.transfer(this.group, value));
 	}
 	
-	/**
-	 * @return 分组翻译
-	 */
-	private Map<String, String> transferMap() {
-		if(this.cacheService == null || this.transferService == null) {
-			return Map.of();
-		}
-		Map<String, String> transferMap = this.cacheService.cache(TransferService.CACHE_TRANSFER, this.group);
-		if(transferMap == null) {
-			transferMap = this.transferService.select(this.group);
-			this.cacheService.cache(TransferService.CACHE_TRANSFER, this.group, transferMap);
-		}
-		return transferMap;
-	}
-
 }

@@ -1,10 +1,8 @@
 package com.acgist.service.excel;
 
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import com.acgist.boot.service.CacheService;
 import com.acgist.boot.utils.SpringUtils;
 import com.acgist.service.BootExcelService.Formatter;
 import com.acgist.service.TransferService;
@@ -21,16 +19,11 @@ public class TransferFormatter implements Formatter {
 	 */
 	private final ThreadLocal<String> group = new ThreadLocal<>();
 	/**
-	 * 缓存
-	 */
-	private final CacheService cacheService;
-	/**
 	 * 枚举翻译服务
 	 */
 	private final TransferService transferService;
 	
 	public TransferFormatter() {
-		this.cacheService = SpringUtils.getBeanNullable(CacheService.class);
 		this.transferService = SpringUtils.getBeanNullable(TransferService.class);
 	}
 	
@@ -44,30 +37,14 @@ public class TransferFormatter implements Formatter {
 	@Override
 	public String formatProxy(Object object) {
 		final String key = object.toString();
-		return this.transferMap().getOrDefault(key, key);
+		return this.transferService.transfer(this.group.get(), key);
 	}
 	
 	@Override
 	public Object parseProxy(Object object) {
-		return this.transferMap().entrySet().stream()
+		return this.transferService.transfer(this.group.get()).entrySet().stream()
 			.filter(entry -> Objects.equals(entry.getValue(), Objects.toString(object, null)))
 			.map(Entry::getKey);
-	}
-	
-	/**
-	 * @return 分组翻译
-	 */
-	private Map<String, String> transferMap() {
-		if(this.cacheService == null || this.transferService == null) {
-			return Map.of();
-		}
-		final String groupName = this.group.get();
-		Map<String, String> transferMap = this.cacheService.cache(TransferService.CACHE_TRANSFER, groupName);
-		if(transferMap == null) {
-			transferMap = this.transferService.select(groupName);
-			this.cacheService.cache(TransferService.CACHE_TRANSFER, groupName, transferMap);
-		}
-		return transferMap;
 	}
 	
 }

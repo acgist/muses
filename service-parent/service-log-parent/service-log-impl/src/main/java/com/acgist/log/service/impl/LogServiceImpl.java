@@ -280,7 +280,7 @@ public class LogServiceImpl implements LogService, ILogService {
 		data.entrySet().forEach(entry -> {
 			final FieldMapping fieldMapping = mapping.get(entry.getKey());
 			if(fieldMapping != null && fieldMapping.getTransfer() != null && entry.getValue() != null) {
-				entry.setValue(this.transferService.select(fieldMapping.getTransfer(), entry.getValue().toString()));
+				entry.setValue(this.transferService.transfer(fieldMapping.getTransfer(), entry.getValue().toString()));
 			}
 		});
 		return data;
