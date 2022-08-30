@@ -2,7 +2,6 @@ package com.acgist.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import com.acgist.boot.model.ModifyOptional;
 import com.acgist.boot.service.CacheService;
@@ -19,11 +18,6 @@ public interface TransferService {
 	 * 枚举缓存
 	 */
 	String CACHE_TRANSFER = "transfer";
-	
-	/**
-	 * 弱引用缓存
-	 */
-	Map<String, Map<String, String>> CACHE = new WeakHashMap<>();
 	
 	/**
 	 * 系统缓存
@@ -47,30 +41,22 @@ public interface TransferService {
 	 * @return 枚举数据（不能为空）
 	 */
 	default Map<String, String> transfer(String group) {
-		synchronized (CACHE) {
-			// 弱引用缓存
-			Map<String, String> map = CACHE.get(group);
+		Map<String, String> map = null;
+		// 系统缓存
+		final CacheService cacheService = TransferService.CACHE_SERVICE.build();
+		if(cacheService != null) {
+			map = cacheService.cache(TransferService.CACHE_TRANSFER, group);
 			if(map != null) {
 				return map;
 			}
-			// 系统缓存
-			final CacheService cacheService = TransferService.CACHE_SERVICE.build();
+		}
+		// 数据库查询
+		map = this.select(group);
+		if(map != null) {
 			if(cacheService != null) {
-				map = cacheService.cache(TransferService.CACHE_TRANSFER, group);
-				if(map != null) {
-					return map;
-				}
+				cacheService.cache(TransferService.CACHE_TRANSFER, group, map);
 			}
-			// 数据库查询
-			map = this.select(group);
-			if(map != null) {
-				// 注意：必须new一个String
-				CACHE.put(new String(group), map);
-				if(cacheService != null) {
-					cacheService.cache(TransferService.CACHE_TRANSFER, group, map);
-				}
-				return map;
-			}
+			return map;
 		}
 		return Map.of();
 	}
