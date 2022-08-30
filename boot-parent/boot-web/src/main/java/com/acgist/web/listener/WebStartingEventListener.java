@@ -14,9 +14,17 @@ import com.acgist.cloud.config.PortConfig;
  */
 public class WebStartingEventListener implements ApplicationListener<ApplicationStartingEvent> {
 
+	/**
+	 * 是否初始化
+	 */
+	private static boolean init = false;
+	
 	@Override
 	public void onApplicationEvent(ApplicationStartingEvent event) {
-		PortConfig.buildPort(PortConfig.Type.WEB, event.getArgs());
+		if(!WebStartingEventListener.init) {
+			WebStartingEventListener.init = true;
+			PortConfig.buildPort(PortConfig.Type.WEB, event.getArgs());
+		}
 	}
 
 }

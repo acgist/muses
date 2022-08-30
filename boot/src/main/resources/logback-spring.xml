@@ -93,9 +93,9 @@
 			<charset>${system.charset}</charset>
 			<pattern>${system.pattern}</pattern>
 		</encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
-        </filter>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 	</appender>
 	
 	<!-- 引入文件：文件可以不存在 -->

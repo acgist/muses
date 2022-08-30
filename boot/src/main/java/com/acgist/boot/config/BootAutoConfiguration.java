@@ -12,6 +12,7 @@ import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
@@ -123,12 +124,22 @@ public class BootAutoConfiguration {
 	public TaskScheduler taskScheduler(TaskSchedulerBuilder builder) {
 		return builder.build();
 	}
+	
+	@Bean
+	public CommandLineRunner successCommandLineRunner() {
+		return new CommandLineRunner() {
+			@Override
+			public void run(String ... args) throws Exception {
+				log.info("项目启动成功：{}", BootAutoConfiguration.this.name);
+			}
+		};
+	}
 
 	@PostConstruct
 	public void init() {
 		SpringUtils.setContext(this.context);
 		final var runtime = Runtime.getRuntime();
-		final var bean = ManagementFactory.getRuntimeMXBean();
+		final var runtimeMXBean = ManagementFactory.getRuntimeMXBean();
 		final String freeMemory = FileUtils.formatSize(runtime.freeMemory());
 		final String totalMemory = FileUtils.formatSize(runtime.totalMemory());
 		final String maxMemory = FileUtils.formatSize(runtime.maxMemory());
@@ -141,7 +152,7 @@ public class BootAutoConfiguration {
 		log.info("Java库目录：{}", System.getProperty("java.library.path"));
 		log.info("ClassPath：{}", System.getProperty("java.class.path"));
 		log.info("虚拟机名称：{}", System.getProperty("java.vm.name"));
-		log.info("虚拟机参数：{}", bean.getInputArguments().stream().collect(Collectors.joining(" ")));
+		log.info("虚拟机参数：{}", runtimeMXBean.getInputArguments().stream().collect(Collectors.joining(" ")));
 		log.info("虚拟机空闲内存：{}", freeMemory);
 		log.info("虚拟机已用内存：{}", totalMemory);
 		log.info("虚拟机最大内存：{}", maxMemory);
