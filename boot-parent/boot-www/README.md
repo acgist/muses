@@ -93,3 +93,19 @@ DELETE /admin/user
 
 [1, 2, 3, 4]
 ```
+
+## 数据校验
+
+### @Valid
+
+```
+(@Valid @RequestBody Dto dto, BindingResult bindingResult) {
+	if(bindingResult.hasErrors()) {
+		bindingResult.getAllErrors()
+	}
+}
+```
+
+### @Valid + @Validated
+
+全局处理抛出异常

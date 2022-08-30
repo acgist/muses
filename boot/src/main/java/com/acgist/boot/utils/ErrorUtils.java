@@ -290,6 +290,7 @@ public final class ErrorUtils {
 	 * @return 异常信息
 	 */
 	public static final String message(MessageCode messageCode, Throwable t) {
+		// ValidationException
 		if(
 			t instanceof BindException ||
 			t instanceof MethodArgumentNotValidException

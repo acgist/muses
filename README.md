@@ -101,6 +101,12 @@ mvn versions:commit
 system.version=1.0.0
 ```
 
+#### 批量修改部署脚本
+
+```
+sed -i "s/1.0.0/1.1.0/g" `grep 1.0.0 -rl ./*.sh`
+```
+
 ## 关机
 
 * 服务下线

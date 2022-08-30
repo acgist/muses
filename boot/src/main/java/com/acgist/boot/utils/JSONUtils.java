@@ -49,9 +49,9 @@ public final class JSONUtils {
 	private static final ObjectMapper MAPPER = buildMapper();
 	
 	/**
-	 * MapperNullable（线程安全）
+	 * NullableMapper（线程安全）
 	 */
-	private static final ObjectMapper MAPPER_NULLABLE = buildMapperNullable();
+	private static final ObjectMapper NULLABLE_MAPPER = buildNullableMapper();
 	
 	/**
 	 * Java转JSON
@@ -83,7 +83,7 @@ public final class JSONUtils {
 			return null;
 		}
 		try {
-			return MAPPER_NULLABLE.writeValueAsString(object);
+			return NULLABLE_MAPPER.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
 			throw MessageCodeException.of(e, "JSON格式失败：", object);
 		}
@@ -228,32 +228,16 @@ public final class JSONUtils {
 	 * 
 	 * @return Mapper
 	 */
-	public static final ObjectMapper buildMapperNullable() {
+	public static final ObjectMapper buildNullableMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
 		return mapper
 			.setTimeZone(TimeZone.getDefault())
 			.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
-			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
+			.registerModules(buildCustomModule(), buildJavaTimeModule())
 			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
 			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
 	
-	/**
-	 * 创建WebMapper
-	 * 
-	 * @return Mapper
-	 */
-	public static final ObjectMapper buildWebMapper() {
-		final ObjectMapper mapper = new ObjectMapper();
-		return mapper
-			.setTimeZone(TimeZone.getDefault())
-			.setDateFormat(new SimpleDateFormat(DateTimeStyle.YYYY_MM_DD_HH24_MM_SS.getFormat()))
-			.registerModules(buildWebModule(), buildCustomModule(), buildJavaTimeModule())
-			.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
-			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-			.setSerializationInclusion(Include.NON_NULL);
-	}
-
 	/**
 	 * 创建序列化Mapper
 	 * 
@@ -275,21 +259,13 @@ public final class JSONUtils {
 			.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL)
 			.setSerializationInclusion(Include.NON_NULL);
 	}
-
-	/**
-	 * @return Java类型转换模块（Web）
-	 */
-	private static final Module buildWebModule() {
-		final SimpleModule webModule = new SimpleModule("WebModule");
-		webModule.addSerializer(Long.class, ToStringSerializer.instance);
-		return webModule;
-	}
 	
 	/**
 	 * @return Java类型转换模块
 	 */
 	private static final Module buildCustomModule() {
 		final SimpleModule customModule = new SimpleModule("CustomModule");
+		customModule.addSerializer(Long.class, ToStringSerializer.instance);
 		return customModule;
 	}
 	

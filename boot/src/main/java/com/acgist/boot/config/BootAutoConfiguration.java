@@ -88,7 +88,7 @@ public class BootAutoConfiguration {
 	@Primary
 	@ConditionalOnMissingBean
 	public ObjectMapper objectMapper() {
-		return JSONUtils.buildWebMapper();
+		return JSONUtils.buildMapper();
 	}
 	
 	@Bean
