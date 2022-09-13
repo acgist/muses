@@ -181,8 +181,6 @@ system.maven.module=com.acgist.muses
 system.maven.basedir=${project.basedir}
 # 编码
 system.maven.encoding=UTF-8
-# 应用运行环境
-system.maven.run.type=system|docker
 # 是否跳过打包
 system.maven.skip.assembly=true
 ```

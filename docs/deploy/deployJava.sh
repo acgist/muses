@@ -3,7 +3,7 @@
 # 环境信息
 env=$1
 if [ -z $env ]; then
-  echo "缺少环境信息：deployAll.sh dev|sit|uat|prd"
+  echo "缺少环境信息：deployJava.sh dev|sit|uat|prd"
   exit 0
 fi
 
@@ -32,6 +32,8 @@ done
 # 进入目录
 base=$(readlink -f $(dirname $0))
 cd "$base/../../"
+echo "环境目录：$base"
+echo "当前目录：$(pwd)"
 
 # 更新代码
 if [ -z $skipGit ]; then

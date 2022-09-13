@@ -10,6 +10,8 @@ fi
 # 进入目录
 base=$(readlink -f $(dirname $0))
 cd "$base/../../"
+echo "环境目录：$base"
+echo "当前目录：$(pwd)"
 
 # 更新代码
 echo "更新代码"
@@ -20,7 +22,7 @@ echo "编译代码"
 mvn clean package install -D skipTests -P $env -T 4
 
 # 打包代码
-echo "打包代码"
+echo "开始打包：$env"
 if [ ! -d "../package" ]; then
   mkdir -p "../package"
 fi

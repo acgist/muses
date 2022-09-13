@@ -6,9 +6,6 @@ base=${bin%/*}
 cd $base
 echo "启动目录：$base"
 
-# 运行环境
-runType="${system.maven.run.type}"
-
 # Java运行环境
 JAVA=$(which java)
 if [ -z "$JAVA" ] ; then
@@ -17,7 +14,7 @@ if [ -z "$JAVA" ] ; then
 fi
 
 # 结束任务
-if [ $runType != "docker" ]; then
+if [ ! -f "/.dockerenv" ]; then
   sh bin/stop.sh
 fi
 
@@ -31,7 +28,7 @@ echo "启动参数：$JAVA_OPTS"
 
 # 启动应用
 echo "启动应用：${project.artifactId}-${project.version}"
-if [ $runType != "docker" ]; then
+if [ ! -f "/.dockerenv" ]; then
   # 其他启动
   nohup $JAVA $JAVA_OPTS -jar $base/lib/${project.artifactId}-${project.version}.jar > /dev/null 2>&1 &
 else
@@ -40,7 +37,7 @@ else
 fi
 
 # 等待任务
-if [ $runType != "docker" ]; then
+if [ ! -f "/.dockerenv" ]; then
   sh bin/wait.sh
 else
   echo -e "\033[32m启动成功：${project.artifactId}-${project.version}\033[0m"

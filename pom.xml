@@ -516,8 +516,7 @@
 				<nacosUser>nacos</nacosUser>
 				<nacosPassword>nacos</nacosPassword>
 				<system.maven.jvm.arg></system.maven.jvm.arg>
-				<system.maven.jvm.mem>-Xms256M -Xmx512M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
-				<system.maven.run.type>system</system.maven.run.type>
+				<system.maven.jvm.mem>-Xms512M -Xmx1024M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
 			</properties>
 			<build>
 				<plugins>
@@ -542,7 +541,6 @@
 				<nacosPassword>nacos</nacosPassword>
 				<system.maven.jvm.arg></system.maven.jvm.arg>
 				<system.maven.jvm.mem>-Xms512M -Xmx1024M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
-				<system.maven.run.type>system</system.maven.run.type>
 			</properties>
 			<build>
 				<plugins>
@@ -577,7 +575,6 @@
 				<nacosPassword>nacos</nacosPassword>
 				<system.maven.jvm.arg>-Dspring.datasource.password=password</system.maven.jvm.arg>
 				<system.maven.jvm.mem>-Xms2048M -Xmx4096M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
-				<system.maven.run.type>docker</system.maven.run.type>
 			</properties>
 			<build>
 				<plugins>

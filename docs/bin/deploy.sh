@@ -2,7 +2,9 @@
 
 # 进入目录
 base=$(readlink -f $(dirname $0))
-cd ${system.maven.basedir}
+cd $base
+echo "环境目录：$base"
+echo "当前目录：$(pwd)"
 
 # 更新代码
 if [ -z $gited ]; then
