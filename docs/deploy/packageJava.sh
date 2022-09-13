@@ -32,6 +32,6 @@ do
   echo "打包项目：${path##*/}"
   cp -rf "$path.jar" "$path"
   tar -czvf "../package/${path##*/}.tar.gz" -C "${path%/*}" "${path##*/}"
-  echo "打包完成："
+  echo -e "\033[32m打包完成：${path##*/}\033[0m"
   ls -lh "../package/${path##*/}.tar.gz"
 done

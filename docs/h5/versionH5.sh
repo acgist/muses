@@ -20,7 +20,10 @@ case $confirm in
 esac
 
 # 进入目录
-cd ../
+base=$(readlink -f $(dirname $0))
+cd "$base/../"
+echo "环境目录：$base"
+echo "当前目录：$(pwd)"
 
 # 设置标签
 echo "设置Git标签（$version）"
@@ -28,6 +31,6 @@ git tag $version
 
 # 提交版本
 echo "提交版本信息（$version）"
-git add -A
+git add -u
 git commit -m "[!] 发布版本（$version）"
 git push --tags

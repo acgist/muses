@@ -3,9 +3,11 @@
 # 进入目录
 base=$(readlink -f $(dirname $0))
 cd "$base/../"
+echo "环境目录：$base"
+echo "当前目录：$(pwd)"
 
 # 项目名称
-project="admin"
+project="web"
 
 #git pull
 # 强制更新远程代码

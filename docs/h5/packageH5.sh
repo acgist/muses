@@ -3,9 +3,11 @@
 # 进入目录
 base=$(readlink -f $(dirname $0))
 cd "$base/../"
+echo "环境目录：$base"
+echo "当前目录：$(pwd)"
 
 # 项目名称
-project="admin"
+project="web"
 
 #git pull
 # 强制更新远程代码
@@ -28,5 +30,5 @@ if [ ! -d "../package" ]; then
   mkdir -p ../package
 fi
 tar -czvf "../package/$project-$tag.tar.gz" -C ./ "dist"
-echo "打包完成："
+echo -e "\033[32m打包完成：$project\033[0m"
 ls -lh "../package/$project-$tag.tar.gz"
