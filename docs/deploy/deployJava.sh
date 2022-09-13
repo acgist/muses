@@ -50,7 +50,7 @@ declare -x mvned=true
 # 部署应用
 echo "部署项目"
 tag=$(git tag | tail -1)
-find ./ -type d -name "zhwg-*-$tag" | while read path;
+find ./ -type d -name "*-*-$tag" | while read path;
 do
   echo "部署项目：${path##*/}"
   name=${path##*/}

@@ -25,7 +25,7 @@ if [ ! -d "../package" ]; then
   mkdir -p "../package"
 fi
 tag=$(git tag | tail -1)
-find ./ -type d -name "zhwg-*-$tag" | while read path;
+find ./ -type d -name "*-*-$tag" | while read path;
 do
   echo "打包项目：${path##*/}"
   cp -rf "$path.jar" "$path"

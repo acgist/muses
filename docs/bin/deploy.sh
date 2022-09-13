@@ -2,7 +2,7 @@
 
 # 进入目录
 base=$(readlink -f $(dirname $0))
-cd ${project.basedir}
+cd ${system.maven.basedir}
 
 # 更新代码
 if [ -z $gited ]; then
@@ -13,7 +13,7 @@ fi
 # 编译代码
 if [ -z $mvned ]; then
   echo "编译代码：${project.artifactId}-${project.version}"
-  mvn clean package install -D skipTests -P ${env}
+  mvn clean package install -pl "${project.groupId}:${project.artifactId}" -am -D skipTests -P ${env}
 fi
 
 # 删除文件：注意不要删除日志
