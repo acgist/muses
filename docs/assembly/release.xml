@@ -2,36 +2,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
 
-	<id>dev</id>
+	<id>release</id>
 
 	<formats>
-		<format>dir</format>
+		<format>zip</format>
 	</formats>
 
 	<includeBaseDirectory>false</includeBaseDirectory>
 
 	<fileSets>
 		<fileSet>
-			<directory>${system.maven.basedir}/docs/build</directory>
+			<directory>${system.maven.basedir}/docs</directory>
 			<outputDirectory>./</outputDirectory>
 			<includes>
 				<include>README.md</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>${system.maven.basedir}/docs/build/bin</directory>
+			<directory>${system.maven.basedir}/docs/bin</directory>
 			<outputDirectory>bin</outputDirectory>
 			<fileMode>0755</fileMode>
 			<filtered>true</filtered>
 		</fileSet>
 		<fileSet>
-			<directory>${system.maven.basedir}/docs/build/deploy</directory>
-			<outputDirectory>deploy</outputDirectory>
-			<fileMode>0755</fileMode>
-			<filtered>true</filtered>
-		</fileSet>
-		<fileSet>
-			<directory>${system.maven.basedir}/docs/build/config</directory>
+			<directory>${system.maven.basedir}/docs/config</directory>
 			<outputDirectory>config</outputDirectory>
 		</fileSet>
 		<fileSet>

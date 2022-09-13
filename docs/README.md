@@ -4,18 +4,16 @@
 
 ## 部署
 
-#### 单个应用
-
 ```
-# 打包安装不用启动
-sh deployApp.sh
-# 打包安装同时启动
-sh deployStartup.sh
+# 部署
+sh docs/deploy/deployJava.sh dev
+# 打包
+sh docs/deploy/packageJava.sh dev
+# 版本
+sh docs/deploy/versionJava.sh 1.0.0
 ```
 
-#### 多个应用
-
-修改单个应用脚本名称，然后编辑`deployAll.sh`进行启动。
+> `sh docs/deploy/deployJava.sh dev -cd`自动生成单个部署脚本
 
 ## 启动
 

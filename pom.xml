@@ -518,7 +518,6 @@
 				<system.maven.jvm.arg></system.maven.jvm.arg>
 				<system.maven.jvm.mem>-Xms256M -Xmx512M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
 				<system.maven.run.type>system</system.maven.run.type>
-				<system.maven.run.path>/data/project</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -527,7 +526,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${system.maven.basedir}/docs/build/assembly/dev.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/assembly/dev.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -544,7 +543,6 @@
 				<system.maven.jvm.arg></system.maven.jvm.arg>
 				<system.maven.jvm.mem>-Xms512M -Xmx1024M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
 				<system.maven.run.type>system</system.maven.run.type>
-				<system.maven.run.path>/data/project</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -553,7 +551,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${system.maven.basedir}/docs/build/assembly/test.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/assembly/test.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>
@@ -580,7 +578,6 @@
 				<system.maven.jvm.arg>-Dspring.datasource.password=password</system.maven.jvm.arg>
 				<system.maven.jvm.mem>-Xms2048M -Xmx4096M -XX:NewRatio=1 -XX:SurvivorRatio=2</system.maven.jvm.mem>
 				<system.maven.run.type>docker</system.maven.run.type>
-				<system.maven.run.path>/data/project</system.maven.run.path>
 			</properties>
 			<build>
 				<plugins>
@@ -589,7 +586,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<configuration>
 							<descriptors>
-								<descriptor>${system.maven.basedir}/docs/build/assembly/release.xml</descriptor>
+								<descriptor>${system.maven.basedir}/docs/assembly/release.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</plugin>

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # 启动目录
-bin_abs_path=$(readlink -f $(dirname $0))
-base=${bin_abs_path%/*}
+bin=$(readlink -f $(dirname $0))
+base=${bin%/*}
 cd $base
 echo "启动目录：$base"
 

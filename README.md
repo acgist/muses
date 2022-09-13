@@ -183,8 +183,6 @@ system.maven.basedir=${project.basedir}
 system.maven.encoding=UTF-8
 # 应用运行环境
 system.maven.run.type=system|docker
-# 应用输出目录
-system.maven.run.path=/data/project
 # 是否跳过打包
 system.maven.skip.assembly=true
 ```
