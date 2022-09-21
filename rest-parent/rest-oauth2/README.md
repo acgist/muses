@@ -22,23 +22,20 @@ keytool -genkeypair -alias jwk -keyalg RSA -keysize 2048 -keystore jwk.jks -vali
 
 ## 获取Token
 
+> 参考`OAuth2Test`
+
 ### authorization_code
 
 1. 页面访问地址`http://localhost:9999/oauth2/authorize?response_type=code&client_id=web&client_secret=acgist&scope=all&state=state`登陆获取`Code`
 2. 请求地址`http://localhost:9999/oauth2/token`获取`Token`
 
-> 参考`OAuth2Test`
+### 自定义授权（sms|password）
 
-### password
-
-现在默认已经不能使用这种方式获取`Token`了，所以这里自己实现了这个功能。
-现在提供一个登陆地址`GET:/oauth2/password`，登陆成功自动跳转`/oauth2/authorize`获取`Code`。
-
-> 需要请求支持自动跳转
+`token`/`provider`/`converter`
 
 ## 免登陆授权
 
-如果存在一些类型大屏这种不要登陆的授权方式，建议自己实现IP和帐号绑定逻辑，直接通过IP地址进行授权，参考`PasswordToken`、`PasswordAuthenticationFilter`和`PasswordAuthenticationProvider`。
+如果存在一些类型大屏这种不要登陆的授权方式，可以通过IP自动授权。
 
 ## 自定义过滤器
 

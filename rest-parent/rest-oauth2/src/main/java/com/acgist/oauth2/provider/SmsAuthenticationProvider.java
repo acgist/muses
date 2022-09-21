@@ -1,13 +1,12 @@
 package com.acgist.oauth2.provider;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.core.OAuth2Token;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 
+import com.acgist.boot.model.MessageCodeException;
 import com.acgist.oauth2.service.SmsService;
 import com.acgist.oauth2.token.SmsToken;
 
@@ -16,26 +15,34 @@ import com.acgist.oauth2.token.SmsToken;
  * 
  * @author acgist
  */
-public class SmsAuthenticationProvider implements AuthenticationProvider {
+public class SmsAuthenticationProvider extends CustomAuthenticationProvider<SmsToken> {
 
-	@Autowired
-	private SmsService smsService;
-	@Autowired
-	private UserDetailsService userDetailsService;
+	/**
+	 * 验证
+	 */
+	private final SmsService smsService;
+	/**
+	 * 用户
+	 */
+	private final UserDetailsService userDetailsService;
 	
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		final SmsToken token = (SmsToken) authentication;
-		final String mobile = (String) token.getPrincipal();
-		final String smsCode = (String) token.getCredentials();
-		if(!this.smsService.verify(mobile, smsCode)) {
-			throw new AuthenticationServiceException("短信验证码错误");
-		}
-		// TODO：自己实现根据手机号码查询用户
-		final UserDetails user = this.userDetailsService.loadUserByUsername(mobile);
-		return new SmsToken(user, smsCode, user.getAuthorities());
+	public SmsAuthenticationProvider(SmsService smsService, UserDetailsService userDetailsService, OAuth2AuthorizationService authorizationService, OAuth2TokenGenerator<OAuth2Token> tokenGenerator) {
+		super(authorizationService, tokenGenerator);
+		this.smsService = smsService;
+		this.userDetailsService = userDetailsService;
 	}
 
+	@Override
+	protected UserDetails check(SmsToken smsToken) {
+		final String mobile = smsToken.getMobile();
+		final String smsCode = smsToken.getSmsCode();
+		if(!this.smsService.verify(mobile, smsCode)) {
+			throw MessageCodeException.of("验证码错误");
+		}
+		// TODO：自己实现根据手机号码查询用户
+		return this.userDetailsService.loadUserByUsername(mobile);
+	}
+	
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return SmsToken.class.isAssignableFrom(authentication);

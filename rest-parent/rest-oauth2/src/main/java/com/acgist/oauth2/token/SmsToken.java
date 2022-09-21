@@ -1,51 +1,39 @@
 package com.acgist.oauth2.token;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.util.MultiValueMap;
+
+import lombok.Getter;
 
 /**
- * 短信验证码Token
+ * 短信验证Token
  * 
  * @author acgist
  */
-public class SmsToken extends AbstractAuthenticationToken {
+@Getter
+public class SmsToken extends CustomToken {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 帐号信息：用户名称、用户信息
-	 */
-	private Object principal;
-	/**
-	 * 登陆凭证：密码、验证码等等
-	 */
-	private Object credentials;
+	public static final AuthorizationGrantType SMS = new AuthorizationGrantType("sms");
 
-	public SmsToken(String mobile, String smsCode) {
-		super(null);
-		this.principal = mobile;
-		this.credentials = smsCode;
+	/**
+	 * 手机号
+	 */
+	private String mobile;
+	/**
+	 * 验证码
+	 */
+	private String smsCode;
+
+	public SmsToken(String scope, String mobile, String smsCode, Authentication clientPrincipal, MultiValueMap<String, String> additionalParameters) {
+		super(scope, clientPrincipal, SmsToken.SMS, additionalParameters, List.of());
+		this.mobile = mobile;
+		this.smsCode = smsCode;
 		super.setAuthenticated(false);
 	}
-
-	public SmsToken(UserDetails user, String smsCode, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
-		this.principal = user;
-		this.credentials = smsCode;
-		super.setAuthenticated(true);
-	}
-
-	@Override
-	public Object getPrincipal() {
-		return this.principal;
-	}
-
-	@Override
-	public Object getCredentials() {
-		return this.credentials;
-	}
-
+	
 }

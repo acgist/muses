@@ -7,7 +7,6 @@ import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
@@ -34,33 +33,54 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2AccessTokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2RefreshTokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.security.oauth2.server.authorization.web.authentication.DelegatingAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2AuthorizationCodeRequestAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2ClientCredentialsAuthenticationConverter;
+import org.springframework.security.oauth2.server.authorization.web.authentication.OAuth2RefreshTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.utils.ErrorUtils;
+import com.acgist.oauth2.converter.PasswordAuthenticationConverter;
+import com.acgist.oauth2.converter.SmsAuthenticationConverter;
+import com.acgist.oauth2.model.Principal;
+import com.acgist.oauth2.provider.PasswordAuthenticationProvider;
+import com.acgist.oauth2.provider.SmsAuthenticationProvider;
+import com.acgist.oauth2.service.SmsService;
 import com.acgist.oauth2.service.impl.RedisOAuth2AuthorizationConsentService;
 import com.acgist.oauth2.service.impl.RedisOAuth2AuthorizationService;
+import com.acgist.oauth2.token.SmsToken;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -85,7 +105,19 @@ public class AuthorizationServerConfig {
 	private String jwkSecret;
 	
 	@Autowired
+	private SmsService smsService;
+	@Autowired
 	private OAuth2Config oAuth2Config;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private JWKSource<SecurityContext> jwkSource;
+	@Autowired
+	private UserDetailsService userDetailsService;
+	@Autowired
+	private OAuth2AuthorizationService authorizationService;
+	@Autowired
+	private OAuth2TokenCustomizer<JwtEncodingContext> oAuth2TokenCustomizer;
 	
 	@PostConstruct
 	public void init() {
@@ -105,17 +137,45 @@ public class AuthorizationServerConfig {
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity security) throws Exception {
 //		参考：OAuth2AuthorizationServerConfiguration
 		final OAuth2AuthorizationServerConfigurer<HttpSecurity> auth2AuthorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
+		// 端点匹配
 		final RequestMatcher endpointsMatcher = auth2AuthorizationServerConfigurer.getEndpointsMatcher();
+		// 授权方式
+		auth2AuthorizationServerConfigurer.tokenEndpoint(tokenEndpointCustomizer -> {
+			final DelegatingAuthenticationConverter delegatingAuthenticationConverter = new DelegatingAuthenticationConverter(
+				List.of(
+					new SmsAuthenticationConverter(),
+					new PasswordAuthenticationConverter(),
+					new OAuth2RefreshTokenAuthenticationConverter(),
+					new OAuth2ClientCredentialsAuthenticationConverter(),
+					new OAuth2AuthorizationCodeAuthenticationConverter(),
+					new OAuth2AuthorizationCodeRequestAuthenticationConverter()
+				)
+			);
+			// 不要注入成功失败处理逻辑
+//			tokenEndpointCustomizer.errorResponseHandler(authenticationFailureHandler);
+//			tokenEndpointCustomizer.accessTokenResponseHandler(authenticationSuccessHandler);
+			tokenEndpointCustomizer.accessTokenRequestConverter(delegatingAuthenticationConverter);
+		});
 		security
 			.requestMatcher(endpointsMatcher)
 			.authorizeRequests(
 				authorizeRequests -> authorizeRequests
 //					.antMatchers("/oauth2/login").permitAll()
 					.anyRequest().authenticated()
-			).csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+			)
+			.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
 			.apply(auth2AuthorizationServerConfigurer);
 		// 必须设置表单登陆：登陆页面必须配置成和SecurityConfig登陆页面一致否者跳转失败
-		security.formLogin().loginPage("/oauth2/login");
+		security.formLogin();
+		// 指定登陆页面
+//		.loginPage("/login");
+//		.loginPage("/oauth2/login");
+		final OAuth2TokenGenerator<OAuth2Token> tokenGenerator = this.buildOAuth2TokenGenerator(security, this.jwkSource, this.oAuth2TokenCustomizer);
+		// 授权认证
+		log.info("加载短信认证");
+		security.authenticationProvider(new SmsAuthenticationProvider(this.smsService, this.userDetailsService, this.authorizationService, tokenGenerator));
+		log.info("加载密码认证");
+		security.authenticationProvider(new PasswordAuthenticationProvider(this.passwordEncoder, this.userDetailsService, this.authorizationService, tokenGenerator));
 		return security.build();
 	}
 	
@@ -157,9 +217,11 @@ public class AuthorizationServerConfig {
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+				.authorizationGrantType(AuthorizationGrantType.PASSWORD)
+				.authorizationGrantType(SmsToken.SMS)
 				.redirectUri(this.redirectUrl(name))
 				.tokenSettings(tokenSettings)
-				.scope("all")
+				.scope(this.oAuth2Config.getScope())
 				.build();
 			clients.add(client);
 		});
@@ -222,18 +284,44 @@ public class AuthorizationServerConfig {
 		return new OAuth2TokenCustomizer<JwtEncodingContext>() {
 			@Override
 			public void customize(JwtEncodingContext context) {
-				final OAuth2Authorization authorization = context.getAuthorization();
-				final Object attribute = authorization.getAttribute(Principal.class.getName());
+				final Authentication authentication = context.getPrincipal();
+				if(authentication == null) {
+					log.info("授权信息为空：{}", context);
+					return;
+				}
 				// Token增强
-				if(attribute != null && attribute instanceof AbstractAuthenticationToken) {
-					final AbstractAuthenticationToken token = (AbstractAuthenticationToken) attribute;
-					final com.acgist.oauth2.model.Principal principal = (com.acgist.oauth2.model.Principal) token.getPrincipal();
-					context.getClaims().claim(MusesConfig.OAUTH2_ID, principal.getId());
-					context.getClaims().claim(MusesConfig.OAUTH2_NAME, principal.getUsername());
-					context.getClaims().claim(MusesConfig.OAUTH2_ROLE, String.join(",", principal.getRoles()));
+				Object principal = authentication.getPrincipal();
+				if(principal != null && principal instanceof Principal user) {
+					context.getClaims().claim(MusesConfig.OAUTH2_ID, user.getId());
+					context.getClaims().claim(MusesConfig.OAUTH2_NAME, user.getUsername());
+					context.getClaims().claim(MusesConfig.OAUTH2_ROLE, String.join(",", user.getRoles()));
 				}
 			}
 		};
+	}
+	
+	/**
+	 * @return Token生成器
+	 */
+	private OAuth2TokenGenerator<OAuth2Token> buildOAuth2TokenGenerator(
+		HttpSecurity builder,
+		JWKSource<SecurityContext> jwkSource,
+		OAuth2TokenCustomizer<JwtEncodingContext> oAuth2TokenCustomizer
+	) {
+		JwtEncoder jwtEncoder = builder.getSharedObject(JwtEncoder.class);
+		if (jwtEncoder == null) {
+			jwtEncoder = new NimbusJwtEncoder(jwkSource);
+			builder.setSharedObject(JwtEncoder.class, jwtEncoder);
+		}
+		JwtGenerator jwtGenerator = builder.getSharedObject(JwtGenerator.class);
+		if (jwtGenerator == null) {
+			jwtGenerator = new JwtGenerator(jwtEncoder);
+			if (oAuth2TokenCustomizer != null) {
+				jwtGenerator.setJwtCustomizer(oAuth2TokenCustomizer);
+			}
+			builder.setSharedObject(JwtGenerator.class, jwtGenerator);
+		}
+		return new DelegatingOAuth2TokenGenerator(jwtGenerator, new OAuth2AccessTokenGenerator(), new OAuth2RefreshTokenGenerator());
 	}
 	
 	/**

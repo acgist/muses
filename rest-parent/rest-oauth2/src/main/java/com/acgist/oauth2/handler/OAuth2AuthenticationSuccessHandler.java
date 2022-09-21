@@ -29,14 +29,9 @@ public class OAuth2AuthenticationSuccessHandler extends SavedRequestAwareAuthent
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		final String clientIP = WebUtils.clientIP(request);
-		log.debug("登陆成功：{}", clientIP);
 		this.ipCountService.remove(clientIP);
-		if(WebUtils.responseHTML(request)) {
-			super.onAuthenticationSuccess(request, response, authentication);
-		} else {
-//			request.getRequestDispatcher("/oauth2/authorize").forward(request, response);
-			response.sendRedirect("/oauth2/authorize?" + authentication.getDetails().toString());
-		}
+		log.debug("登陆成功：{}", clientIP);
+		super.onAuthenticationSuccess(request, response, authentication);
 	}
 	
 }

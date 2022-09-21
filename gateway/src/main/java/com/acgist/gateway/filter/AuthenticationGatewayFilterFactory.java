@@ -98,6 +98,7 @@ public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFac
 				final Message<String> message = Message.fail(MessageCode.CODE_3401, "没有认证");
 				return ResponseUtils.response(message, HttpStatus.UNAUTHORIZED, exchange.getResponse());
 			}
+//			SecurityContextHolder.getContext().getAuthentication();
 			// 鉴权
 			final Long id = (Long) jws.getPayload().toJSONObject().get(MusesConfig.OAUTH2_ID);
 			final String name = (String) jws.getPayload().toJSONObject().get(MusesConfig.OAUTH2_NAME);

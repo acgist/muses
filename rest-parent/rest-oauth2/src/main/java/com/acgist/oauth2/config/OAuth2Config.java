@@ -38,6 +38,10 @@ public class OAuth2Config {
 	 */
 	private int refresh;
 	/**
+	 * 范围
+	 */
+	private String scope;
+	/**
 	 * 发行人
 	 */
 	private String issuer;

@@ -1,53 +1,37 @@
 package com.acgist.oauth2.token;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.util.MultiValueMap;
+
+import lombok.Getter;
 
 /**
- * 密码认证Token：认证完成直接返回Code
- * 
- * 请求跳转参数放到details
+ * 密码认证Token
  * 
  * @author acgist
  */
-public class PasswordToken extends AbstractAuthenticationToken {
+@Getter
+public class PasswordToken extends CustomToken {
 
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * 帐号信息：用户名称、用户信息
+	 * 帐号
 	 */
-	private Object principal;
+	private String username;
 	/**
-	 * 登陆凭证：密码、验证码等等
+	 * 密码
 	 */
-	private Object credentials;
+	private String password;
 	
-	public PasswordToken(String username, String password) {
-		super(null);
-		this.principal = username;
-		this.credentials = password;
+	public PasswordToken(String scope, String username, String password, Authentication clientPrincipal, MultiValueMap<String, String> additionalParameters) {
+		super(scope, clientPrincipal, AuthorizationGrantType.PASSWORD, additionalParameters, List.of());
+		this.username = username;
+		this.password = password;
 		super.setAuthenticated(false);
-	}
-
-	public PasswordToken(UserDetails user, String password, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
-		this.principal = user;
-		this.credentials = password;
-		super.setAuthenticated(true);
-	}
-	
-	@Override
-	public Object getPrincipal() {
-		return this.principal;
-	}
-
-	@Override
-	public Object getCredentials() {
-		return this.credentials;
 	}
 	
 }
