@@ -11,9 +11,14 @@ spring:
     port: 6379
     database: 0
     password: 
-    timeout: 4000
-    pool.max-wait: -1
-    pool.min-idle: 0
-    pool.max-idle: 10
-    pool.max-active: 100
-    
+    timeout: 5000
+    lettuce:
+      pool: 
+        max-wait: 5000
+        min-idle: 2
+        max-idle: 20
+        max-active: 20
+      cluster:
+        refresh:
+          period: 30
+          adaptive: true

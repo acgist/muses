@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.cglib.beans.BeanMap;
 
 import com.acgist.boot.model.MessageCodeException;
 
@@ -169,6 +171,21 @@ public final class BeanUtils {
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			log.error("设置属性异常：{}-{}-{}", fieldType, field, fieldValue);
 		}
+	}
+
+	/**
+	 * 对象转为Map
+	 * 
+	 * @param object 对象
+	 * 
+	 * @return Map
+	 */
+	@SuppressWarnings("unchecked")
+	public static final Map<String, Object> toMap(Object object) {
+		final BeanMap map = BeanMap.create(object);
+		final Map<String, Object> data = new HashMap<>();
+		map.forEach((k, v) -> data.put(String.valueOf(k), v));
+		return data;
 	}
 	
 }

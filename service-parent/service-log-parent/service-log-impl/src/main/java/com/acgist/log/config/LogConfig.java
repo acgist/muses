@@ -17,6 +17,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ClassUtils;
 
 import com.acgist.boot.utils.JSONUtils;
@@ -47,6 +48,13 @@ public class LogConfig {
 	public void init() throws ClassNotFoundException, IOException {
 		this.loadJSONCanalModule();
 		this.loadTableMapping();
+	}
+	
+	@Scheduled(cron =  "0 0 2 * * ?")
+	public void scheduled() throws ClassNotFoundException, IOException {
+		// 存在长时间运行对象被回收情况：错开零点高峰
+		log.info("每日任务加载日志配置");
+		this.init();
 	}
 
 	/**

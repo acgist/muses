@@ -22,6 +22,7 @@ import org.springframework.boot.task.TaskSchedulerBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
@@ -55,6 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 	TaskExecutionAutoConfiguration.class,
 	TaskSchedulingAutoConfiguration.class
 })
+@EnableAspectJAutoProxy(exposeProxy = true)
 public class BootAutoConfiguration {
 
 	/**

@@ -750,34 +750,49 @@ public class FilterQuery extends Model {
 	 * @see #build(String, Class)
 	 */
 	public <T extends BootEntity> Wrapper<T> build(Class<T> entity) {
-		return this.build(null, entity);
+		return this.build(null, null, entity);
+	}
+	
+	/**
+	 * @see #build(String, Class)
+	 */
+	public <T extends BootEntity> Wrapper<T> build(String alias, Class<T> entity) {
+		return this.build(null, alias, entity);
+	}
+	
+	/**
+	 * @see #build(String, Class)
+	 */
+	public <T extends BootEntity> Wrapper<T> build(QueryWrapper<T> wrapper, Class<T> entity) {
+		return this.build(wrapper, null, entity);
 	}
 	
 	/**
 	 * 创建MyBatis查询条件
 	 * 
+	 * @param wrapper 查询器
 	 * @param alias 别名
-	 * @param entity entity
+	 * @param entity 实体
 	 * @param joinEntities 连表实体
 	 * 
 	 * @return MyBatis查询条件
 	 */
-	public <T extends BootEntity> Wrapper<T> build(String alias, Class<T> entity, Class<?> ... joinEntities) {
-		final QueryWrapper<T> wrapper = Wrappers.query();
+	public <T extends BootEntity> Wrapper<T> build(final QueryWrapper<T> wrapper, String alias, Class<T> entity, Class<?> ... joinEntities) {
+		final QueryWrapper<T> queryWrapper = wrapper == null ? Wrappers.query() : wrapper;
 		if(CollectionUtils.isNotEmpty(this.selectColumn)) {
 			// 只用处理本表
-			wrapper.select(field -> this.selectColumn.contains(field.getField().getName()));
+			queryWrapper.select(field -> this.selectColumn.contains(field.getField().getName()));
 		}
 		if(CollectionUtils.isNotEmpty(this.ignoreColumn)) {
 			// 只用处理本表
-			wrapper.select(field -> !this.ignoreColumn.contains(field.getField().getName()));
+			queryWrapper.select(field -> !this.ignoreColumn.contains(field.getField().getName()));
 		}
 		this.filter.stream()
 			.filter(filter -> this.nullable || filter.value != null)
-			.forEach(filter -> filter.filter(alias, entity, wrapper, joinEntities));
+			.forEach(filter -> filter.filter(alias, entity, queryWrapper, joinEntities));
 		this.sorted.stream()
-			.forEach(sorted -> sorted.order(alias, entity, wrapper, joinEntities));
-		return wrapper;
+			.forEach(sorted -> sorted.order(alias, entity, queryWrapper, joinEntities));
+		return queryWrapper;
 	}
 	
 	/**
