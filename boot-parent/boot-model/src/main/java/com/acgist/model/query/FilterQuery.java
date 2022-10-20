@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -390,48 +389,6 @@ public class FilterQuery extends Model {
 			}
 		}
 		
-		/**
-		 * @see #order(String, Class, Class...)
-		 */
-		public <T> OrderItem order(Class<T> entity, Class<?> ... joinEntities) {
-			return this.order(null, entity, joinEntities);
-		}
-		
-		/**
-		 * MyBatis排序
-		 * 
-		 * @param <T> 类型
-		 * 
-		 * @param alias 别名
-		 * @param entity entity
-		 * @param joinEntities 连表实体
-		 * 
-		 * @return 排序对象
-		 */
-		public <T> OrderItem order(String alias, Class<T> entity, Class<?> ... joinEntities) {
-			final String column = aliasColumn(this.alias, alias, column(entity, this.name, joinEntities)); 
-			return switch (this.type) {
-			case ASC -> OrderItem.asc(column);
-			case DESC -> OrderItem.desc(column);
-			default -> throw MessageCodeException.of("未知排序类型：", this.type);
-			};
-		}
-
-	}
-
-	/**
-	 * 排序类型
-	 * 解决SQLServer分页排序统计问题
-	 * 
-	 * @author acgist
-	 */
-	public enum SortType {
-		
-		// 分页排序
-		PAGE,
-		// 查询条件排序
-		WRAPPER;
-		
 	}
 
 	/**
@@ -466,10 +423,6 @@ public class FilterQuery extends Model {
 	 * 当前页码
 	 */
 	private Integer current;
-	/**
-	 * 排序类型
-	 */
-	private SortType sortType = SortType.WRAPPER;
 	
 	public static final FilterQuery builder() {
 		return new FilterQuery();
@@ -492,26 +445,6 @@ public class FilterQuery extends Model {
 	 */
 	public FilterQuery nullless() {
 		this.nullable = false;
-		return this;
-	}
-	
-	/**
-	 * 分页排序
-	 * 
-	 * @return this
-	 */
-	public FilterQuery sortPage() {
-		this.sortType = SortType.PAGE;
-		return this;
-	}
-	
-	/**
-	 * 查询条件排序
-	 * 
-	 * @return this
-	 */
-	public FilterQuery sortWrapper() {
-		this.sortType = SortType.WRAPPER;
 		return this;
 	}
 	
@@ -816,7 +749,6 @@ public class FilterQuery extends Model {
 		this.filter.clear();
 		this.sorted.clear();
 		this.nullable = true;
-		this.sortType = SortType.WRAPPER;
 		this.selectColumn.clear();
 		this.ignoreColumn.clear();
 		return this;
@@ -866,25 +798,9 @@ public class FilterQuery extends Model {
 		this.filter.stream()
 			.filter(filter -> this.nullable || filter.value != null)
 			.forEach(filter -> filter.filter(alias, entity, queryWrapper, joinEntities));
-		if(this.sortType == SortType.WRAPPER) {
-			this.sorted.stream()
-				.forEach(sorted -> sorted.order(alias, entity, queryWrapper, joinEntities));
-		}
+		this.sorted.stream()
+			.forEach(sorted -> sorted.order(alias, entity, queryWrapper, joinEntities));
 		return queryWrapper;
-	}
-	
-	/**
-	 * @see #buildPage(String, Class, Class...)
-	 */
-	public <T extends BootEntity> Page<T> buildPage() {
-		return this.buildPage(null, null);
-	}
-	
-	/**
-	 * @see #buildPage(String, Class, Class...)
-	 */
-	public <T extends BootEntity> Page<T> buildPage(Class<T> entity) {
-		return this.buildPage(null, entity);
 	}
 	
 	/**
@@ -892,18 +808,10 @@ public class FilterQuery extends Model {
 	 * 
 	 * @param <T> 实体类型
 	 * 
-	 * @param alias 别名
-	 * @param entity 实体
-	 * @param joinEntities 连表实体
-	 * 
 	 * @return 分页信息
 	 */
-	public <T extends BootEntity> Page<T> buildPage(String alias, Class<T> entity, Class<?> ... joinEntities) {
-		final Page<T> page = Page.of(this.current, this.size);
-		if(this.sortType == SortType.PAGE) {
-			page.setOrders(this.sorted.stream().map(v -> v.order(alias, entity, joinEntities)).toList());
-		}
-		return page;
+	public <T extends BootEntity> Page<T> buildPage() {
+		return Page.of(this.current, this.size);
 	}
 	
 }
