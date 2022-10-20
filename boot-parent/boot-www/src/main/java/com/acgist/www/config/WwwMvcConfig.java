@@ -21,8 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WwwMvcConfig implements WebMvcConfigurer {
 
+//	@Autowired
+//	private ObjectMapper mapper;
 	@Autowired
 	private ApplicationContext context;
+//	@Autowired
+//	private MappingJackson2HttpMessageConverter converter;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -44,6 +48,13 @@ public class WwwMvcConfig implements WebMvcConfigurer {
 				resolvers.add(resolver);
 			});
 	}
+	
+//	@Override
+//	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+//		// 修复日期覆盖问题
+//		this.converter.setObjectMapper(this.mapper);
+//		converters.add(0, this.converter);
+//	}
 	
 //	网关统一处理
 //	@Override
