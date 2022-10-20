@@ -22,6 +22,8 @@ import com.acgist.www.utils.WebUtils;
 /**
  * IP请求次数过滤器
  * 
+ * TODO：开发环境排除
+ * 
  * @author acgist
  */
 public class IPCountAuthenticationFilter extends OncePerRequestFilter {

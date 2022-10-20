@@ -61,6 +61,18 @@ public class FilterQueryTest {
 	}
 	
 	@Test
+	public void testOrder() {
+		final FilterQuery query = FilterQuery.builder()
+			.eq("name", "eq");
+		query.getFilter().add(new Filter("other", "age", 12, Filter.Type.EQ));
+//		query.desc("age");
+		query.desc("age").sortPage();
+		final Wrapper<UserEntity> build = query.build("user", UserEntity.class);
+		log.info("语句：{}", build.getTargetSql());
+		log.info("语句：{}", build.getCustomSqlSegment());
+	}
+	
+	@Test
 	public void testType() {
 		final Object array = new Object[] {1, 2};
 		this.log(array);

@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -55,10 +56,13 @@ public class FilterQuery extends Model {
 	 * @return 数据库列名
 	 */
 	private static final <T> String column(Class<T> entity, final String name, final Class<?> ... joinEntities) {
+		String column;
 		// 本表
-		String column = columnDefaultValue(entity, name, null);
-		if(column != null) {
-			return column;
+		if(entity != null) {
+			column = columnDefaultValue(entity, name, null);
+			if(column != null) {
+				return column;
+			}
 		}
 		// 连表
 		if(ArrayUtils.isNotEmpty(joinEntities)) {
@@ -84,6 +88,9 @@ public class FilterQuery extends Model {
 	 * @return 数据库列名
 	 */
 	private static final <T> String columnDefaultValue(Class<T> entity, final String name, final String defaultValue) {
+		if(entity == null) {
+			return defaultValue;
+		}
 		final Map<String, String> map = COLUMN_CACHE.computeIfAbsent(entity, key -> new ConcurrentHashMap<>());
 		return map.computeIfAbsent(name, key -> {
 			final Field field = FieldUtils.getField(entity, name, true);
@@ -208,8 +215,8 @@ public class FilterQuery extends Model {
 		/**
 		 * @see #filter(String, Class, QueryWrapper)
 		 */
-		public <T> void filter(Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
-			this.filter(null, entityClazz, wrapper);
+		public <T> void filter(Class<T> entity, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			this.filter(null, entity, wrapper);
 		}
 		
 		/**
@@ -218,12 +225,12 @@ public class FilterQuery extends Model {
 		 * @param <T> 类型
 		 * 
 		 * @param alias 别名
-		 * @param entityClazz entityClazz
+		 * @param entity entity
 		 * @param wrapper wrapper
 		 * @param joinEntities 连表实体
 		 */
-		public <T> void filter(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
-			final String column = aliasColumn(this.alias, alias, column(entityClazz, this.name, joinEntities));
+		public <T> void filter(String alias, Class<T> entity, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			final String column = aliasColumn(this.alias, alias, column(entity, this.name, joinEntities));
 			switch (this.type) {
 			case EQ -> wrapper.eq(column, this.value);
 			case NE -> wrapper.ne(column, this.value);
@@ -271,12 +278,12 @@ public class FilterQuery extends Model {
 					if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 						final Collection<?> collection = (Collection<?>) this.value;
 						collection.forEach(value -> {
-							Filter.Type.LIKE.of(column, value).filter(entityClazz, includeWrapper.or());
+							Filter.Type.LIKE.of(column, value).filter(entity, includeWrapper.or());
 						});
 					} else if(this.value != null && this.value.getClass().isArray()) {
 						final Object[] array = (Object[]) this.value;
 						for(Object value : array) {
-							Filter.Type.LIKE.of(column, value).filter(entityClazz, includeWrapper.or());
+							Filter.Type.LIKE.of(column, value).filter(entity, includeWrapper.or());
 						}
 					} else {
 						throw MessageCodeException.of("不支持的include类型：", this.value);
@@ -288,12 +295,12 @@ public class FilterQuery extends Model {
 					if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 						final Collection<?> collection = (Collection<?>) this.value;
 						collection.forEach(value -> {
-							Filter.Type.LIKE.of(column, value).filter(entityClazz, excludeWrapper.or());
+							Filter.Type.LIKE.of(column, value).filter(entity, excludeWrapper.or());
 						});
 					} else if(this.value != null && this.value.getClass().isArray()) {
 						final Object[] array = (Object[]) this.value;
 						for(Object value : array) {
-							Filter.Type.LIKE.of(column, value).filter(entityClazz, excludeWrapper.or());
+							Filter.Type.LIKE.of(column, value).filter(entity, excludeWrapper.or());
 						}
 					} else {
 						throw MessageCodeException.of("不支持的exclude类型：", this.value);
@@ -360,8 +367,8 @@ public class FilterQuery extends Model {
 		/**
 		 * @see #order(String, QueryWrapper)
 		 */
-		public <T> void order(Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
-			this.order(null, entityClazz, wrapper);
+		public <T> void order(Class<T> entity, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			this.order(null, entity, wrapper);
 		}
 		
 		/**
@@ -370,19 +377,61 @@ public class FilterQuery extends Model {
 		 * @param <T> 类型
 		 * 
 		 * @param alias 别名
-		 * @param entityClazz entityClazz
+		 * @param entity entity
 		 * @param wrapper wrapper
 		 * @param joinEntities 连表实体
 		 */
-		public <T> void order(String alias, Class<T> entityClazz, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
-			final String column = aliasColumn(this.alias, alias, column(entityClazz, this.name, joinEntities));
+		public <T> void order(String alias, Class<T> entity, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
+			final String column = aliasColumn(this.alias, alias, column(entity, this.name, joinEntities));
 			switch (this.type) {
 			case ASC -> wrapper.orderByAsc(column);
 			case DESC -> wrapper.orderByDesc(column);
 			default -> throw MessageCodeException.of("未知排序类型：", this.type);
 			}
 		}
+		
+		/**
+		 * @see #order(String, Class, Class...)
+		 */
+		public <T> OrderItem order(Class<T> entity, Class<?> ... joinEntities) {
+			return this.order(null, entity, joinEntities);
+		}
+		
+		/**
+		 * MyBatis排序
+		 * 
+		 * @param <T> 类型
+		 * 
+		 * @param alias 别名
+		 * @param entity entity
+		 * @param joinEntities 连表实体
+		 * 
+		 * @return 排序对象
+		 */
+		public <T> OrderItem order(String alias, Class<T> entity, Class<?> ... joinEntities) {
+			final String column = aliasColumn(this.alias, alias, column(entity, this.name, joinEntities)); 
+			return switch (this.type) {
+			case ASC -> OrderItem.asc(column);
+			case DESC -> OrderItem.desc(column);
+			default -> throw MessageCodeException.of("未知排序类型：", this.type);
+			};
+		}
 
+	}
+
+	/**
+	 * 排序类型
+	 * 解决SQLServer分页排序统计问题
+	 * 
+	 * @author acgist
+	 */
+	public enum SortType {
+		
+		// 分页排序
+		PAGE,
+		// 查询条件排序
+		WRAPPER;
+		
 	}
 
 	/**
@@ -417,6 +466,10 @@ public class FilterQuery extends Model {
 	 * 当前页码
 	 */
 	private Integer current;
+	/**
+	 * 排序类型
+	 */
+	private SortType sortType = SortType.WRAPPER;
 	
 	public static final FilterQuery builder() {
 		return new FilterQuery();
@@ -439,6 +492,26 @@ public class FilterQuery extends Model {
 	 */
 	public FilterQuery nullless() {
 		this.nullable = false;
+		return this;
+	}
+	
+	/**
+	 * 分页排序
+	 * 
+	 * @return this
+	 */
+	public FilterQuery sortPage() {
+		this.sortType = SortType.PAGE;
+		return this;
+	}
+	
+	/**
+	 * 查询条件排序
+	 * 
+	 * @return this
+	 */
+	public FilterQuery sortWrapper() {
+		this.sortType = SortType.WRAPPER;
 		return this;
 	}
 	
@@ -743,6 +816,9 @@ public class FilterQuery extends Model {
 		this.filter.clear();
 		this.sorted.clear();
 		this.nullable = true;
+		this.sortType = SortType.WRAPPER;
+		this.selectColumn.clear();
+		this.ignoreColumn.clear();
 		return this;
 	}
 	
@@ -777,7 +853,7 @@ public class FilterQuery extends Model {
 	 * 
 	 * @return MyBatis查询条件
 	 */
-	public <T extends BootEntity> Wrapper<T> build(final QueryWrapper<T> wrapper, String alias, Class<T> entity, Class<?> ... joinEntities) {
+	public <T extends BootEntity> Wrapper<T> build(QueryWrapper<T> wrapper, String alias, Class<T> entity, Class<?> ... joinEntities) {
 		final QueryWrapper<T> queryWrapper = wrapper == null ? Wrappers.query() : wrapper;
 		if(CollectionUtils.isNotEmpty(this.selectColumn)) {
 			// 只用处理本表
@@ -790,9 +866,25 @@ public class FilterQuery extends Model {
 		this.filter.stream()
 			.filter(filter -> this.nullable || filter.value != null)
 			.forEach(filter -> filter.filter(alias, entity, queryWrapper, joinEntities));
-		this.sorted.stream()
-			.forEach(sorted -> sorted.order(alias, entity, queryWrapper, joinEntities));
+		if(this.sortType == SortType.WRAPPER) {
+			this.sorted.stream()
+				.forEach(sorted -> sorted.order(alias, entity, queryWrapper, joinEntities));
+		}
 		return queryWrapper;
+	}
+	
+	/**
+	 * @see #buildPage(String, Class, Class...)
+	 */
+	public <T extends BootEntity> Page<T> buildPage() {
+		return this.buildPage(null, null);
+	}
+	
+	/**
+	 * @see #buildPage(String, Class, Class...)
+	 */
+	public <T extends BootEntity> Page<T> buildPage(Class<T> entity) {
+		return this.buildPage(null, entity);
 	}
 	
 	/**
@@ -800,10 +892,18 @@ public class FilterQuery extends Model {
 	 * 
 	 * @param <T> 实体类型
 	 * 
+	 * @param alias 别名
+	 * @param entity 实体
+	 * @param joinEntities 连表实体
+	 * 
 	 * @return 分页信息
 	 */
-	public <T extends BootEntity> Page<T> buildPage() {
-		return Page.of(this.current, this.size);
+	public <T extends BootEntity> Page<T> buildPage(String alias, Class<T> entity, Class<?> ... joinEntities) {
+		final Page<T> page = Page.of(this.current, this.size);
+		if(this.sortType == SortType.PAGE) {
+			page.setOrders(this.sorted.stream().map(v -> v.order(alias, entity, joinEntities)).toList());
+		}
+		return page;
 	}
 	
 }
