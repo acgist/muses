@@ -236,29 +236,30 @@ public class LogServiceImpl implements LogService, ILogService {
 			return;
 		}
 		final Map<String, Object> logMap = new HashMap<>();
-		final Map<String, Object> sourceCopyMap = new HashMap<>();
+		final Map<String, Object> sourceMap = new HashMap<>();
 		// 基本信息
 		final Class<?> clazz = tableMapping.getClazz();
 		final String diffValue = logVo.getDiffValue();
 		final String sourceValue = logVo.getSourceValue();
 		if(StringUtils.isNotEmpty(sourceValue)) {
+			sourceMap.putAll(JSONUtils.toMap(sourceValue));
 			logVo.setSourceObject(JSONUtils.toJava(sourceValue, clazz));
 		}
 		// 差异信息
 		if(StringUtils.isNotEmpty(diffValue)) {
 			final Map<String, Object> diffMap = JSONUtils.toMap(diffValue);
-			final Map<String, Object> sourceMap = StringUtils.isEmpty(sourceValue) ? new HashMap<>() : JSONUtils.toMap(sourceValue);
-			sourceCopyMap.putAll(sourceMap);
-			sourceMap.putAll(diffMap);
+			final Map<String, Object> diffObjectMap = new HashMap<>();
+			diffObjectMap.putAll(sourceMap);
+			diffObjectMap.putAll(diffMap);
 			logVo.setDiffMap(diffMap);
-			logVo.setDiffObject(JSONUtils.toJava(JSONUtils.toJSONNullable(sourceMap), clazz));
+			logVo.setDiffObject(JSONUtils.toJava(JSONUtils.toJSONNullable(diffObjectMap), clazz));
 		}
 		// 日志信息
 		logMap.put("log", logVo);
 		logMap.put("diff", logVo.getDiffObject());
 		logMap.put("source", logVo.getSourceObject());
 		logMap.put("diffMap", this.transfer(logVo.getDiffMap(), tableMapping.getFieldMap()));
-		logMap.put("sourceMap", this.transfer(sourceCopyMap, tableMapping.getFieldMap()));
+		logMap.put("sourceMap", this.transfer(sourceMap, tableMapping.getFieldMap()));
 		logMap.put("fieldMap", tableMapping.getFieldMap());
 		logMap.put("columnMap", tableMapping.getColumnMap());
 		logMap.put("tableMapping", tableMapping);
