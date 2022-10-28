@@ -1,8 +1,12 @@
 package com.acgist.model.query;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +18,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import com.acgist.boot.config.FormatStyle.DateStyle;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.boot.model.Model;
+import com.acgist.boot.utils.DateUtils;
 import com.acgist.model.entity.BootEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -261,11 +267,19 @@ public class FilterQuery extends Model {
 				if(this.value != null && Collection.class.isAssignableFrom(this.value.getClass())) {
 					final Collection<?> collection = (Collection<?>) this.value;
 					final Iterator<?> iterator = collection.iterator();
-					wrapper.between(column, iterator.hasNext() ? iterator.next() : null, iterator.hasNext() ? iterator.next() : null);
+					wrapper.between(
+						column,
+						iterator.hasNext() ? iterator.next() : null,
+						iterator.hasNext() ? FilterQuery.between(iterator.next()) : null
+					);
 				} else if(this.value != null && this.value.getClass().isArray()) {
 					// 注意：不支持基本类型数组
 					final Object[] array = (Object[]) this.value;
-					wrapper.between(column, array[0], array[1]);
+					wrapper.between(
+						column,
+						array[0],
+						FilterQuery.between(array[1])
+					);
 				} else {
 					throw MessageCodeException.of("不支持的between类型：", this.value);
 				}
@@ -312,6 +326,29 @@ public class FilterQuery extends Model {
 
 	}
 
+	/**
+	 * 优化between参数
+	 * 
+	 * @param object 原始参数
+	 * 
+	 * @return 优化参数
+	 */
+	private static final Object between(Object object) {
+		if(object instanceof Date date) {
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.DATE, 1);
+			return calendar.getTime();
+		} else if(object instanceof LocalDate localDate) {
+			return localDate.plusDays(1);
+		} else if(object instanceof LocalDateTime localDateTime) {
+			return localDateTime.plusDays(1);
+		} else if(object instanceof String date && date.matches("\\d{4}\\-\\d{2}\\-\\d{2}")) {
+			return FilterQuery.between(DateUtils.parse(date, DateStyle.YYYY_MM_DD.getFormat()));
+		}
+		return object;
+	}
+	
 	/**
 	 * 排序类型
 	 * 

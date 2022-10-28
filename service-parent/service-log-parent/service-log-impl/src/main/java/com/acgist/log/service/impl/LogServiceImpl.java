@@ -1,6 +1,7 @@
 package com.acgist.log.service.impl;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -94,6 +95,8 @@ public class LogServiceImpl implements LogService, ILogService {
 			// 映射数据
 			final Log log = new Log();
 			log.setId(this.idService.id());
+			log.setCreateDate(LocalDateTime.now());
+			log.setModifyDate(LocalDateTime.now());
 			log.setType(type);
 			log.setTable(table);
 			final String sourceJson = JSONUtils.toJSONNullable(data);
