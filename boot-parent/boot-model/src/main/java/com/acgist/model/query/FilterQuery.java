@@ -343,8 +343,12 @@ public class FilterQuery extends Model {
 			return localDate.plusDays(1);
 		} else if(object instanceof LocalDateTime localDateTime) {
 			return localDateTime.plusDays(1);
-		} else if(object instanceof String date && date.matches("\\d{4}\\-\\d{2}\\-\\d{2}")) {
-			return FilterQuery.between(DateUtils.parse(date, DateStyle.YYYY_MM_DD.getFormat()));
+		} else if(object instanceof String value && value.matches("\\d{4}\\-\\d{2}\\-\\d{2}")) {
+			final Date date = DateUtils.parse(value, DateStyle.YYYY_MM_DD.getFormat());
+			final Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.DATE, 1);
+			return DateUtils.format(calendar.getTime(), DateStyle.YYYY_MM_DD.getFormat());
 		}
 		return object;
 	}
