@@ -11,8 +11,7 @@ project="web"
 
 #git pull
 # 强制更新远程代码
-git fetch --all
-git reset --hard origin/master
+git reset --hard
 git pull
 
 # 如果提交package-lock.json不用安装
