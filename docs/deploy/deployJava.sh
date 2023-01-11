@@ -11,6 +11,10 @@ fi
 for arg in $*;
 do
   case $arg in
+    -cd|--copy-deploy)
+      echo "拷贝部署命令"
+      copyDeploy="true"
+    ;;
     -sg|--skip-git)
       echo "跳过更新代码"
       skipGit="true"
@@ -19,9 +23,9 @@ do
       echo "跳过编译代码"
       skipMvn="true"
     ;;
-    -cd|--copy-deploy)
-      echo "拷贝部署命令"
-      copyDeploy="true"
+    -ss|--skip-startup)
+      echo "跳过项目启动"
+      skipStartup="true"
     ;;
     *)
       echo "未知参数：$arg"
@@ -61,5 +65,7 @@ do
   if [ "$copyDeploy" = "true" ]; then
     cp -rf "$path/bin/deploy.sh" "./deploy-${name}.sh"
   fi
-  sh "./deploy-${name}.sh"
+  if [ -z $skipStartup ]; then
+    sh "./deploy-${name}.sh"
+  fi
 done

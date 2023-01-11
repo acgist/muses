@@ -13,8 +13,6 @@ sh docs/deploy/packageJava.sh dev
 sh docs/deploy/versionJava.sh 1.0.0
 ```
 
-> `sh docs/deploy/deployJava.sh dev -cd`自动生成单个部署脚本
-
 ## 启动
 
 ```
