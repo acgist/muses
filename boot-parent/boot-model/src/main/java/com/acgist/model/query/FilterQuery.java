@@ -731,6 +731,19 @@ public class FilterQuery extends Model {
 	}
 
 	/**
+     * 批量设置别名
+     * 
+     * @param alias  别名
+     * @param fields 字段名称
+     */
+    public void setAlias(String alias, String ... fields) {
+        Stream.of(fields)
+        .map(this::get)
+        .filter(Objects::nonNull)
+        .forEach(v -> v.setAlias(alias));
+    }
+	
+	/**
 	 * 获取条件Map
 	 * 
 	 * @return 条件Map
