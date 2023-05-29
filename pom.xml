@@ -364,10 +364,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-			</plugin>
 		</plugins>
 
 		<pluginManagement>
@@ -463,24 +459,6 @@
 							<phase>verify</phase>
 							<goals>
 								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<!--
-				生成签名：mvn verify
-				跳过签名：-D gpg.skip=true
-				-->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<executions>
-						<!-- 自动生成签名 -->
-						<execution>
-							<id>auto-build-sign</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
 							</goals>
 						</execution>
 					</executions>
