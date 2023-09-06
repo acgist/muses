@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.acgist.boot.config.FormatStyle.DateStyle;
+import com.acgist.boot.model.MessageCode;
 import com.acgist.boot.model.MessageCodeException;
 import com.acgist.boot.model.Model;
 import com.acgist.boot.utils.DateUtils;
@@ -45,6 +46,11 @@ import lombok.Setter;
 public class FilterQuery extends Model {
 	
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 字段校验
+	 */
+	private static final String COLUMN_REGEX = "[a-zA-Z1-9_\\.]+";
 	
 	/**
 	 * 缓存
@@ -238,6 +244,7 @@ public class FilterQuery extends Model {
 		 */
 		public <T> void filter(String alias, Class<T> entity, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
 			final String column = aliasColumn(this.alias, alias, column(entity, this.name, joinEntities));
+			FilterQuery.checkColumn(column);
 			switch (this.type) {
 			case EQ -> wrapper.eq(column, this.value);
 			case NE -> wrapper.ne(column, this.value);
@@ -425,13 +432,25 @@ public class FilterQuery extends Model {
 		 */
 		public <T> void order(String alias, Class<T> entity, QueryWrapper<T> wrapper, Class<?> ... joinEntities) {
 			final String column = aliasColumn(this.alias, alias, column(entity, this.name, joinEntities));
+			FilterQuery.checkColumn(column);
 			switch (this.type) {
-			case ASC -> wrapper.orderByAsc(column);
+			case ASC  -> wrapper.orderByAsc(column);
 			case DESC -> wrapper.orderByDesc(column);
-			default -> throw MessageCodeException.of("未知排序类型：", this.type);
+			default   -> throw MessageCodeException.of("未知排序类型：", this.type);
 			}
 		}
 		
+	}
+	
+	/**
+	 * 校验字段
+	 * 
+	 * @param column 字段
+	 */
+	private static final void checkColumn(String column) {
+        if(column == null || !column.matches(COLUMN_REGEX)) {
+            throw MessageCodeException.of(MessageCode.CODE_3405);
+        }
 	}
 
 	/**
