@@ -33,7 +33,7 @@
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<mybatis.plus.version>3.5.1</mybatis.plus.version>
 		<shardingjdbc.version>4.1.1</shardingjdbc.version>
-		<oauth2.authorization.version>0.3.1</oauth2.authorization.version>
+		<oauth2.authorization.version>1.1.6</oauth2.authorization.version>
 		<!-- SpringCloud版本配置 -->
 		<spring-cloud.version>2021.0.1</spring-cloud.version>
 		<spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
