@@ -304,9 +304,6 @@ public final class ErrorUtils {
 		if(messageCode == MessageCode.CODE_9999 && StringUtils.isNotEmpty(message)) {
 			return message;
 		}
-		if(StringUtils.isNotEmpty(message) && message.length() < 64) {
-			return message;
-		}
 		return messageCode.getMessage();
 	}
 	

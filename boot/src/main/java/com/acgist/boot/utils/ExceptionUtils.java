@@ -39,9 +39,9 @@ public class ExceptionUtils {
 			if(cause instanceof MessageCodeException) {
 				return cause;
 			}
-		} while(cause != null && (cause = cause.getCause()) != null);
+		} while(cause != null && cause.getCause() != null && (cause = cause.getCause()) != null);
 		// 返回原始异常
-		return t;
+		return cause;
 	}
 	
 }
