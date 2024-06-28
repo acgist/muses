@@ -109,6 +109,58 @@ public class MessageCodeException extends RuntimeException {
 	public MessageCode getCode() {
 		return this.code;
 	}
+	
+    /**
+     * @param result  是否抛出异常
+     * @param message 异常描述信息
+     */
+    public static final void check(boolean result, String message) {
+        if(result) {
+            throw MessageCodeException.of(message);
+        }
+    }
+    
+    /**
+     * 空值抛出异常
+     * 
+     * @param object  数据对象
+     * @param message 异常描述信息
+     */
+    public static final void nullThrow(Object object, String message) {
+        MessageCodeException.check(object == null, message);
+    }
+    
+    /**
+     * 非空抛出异常
+     * 
+     * @param object  数据对象
+     * @param message 异常描述信息
+     */
+    public static final void nonNullThrow(Object object, String message) {
+        MessageCodeException.check(object != null, message);
+    }
+    
+    /**
+     * 相等抛出异常
+     * 
+     * @param source  原始数据
+     * @param target  比较数据
+     * @param message 异常描述信息
+     */
+    public static final void equalThrow(Object source, Object target, String message) {
+        MessageCodeException.check(Objects.equals(source, target), message);
+    }
+    
+    /**
+     * 不等抛出异常
+     * 
+     * @param source  原始数据
+     * @param target  比较数据
+     * @param message 异常描述信息
+     */
+    public static final void notEqualThrow(Object source, Object target, String message) {
+        MessageCodeException.check(!Objects.equals(source, target), message);
+    }
 
 	@Override
 	public String getMessage() {
