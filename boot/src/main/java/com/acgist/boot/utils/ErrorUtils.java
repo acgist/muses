@@ -164,23 +164,23 @@ public final class ErrorUtils {
 		final Message<String> message;
 		int status = globalStatus(request, response);
 		final Object globalError = t == null ? globalError(request) : t;
-		final Object rootError = ExceptionUtils.root(globalError);
+		final Object rootError   = ExceptionUtils.root(globalError);
 		if(rootError instanceof MessageCodeException) {
 			// 自定义的异常
 			final MessageCodeException messageCodeException = (MessageCodeException) rootError;
 			final MessageCode messageCode = messageCodeException.getCode();
-			status = messageCode.getStatus();
+			status  = messageCode.getStatus();
 			message = Message.fail(messageCode, messageCodeException.getMessage());
 		} else if(rootError instanceof Throwable) {
 			// 未知异常
 			final Throwable throwable = (Throwable) rootError;
-			final MessageCode messageCode = messageCode(status, throwable);
-			status = messageCode.getStatus();
+			final MessageCode messageCode = messageCode(status, throwable, globalError);
+			status  = messageCode.getStatus();
 			message = Message.fail(messageCode, message(messageCode, throwable));
 		} else {
 			// 没有异常
 			final MessageCode messageCode = MessageCode.of(status);
-//			status = messageCode.getStatus();
+//			status  = messageCode.getStatus();
 			message = Message.fail(messageCode);
 		}
 		// 状态编码
@@ -259,22 +259,39 @@ public final class ErrorUtils {
 	}
 	
 	/**
+	 * @see #messageCode(int, Throwable, Object)
+	 */
+	public static final MessageCode messageCode(int status, Throwable t) {
+	    return messageCode(status, t, null);
+	}
+	
+	/**
 	 * 获取响应状态
 	 * 
 	 * @param status 原始状态
 	 * @param t 异常
+	 * @param globalError 全局异常
 	 * 
 	 * @return 响应状态
 	 * 
 	 * @see ResponseEntityExceptionHandler
 	 * @see DefaultHandlerExceptionResolver
 	 */
-	public static final MessageCode messageCode(int status, Throwable t) {
+	public static final MessageCode messageCode(int status, Throwable t, Object globalError) {
 		return CODE_MAPPING.entrySet().stream()
 			.filter(entry -> {
 				final Class<?> clazz = t.getClass();
 				final Class<?> mappingClazz = entry.getKey();
-				return mappingClazz.equals(clazz) || mappingClazz.isAssignableFrom(clazz);
+				if(globalError == null) {
+				    return mappingClazz.equals(clazz) || mappingClazz.isAssignableFrom(clazz);
+				} else {
+				    final Class<?> globalClazz = globalError.getClass();
+				    return
+				        mappingClazz.equals(clazz)           ||
+				        mappingClazz.isAssignableFrom(clazz) ||
+				        mappingClazz.equals(globalClazz)     ||
+				        mappingClazz.isAssignableFrom(globalClazz);
+				}
 			})
 			.map(Map.Entry::getValue)
 			.findFirst()
