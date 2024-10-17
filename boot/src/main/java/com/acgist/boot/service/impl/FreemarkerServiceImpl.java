@@ -8,15 +8,22 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.acgist.boot.config.MusesConfig;
 import com.acgist.boot.service.FreemarkerService;
 
+import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.StringTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -24,20 +31,43 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FreemarkerServiceImpl implements FreemarkerService {
+    
+    @Value("${spring.freemarker.cache:true}")
+    private boolean cache;
 
 	@Autowired
 	private Configuration configuration;
+    
+	private StringTemplateLoader templateLoader = new StringTemplateLoader();
 	
 	public FreemarkerServiceImpl() {
 	}
 	
-	public FreemarkerServiceImpl(String outpath) {
-		this.configuration = new Configuration(Configuration.VERSION_2_3_31);
-		this.configuration.setDefaultEncoding(MusesConfig.CHARSET_VALUE);
-		this.configuration.setClassicCompatible(true);
-		this.configuration.setClassForTemplateLoading(FreemarkerServiceImpl.class, outpath);
-	}
-
+    public FreemarkerServiceImpl(String outpath) {
+        this.configuration = new Configuration(Configuration.VERSION_2_3_31);
+        this.configuration.setDefaultEncoding(MusesConfig.CHARSET_VALUE);
+        this.configuration.setClassicCompatible(true);
+        this.configuration.setClassForTemplateLoading(FreemarkerServiceImpl.class, outpath);
+    }
+	
+    @PostConstruct
+    public void init() {
+        TemplateLoader templateLoader = this.configuration.getTemplateLoader();
+        if(templateLoader == null) {
+            templateLoader = new StringTemplateLoader();
+            this.configuration.setTemplateLoader(templateLoader);
+        }
+        final List<TemplateLoader> list = new ArrayList<>();
+        if(templateLoader instanceof MultiTemplateLoader) {
+            final MultiTemplateLoader loader = (MultiTemplateLoader) templateLoader;
+            for(int index = 0; index < loader.getTemplateLoaderCount(); ++index) {
+                list.add(loader.getTemplateLoader(index));
+            }
+        }
+        list.add(this.templateLoader);
+        this.configuration.setTemplateLoader(new MultiTemplateLoader(list.toArray(TemplateLoader[]::new)));
+    }
+	
 	@Override
 	public boolean build(String templatePath, Map<Object, Object> data, String htmlPath, String htmlName) {
 		if (StringUtils.isEmpty(htmlPath)) {
@@ -69,10 +99,13 @@ public class FreemarkerServiceImpl implements FreemarkerService {
 	
 	@Override
 	public void buildTemplate(String name, String content) {
-		final StringTemplateLoader loader = new StringTemplateLoader();
-		loader.putTemplate(name, content);
-		this.configuration.setTemplateLoader(loader);
-	}
+        synchronized (this.templateLoader) {
+            if(this.cache && this.templateLoader.findTemplateSource(name) != null) {
+                return;
+            }
+            this.templateLoader.putTemplate(name, content);
+        }
+    }
 
 	@Override
 	public String buildTemplate(String name, Map<String, Object> data) {
