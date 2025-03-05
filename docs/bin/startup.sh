@@ -21,7 +21,7 @@ fi
 # 启动参数
 JAVA_OPTS_GC="-XX:+UseG1GC -Xlog:gc:./logs/gc.log:time,level,tags:filecount=16,filesize=128m"
 JAVA_OPTS_MEM="-server ${system.maven.jvm.mem}"
-JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding} -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true"
+JAVA_OPTS_EXT="-Dfile.encoding=${system.maven.encoding} -Djava.awt.headless=true -Duser.timezone=Asia/Shanghai -Djava.net.preferIPv4Stack=true"
 JAVA_OPTS_APP="-Dspring.profiles.active=${profile}"
 JAVA_OPTS="$JAVA_OPTS_MEM $JAVA_OPTS_EXT $JAVA_OPTS_APP ${system.maven.jvm.arg}"
 echo "启动参数：$JAVA_OPTS"
