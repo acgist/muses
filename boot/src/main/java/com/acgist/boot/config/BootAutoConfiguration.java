@@ -121,7 +121,7 @@ public class BootAutoConfiguration {
 	}
 	
 	@Bean
-	@Primary
+//	@Primary
 	@ConditionalOnMissingBean
 	public TaskScheduler taskScheduler(TaskSchedulerBuilder builder) {
 		return builder.build();
